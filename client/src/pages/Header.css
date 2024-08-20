@@ -1,0 +1,42 @@
+/* Header.css */
+.header {
+    background-color: #000000; /* Preto */
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .nav {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .nav-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-item {
+    font-size: 18px;
+  }
+  
+  .nav-link {
+    color: #FFD700; /* Dourado */
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .nav-link:hover {
+    color: #FFA500; /* Laranja dourado ao passar o mouse */
+  }
+  
+  /* Adiciona um padding superior ao conteúdo para não ficar escondido atrás do header */
+  body {
+    padding-top: 50px;
+  }
+  
