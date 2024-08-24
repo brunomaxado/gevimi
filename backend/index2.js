@@ -121,8 +121,67 @@ const db = mysql.createConnection({
     });
   });
 
-  app.get("/login", (req, res) => {
-    const q = "SELECT login, senha FROM usuario";
+  app.post("/insertcategorias", (req, res) => {
+    const q = "INSERT INTO categoria(`nome`) VALUES (?)";
+  
+    const values = [
+        req.body.nome,             // nome
+      ];
+  
+    db.query(q, [values], (err, data) => {
+      if (err) return res.send(err);
+      return res.json(data);
+    });
+  });
+
+
+
+  app.delete("/categoria/:id_categoria", (req, res) => {
+    const categoriaId = req.params.id_categoria;
+  
+    // Primeiro, torne `fk_id_categoria` nulo para todos os produtos que referenciam essa categoria
+    const nullifyFKQuery = "UPDATE produto SET fk_id_categoria = NULL WHERE fk_id_categoria = ?";
+  
+    db.query(nullifyFKQuery, [categoriaId], (err, data) => {
+      if (err) return res.status(500).send(err);
+  
+      // Agora que as chaves estrangeiras foram anuladas, você pode deletar a categoria
+      const deleteCategoriaQuery = "DELETE FROM categoria WHERE id_categoria = ?";
+  
+      db.query(deleteCategoriaQuery, [categoriaId], (err, data) => {
+        if (err) return res.status(500).send(err);
+  
+        console.log("Categoria deletada");
+        return res.json(data);
+      });
+    });
+  });
+  
+  
+  app.put("/categoria/:id_categoria", (req, res) => {
+    const bookId = req.params.id_categoria;
+    const q = `
+      UPDATE categoria
+      SET 
+        nome = ?
+      WHERE 
+       id_categoria = ?
+    `;
+  
+    const values = [
+      req.body.nome,            // nome
+    ];
+  
+    db.query(q, [...values, bookId], (err, data) => {
+      if (err) return res.send(err);
+      return res.json(data);
+    });
+  });
+
+
+
+  app.get("/clientes", (req, res) => {
+    const q = "SELECT * FROM cliente";
 
     db.query(q, (err, data) => {
       if (err) {
@@ -133,6 +192,65 @@ const db = mysql.createConnection({
     });
   });
 
+  app.post("/clientes", (req, res) => {
+    const q = "INSERT INTO cliente(`id_cliente`, `nome`, `cpf`, `celular`, `cep`, `logradouro`, `numero`) VALUES (?)";
+  
+    const values = [
+      req.body.id_cliente,  // id_cliente
+      req.body.nome,        // nome
+      req.body.cpf,         // cpf
+      req.body.celular,     // celular
+      req.body.cep,         // cep
+      req.body.logradouro,  // logradouro
+      req.body.numero       // numero
+    ];
+  
+    db.query(q, [values], (err, data) => {
+      if (err) return res.send(err);
+      return res.json(data);
+    });
+  });
+  
+  app.delete("/clientes/:id_cliente", (req, res) => {
+    const clienteId = req.params.id_cliente;
+    const q = "DELETE FROM cliente WHERE id_cliente = ?";
+  
+    db.query(q, [clienteId], (err, data) => {
+      if (err) return res.send(err);
+      return res.json(data);
+    });
+  });
+  
+  app.put("/clientes/:id_cliente", (req, res) => {
+    const clienteId = req.params.id_cliente;
+    const q = `
+      UPDATE cliente 
+      SET 
+        nome = ?, 
+        cpf = ?, 
+        celular = ?, 
+        cep = ?, 
+        logradouro = ?, 
+        numero = ?
+      WHERE 
+        id_cliente = ?
+    `;
+  
+    const values = [
+      req.body.nome,         // nome
+      req.body.cpf,          // cpf
+      req.body.celular,      // celular
+      req.body.cep,          // cep
+      req.body.logradouro,   // logradouro
+      req.body.numero        // numero
+    ];
+  
+    db.query(q, [...values, clienteId], (err, data) => {
+      if (err) return res.send(err);
+      return res.json(data);
+    });
+  });
+  
 app.listen(8800, () => {
     console.log("Conectado ao backend gevimi");
   });

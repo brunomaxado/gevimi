@@ -7,7 +7,7 @@ const GerenciarProduto = () => {
     nome: "",
     descricao: "",
     promocao: false,
-    preco_desconto: 22,
+    preco_desconto: null,
     preco_unitario: null,
     fk_id_categoria: "",
   });
