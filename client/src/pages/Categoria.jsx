@@ -1,13 +1,15 @@
-
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import './Header.css'; // Certifique-se de importar o arquivo CSS
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
-  const [showModal, setShowModal] = useState(false); // Estado para controlar a visibilidade do modal
+  const [showAddModal, setShowAddModal] = useState(false); // Estado para controlar a visibilidade do modal de adição
+  const [showUpdateModal, setShowUpdateModal] = useState(false); // Estado para controlar a visibilidade do modal de atualização
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar a visibilidade do modal de exclusão
   const [newCategoria, setNewCategoria] = useState(""); // Estado para o nome da nova categoria
+  const [currentCategoria, setCurrentCategoria] = useState({ id: "", nome: "" }); // Estado para a categoria que será atualizada
+  const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null); // Estado para armazenar o ID da categoria a ser excluída
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -21,10 +23,14 @@ const Categoria = () => {
     fetchAllCategorias();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8800/categoria/${id}`);
-      setCategoria(categoria.filter(c => c.id_categoria !== id));
+      if (categoriaIdToDelete !== null) {
+        await axios.delete(`http://localhost:8800/categoria/${categoriaIdToDelete}`);
+        setCategoria(categoria.filter(c => c.id_categoria !== categoriaIdToDelete));
+        setShowDeleteModal(false);
+        setCategoriaIdToDelete(null);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -35,7 +41,7 @@ const Categoria = () => {
       if (newCategoria) {
         await axios.post("http://localhost:8800/categoria", { nome: newCategoria });
         setNewCategoria(""); // Limpa o campo após a adição
-        setShowModal(false); // Fecha o modal
+        setShowAddModal(false); // Fecha o modal
         // Atualize a lista de categorias
         const res = await axios.get("http://localhost:8800/categoria");
         setCategoria(res.data);
@@ -44,16 +50,13 @@ const Categoria = () => {
       console.log(err);
     }
   };
-
-
-
 
   const handleUpdate = async () => {
     try {
-      if (newCategoria) {
-        await axios.put("http://localhost:8800/categoria", { nome: newCategoria });
-        setNewCategoria(""); // Limpa o campo após a adição
-        setShowModal(false); // Fecha o modal
+      if (currentCategoria.nome) {
+        await axios.put(`http://localhost:8800/categoria/${currentCategoria.id}`, { nome: currentCategoria.nome });
+        setCurrentCategoria({ id: "", nome: "" }); // Limpa os campos após a atualização
+        setShowUpdateModal(false); // Fecha o modal
         // Atualize a lista de categorias
         const res = await axios.get("http://localhost:8800/categoria");
         setCategoria(res.data);
@@ -62,16 +65,31 @@ const Categoria = () => {
       console.log(err);
     }
   };
-  console.log(newCategoria);
+
+  const openUpdateModal = (categoria) => {
+    setCurrentCategoria({ id: categoria.id_categoria, nome: categoria.nome });
+    setShowUpdateModal(true);
+  };
+
+  const openDeleteModal = (id) => {
+    setCategoriaIdToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setCategoriaIdToDelete(null);
+  };
+
   return (
     <div>
       <h1>GEVIMI</h1>
-      <button className="categoriaAdd" onClick={() => setShowModal(true)}>Nova Categoria</button>
+      <button className="categoriaAdd" onClick={() => setShowAddModal(true)}>Nova Categoria</button>
       
-      {showModal && (
+      {showAddModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowModal(false)}>&times; </span>
+            <span className="close" onClick={() => setShowAddModal(false)}>&times;</span>
             <h2>Adicionar Nova Categoria</h2>
             <input
               type="text"
@@ -79,8 +97,37 @@ const Categoria = () => {
               onChange={(e) => setNewCategoria(e.target.value)}
               placeholder=" Nome da Categoria"
             />
-            <br/> <br/>
+            <br /> <br />
             <button onClick={handleAdd}>Adicionar</button>
+          </div>
+        </div>
+      )}
+
+      {showUpdateModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowUpdateModal(false)}>&times;</span>
+            <h2>Atualizar Categoria</h2>
+            <input
+              type="text"
+              value={currentCategoria.nome}
+              onChange={(e) => setCurrentCategoria({ ...currentCategoria, nome: e.target.value })}
+              placeholder=" Nome da Categoria"
+            />
+            <br /> <br />
+            <button class="modal-button" onClick={handleUpdate}>Atualizar</button>
+          </div>
+        </div>
+      )}
+
+      {showDeleteModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeDeleteModal}>&times;</span>
+            <h2>Confirmar Exclusão</h2>
+            <p>Tem certeza que deseja excluir esta categoria?</p>
+            <button className="modal-button" onClick={handleDelete}>Sim</button>
+            <button className="modal-button" onClick={closeDeleteModal}>Não</button>
           </div>
         </div>
       )}
@@ -100,11 +147,9 @@ const Categoria = () => {
               <td>{categoria.id_categoria}</td>
               <td>{categoria.nome}</td>
               <td>
-                <button className="delete" onClick={() => handleDelete(categoria.id_categoria)}>Delete</button>
-                <button className="update">
-                  
-                    Update
-                 
+                <button className="delete" onClick={() => openDeleteModal(categoria.id_categoria)}>Delete</button>
+                <button className="update" onClick={() => openUpdateModal(categoria)}>
+                  Update
                 </button>
               </td>
             </tr>

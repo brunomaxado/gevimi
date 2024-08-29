@@ -1,40 +1,67 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import './Header.css'; // Certifique-se de importar o arquivo CSS
 
 const Books = () => {
   const [books, setBooks] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState(null);
 
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
         const res = await axios.get("http://localhost:8800/books");
         setBooks(res.data);
-        console.log(res);
       } catch (err) {
         console.log(err);
       }
     };
+
+    const fetchCategorias = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/categoria");
+        setCategorias(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchAllBooks();
+    fetchCategorias();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDeleteClick = (id) => {
+    setSelectedBookId(id);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8800/books/${id}`);
-      window.location.reload();
+      await axios.delete(`http://localhost:8800/books/${selectedBookId}`);
+      setBooks(books.filter(book => book.id_produto !== selectedBookId)); // Atualiza a lista de livros sem recarregar a página
+      setShowModal(false); // Fecha o modal
     } catch (err) {
       console.log(err);
+      setShowModal(false); // Fecha o modal mesmo em caso de erro
     }
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+
+  // Função para obter o nome da categoria com base no ID
+  const getCategoriaNome = (id) => {
+    const categoria = categorias.find(c => c.id_categoria === id);
+    return categoria ? categoria.nome : "N/A";
   };
 
   return (
     <div>
-      <button>
-        <Link to="/produto">PRODUTO</Link>
-      </button>
-
       <h1>GEVIMI</h1>
-
+       
       <table border="1" cellPadding="5" cellSpacing="0">
         <thead>
           <tr>
@@ -54,12 +81,12 @@ const Books = () => {
               <td>{book.imagem && <img src={book.imagem} alt="" width="50" />}</td>
               <td>{book.nome}</td>
               <td>{book.descricao}</td>
-              <td>{book.categoria}</td>
-              <td>{book.promocao}</td>
+              <td>{getCategoriaNome(book.fk_id_categoria)}</td>
+              <td>{book.promocao ? "Sim" : "Não"}</td>
               <td>R${book.preco_unitario}</td>
-              <td>R${book.preco_desconto}</td>
+              <td>R${book.preco_desconto || "N/A"}</td>
               <td>
-                <button className="delete" onClick={() => handleDelete(book.id_produto)}>Delete</button>
+                <button className="delete" onClick={() => handleDeleteClick(book.id_produto)}>Delete</button>
                 <button className="update">
                   <Link
                     to={`/gerenciarproduto/${book.id_produto}`}
@@ -74,11 +101,19 @@ const Books = () => {
         </tbody>
       </table>
 
-      <button>
-        <Link to="/add">Add new book</Link>
-      </button>
+      {showModal && (
+        <div className="modal" >
+          <div className="modal-content" >
+            <h2>Confirmar Exclusão</h2>
+            <p>Tem certeza que deseja excluir o item?</p>
+            <button class="modal-button" onClick={handleDelete} >Sim</button>
+            <button class="modal-button"onClick={handleCancel} >Não</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
 
 export default Books;
