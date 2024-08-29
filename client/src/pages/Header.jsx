@@ -17,6 +17,12 @@ const Header = () => {
           <li className="nav-item">
             <Link to="/gerenciarproduto/:id_produto" className="nav-link">Gerenciar Produto</Link>
           </li>
+          <li className="nav-item">
+            <Link to="/categoria" className="nav-link">Categoria</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/cliente" className="nav-link">Cliente</Link>
+          </li>
         </ul>
       </nav>
     </header>

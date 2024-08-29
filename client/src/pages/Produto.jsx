@@ -10,7 +10,7 @@ const Produto = () => {
     promocao: false,  // Adicionando promocao ao estado inicial
     preco_desconto: null,
     preco_unitario: null,
-    fk_id_categoria: "",
+    fk_id_categoria: null,
   });
 
   const navigate = useNavigate();

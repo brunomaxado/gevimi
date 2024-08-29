@@ -122,7 +122,7 @@ const db = mysql.createConnection({
     });
   });
 
-  app.post("/insertcategorias", (req, res) => {
+  app.post("/categoria", (req, res) => {
     const q = "INSERT INTO categoria(`nome`) VALUES (?)";
   
     const values = [
@@ -253,32 +253,6 @@ const db = mysql.createConnection({
   });
   
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.listen(8800, () => {
-    console.log("Conectado ao backend gevimi");
+    console.log("Conectado ao backend gevimi2");
   });
