@@ -93,13 +93,9 @@ cursor: pointer;
 }
 /* Estilos básicos para o header e navegação */
 
-
-
 .nav-item {
 position: relative; /* Necessário para o posicionamento do submenu */
 }
-
-
 
 .nav-link:hover {
 background-color: #495057; /* Cor de fundo ao passar o mouse */
