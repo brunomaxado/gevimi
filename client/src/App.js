@@ -8,6 +8,8 @@ import Categoria from "./pages/Categoria";
 import Cliente from "./pages/Cliente";
 import ReadCliente from "./pages/readCliente";
 import EditarCliente from "./pages/editarCliente";
+import Login from "./pages/login";
+import Register from "./pages/register";
 function App() {
   return (
     <div className="app">
@@ -22,6 +24,8 @@ function App() {
           <Route path="/categoria" element={<Categoria />} />
           <Route path="/readCliente" element={<ReadCliente />} />
           <Route path="/editarCliente/:id_cliente" element={<EditarCliente />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -29,3 +33,5 @@ function App() {
 }
 
 export default App;
+
+

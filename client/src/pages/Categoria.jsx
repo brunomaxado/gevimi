@@ -115,7 +115,7 @@ const Categoria = () => {
               placeholder=" Nome da Categoria"
             />
             <br /> <br />
-            <button class="modal-button" onClick={handleUpdate}>Atualizar</button>
+            <button class="modal-button"onClick={handleUpdate}>Atualizar</button>
           </div>
         </div>
       )}
