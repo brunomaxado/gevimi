@@ -1,3 +1,28 @@
+/*configurações da scrollbar*/
+/* tamanho da scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* fundo da scroll */
+::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background: black;
+}
+ 
+/* scroll */
+::-webkit-scrollbar-thumb {
+  background: #FFBD59; 
+  border-radius: 5px;
+}
+
+/* ao toque */
+::-webkit-scrollbar-thumb:hover {
+  background: #A97D3B; 
+}
+/*===*/
+
+
 .app {
     height: 100vh;
     padding: 0 100px;
