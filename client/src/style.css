@@ -1,4 +1,8 @@
 /* Header.css */
+*{
+  margin: 0px;
+}
+
 .header {
   background-color: #000000; /* Preto */
   padding: 10px 0;
@@ -133,7 +137,33 @@ background-color: #495057; /* Cor de fundo ao passar o mouse no submenu */
 .nav-item:hover .dropdown-menu {
 display: block;
 }
+td button.delete {
+  background-color: #c00101a4;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+}
 
+td button.update {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+}
 /*configurações da scrollbar*/
 /* tamanho da scrollbar */
 ::-webkit-scrollbar {
@@ -172,7 +202,7 @@ display: block;
       margin-top: 20px;
       cursor: pointer;
       border: none;
-      background-color: teal;
+      background-color: rgb(255, 0, 0);
       color: white;
       font-weight: bold;
     }
@@ -181,7 +211,7 @@ display: block;
       margin-bottom: 50px;
     }
   
-    .books {
+   /* .books {
       display: flex;
   
       .book {
@@ -211,8 +241,8 @@ display: block;
           color: rgb(139, 139, 234);
         }
       }
-    }
-  
+    }*/
+  /*formulário para adição e alteração */
     .form {
       display: flex;
       flex-direction: column;
@@ -223,17 +253,21 @@ display: block;
         padding: 10px;
         border: 1px solid gray;
       }
+
+      input radio{
+        width: 10px;
+      }
   
       textarea {
         padding: 10px;
       }
-  
+      
       button {
-        border: none;
+        width: 270px;
+        border: 1px solid black;
         padding: 10px;
-        background-color: white;
-        background-color: teal;
-        color: white;
+        background-color:#FFBD59;
+        color: rgb(0, 0, 0);
         font-weight: bold;
         cursor: pointer;
       }
