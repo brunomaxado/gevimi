@@ -1,11 +1,31 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./authContext";
 
-
 const Login = () => {
+  const [inputs, setInputs] = useState({
+    login: "",
+    senha: "",
+  });
+  const [err, setError] = useState(null);
+
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(inputs);
+      navigate("/");
+    } catch (err) {
+      setError(err.response ? err.response.data : "Erro no login");
+    }
+  };
 
   return (
     <div className="auth">
@@ -14,19 +34,21 @@ const Login = () => {
         <input
           required
           type="text"
-          placeholder="username"
-          name="username"
-         
+          placeholder="login"
+          name="login"
+          value={inputs.login}
+          onChange={handleChange}
         />
         <input
           required
           type="password"
-          placeholder="password"
-          name="password"
-         
+          placeholder="senha"
+          name="senha"
+          value={inputs.senha}
+          onChange={handleChange}
         />
-        <button>Login</button>
-       
+        <button onClick={handleSubmit}>Login</button>
+        {err && <p>{err}</p>}
         <span>
           Don't you have an account? <Link to="/register">Register</Link>
         </span>
