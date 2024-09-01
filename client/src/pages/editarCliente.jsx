@@ -52,7 +52,7 @@ const EditarCliente = () => {
   return (
     <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div className="form" style={{ display: "flex", flexDirection: "column", width: "300px" }}>
+      <div>
         <h1>Alterar Cliente</h1>
         <input
           type="text"
@@ -60,7 +60,6 @@ const EditarCliente = () => {
           name="nome"
           value={cliente.nome}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"

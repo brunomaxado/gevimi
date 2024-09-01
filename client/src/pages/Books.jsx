@@ -90,7 +90,6 @@ const Books = () => {
                 <button className="update">
                   <Link
                     to={`/gerenciarproduto/${book.id_produto}`}
-                    style={{ color: "inherit", textDecoration: "none" }}
                   >
                     Update
                   </Link>

@@ -84,7 +84,7 @@ const Cliente = () => {
   return (
     <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div className="form" style={{ display: "flex", flexDirection: "column", width: "300px" }}>
+      <div>
         <h1>Adicionar Cliente</h1>
         <input
           type="text"
@@ -92,7 +92,6 @@ const Cliente = () => {
           name="nome"
           value={cliente.nome}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -100,7 +99,6 @@ const Cliente = () => {
           name="cpf"
           value={cliente.cpf}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -108,7 +106,6 @@ const Cliente = () => {
           name="celular"
           value={cliente.celular}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -116,7 +113,6 @@ const Cliente = () => {
           name="cep"
           value={cliente.cep}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -124,7 +120,6 @@ const Cliente = () => {
           name="logradouro"
           value={cliente.logradouro}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -132,7 +127,6 @@ const Cliente = () => {
           name="numero"
           value={cliente.numero}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <button onClick={handleClick}>Adicionar</button>
       </div>

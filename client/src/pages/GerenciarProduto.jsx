@@ -76,15 +76,14 @@ const GerenciarProduto = () => {
   return (
     <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div className="form" style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-        <h1 style={{ marginRight: "10px" }}>ALTERAR PRODUTO</h1>
+      <div className="form">
+        <h1>ALTERAR PRODUTO</h1>
         <input
           type="text"
           placeholder="Nome"
           name="nome"
           value={book.nome}
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
         <input
           type="text"
@@ -92,10 +91,9 @@ const GerenciarProduto = () => {
           name="descricao"
           value={book.descricao}
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
 
-<div style={{ marginRight: "10px" }}>
+<div>
       <label>Promoção:</label>
       <input
         type="radio"
@@ -136,14 +134,12 @@ const GerenciarProduto = () => {
           name="preco_unitario"
           value={book.preco_unitario || ""}
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
 
         <select
           name="fk_id_categoria"
           value={book.fk_id_categoria}
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         >
           <option value="">Selecione uma categoria</option>
           {categorias.map((categoria) => (

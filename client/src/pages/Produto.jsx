@@ -57,24 +57,22 @@ const Produto = () => {
 console.log(book);
   return (
     <div>
-      <div className="form" style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-        <h1 style={{ marginRight: "10px" }}>Novo Produto</h1>
+      <div className="form">
+        <h1>Novo Produto</h1>
         <input
           type="text"
           placeholder="Nome"
           name="nome"
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
         <input
           type="text"
           placeholder="descricao"
           name="descricao"
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
 
-        <div style={{ marginRight: "10px" }}>
+        <div>
           <label>Promoção:</label>
           <input
             type="radio"
@@ -98,7 +96,6 @@ console.log(book);
             placeholder="preco_desconto"
             name="preco_desconto"
             onChange={handleChange}
-            style={{ marginRight: "10px" }}
           />
         )}
 
@@ -107,13 +104,11 @@ console.log(book);
           placeholder="preco_unitario"
           name="preco_unitario"
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
 
         <select
           name="fk_id_categoria"
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         >
           <option value="">Selecione uma categoria</option>
           {categorias.map((categoria) => (
