@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 /* Header.css */
 *{
   margin: 0px;
   padding: 0px;
+  font-family: "Noto Serif", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  text-decoration: none;
 }
 
 .header {
@@ -28,16 +33,19 @@
 
 .nav-item {
   font-size: 18px;
+  padding: 5px;
 }
 
 .nav-link {
   color: #EAC452; /* Dourado */
   text-decoration: none;
   font-weight: bold;
+  padding: 5px;
 }
 
 .nav-link:hover {
   color: #FFA500; /* Laranja dourado ao passar o mouse */
+  border-radius: 5px;
 }
 
 /* Adiciona um padding superior ao conteúdo para não ficar escondido atrás do header */
@@ -138,13 +146,14 @@ background-color: #495057; /* Cor de fundo ao passar o mouse no submenu */
 .nav-item:hover .dropdown-menu {
 display: block;
 }
+
 td button.delete {
   background-color: #c00101a4;
   border: none;
+  text-decoration: none;  
   color: white;
   padding: 10px 20px;
   text-align: center;
-  text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
@@ -162,6 +171,41 @@ td button.update {
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+td button.update a{
+  text-decoration: none;
+  color: white;
+}
+
+div.auth{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  
+  input {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid gray;
+  }
+  a {
+    color:#000000;
+  }
+}
+
+div.auth button{
+  background-color:#EAC452;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border: 1px solid black;
   cursor: pointer;
   border-radius: 10px;
 }
