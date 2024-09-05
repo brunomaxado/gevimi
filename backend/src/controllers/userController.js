@@ -27,7 +27,7 @@ export const register = (req, res) => {
   };
 
  
-export const login = (req, res) => {
+  export const login = (req, res) => {
     //CHECK USER
   
     const q = "SELECT * FROM usuario WHERE login = ?";
@@ -43,10 +43,10 @@ export const login = (req, res) => {
       );
   
       if (!isPasswordCorrect)
-        return res.status(400).json("Wrong username or password!");
+        return res.status(400).json("Wrong login or password!");
   
-      const token = jwt.sign({ id: data[0].id }, "jwtkey");
-      const { password, ...other } = data[0];
+      const token = jwt.sign({ id: data[0].id_usuario }, "jwtkey");
+      const { senha, ...other } = data[0];
   
       res
         .cookie("access_token", token, {
@@ -56,8 +56,8 @@ export const login = (req, res) => {
         .json(other);
     });
   };
-
-
+  
+  
   export const logout = (req, res) => {
     res.clearCookie("access_token",{
       sameSite:"none",

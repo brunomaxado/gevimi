@@ -10,6 +10,7 @@ import ReadCliente from "./pages/readCliente";
 import EditarCliente from "./pages/editarCliente";
 import Login from "./pages/login";
 import Register from "./pages/register";
+
 function App() {
   return (
     <div className="app">

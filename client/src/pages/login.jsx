@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "./authContext";
+import { AuthContext } from "../context/authContext";
 
 const Login = () => {
   const [inputs, setInputs] = useState({
@@ -11,7 +12,9 @@ const Login = () => {
   const [err, setError] = useState(null);
 
   const navigate = useNavigate();
+
   const { login } = useContext(AuthContext);
+  console.log(login);
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -20,13 +23,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(inputs);
+       await login(inputs);
+      //await axios.post("http://localhost:8800/login", inputs, { withCredentials: true });
       navigate("/");
     } catch (err) {
-      setError(err.response ? err.response.data : "Erro no login");
+      setError(err.response.data);
     }
   };
-
+  
   return (
     <div className="auth">
       <h1>Login</h1>
@@ -36,15 +40,13 @@ const Login = () => {
           type="text"
           placeholder="login"
           name="login"
-          value={inputs.login}
           onChange={handleChange}
-        />
+        />  
         <input
           required
           type="password"
           placeholder="senha"
           name="senha"
-          value={inputs.senha}
           onChange={handleChange}
         />
         <button onClick={handleSubmit}>Login</button>
