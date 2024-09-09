@@ -214,6 +214,10 @@ body {
   display: block;
 }
 
+a.nav-link{
+  padding-top: 20px;
+}
+
 td button.delete {
   background-color: var(--vermelho);
   border: none;
