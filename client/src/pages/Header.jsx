@@ -14,7 +14,7 @@ const Header = () => {
             <span className="nav-link">Produto</span>
             <ul className="dropdown-menu">
               <li>
-                <Link to="/" className="nav-link">Listar Produto</Link>
+                <Link to="/viewProduto" className="nav-link">Listar Produto</Link>
               </li>
               <li>
                 <Link to="/produto" className="nav-link">Novo Produto</Link>

@@ -10,29 +10,38 @@ import ReadCliente from "./pages/readCliente";
 import EditarCliente from "./pages/editarCliente";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import React, { useContext } from "react";
+import useAuth from "./context/useAuth";
+const Private = ({ Component }) => {
+  const { currentUser } = useAuth(); // Chame o hook useAuth corretamente
+
+  // Verifique se currentUser está presente para determinar se o usuário está autenticado
+  return currentUser ? <Component /> : <Login />;
+};
+
 
 function App() {
-  return (
-    <div className="app">
-      
-      <BrowserRouter>
-      <Header />
-        <Routes>
-          <Route path="/" element={<Books />} />
-          <Route path="/produto" element={<Produto />} />
-          <Route path="/gerenciarproduto/:id_produto" element={<GerenciarProduto />} />
-          <Route path="/cliente" element={<Cliente/>} />
-          <Route path="/categoria" element={<Categoria />} />
-          <Route path="/readCliente" element={<ReadCliente />} />
-          <Route path="/editarCliente/:id_cliente" element={<EditarCliente />} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <div className="app">
+            <BrowserRouter>
+                <Header />
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+
+                    <Route path="/viewProduto" element={<Private Component={Books} />} />
+                    <Route path="/produto" element={<Private Component={Produto} />} />
+                    <Route path="/gerenciarproduto/:id_produto" element={<Private Component={GerenciarProduto} />} />
+                    <Route path="/cliente" element={<Private Component={Cliente} />} />
+                    <Route path="/categoria" element={<Private Component={Categoria} />} />
+                    <Route path="/readCliente" element={<Private Component={ReadCliente} />} />
+                    <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
+                    
+                    <Route path="/" element={<Login />} />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;
-
-
