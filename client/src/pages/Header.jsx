@@ -11,7 +11,7 @@ const Header = () => {
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
       <nav className="nav">
         <ul className="nav-list">
-          <li className="nav-item">
+          <li id="logo" className="nav-item">
             <a href="/"><img src="../Icone.png"></img></a>
           </li>
           <li className="nav-item dropdown">

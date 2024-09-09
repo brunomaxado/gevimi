@@ -117,6 +117,10 @@ div.tabela {
   padding: 5px;
 }
 
+li#logo.nav-item img{
+  width: 40%;
+}
+
 .nav-link:hover {
   color: var(--amarelotoque);
   /* Laranja dourado ao passar o mouse */
