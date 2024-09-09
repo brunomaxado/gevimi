@@ -16,8 +16,8 @@
   --branco: #fff;
   --amarelologo: #EAC452;
   --amarelotoque: #FFA500;
-  --vermelho: #a80000;
-  --verde: #007a00;
+  --vermelho: #5c0000;
+  --verde: #003300;
   --cinza: #495057;
   --fontepadrao: "Noto Serif", serif;
 }
@@ -28,6 +28,7 @@ table {
 }
 
 div.tabela{
+  width: 100%;
   overflow-x:auto;
 }
 
