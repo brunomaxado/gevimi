@@ -82,7 +82,7 @@ const Categoria = () => {
   };
 
   return (
-    <div>
+    <div style="overflow-x:auto;">
       <h1>GEVIMI</h1>
       <button className="categoriaAdd" onClick={() => setShowAddModal(true)}>Nova Categoria</button>
       
@@ -133,7 +133,7 @@ const Categoria = () => {
       )}
 
       <br /><br /><br /><br />
-      <table border="1" cellPadding="5" cellSpacing="0">
+      <table>
         <thead>
           <tr>
             <th>Id</th>
