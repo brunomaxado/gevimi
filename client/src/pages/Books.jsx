@@ -59,10 +59,10 @@ const Books = () => {
   };
 
   return (
-    <div>
+    <div  className="tabela">
       <h1>GEVIMI</h1>
        
-      <table border="1" cellPadding="5" cellSpacing="0">
+      <table>
         <thead>
           <tr>
             <th>Imagem</th>

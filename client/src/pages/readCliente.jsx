@@ -47,10 +47,9 @@ const ReadCliente = () => {
   };
 
   return (
-    <div>
-      <h1>Clientes</h1>
-      
-      <table border="1" cellPadding="5" cellSpacing="0">
+    <div  className="tabela">
+      <h1>Clientes</h1>  
+      <table>
         <thead>
           <tr>
             <th>ID</th>
