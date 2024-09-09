@@ -93,38 +93,38 @@ const GerenciarProduto = () => {
           onChange={handleChange}
         />
 
-<div>
-      <label>Promoção:</label>
-      <input
-        type="radio"
-        name="promocao"
-        value="true"
-        checked={book.promocao} // Simplificando a condição
-        onChange={handlePromocaoChange}
-      />
-      Sim
-      <input
-        type="radio"
-        name="promocao"
-        value="false"
-        checked={!book.promocao} // Negando o valor para o outro radio button
-        onChange={handlePromocaoChange}
-      />
-      Não
-    </div>
-    <input
-  type="number"
-  placeholder="Preço com desconto"
-  name="preco_desconto"
-  value={book.preco_desconto || ""}
-  onChange={handleChange}
-  style={{
-    marginRight: "10px",
-    backgroundColor: book.promocao ? "" : "#d3d3d3", // Cinza escuro quando desabilitado
-    color: book.promocao ? "" : "#6c757d",           // Texto em cinza claro quando desabilitado
-  }}
-  disabled={!book.promocao} // Desabilita o campo quando promocao for false
-/>
+        <div>
+          <label>Promoção:</label>
+          <input
+            type="radio"
+            name="promocao"
+            value="true"
+            checked={book.promocao} // Simplificando a condição
+            onChange={handlePromocaoChange}
+          />
+          Sim
+          <input
+            type="radio"
+            name="promocao"
+            value="false"
+            checked={!book.promocao} // Negando o valor para o outro radio button
+            onChange={handlePromocaoChange}
+          />
+          Não
+        </div>
+        <input
+          type="number"
+          placeholder="Preço com desconto"
+          name="preco_desconto"
+          value={book.preco_desconto || ""}
+          onChange={handleChange}
+          style={{
+            marginRight: "10px",
+            backgroundColor: book.promocao ? "" : "#d3d3d3", // Cinza escuro quando desabilitado
+            color: book.promocao ? "" : "#6c757d",           // Texto em cinza claro quando desabilitado
+          }}
+          disabled={!book.promocao} // Desabilita o campo quando promocao for false
+        />
 
 
 
