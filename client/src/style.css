@@ -38,10 +38,14 @@ th, td {
   border-bottom: 1px solid var(--meiotom);
 }
 
-tr:hover {background-color:var(--amarelotoque);}
+tr:hover {
+  background-color:var(--amarelotoque);
+}
+
 div.tabela{
   overflow-x:auto;
 }
+
 .header {
   background-color: var(--pretofundo); /* Preto */
   padding: 10px 0;
@@ -103,7 +107,7 @@ line-height: 1; /* Ajusta a altura da linha para que o "X" não seja cortado */
 }
 
 .close:hover {
-color: var(--vermelho); /* Altera a cor ao passar o mouse, opcional */
+color: var(--vermelho);
 }
 
 /* Estilos para o Modal */
