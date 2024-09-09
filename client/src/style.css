@@ -38,7 +38,9 @@ th, td {
 }
 
 tr:hover {background-color:var(--amarelotoque);}
-
+div.tabela{
+  overflow-x:auto;
+}
 .header {
   background-color: var(--pretofundo); /* Preto */
   padding: 10px 0;

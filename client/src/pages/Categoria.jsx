@@ -82,7 +82,7 @@ const Categoria = () => {
   };
 
   return (
-    <div style="overflow-x:auto;">
+    <div class="tabela">
       <h1>GEVIMI</h1>
       <button className="categoriaAdd" onClick={() => setShowAddModal(true)}>Nova Categoria</button>
       
