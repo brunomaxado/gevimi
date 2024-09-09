@@ -8,8 +8,12 @@ const Header = () => {
 
   return (
     <header className="header">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
       <nav className="nav">
         <ul className="nav-list">
+          <li className="nav-item">
+          <Link to="/" className="nav-link">logo</Link>
+          </li>
           <li className="nav-item dropdown">
             <span className="nav-link">Produto</span>
             <ul className="dropdown-menu">
@@ -36,16 +40,25 @@ const Header = () => {
             <Link to="/categoria" className="nav-link">Categoria</Link>
           </li>
           <li className="nav-item">
-            <Link to="/login" className="nav-link">login</Link>
+            <Link to="/login" className="nav-link">
+            <span class="material-symbols-outlined">login</span>
+            </Link>
           </li>
           <li className="nav-item">
-            <Link to="/register" className="nav-link">criar conta  |</Link>
+            <Link to="/register" className="nav-link">
+           
+            <span class="material-symbols-outlined"> person_add </span>
+            </Link>
           </li>
           <li className="nav-item">
-          <Link to="/register" className="nav-link">|  usuario conectado: <span>{currentUser?.nome}</span></Link>
+            <Link to="/profile" className="nav-link">
+            
+            <span className="material-symbols-outlined"> manage_accounts </span>
+            <span> {currentUser?.nome} </span> 
+            </Link>
           </li>
-        
-          
+
+
         </ul>
       </nav>
     </header>
