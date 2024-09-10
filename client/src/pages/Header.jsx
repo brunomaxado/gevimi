@@ -11,9 +11,11 @@ const Header = () => {
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
       <nav className="nav">
         <ul className="nav-list">
+
           <li id="logo" className="nav-item">
             <a href="/"><img src="../Icone.png"></img></a>
           </li>
+
           <li className="nav-item dropdown">
             <span className="nav-link">Produto</span>
             <ul className="dropdown-menu">
@@ -25,6 +27,7 @@ const Header = () => {
               </li>
             </ul>
           </li>
+
           <li className="nav-item dropdown">
             <span className="nav-link">Cliente</span>
             <ul className="dropdown-menu">
@@ -39,23 +42,24 @@ const Header = () => {
           <li className="nav-item">
             <Link to="/categoria" className="nav-link">Categoria</Link>
           </li>
-          <li className="nav-item">
-            <Link to="/login" className="nav-link">
-              <span class="material-symbols-outlined">login</span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/register" className="nav-link">
 
-              <span class="material-symbols-outlined"> person_add </span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/profile" className="nav-link">
-
+          <li className="nav-item dropdown">
               <span className="material-symbols-outlined"> manage_accounts </span>
-              <span> {currentUser?.nome} </span>
-            </Link>
+              <ul className="dropdown-menu">
+                <li>
+                <span> {currentUser?.nome} </span>
+                </li>
+                <li>
+                  <Link to="/login" className="nav-link">
+                    <span class="material-symbols-outlined">login</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/register" className="nav-link">
+                    <span class="material-symbols-outlined"> person_add </span>
+                  </Link>
+                </li>
+              </ul>
           </li>
 
 

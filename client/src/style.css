@@ -56,6 +56,15 @@
   color: var(--amarelotoque);
 }
 
+li.nav-item.dropdown{
+  padding-top: 20px;
+  border-radius: 5px;
+}
+
+li.nav-item.dropdown:hover{
+  background-color: var(--cinza);
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -216,10 +225,6 @@ body {
 
 .nav-item:hover .dropdown-menu {
   display: block;
-}
-
-a.nav-link{
-  padding-top: 20px;
 }
 
 td button.delete {
