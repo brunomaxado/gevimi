@@ -1,10 +1,12 @@
-
 import { Link } from 'react-router-dom';
 import './Header.css'; // Importa o arquivo de estilo
-import { AuthContext } from "../context/authContext";
+import { AuthContext} from "../context/authContext";
 import React, { useContext } from "react";
+import axios from "axios";
 const Header = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
+
+
 
   return (
     <header className="header">
@@ -40,9 +42,9 @@ const Header = () => {
             </ul>
           </li>
           <li className="nav-item">
-            <Link to="/categoria" className="nav-link">Categoria</Link>
+            <Link to="/categoria" className="nav-link">Categoria / user: {currentUser?.nome}</Link>
           </li>
-
+       
           <li className="nav-item dropdown">
               <span className="material-symbols-outlined"> manage_accounts </span>
               <ul className="dropdown-menu">
@@ -50,10 +52,17 @@ const Header = () => {
                 <span> {currentUser?.nome} </span>
                 </li>
                 <li>
-                  <Link to="/login" className="nav-link">
-                    <span class="material-symbols-outlined">login</span>
+
+                  
+                    <Link to="/login" className="nav-link">
+                    <span  class="material-symbols-outlined" onClick={ logout} >logout</span>
                   </Link>
                 </li>
+
+
+
+
+
                 <li>
                   <Link to="/register" className="nav-link">
                     <span class="material-symbols-outlined"> person_add </span>

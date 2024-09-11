@@ -9,6 +9,7 @@ import Cliente from "./pages/Cliente";
 import ReadCliente from "./pages/readCliente";
 import EditarCliente from "./pages/editarCliente";
 import Login from "./pages/login";
+import Home from "./pages/home" ;
 import Register from "./pages/register";
 import React, { useContext } from "react";
 import useAuth from "./context/useAuth";
@@ -37,7 +38,7 @@ function App() {
                     <Route path="/readCliente" element={<Private Component={ReadCliente} />} />
                     <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
                     
-                    <Route path="/" element={<Login />} />
+                    <Route path="/" element={<Home />} />
                 </Routes>
             </BrowserRouter>
         </div>
