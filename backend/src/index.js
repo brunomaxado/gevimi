@@ -5,6 +5,7 @@ import produtoRoute from "./routes/produtoRoute.js";
 import categoriaRoute from "./routes/categoriaRoute.js";
 import clienteRoute from "./routes/clienteRoute.js";
 import userRoute from "./routes/userRoute.js";
+import pedidoRoute from "./routes/pedidoRoute.js";
 import cookieParser from "cookie-parser";
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(produtoRoute);
 app.use(categoriaRoute);
 app.use(clienteRoute);
 app.use(userRoute);
+app.use(pedidoRoute);
 
 app.listen(8800, () => {
     console.log("Conectado ao backend route/controller");
