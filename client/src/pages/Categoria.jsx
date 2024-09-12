@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import './Header.css'; // Certifique-se de importar o arquivo CSS
+import '../style.css'; // Certifique-se de importar o arquivo CSS
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);

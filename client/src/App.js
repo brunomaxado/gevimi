@@ -10,6 +10,8 @@ import ReadCliente from "./pages/readCliente";
 import EditarCliente from "./pages/editarCliente";
 import Login from "./pages/login";
 import Home from "./pages/home" ;
+import Pedido from "./pages/Pedido";
+import Footer from "./pages/Footer";
 import Register from "./pages/register";
 import React, { useContext } from "react";
 import useAuth from "./context/useAuth";
@@ -29,7 +31,7 @@ function App() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-
+                    <Route path="/pedido" element={<Pedido />} />
                     <Route path="/viewProduto" element={<Private Component={Books} />} />
                     <Route path="/produto" element={<Private Component={Produto} />} />
                     <Route path="/gerenciarproduto/:id_produto" element={<Private Component={GerenciarProduto} />} />
@@ -41,6 +43,8 @@ function App() {
                     <Route path="/" element={<Home />} />
                 </Routes>
             </BrowserRouter>
+            <Footer />
+
         </div>
     );
 }

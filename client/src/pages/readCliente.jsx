@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import './Header.css'; // Certifique-se de importar o arquivo CSS
+import '../style.css'; // Certifique-se de importar o arquivo CSS
 
 const ReadCliente = () => {
   const [clientes, setClientes] = useState([]);

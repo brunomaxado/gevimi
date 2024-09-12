@@ -1,15 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Header.css */
-* {
-  margin: 0px;
-  padding: 0px;
-  font-family: var(--fontepadrao);
-  font-optical-sizing: auto;
-  font-style: normal;
-  text-decoration: none;
-}
-
 :root {
   --pretoletra: #000000;
   --pretofundo: #121212;
@@ -52,6 +42,29 @@
   color: var(--amarelologo);
 }
 
+/* Header.css */
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: var(--fontepadrao);
+  font-optical-sizing: auto;
+  font-style: normal;
+  text-decoration: none;
+}
+
+/* Defina o corpo da aplicação para preencher a tela inteira */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+header, main {
+  flex-grow: 1; /* Faz com que o conteúdo principal ocupe o máximo de espaço possível */
+}
+
 .material-symbols-outlined:hover {
   color: var(--amarelotoque);
 }
@@ -63,6 +76,26 @@ li.nav-item.dropdown{
 
 li.nav-item.dropdown:hover{
   background-color: var(--cinza);
+}
+
+li#nome{
+  color: var(--amarelotoque);
+  font-weight: bold;
+  padding: 10px;
+}
+
+li#pedido a{
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  border-radius: 10px;
+  margin: 0px;
+  padding: 10px;
+}
+
+li#pedido a:hover{
+  background-color: var(--amarelotoque);
+  color: var(--pretoletra);
+  border-radius: 10px;
 }
 
 table {
@@ -92,12 +125,23 @@ div.tabela {
 
 .header {
   background-color: var(--pretofundo);
-  /* Preto */
   padding: 10px 0;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
+}
+
+.footer {
+  background-color: var(--pretofundo);
+  text-align: center;
+  display: flex;
+  flex-direction:row;
+  padding: 10px;
+  margin-top: auto;
+  width: 100%;
+  height: auto;
+  bottom: 0;
 }
 
 .nav {
@@ -312,11 +356,14 @@ div.auth button {
 
 .app {
   height: 100vh;
-  padding: 0 100px;
+  padding: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  min-height: 100vh; /* Define a altura mínima como 100% da tela */
+
 
   .addHome {
     padding: 10px;
