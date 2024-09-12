@@ -1,0 +1,228 @@
+[33mcommit 67d9ee0db1c735299b28ef079a4c9e582813e6d7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Thu Sep 12 08:24:34 2024 -0300
+
+    backend inserir pedido
+
+[33mcommit 0a2446a20984676bbb873db5076b344254a4ffdf[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Wed Sep 11 14:29:37 2024 -0300
+
+    logout agora
+
+[33mcommit 6a4c6be7caf685376760847d4f64910b1e533afc[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 21:38:31 2024 -0300
+
+    testes do header, não finalizado
+
+[33mcommit 89fc9ff51f00ead9c55e5b40cb298f0fb0df0a62[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 17:11:51 2024 -0300
+
+    aaaaa horrível ahahahhaha
+
+[33mcommit 139b07c706d210944bdae8dfc83a7bf0f37918c8[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 17:06:47 2024 -0300
+
+    testes com a logo
+
+[33mcommit bfc4ccbe76925cd2d942bc009c533dabce1203be[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 17:05:26 2024 -0300
+
+    testes com a logo
+
+[33mcommit 948d9089033b43d54775dcf08c69ebed5466f754[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 13:43:33 2024 -0300
+
+    símbolos
+
+[33mcommit 7f6e480f62a8e3d23557ca1d820e3b73fe8bb621[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 13:40:58 2024 -0300
+
+    símbolos
+
+[33mcommit 3aee3db3b0daf0ac0a1c1030a2d86b32eaf050bf[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 13:22:23 2024 -0300
+
+    tabelas no css
+
+[33mcommit 5939f66bc05e57f09c8e5d075e8bbe59683a2af6[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Mon Sep 9 12:13:42 2024 -0300
+
+    testes no cabeçalho
+
+[33mcommit e48c1f59d70b909c6646286e9dfe3cf10b446c03[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 22:42:37 2024 -0300
+
+    só pequenas correções
+
+[33mcommit 93e1a8eaa6c2b3c94bbb72904a24c0c71607246d[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 22:30:41 2024 -0300
+
+    preto css
+
+[33mcommit 1cdb0dde29e3704c3c88f5fd298850231e27492c[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 22:27:31 2024 -0300
+
+    teste
+
+[33mcommit cfbdd957fede62c63750889e4d1f9427c3ffd98a[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 22:21:41 2024 -0300
+
+    teste
+
+[33mcommit 192778a33ed846269ce4a7f7d3ac8f2493c9d12c[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 22:17:48 2024 -0300
+
+    teste
+
+[33mcommit 2c7fce4dfe4d1172cd4151e46a2d8a90b708e1c8[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 22:15:32 2024 -0300
+
+    teste
+
+[33mcommit 368bd1b77dfb76df92fe5518cdd4b6c64619b64f[m
+Merge: 53e60b5 7b0b0f9
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 21:52:13 2024 -0300
+
+    css
+
+[33mcommit 53e60b5cc2300a5a7c4b7854b3f94cadc2b0b38b[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sun Sep 8 21:49:57 2024 -0300
+
+    css
+
+[33mcommit 7b0b0f96df036f3337536b7d218c3b62f4538d58[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Sun Sep 8 21:47:58 2024 -0300
+
+    Mensagem do commit explicando as mudanças
+
+[33mcommit 7978a2135bbb0c11e821bbece58f674c224a2dec[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Wed Sep 4 23:26:17 2024 -0300
+
+    login e tals
+
+[33mcommit d256ba25f9271e16f64f404979f53a365e7485e8[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sat Aug 31 21:39:29 2024 -0300
+
+    botões no css
+
+[33mcommit fc7ceb5c97a6b71472b18e876e58baa6cf8fc752[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sat Aug 31 21:02:12 2024 -0300
+
+    remoção do css das páginas
+
+[33mcommit 3fda834f442f99e8a6ebdbfb31f08777b3a655d3[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sat Aug 31 19:30:04 2024 -0300
+
+    form-css
+
+[33mcommit 2b37abe7359417fbc096feb23292707efd64a08a[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sat Aug 31 17:37:28 2024 -0300
+
+    style.css
+
+[33mcommit ccf47e0af068d9c2ac77efbfe9ae593c06d98ee5[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sat Aug 31 17:37:18 2024 -0300
+
+    style.css
+
+[33mcommit 6411c95b2fd4fd6c26efb595cfe53c50cee4b559[m
+Author: Is4bele <isacorreia.ilc@gmail.com>
+Date:   Sat Aug 31 17:28:32 2024 -0300
+
+    scrollbar
+
+[33mcommit 0feec3e3783bdd6758ed060c510ec1039f5f7ee2[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Sat Aug 31 00:00:05 2024 -0300
+
+    mudei uma penca de coisa
+
+[33mcommit b321eac5963f2518fb9f3ae0a500ced0312edfe9[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Fri Aug 30 22:11:46 2024 -0300
+
+    mudei uma penca de coisa
+
+[33mcommit 0b5f0a73f8a9aa6cd0aa1e944a13e00fd704dfd7[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Thu Aug 29 00:34:53 2024 -0300
+
+    mudei uma penca de coisa
+
+[33mcommit ebefbc1193a0bb29006a89cdf7e0ccb9de953140[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Thu Aug 29 00:20:14 2024 -0300
+
+    mudei uma penca de coisa
+
+[33mcommit 1a39656743b4c61c7da73dc3000f4f0445fdbade[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Wed Aug 28 21:38:57 2024 -0300
+
+    mudei uma penca de coisa
+
+[33mcommit 44fd2c40c7ca9aaf41b111054fd1affdf7bdd9a7[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Sat Aug 24 17:27:20 2024 -0300
+
+    banco
+
+[33mcommit dad525aad92968b693ca820b349af1479ebbb219[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Sat Aug 24 17:22:08 2024 -0300
+
+    index menos de 2k
+
+[33mcommit 60bbf971870f95dfb73a8ce65edcf3721936ded5[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Sat Aug 24 11:44:48 2024 -0300
+
+    salvando por preucaucao
+
+[33mcommit 9100e4aad676ab848e43d823787694eea38974ee[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Tue Aug 20 21:37:03 2024 -0300
+
+    nao lembro oq mudei
+
+[33mcommit f5fe587c50bdcfb09bead09750d17be42d33c432[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Mon Aug 19 23:48:39 2024 -0300
+
+    adicionei o header
+
+[33mcommit 4a569a3c5ef95f7b81d3806695598404f2a02778[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Mon Aug 19 22:34:52 2024 -0300
+
+    novas alterações
+
+[33mcommit fb87fe1a3fcb1651eaa3a8a14b410bccb4397dac[m
+Author: Bruno Machado <brunomachado.1706@gmail.com>
+Date:   Mon Aug 19 22:28:31 2024 -0300
+
+    first commit
