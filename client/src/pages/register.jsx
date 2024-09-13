@@ -53,10 +53,10 @@ console.log(inputs);
           name="senha"
           onChange={handleChange}
         />
-        <button onClick={handleSubmit}>Register</button>
+        <button onClick={handleSubmit}>Registrar</button>
         {err && <p>{err}</p>}
         <span>
-          Do you have an account? <Link to="/login">Login</Link>
+          Já tem uma conta? <Link to="/login">Entrar</Link>
         </span>
       </form>
     </div>

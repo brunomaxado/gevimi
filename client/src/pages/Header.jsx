@@ -16,7 +16,10 @@ const Header = () => {
           </li>
 
           <li className="nav-item dropdown">
+            <div>
             <span className="nav-link, material-symbols-outlined">store</span>
+            <p> Gerenciar Loja </p>
+            </div>
             <ul className="dropdown-menu">
               <li>
                 <Link to="/viewProduto" className="nav-link">Listar Produto</Link>
@@ -35,29 +38,33 @@ const Header = () => {
               </li>
             </ul>
           </li>
-          
-{/*  <li id="pedido" className="nav-item">
+
+          {/*  <li id="pedido" className="nav-item">
             <Link to="/pedido" className="nav-link">Novo Pedido</Link>
           </li> */}
 
-         
+
 
           <li className="nav-item dropdown">
-            <span className="material-symbols-outlined"> manage_accounts </span>
+            <div>
+              <span className="material-symbols-outlined"> manage_accounts </span>
+              <p>Gerenciar Usuários</p>
+            </div>
             <ul className="dropdown-menu">
               <li>
-                <Link to="/login" className="nav-link">
-                  <span class="material-symbols-outlined" onClick={logout} >login</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/" className="nav-link">
-                  <span class="material-symbols-outlined" onClick={logout} >logout</span>
+                  <div>
+                    <span class="material-symbols-outlined" onClick={logout} >logout</span>
+                    <span><p>Sair</p> </span>
+                  </div>
                 </Link>
               </li>
               <li>
                 <Link to="/register" className="nav-link">
-                  <span class="material-symbols-outlined"> person_add </span>
+                  <div>
+                    <span class="material-symbols-outlined"> person_add </span>
+                    <span> <p>Registrar Usuário</p></span>
+                  </div>
                 </Link>
               </li>
             </ul>
