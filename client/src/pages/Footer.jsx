@@ -9,7 +9,7 @@ const Footer = () => {
     <footer className="footer">
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
 
-            <a href="/"><img src="../Icone.png"></img></a>
+            <a href="/"><img id="logo" src="../Icone.png"></img></a>
 
           <li id="nome">
             <span> Usuário: {currentUser?.nome} </span>

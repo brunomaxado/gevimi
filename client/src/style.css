@@ -69,6 +69,11 @@ header, main {
   color: var(--amarelotoque);
 }
 
+img#logo{
+  width: 50%;
+  padding: 10px;
+}
+
 li.nav-item.dropdown{
   padding-top: 20px;
   border-radius: 5px;
@@ -135,13 +140,14 @@ div.tabela {
 .footer {
   background-color: var(--pretofundo);
   text-align: center;
+  text-decoration: none;
   display: flex;
   flex-direction:row;
-  padding: 10px;
   margin-top: auto;
   width: 100%;
   height: auto;
   bottom: 0;
+  position: relative;
 }
 
 .nav {
