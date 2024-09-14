@@ -40,7 +40,8 @@ function App() {
           <Route path="/categoria" element={<Private Component={Categoria} />} />
           <Route path="/readCliente" element={<Private Component={ReadCliente} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Private Component={Home} />} />
+          <Route path="/" element={<Login />} />
         </Routes>
       </BrowserRouter>
       <Footer />
