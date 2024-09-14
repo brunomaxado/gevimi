@@ -10,9 +10,9 @@ import {
 const router = express.Router();
 
 router.get("/pedido", getPedidos);
-router.get("/pedido/:id_produto", getPedido);
+router.get("/pedido/:id_pedido", getPedido);
 router.post("/pedido", addPedido);
-router.delete("/pedido/:id_produto", deletePedido);
-router.put("/pedido/:id_produto", updatePedido);
+router.delete("/pedido/:id_pedido", deletePedido);
+router.put("/pedido/:id_pedido", updatePedido);
 
 export default router;
