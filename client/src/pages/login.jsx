@@ -50,10 +50,10 @@ const Login = () => {
           name="senha"
           onChange={handleChange}
         />
-        <button onClick={handleSubmit}>Login</button>
+        <button onClick={handleSubmit}>Entrar</button>
         {err && <p>{err}</p>}
         <span>
-          Don't you have an account? <Link to="/register">Register</Link>
+          Não tem uma conta? <Link to="/register">Registrar</Link>
         </span>
       </form>
     </div>

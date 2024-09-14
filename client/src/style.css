@@ -65,8 +65,21 @@ header, main {
   flex-grow: 1; /* Faz com que o conteúdo principal ocupe o máximo de espaço possível */
 }
 
+div p{
+  color: var(--amarelologo);
+}
+
+p:hover{
+  color: var(--amarelotoque);
+}
+
 .material-symbols-outlined:hover {
   color: var(--amarelotoque);
+}
+
+img#logo{
+  width: 50%;
+  padding: 10px;
 }
 
 li.nav-item.dropdown{
@@ -76,6 +89,7 @@ li.nav-item.dropdown{
 
 li.nav-item.dropdown:hover{
   background-color: var(--cinza);
+  color: var(--amarelotoque);
 }
 
 li#nome{
@@ -135,13 +149,14 @@ div.tabela {
 .footer {
   background-color: var(--pretofundo);
   text-align: center;
+  text-decoration: none;
   display: flex;
   flex-direction:row;
-  padding: 10px;
   margin-top: auto;
   width: 100%;
   height: auto;
   bottom: 0;
+  position: relative;
 }
 
 .nav {
