@@ -41,7 +41,7 @@ console.log(inputs);
         <input
           required
           type="text"
-          placeholder="login"
+          placeholder="entrar"
           name="login"
           onChange={handleChange}
         />

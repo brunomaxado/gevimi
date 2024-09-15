@@ -33,13 +33,14 @@ const Login = () => {
   };
   
   return (
-    <div className="auth">
+   // <div className="auth">
+      <div class="bg-img">
+      <form class="container">
       <h1>Login</h1>
-      <form>
         <input
           required
           type="text"
-          placeholder="login"
+          placeholder="usuário"
           name="login"
           onChange={handleChange}
         />  
@@ -50,13 +51,14 @@ const Login = () => {
           name="senha"
           onChange={handleChange}
         />
-        <button onClick={handleSubmit}>Entrar</button>
+        <button class="btn" onClick={handleSubmit}>Entrar</button>
         {err && <p>{err}</p>}
         <span>
           Não tem uma conta? <Link to="/register">Registrar</Link>
         </span>
       </form>
-    </div>
+      </div>
+    //</div>
   );
 };
 
