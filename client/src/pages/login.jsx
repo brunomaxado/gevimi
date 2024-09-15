@@ -55,9 +55,7 @@ const Login = () => {
           />
           <button class="btn" onClick={handleSubmit}>Entrar</button>
           {err && <p>{err}</p>}
-          <span>
-            Não tem uma conta? <p id="registro"> <Link to="/register">Registrar</Link></p>
-          </span>
+
         </form>
       </div>
     </div>
