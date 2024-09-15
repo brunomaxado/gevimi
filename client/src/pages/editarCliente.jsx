@@ -2,14 +2,46 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+// Funções de validação
+const validateCPF = (cpf) => {
+  cpf = cpf.replace(/\D/g, '');
+  if (cpf.length !== 11) return false;
+  let sum = 0, remainder;
+  for (let i = 1; i <= 9; i++) {
+    sum += parseInt(cpf[i - 1]) * (11 - i);
+  }
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(cpf[9])) return false;
+  sum = 0;
+  for (let i = 1; i <= 10; i++) {
+    sum += parseInt(cpf[i - 1]) * (12 - i);
+  }
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  return remainder === parseInt(cpf[10]);
+};
+
+const validateCelular = (celular) => {
+  celular = celular.replace(/\D/g, '');
+  return celular.length === 11; // Formato para celulares com DDD e 9 dígitos
+};
+
+const validateCEP = (cep) => {
+  cep = cep.replace(/\D/g, '');
+  return cep.length === 8; // Formato para CEP com 8 dígitos
+};
+
 const EditarCliente = () => {
   const [cliente, setCliente] = useState({
     nome: "",
     cpf: "",
     celular: "",
     cep: "",
-    logradouro: "",
+    rua: "",
     numero: "",
+    cidade: "",
+    bairro: ""
   });
 
   const [error, setError] = useState(null);
@@ -39,6 +71,22 @@ const EditarCliente = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    const { nome, cpf, celular, cep } = cliente;
+
+    // Validações
+    if (!validateCPF(cpf)) {
+      setError("CPF inválido.");
+      return;
+    }
+    if (!validateCelular(celular)) {
+      setError("Celular inválido. Deve conter 11 dígitos.");
+      return;
+    }
+    if (!validateCEP(cep)) {
+      setError("CEP inválido. Deve conter 8 dígitos.");
+      return;
+    }
+
     try {
       await axios.put(`http://localhost:8800/cliente/${clienteId}`, cliente);
       console.log("Cliente atualizado com sucesso");
@@ -67,7 +115,6 @@ const EditarCliente = () => {
           name="cpf"
           value={cliente.cpf}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -75,7 +122,6 @@ const EditarCliente = () => {
           name="celular"
           value={cliente.celular}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -83,15 +129,27 @@ const EditarCliente = () => {
           name="cep"
           value={cliente.cep}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
-          placeholder="Logradouro"
-          name="logradouro"
-          value={cliente.logradouro}
+          placeholder="Cidade"
+          name="cidade"
+          value={cliente.cidade}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
+        />
+        <input
+          type="text"
+          placeholder="Bairro"
+          name="bairro"
+          value={cliente.bairro}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          placeholder="Rua"
+          name="rua"
+          value={cliente.rua}
+          onChange={handleChange}
         />
         <input
           type="text"
@@ -99,7 +157,6 @@ const EditarCliente = () => {
           name="numero"
           value={cliente.numero}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
         />
         <button onClick={handleClick}>Atualizar</button>
       </div>

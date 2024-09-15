@@ -41,8 +41,10 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
       cpf: "",
       celular: "",
       cep: "",
-      logradouro: "",
+      rua: "",
       numero: "",
+      cidade: "",
+      bairro: ""
     });
 
   const [error, setError] = useState(null);
@@ -120,13 +122,27 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
             value={cliente.cep}
             onChange={handleChange}
           />
-          <input
-            type="text"
-            placeholder="Logradouro"
-            name="logradouro"
-            value={cliente.logradouro}
-            onChange={handleChange}
-          />
+           <input
+          type="text"
+          placeholder="cidade"
+          name="cidade"
+          value={cliente.cidade}
+          onChange={handleChange}
+        />
+         <input
+          type="text"
+          placeholder="bairro"
+          name="bairro"
+          value={cliente.bairro}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          placeholder="rua"
+          name="rua"
+          value={cliente.rua}
+          onChange={handleChange}
+        />
           <input
             type="text"
             placeholder="Número"

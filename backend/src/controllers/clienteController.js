@@ -28,15 +28,17 @@ export const getCliente = (req, res) => {
 // Controlador para adicionar um novo cliente
 export const addCliente = (req, res) => {
   const q =
-    "INSERT INTO cliente(`nome`, `cpf`, `celular`, `cep`, `logradouro`, `numero`) VALUES (?)";
+    "INSERT INTO cliente(`nome`, `cpf`, `celular`, `cep`, `rua`, `numero`,`cidade`, `bairro` ) VALUES (?)";
 
   const values = [
     req.body.nome,
     req.body.cpf,
     req.body.celular,
     req.body.cep,
-    req.body.logradouro,
+    req.body.rua,
     req.body.numero,
+    req.body.cidade,
+    req.body.bairro,
   ];
 
   db.query(q, [values], (err, data) => {
@@ -65,15 +67,17 @@ export const deleteCliente = (req, res) => {
 export const updateCliente = (req, res) => {
   const clienteId = req.params.id_cliente;
   const q =
-    "UPDATE cliente SET `nome`=?, `cpf`=?, `celular`=?, `cep`=?, `logradouro`=?, `numero`=? WHERE `id_cliente` = ?";
+    "UPDATE cliente SET `nome`=?, `cpf`=?, `celular`=?, `cep`=?, `rua`=?, `numero`=?, `cidade`=?, `bairro`=? WHERE `id_cliente` = ?";
 
   const values = [
     req.body.nome,
     req.body.cpf,
     req.body.celular,
     req.body.cep,
-    req.body.logradouro,
+    req.body.rua,
     req.body.numero,
+    req.body.cidade,
+    req.body.bairro,
   ];
 
   db.query(q, [...values, clienteId], (err, data) => {

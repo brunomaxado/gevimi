@@ -41,8 +41,10 @@ const Cliente = () => {
     cpf: "",
     celular: "",
     cep: "",
-    logradouro: "",
+    rua: "",
     numero: "",
+    cidade: "",
+    bairro: ""
   });
 
   const [error, setError] = useState(null);
@@ -94,7 +96,7 @@ const Cliente = () => {
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="number"
           placeholder="CPF"
           name="cpf"
           value={cliente.cpf}
@@ -114,11 +116,25 @@ const Cliente = () => {
           value={cliente.cep}
           onChange={handleChange}
         />
+         <input
+          type="text"
+          placeholder="cidade"
+          name="cidade"
+          value={cliente.cidade}
+          onChange={handleChange}
+        />
+         <input
+          type="text"
+          placeholder="bairro"
+          name="bairro"
+          value={cliente.bairro}
+          onChange={handleChange}
+        />
         <input
           type="text"
-          placeholder="Logradouro"
-          name="logradouro"
-          value={cliente.logradouro}
+          placeholder="rua"
+          name="rua"
+          value={cliente.rua}
           onChange={handleChange}
         />
         <input
