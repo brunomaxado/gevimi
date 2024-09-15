@@ -54,17 +54,19 @@ const Produto = () => {
 
     fetchCategorias();
   }, []);
-console.log(book);
+  console.log(book);
   return (
-    <div>
+    <div class="Produto">
       <div className="form">
         <h1>Novo Produto</h1>
+        <p>Nome:</p>
         <input
           type="text"
           placeholder="Nome"
           name="nome"
           onChange={handleChange}
         />
+        <p>Descrição:</p>
         <input
           type="text"
           placeholder="descricao"
@@ -72,40 +74,41 @@ console.log(book);
           onChange={handleChange}
         />
 
-        <div>
-          <label>Promoção:</label>
+        <div class="promo">
+          <label><p>Promoção:</p></label>
+          <p>sim</p>
           <input
             type="radio"
             name="promocao"
             value="true"
             checked={book.promocao === true}
             onChange={handlePromocaoChange}
-          /> True
+          />
+          <p>não</p>
           <input
             type="radio"
             name="promocao"
             value="false"
             checked={book.promocao === false}
             onChange={handlePromocaoChange}
-          /> False
+          />
         </div>
 
         {book.promocao && (
-          <input
+          <><p>Preço da promoção:</p><input
             type="number"
             placeholder="preco_desconto"
             name="preco_desconto"
-            onChange={handleChange}
-          />
+            onChange={handleChange} /></>
         )}
-
+        <p>Preço Regular:</p>
         <input
           type="number"
           placeholder="preco_unitario"
           name="preco_unitario"
           onChange={handleChange}
         />
-
+        <p>Categoria:</p>
         <select
           name="fk_id_categoria"
           onChange={handleChange}
@@ -118,7 +121,7 @@ console.log(book);
           ))}
         </select>
 
-        <button onClick={handleClick}>add</button>
+        <button onClick={handleClick}>adicionar</button>
       </div>
     </div>
   );
