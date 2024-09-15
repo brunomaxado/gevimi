@@ -80,12 +80,11 @@ p:hover{
   color: var(--amarelotoque);
 }
 
-.bg-img {
-  /* The image used */
-  background-image: url("../public/teste.png");
+#imagem_logo{
+  background-image: url(../public/logo.png);
+  border-radius: 20px;
   min-height: 380px;
-  min-width: 900px;
-  
+
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
@@ -93,14 +92,30 @@ p:hover{
   position: relative;
 }
 
+p#registro{
+  background-color: var(--amarelologo);
+  border-radius: 10px;
+  border: 1px solid var(--pretoletra);
+  width: 15vw;
+  margin-left: 3vw;
+  
+}
+
+a{
+  text-decoration: none;
+}
+
+p#registro:hover{
+  background-color: var(--amarelotoque);
+}
+
 /* Add styles to the form container */
 .container {
-  position: relative;
-  right: 0;
-  margin-right: 100px;
-  margin: 20px;
+  position: absolute;
+  padding: 10px;
   max-width: 300px;
   padding: 16px;
+  color: var(--amarelologo);
   background-color: var(--pretofundo);
 }
 
@@ -125,7 +140,6 @@ input[type=text]:focus, input[type=password]:focus {
   border: none;
   cursor: pointer;
   width: 100%;
-  opacity: 0.9;
 }
 
 .btn:hover{
@@ -386,15 +400,13 @@ td button.update a {
 }
 
 div.auth {
-  display: flex;
-  flex-direction: column;
   gap: 20px;
-
-  input {
-    width: 250px;
-    padding: 10px;
-    border: 1px solid var(--cinza);
-  }
+  display: flex;
+  flex-direction: row;
+  background-color: var(--pretofundo);
+  width: 70vw;
+  height: 70vh;
+  border-radius: 20px;
 
   a {
     color: var(--pretoletra);
@@ -512,6 +524,7 @@ div.auth button {
   }
 }
 
+<<<<<<< HEAD
 .success-modal {
   position: fixed;
   top: 60px; /* Logo abaixo do header */
@@ -531,4 +544,14 @@ div.auth button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+=======
+#pedidos{
+  p{
+    color: var(--pretoletra);
+  }
+  span{
+    color: var(--amarelotoque);
+    cursor: pointer;
+  }
+>>>>>>> 56deb979f7b854454e657b733f227b9ec9c7ffaa
 }

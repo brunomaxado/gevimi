@@ -24,41 +24,44 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-       await login(inputs);
+      await login(inputs);
       //await axios.post("http://localhost:8800/login", inputs, { withCredentials: true });
       navigate("/home");
     } catch (err) {
       setError(err.response.data);
     }
   };
-  
+
   return (
-   // <div className="auth">
-      <div class="bg-img">
-      <form class="container">
-      <h1>Login</h1>
-        <input
-          required
-          type="text"
-          placeholder="usuário"
-          name="login"
-          onChange={handleChange}
-        />  
-        <input
-          required
-          type="password"
-          placeholder="senha"
-          name="senha"
-          onChange={handleChange}
-        />
-        <button class="btn" onClick={handleSubmit}>Entrar</button>
-        {err && <p>{err}</p>}
-        <span>
-          Não tem uma conta? <Link to="/register">Registrar</Link>
-        </span>
-      </form>
+    <div className="auth"id="imagem_logo">
+
+
+      <div>
+        <form class="container">
+          <h1>Login</h1>
+          <input
+            required
+            type="text"
+            placeholder="usuário"
+            name="login"
+            onChange={handleChange}
+          />
+          <input
+            required
+            type="password"
+            placeholder="senha"
+            name="senha"
+            onChange={handleChange}
+          />
+          <button class="btn" onClick={handleSubmit}>Entrar</button>
+          {err && <p>{err}</p>}
+          <span>
+            Não tem uma conta? <p id="registro"> <Link to="/register">Registrar</Link></p>
+          </span>
+        </form>
       </div>
-    //</div>
+    </div>
+
   );
 };
 
