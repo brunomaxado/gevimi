@@ -35,7 +35,7 @@ const Produto = () => {
     try {
       await axios.post("http://localhost:8800/books", book);
       console.log("EXECUTEI");
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       console.log(err);
       // setError(true);

@@ -23,3 +23,7 @@
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
+
+main {
+  margin-top: 60px; /* Mesma altura do header */
+}

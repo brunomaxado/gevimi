@@ -6,7 +6,9 @@ import axios from "axios";
 const Footer = () => {
   const { currentUser, logout } = useContext(AuthContext);
   return (
+    
     <footer className="footer">
+      
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
 
             <a href="/"><img id="logo" src="../Icone.png"></img></a>
@@ -17,6 +19,7 @@ const Footer = () => {
 
     </footer>
   );
+
 };
 
 export default Footer;
