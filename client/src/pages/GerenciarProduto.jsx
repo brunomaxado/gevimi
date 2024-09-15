@@ -65,13 +65,13 @@ const GerenciarProduto = () => {
     try {
       await axios.put(`http://localhost:8800/books/${bookId}`, book);
       console.log("Produto atualizado com sucesso");
-      navigate("/");
+      navigate("/viewProduto");
     } catch (err) {
       console.error("Erro ao atualizar o produto:", err);
       setError("Erro ao atualizar o produto.");
     }
   };
-  console.log(book.preco_desconto); // Adicione isto dentro do componente
+  console.log(book); // Adicione isto dentro do componente
 
   return (
     <div>

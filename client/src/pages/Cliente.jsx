@@ -2,37 +2,37 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Funções de validação
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
   if (cpf.length !== 11) return false;
-  // Lógica simplificada para verificar CPF válido (não abrangente)
-  let sum = 0, remainder;
+  if (/^(\d)\1+$/.test(cpf)) return false;
+  
+  let sum = 0;
   for (let i = 1; i <= 9; i++) {
     sum += parseInt(cpf[i - 1]) * (11 - i);
   }
-  remainder = (sum * 10) % 11;
+  let remainder = (sum * 10) % 11;
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(cpf[9])) return false;
+
   sum = 0;
   for (let i = 1; i <= 10; i++) {
     sum += parseInt(cpf[i - 1]) * (12 - i);
   }
   remainder = (sum * 10) % 11;
   if (remainder === 10 || remainder === 11) remainder = 0;
+
   return remainder === parseInt(cpf[10]);
 };
 
 const validateCelular = (celular) => {
-  // Remove caracteres não numéricos e verifica o comprimento
   celular = celular.replace(/\D/g, '');
-  return celular.length === 11; // Formato para celulares com DDD e 9 dígitos
+  return celular.length === 11;
 };
 
 const validateCEP = (cep) => {
-  // Remove caracteres não numéricos e verifica o comprimento
   cep = cep.replace(/\D/g, '');
-  return cep.length === 8; // Formato para CEP com 8 dígitos
+  return cep.length === 8;
 };
 
 const Cliente = () => {
@@ -48,6 +48,8 @@ const Cliente = () => {
   });
 
   const [error, setError] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -55,11 +57,24 @@ const Cliente = () => {
     setCliente((prev) => ({ ...prev, [name]: value }));
   };
 
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/readCliente");
+    }, 1200);
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
-    const { nome, cpf, celular, cep } = cliente;
+    const { nome, cpf, celular, cep, cidade, bairro, rua } = cliente;
 
-    // Validações
+    if (!nome || !cpf || !celular || !cidade || !bairro || !rua || !cep) {
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
+
     if (!validateCPF(cpf)) {
       setError("CPF inválido.");
       return;
@@ -75,8 +90,7 @@ const Cliente = () => {
 
     try {
       await axios.post("http://localhost:8800/cliente", cliente);
-      console.log("Cliente adicionado com sucesso");
-      navigate("/readCliente"); // Navegar para a página inicial ou outra página após sucesso
+      showSuccess("Cliente adicionado com sucesso");
     } catch (err) {
       console.error("Erro ao adicionar o cliente:", err);
       setError("Erro ao adicionar o cliente.");
@@ -103,36 +117,36 @@ const Cliente = () => {
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="number"
           placeholder="Celular"
           name="celular"
           value={cliente.celular}
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="number"
           placeholder="CEP"
           name="cep"
           value={cliente.cep}
           onChange={handleChange}
         />
-         <input
+        <input
           type="text"
-          placeholder="cidade"
+          placeholder="Cidade"
           name="cidade"
           value={cliente.cidade}
           onChange={handleChange}
         />
-         <input
+        <input
           type="text"
-          placeholder="bairro"
+          placeholder="Bairro"
           name="bairro"
           value={cliente.bairro}
           onChange={handleChange}
         />
         <input
           type="text"
-          placeholder="rua"
+          placeholder="Rua"
           name="rua"
           value={cliente.rua}
           onChange={handleChange}
@@ -146,6 +160,14 @@ const Cliente = () => {
         />
         <button onClick={handleClick}>Adicionar</button>
       </div>
+
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

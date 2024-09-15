@@ -21,7 +21,7 @@ const Books = () => {
 
     const fetchCategorias = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/categoria");
+        const res = await axios.get("http://localhost:8800/allcategoria");
         setCategorias(res.data);
       } catch (err) {
         console.log(err);

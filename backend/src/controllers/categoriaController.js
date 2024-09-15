@@ -2,7 +2,7 @@ import db from "../config/db.js";
 
 // Obter todas as categorias
 export const getCategorias = (req, res) => {
-  const q = "SELECT * FROM categoria";
+  const q = "SELECT * FROM categoria where data_deletado is NULL";
 
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
@@ -10,6 +10,23 @@ export const getCategorias = (req, res) => {
   });
 };
 
+export const getAllCategoria = (req, res) => {
+   const q = `
+  SELECT 
+    id_categoria,
+    (CASE 
+      WHEN data_deletado IS NOT NULL 
+      THEN CONCAT('[DELETADO] ', nome) 
+      ELSE nome 
+     END) AS nome
+  FROM categoria
+`;
+
+  db.query(q, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
+  });
+};
 // Obter uma categoria específica por ID
 export const getCategoria = (req, res) => {
   const q = "SELECT * FROM categoria WHERE id_categoria = ?";
@@ -41,22 +58,32 @@ export const addCategoria = (req, res) => {
 export const deleteCategoria = (req, res) => {
   const categoriaId = req.params.id_categoria;
 
-  // Anular a fk_id_categoria de produtos que referenciam a categoria a ser deletada
-  const nullifyFKQuery = "UPDATE produto SET fk_id_categoria = NULL WHERE fk_id_categoria = ?";
+  // Tenta deletar diretamente a categoria
+  const deleteCategoriaQuery = "DELETE FROM categoria WHERE id_categoria = ?";
 
-  db.query(nullifyFKQuery, [categoriaId], (err, data) => {
-    if (err) return res.status(500).send(err);
+  db.query(deleteCategoriaQuery, [categoriaId], (err, data) => {
+    if (err) {
+      // Se ocorrer erro por FK, executa o soft delete (atualiza data_deletado)
+      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
+        const softDeleteQuery = "UPDATE categoria SET data_deletado = NOW() WHERE id_categoria = ?";
 
-    // Deletar a categoria após anular as chaves estrangeiras
-    const deleteCategoriaQuery = "DELETE FROM categoria WHERE id_categoria = ?";
-
-    db.query(deleteCategoriaQuery, [categoriaId], (err, data) => {
-      if (err) return res.status(500).send(err);
-
-      return res.status(200).json("Categoria foi deletada.");
-    });
+        db.query(softDeleteQuery, [categoriaId], (err, data) => {
+          if (err) {
+            return res.status(500).json("Erro ao realizar o soft delete da categoria.");
+          }
+          return res.json("Categoria não pôde ser deletada devido a dependências, mas foi marcada como deletada (soft delete).");
+        });
+      } else {
+        // Outro tipo de erro
+        return res.status(500).json("Erro ao deletar a categoria: " + err.message);
+      }
+    } else {
+      // Caso a categoria seja deletada com sucesso
+      return res.json("Categoria foi deletada com sucesso!");
+    }
   });
 };
+
 
 // Atualizar uma categoria por ID
 export const updateCategoria = (req, res) => {

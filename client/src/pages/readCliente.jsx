@@ -7,6 +7,8 @@ const ReadCliente = () => {
   const [clientes, setClientes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedClienteId, setSelectedClienteId] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // Novo estado para o modal de sucesso
+  const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,10 +33,15 @@ const ReadCliente = () => {
     try {
       await axios.delete(`http://localhost:8800/cliente/${selectedClienteId}`);
       setClientes(clientes.filter(cliente => cliente.id_cliente !== selectedClienteId)); // Atualiza a lista de clientes sem recarregar a página
-      setShowModal(false); // Fecha o modal
+      setShowModal(false); // Fecha o modal de confirmação
+      setSuccessMessage("Cliente deletado com sucesso!"); // Define a mensagem de sucesso
+      setShowSuccessModal(true); // Exibe o modal de sucesso
+      setTimeout(() => {
+        setShowSuccessModal(false); // Fecha o modal de sucesso após 3 segundos
+      }, 3000);
     } catch (err) {
       console.log(err);
-      setShowModal(false); // Fecha o modal mesmo em caso de erro
+      setShowModal(false); // Fecha o modal de confirmação mesmo em caso de erro
     }
   };
 
@@ -47,7 +54,7 @@ const ReadCliente = () => {
   };
 
   return (
-    <div  className="tabela">
+    <div className="tabela">
       <h1>Clientes</h1>  
       <table>
         <thead>
@@ -57,7 +64,9 @@ const ReadCliente = () => {
             <th>CPF</th>
             <th>Celular</th>
             <th>CEP</th>
-            <th>Logradouro</th>
+            <th>Cidade</th>
+            <th>Bairro</th>
+            <th>Rua</th>
             <th>Número</th>
             <th>Ações</th>
           </tr>
@@ -70,7 +79,9 @@ const ReadCliente = () => {
               <td>{cliente.cpf}</td>
               <td>{cliente.celular}</td>
               <td>{cliente.cep}</td>
-              <td>{cliente.logradouro}</td>
+              <td>{cliente.cidade}</td>
+              <td>{cliente.bairro}</td>
+              <td>{cliente.rua}</td>
               <td>{cliente.numero}</td>
               <td>
                 <button className="update" onClick={() => handleUpdateClick(cliente.id_cliente)}>Update</button>
@@ -88,6 +99,14 @@ const ReadCliente = () => {
             <p>Tem certeza que deseja excluir o cliente?</p>
             <button className="modal-button" onClick={handleDelete}>Sim</button>
             <button className="modal-button" onClick={handleCancel}>Não</button>
+          </div>
+        </div>
+      )}
+
+      {showSuccessModal && (
+         <div className="success-modal">
+          <div className="success-modal-content">
+            <h2>{successMessage}</h2>
           </div>
         </div>
       )}

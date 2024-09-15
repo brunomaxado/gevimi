@@ -524,7 +524,6 @@ div.auth button {
   }
 }
 
-<<<<<<< HEAD
 .success-modal {
   position: fixed;
   top: 60px; /* Logo abaixo do header */
@@ -544,14 +543,11 @@ div.auth button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-=======
-#pedidos{
-  p{
-    color: var(--pretoletra);
-  }
-  span{
-    color: var(--amarelotoque);
-    cursor: pointer;
-  }
->>>>>>> 56deb979f7b854454e657b733f227b9ec9c7ffaa
+}
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }

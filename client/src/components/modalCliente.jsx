@@ -4,24 +4,35 @@ import { useNavigate } from "react-router-dom";
 
 // Funções de validação
 const validateCPF = (cpf) => {
-  cpf = cpf.replace(/\D/g, '');
-  if (cpf.length !== 11) return false;
-  // Lógica simplificada para verificar CPF válido (não abrangente)
-  let sum = 0, remainder;
-  for (let i = 1; i <= 9; i++) {
-    sum += parseInt(cpf[i - 1]) * (11 - i);
-  }
-  remainder = (sum * 10) % 11;
-  if (remainder === 10 || remainder === 11) remainder = 0;
-  if (remainder !== parseInt(cpf[9])) return false;
-  sum = 0;
-  for (let i = 1; i <= 10; i++) {
-    sum += parseInt(cpf[i - 1]) * (12 - i);
-  }
-  remainder = (sum * 10) % 11;
-  if (remainder === 10 || remainder === 11) remainder = 0;
-  return remainder === parseInt(cpf[10]);
-};
+    // Remove caracteres não numéricos
+    cpf = cpf.replace(/\D/g, '');
+  
+    // Verifica se o CPF tem 11 dígitos
+    if (cpf.length !== 11) return false;
+  
+    // Verifica se todos os dígitos são iguais (CPFs como '11111111111' são inválidos)
+    if (/^(\d)\1+$/.test(cpf)) return false;
+  
+    // Verificação do primeiro dígito verificador
+    let sum = 0;
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cpf[i - 1]) * (11 - i);
+    }
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf[9])) return false;
+  
+    // Verificação do segundo dígito verificador
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cpf[i - 1]) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+  
+    // Retorna verdadeiro se o CPF for válido
+    return remainder === parseInt(cpf[10]);
+  };
 
 const validateCelular = (celular) => {
   // Remove caracteres não numéricos e verifica o comprimento
@@ -49,7 +60,17 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado para o modal de sucesso
+  const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
 
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/readCliente"); // Redirecionar após 3 segundos
+    }, 2000);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCliente((prev) => ({ ...prev, [name]: value }));
@@ -57,8 +78,14 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const { nome, cpf, celular, cep } = cliente;
+    const { nome, cpf, celular, cep, cidade, bairro, rua } = cliente;
 
+    // Verificação de campos obrigatórios
+    if (!nome || !cpf || !celular || !cidade || !bairro || !rua || !cep) {
+      
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
     // Validações
     if (!validateCPF(cpf)) {
       setError("CPF inválido.");
@@ -102,21 +129,21 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
             onChange={handleChange}
           />
           <input
-            type="text"
+            type="number"
             placeholder="CPF"
             name="cpf"
             value={cliente.cpf}
             onChange={handleChange}
           />
           <input
-            type="text"
-            placeholder="Celular"
+            type="number"
+            placeholder="Celular/ somente numero botar em todso"
             name="celular"
             value={cliente.celular}
             onChange={handleChange}
           />
           <input
-            type="text"
+            type="number"
             placeholder="CEP"
             name="cep"
             value={cliente.cep}
@@ -153,6 +180,14 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
           <button style={modalButtonStyle} onClick={handleClick}>Atualizar</button>
         </div>
       </div>
+      {showSuccessModal && (
+  <div className="success-modal">
+    <div className="success-modal-content">
+      <span>{successMessage}</span>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

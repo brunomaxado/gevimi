@@ -3,6 +3,7 @@ import {
   addProduto,
   deleteProduto,
   getProduto,
+  getAllProdutos,
   getProdutos,
   updateProduto,
 } from "../controllers/produtoController.js";
@@ -10,6 +11,7 @@ import {
 const router = express.Router();
 
 router.get("/books", getProdutos);
+router.get("/allbooks", getAllProdutos);
 router.get("/books/:id_produto", getProduto);
 router.post("/books", addProduto);
 router.delete("/books/:id_produto", deleteProduto);
