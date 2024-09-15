@@ -8,8 +8,6 @@ const Produto = () => {
     nome: "",
     descricao: "",
     promocao: false,  // Adicionando promocao ao estado inicial
-    preco_desconto: null,
-    preco_unitario: null,
     fk_id_categoria: null,
   });
 
@@ -74,33 +72,6 @@ const Produto = () => {
           onChange={handleChange}
         />
 
-        <div class="promo">
-          <label><p>Promoção:</p></label>
-          <p>sim</p>
-          <input
-            type="radio"
-            name="promocao"
-            value="true"
-            checked={book.promocao === true}
-            onChange={handlePromocaoChange}
-          />
-          <p>não</p>
-          <input
-            type="radio"
-            name="promocao"
-            value="false"
-            checked={book.promocao === false}
-            onChange={handlePromocaoChange}
-          />
-        </div>
-
-        {book.promocao && (
-          <><p>Preço da promoção:</p><input
-            type="number"
-            placeholder="preco_desconto"
-            name="preco_desconto"
-            onChange={handleChange} /></>
-        )}
         <p>Preço Regular:</p>
         <input
           type="number"

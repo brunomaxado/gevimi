@@ -65,26 +65,21 @@ const Books = () => {
       <table>
         <thead>
           <tr>
-            <th>Imagem</th>
+        
             <th>Nome</th>
             <th>Descrição</th>
             <th>Categoria</th>
-            <th>Promoção</th>
             <th>Preço Unitário</th>
-            <th>Preço Desconto</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {books.map((book) => (
             <tr key={book.id_produto}>
-              <td>{book.imagem && <img src={book.imagem} alt="" width="50" />}</td>
               <td>{book.nome}</td>
               <td>{book.descricao}</td>
               <td>{getCategoriaNome(book.fk_id_categoria)}</td>
-              <td>{book.promocao ? "Sim" : "Não"}</td>
               <td>R${book.preco_unitario}</td>
-              <td>R${book.preco_desconto || "N/A"}</td>
               <td>
                 <button className="delete" onClick={() => handleDeleteClick(book.id_produto)}>Delete</button>
                 <button className="update">

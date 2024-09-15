@@ -47,15 +47,12 @@ export const getProduto = (req, res) => {
 
 export const addProduto = (req, res) => {
   const q =
-    "INSERT INTO produto(`nome`, `descricao`, `promocao`, `preco_desconto`, `preco_unitario`, `imagem`, `fk_id_categoria`) VALUES (?)";
+    "INSERT INTO produto(`nome`, `descricao`,  `preco_unitario`,  `fk_id_categoria`) VALUES (?)";
 
   const values = [
     req.body.nome,
     req.body.descricao,
-    req.body.promocao,
-    req.body.preco_desconto,
     req.body.preco_unitario,
-    req.body.imagem,
     req.body.fk_id_categoria,
   ];
 
@@ -97,15 +94,12 @@ export const deleteProduto = (req, res) => {
 export const updateProduto = (req, res) => {
   const produtoId = req.params.id_produto;
   const q =
-    "UPDATE produto SET `nome`=?, `descricao`=?, `promocao`=?, `preco_desconto`=?, `preco_unitario`=?, `imagem`=?, `fk_id_categoria`=? WHERE `id_produto` = ?";
+    "UPDATE produto SET `nome`=?, `descricao`=?, `preco_unitario`=?, `fk_id_categoria`=? WHERE `id_produto` = ?";
 
   const values = [
     req.body.nome,
     req.body.descricao,
-    req.body.promocao,
-    req.body.preco_desconto,
     req.body.preco_unitario,
-    req.body.imagem,
     req.body.fk_id_categoria,
   ];
 
