@@ -543,7 +543,6 @@ div.auth button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-<<<<<<< HEAD
 }
 .modal-content {
   background-color: white;
@@ -552,7 +551,6 @@ div.auth button {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
-=======
 
   #pedidos{
   p{
@@ -562,5 +560,4 @@ div.auth button {
     color: var(--amarelotoque);
     cursor: pointer;
   }
-}}
->>>>>>> fb19b55850413a0d380dbc360bbf5ec64c4795d4
+}
