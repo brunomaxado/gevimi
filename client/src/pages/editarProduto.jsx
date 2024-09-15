@@ -15,7 +15,8 @@ const GerenciarProduto = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const bookId = location.pathname.split("/")[2];
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   // Função para buscar os dados do produto
   const fetchProduto = async () => {
     try {
@@ -49,33 +50,62 @@ const GerenciarProduto = () => {
     setBook((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePromocaoChange = (e) => {
-    const value = e.target.value === "true";
-    setBook((prev) => ({
-      ...prev,
-      promocao: value,
-      preco_desconto: value ? prev.preco_desconto : null,  // Limpa preco_desconto se promocao for false
-    }));
-  };
+
 
   const handleClick = async (e) => {
     e.preventDefault();
+    
+    const { nome, preco_unitario } = book;
+  
+    if (!nome || !preco_unitario) {
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
+  
+    // Adicione logs para depuração
+    console.log("ID da categoria do livro:", book.fk_id_categoria);
+    console.log("Categorias disponíveis:", categorias);
+  
+    // Verifica se o ID da categoria do produto existe na lista de categorias
+    const categoriaExiste = categorias.some(
+      (categoria) => Number(categoria.id_categoria) === Number(book.fk_id_categoria)
+    );
+  
+    if (!categoriaExiste) {
+      setError("A categoria selecionada não é válida.");
+      return;
+    }
+  
     try {
       await axios.put(`http://localhost:8800/books/${bookId}`, book);
       console.log("Produto atualizado com sucesso");
-      navigate("/viewProduto");
+    
+      showSuccess("Produto atualizado com sucesso");
+     // navigate("/viewProduto");
     } catch (err) {
       console.error("Erro ao atualizar o produto:", err);
       setError("Erro ao atualizar o produto.");
     }
   };
+  
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/viewProduto"); // Redirecionar após 3 segundos
+    }, 1500);
+  };
+  
+    
   console.log(book); // Adicione isto dentro do componente
-
+ // console.log(book.fk_id_categoria);
+  //console.log((categoria).id_categoria);
   return (
     <div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="form">
         <h1>ALTERAR PRODUTO</h1>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <input
           type="text"
           placeholder="Nome"
@@ -115,6 +145,15 @@ const GerenciarProduto = () => {
 
         <button onClick={handleClick}>Atualizar</button>
       </div>
+
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

@@ -7,33 +7,40 @@ const Produto = () => {
   const [book, setBook] = useState({
     nome: "",
     descricao: "",
-    promocao: false,  // Adicionando promocao ao estado inicial
+    preco_unitario: false,  // Adicionando promocao ao estado inicial
     fk_id_categoria: null,
   });
 
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [categorias, setCategorias] = useState([]);
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const handleChange = (e) => {
     setBook((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  const handlePromocaoChange = (e) => {
-    const value = e.target.value === "true";
-    setBook((prev) => ({
-      ...prev,
-      promocao: value,
-      preco_desconto: value ? prev.preco_desconto : null,  // Limpa o preco_desconto se promocao for false
-    }));
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/viewProduto");
+    }, 1200);
   };
+
 
   const handleClick = async (e) => {
     e.preventDefault();
+    const { nome,descricao, preco_unitario, fk_id_categoria } = book;
+
+    if (!nome ||!preco_unitario) {
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
     try {
       await axios.post("http://localhost:8800/books", book);
-      console.log("EXECUTEI");
-      navigate("/viewProduto");
+      console.log("Produto adicionado com sucesso");
+      showSuccess("Produto adicionado com sucesso");
     } catch (err) {
       console.log(err);
       // setError(true);
@@ -54,9 +61,12 @@ const Produto = () => {
   }, []);
   console.log(book);
   return (
+    <div>
+      
     <div class="Produto">
       <div className="form">
         <h1>Novo Produto</h1>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <p>Nome:</p>
         <input
           type="text"
@@ -94,6 +104,14 @@ const Produto = () => {
 
         <button onClick={handleClick}>adicionar</button>
       </div>
+    </div>
+    {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

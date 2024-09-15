@@ -3,7 +3,7 @@ import Books from "./pages/Books";
 import Header from "./pages/Header";
 import Produto from "./pages/Produto";
 import "./style.css";
-import GerenciarProduto from "./pages/GerenciarProduto";
+import GerenciarProduto from "./pages/editarProduto";
 import Categoria from "./pages/Categoria";
 import Cliente from "./pages/Cliente";
 import ReadCliente from "./pages/readCliente";

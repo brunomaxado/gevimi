@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState(null);
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
@@ -36,11 +39,19 @@ const Books = () => {
     setSelectedBookId(id);
     setShowModal(true);
   };
-
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/viewProduto");
+    }, 1200);
+  };
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8800/books/${selectedBookId}`);
       setBooks(books.filter(book => book.id_produto !== selectedBookId)); // Atualiza a lista de livros sem recarregar a página
+      showSuccess("Produto deletado com sucesso");
       setShowModal(false); // Fecha o modal
     } catch (err) {
       console.log(err);
@@ -102,6 +113,13 @@ const Books = () => {
             <p>Tem certeza que deseja excluir o item?</p>
             <button class="modal-button" onClick={handleDelete} >Sim</button>
             <button class="modal-button"onClick={handleCancel} >Não</button>
+          </div>
+        </div>
+      )}
+       {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
           </div>
         </div>
       )}
