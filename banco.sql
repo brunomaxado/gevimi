@@ -27,7 +27,7 @@ CREATE TABLE `categoria` (
   `nome` varchar(25) NOT NULL,
   `data_deletado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,6 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (40,'bruno','2024-09-15 17:28:02'),(41,'sucoss','2024-09-15 16:31:54'),(42,'delicia','2024-09-15 18:53:57'),(45,'cadeiras',NULL),(46,'d',NULL),(47,'e','2024-09-15 18:49:11'),(49,'se mate','2024-09-15 19:35:05');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +58,7 @@ CREATE TABLE `cliente` (
   `bairro` varchar(100) DEFAULT NULL,
   `data_deletado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +67,6 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (2,'teste','11157349978','42991456495','84430000','Rua Valério Ronchi','AP 10 3022','a','Uvaranas','2024-09-15 16:44:35'),(7,'testeeeee','11157349978','42991456495','84434000','aaa','2','Imbituva','Mato Branco de Baixo','2024-09-15 16:57:41'),(17,'Carlos Alberto Souza','06932265010','21998765432','22000001','Rua Barata Ribeiro','200','Rio de Janeiro','Copacabana','2024-09-16 03:50:15'),(19,'Isabelle','11157349978','42911206933','84430000','a','12312','Imbituva','Mato Branco de Baixo','2024-09-16 03:51:30'),(22,'Bruno Machado','11157349978','42991456495','84430000','Rua Valério Ronchi','AP 10 302','imbituva','Uvaranas',NULL);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +89,7 @@ CREATE TABLE `item_pedido` (
   KEY `fk_item_pedido_produto` (`fk_id_produto`),
   CONSTRAINT `fk_item_pedido_pedido` FOREIGN KEY (`fk_id_pedido`) REFERENCES `pedido` (`id_pedido`),
   CONSTRAINT `fk_item_pedido_produto` FOREIGN KEY (`fk_id_produto`) REFERENCES `produto` (`id_produto`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +98,6 @@ CREATE TABLE `item_pedido` (
 
 LOCK TABLES `item_pedido` WRITE;
 /*!40000 ALTER TABLE `item_pedido` DISABLE KEYS */;
-INSERT INTO `item_pedido` VALUES (1,1,1,115,NULL,12.00),(2,1,2,117,NULL,12.00),(3,1,3,117,NULL,12.00),(4,2,4,115,NULL,12.00),(5,2,4,120,NULL,32.00),(6,1,5,115,NULL,12.00),(7,1,6,117,NULL,12.00),(8,1,7,117,NULL,12.00),(9,1,8,115,NULL,12.00),(10,1,9,115,NULL,12.00);
 /*!40000 ALTER TABLE `item_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +126,7 @@ CREATE TABLE `pedido` (
   KEY `fk_pedido_cliente` (`fk_id_cliente`),
   CONSTRAINT `fk_pedido_cliente` FOREIGN KEY (`fk_id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `fk_pedido_usuario` FOREIGN KEY (`fk_id_usuario`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +135,6 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (1,1,1,1,'','2024-09-16 04:25:00','2024-09-16 04:21:23','2024-09-16 04:21:18',9,22,NULL,NULL),(2,2,1,1,'','2024-09-16 05:39:00','2024-09-16 04:36:32','2024-09-16 04:36:23',9,22,NULL,NULL),(3,3,1,1,'','0000-00-00 00:00:00','2024-09-16 04:45:32','2024-09-16 04:45:32',9,22,NULL,'2024-09-16 04:52:43'),(4,1,1,2,'','2024-09-16 04:54:00','2024-09-16 04:54:24','2024-09-16 04:53:17',9,22,NULL,'2024-09-16 04:55:03'),(5,2,3,2,'','2024-09-16 04:59:00',NULL,'2024-09-16 04:53:46',9,22,NULL,'2024-09-16 04:54:56'),(6,1,3,1,'','2024-09-16 05:02:00',NULL,'2024-09-16 05:01:07',11,22,NULL,NULL),(7,1,3,1,'','2024-09-16 05:53:00',NULL,'2024-09-16 05:04:13',11,22,NULL,NULL),(8,2,1,1,'','2024-09-16 05:35:00','2024-09-16 05:12:57','2024-09-16 05:04:35',11,22,NULL,NULL),(9,2,1,3,'','2024-10-01 05:08:00','2024-09-16 10:03:11','2024-09-16 05:04:48',11,22,NULL,NULL);
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -233,7 +229,7 @@ CREATE TABLE `produto` (
   PRIMARY KEY (`id_produto`),
   KEY `fk_produto_categoria` (`fk_id_categoria`),
   CONSTRAINT `fk_produto_categoria` FOREIGN KEY (`fk_id_categoria`) REFERENCES `categoria` (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +238,6 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (98,'crepusculos','Um livro completo sobre JavaScript moderno.',39.99,NULL,'2024-09-15 16:06:00'),(101,'novo teste','testa',1221.00,NULL,'2024-09-15 16:06:03'),(104,'algodao docess','delicia',12.00,NULL,'2024-09-15 16:05:57'),(105,'Bolo','mto bomm',2.00,NULL,'2024-09-15 16:07:11'),(106,'Bruno Machado','mto bomm',12.00,40,'2024-09-15 16:24:21'),(108,'PRODUTOS BAFONICOS','mto legal',2.00,42,'2024-09-15 18:13:28'),(115,'suco','',12.00,46,NULL),(116,'beterraba','aaaaa',17.00,46,'2024-09-16 03:41:18'),(117,'amaciantes','aaaaa',12.00,46,NULL),(120,'odos os campos obrigatórios devem ser preenchidos.','aaaaa',32.00,49,NULL);
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,7 +257,7 @@ CREATE TABLE `usuario` (
   `administrador` tinyint(1) NOT NULL,
   `data_deletado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +266,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'bruno','bruno','123','2024-08-20 18:08:25',0,NULL),(2,'TESTE AGORA','TESTE AGORA','$2a$10$5SZj7x4tr0b4RzNsO6ESY.nTNQlrJ9i4OR2yhN/lD/TCPnSUn3Lky','2024-08-30 22:35:42',0,NULL),(3,'teste','testeey','$2a$10$4hAP0b3VnJz4MSgUTApIY.Hm37NA6LXA3uJFfbnPb8y23lZ4C6BQW','2024-08-30 22:43:59',0,NULL),(4,'João Silva','joao_silva','$2a$10$ljU7IcwUtYgKQjFMLscmfu9dqZuZGzDhUbRdkQjk6u1T4TNO7bo1O','2024-09-04 20:32:08',0,NULL),(5,'AAAAAAAAAAAAAAA','AAAAAAAAAAAA','$2a$10$pF034GQ9qJ/wjmdQf0Rz3um2YAPYsZRcTJG17obbx26W4E2EuhnI6','2024-09-04 20:32:22',0,NULL),(6,'olaaaaaaaa','bruno.machadoooo','$2a$10$hgGvEoQ8Byt2VphGfybWWevNXr/Zzof7lBnZtXoXpl13EagJqOWri','2024-09-04 20:37:48',0,NULL),(7,'sequiserem.me hackear','bruno.machado','$2a$10$DlO/0FR.ArXV6Ak4vS3PVuQQbNr85.0uKC0vIIKOW6dMWQ1lP.iQW','2024-09-04 20:38:16',0,NULL),(8,'isabelle','diluan','$2a$10$vEs2rpPM1.6q2kPI4EjPP.CmFDxOP1a6BVZdN7U4h8ZZgfEcN4V1q','2024-09-04 20:39:33',0,NULL),(9,'morram','morra','$2a$10$Up2FvjEgCx6FXiPKMCTo6eukaLKZJ5CCgSLpS/9W2dJApnjFVpgyK','2024-09-04 21:47:12',0,NULL),(10,'	Açoes e FIIs, conceitos e ideias- segunda edição','menuchun.yashirin','$2a$10$QWAUP/rrhPoaf6ba6aZOpOi9oQlPQ4tVVYhiegUdg1EQUglSvMo5C','2024-09-04 23:17:53',0,NULL),(11,'teste','teste.y','$2a$10$hE5lzZfHkn0vYSQlS9tkge6IsNEC6JVIzotwsd2yC4n6FmT9VwYzi','2024-09-08 22:04:09',0,NULL),(12,'aaa','teste.yy','$2a$10$QJN0Y8V.TvGTQmR8xsjlxuQM8qM2yhpMEUq0XRgcCtHfnleHmVVpm','2024-09-08 22:08:16',0,NULL),(13,'a','teste.ya','$2a$10$3zFaOK1D3uTjjtpQEVzrbuPezssbQBzXFDpIOJJVHP0s7.Ge/Hk82','2024-09-08 22:09:05',0,NULL),(14,'dasdas','teste.ydas','$2a$10$5QZTyFCJ5kwnTVCslWjah.xcAEksmVstP13Zw7RurOQzPbojQX0JS','2024-09-08 22:09:13',0,NULL);
+INSERT INTO `usuario` VALUES (1,'teste','teste','$2a$10$SQlryKMcZEFeR3u0pe4UueMkKpf6224Q6Ign1xaRBvZSWd5wGJ2xm','2024-09-16 17:18:39',0,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,4 +315,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-16 11:30:27
+-- Dump completed on 2024-09-16 17:26:31
