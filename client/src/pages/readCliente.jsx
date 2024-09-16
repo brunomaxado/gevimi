@@ -9,6 +9,10 @@ const ReadCliente = () => {
   const [selectedClienteId, setSelectedClienteId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false); // Novo estado para o modal de sucesso
   const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para a pesquisa
+  const [isSorted, setIsSorted] = useState(false); // Estado para ordenação
+  const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
+  const clientesPerPage = 10; // Número de clientes exibidos por página
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,10 +57,65 @@ const ReadCliente = () => {
     navigate(`/editarCliente/${id}`);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSort = () => {
+    const sortedClientes = [...clientes].sort((a, b) => {
+      return isSorted
+        ? a.nome.localeCompare(b.nome)
+        : b.nome.localeCompare(a.nome);
+    });
+    setClientes(sortedClientes);
+    setIsSorted(!isSorted);
+  };
+
+  // Filtra os clientes baseado no termo de pesquisa em múltiplos campos
+  const filteredClientes = clientes.filter((cliente) =>
+    cliente.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.cpf.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.celular.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.cep.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.cidade.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.bairro.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.rua.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.numero.toString().includes(searchTerm)
+  );
+
+  // Paginação: calcula os clientes para a página atual
+  const indexOfLastCliente = currentPage * clientesPerPage;
+  const indexOfFirstCliente = indexOfLastCliente - clientesPerPage;
+  const currentClientes = filteredClientes.slice(indexOfFirstCliente, indexOfLastCliente);
+
+  // Muda para a próxima página
+  const paginateNext = () => {
+    if (currentPage < Math.ceil(filteredClientes.length / clientesPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Muda para a página anterior
+  const paginatePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="tabela">
-      <h1>Clientes</h1>  
-      <table>
+      <h1>Clientes</h1>
+      <p>
+        <button onClick={handleSort}>Ordenar {isSorted ? "A-Z" : "Z-A"}</button>
+      </p>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        placeholder="Procurar por nome, CPF, celular..."
+        title="Digite um nome, CPF, celular, etc."
+      />
+      <table id="tabelaCliente">
         <thead>
           <tr>
             <th>ID</th>
@@ -72,7 +131,7 @@ const ReadCliente = () => {
           </tr>
         </thead>
         <tbody>
-          {clientes.map((cliente) => (
+          {currentClientes.map((cliente) => (
             <tr key={cliente.id_cliente}>
               <td>{cliente.id_cliente}</td> {/* Coluna de ID */}
               <td>{cliente.nome}</td>
@@ -92,6 +151,17 @@ const ReadCliente = () => {
         </tbody>
       </table>
 
+      {/* Paginação */}
+      <div className="pagination">
+        <button onClick={paginatePrev} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <span>Página {currentPage} de {Math.ceil(filteredClientes.length / clientesPerPage)}</span>
+        <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredClientes.length / clientesPerPage)}>
+          Próximo
+        </button>
+      </div>
+
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -104,7 +174,7 @@ const ReadCliente = () => {
       )}
 
       {showSuccessModal && (
-         <div className="success-modal">
+        <div className="success-modal">
           <div className="success-modal-content">
             <h2>{successMessage}</h2>
           </div>
