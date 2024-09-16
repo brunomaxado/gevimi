@@ -31,12 +31,16 @@ const ReadPedido = () => {
         console.log(err);
       }
     };
+
     fetchAllPedidos();
     fetchClientes();
+    fetchProdutos();
+    fetchUsuarios();
   }, []);
 
   // Função para obter o nome do cliente
   const getClienteNome = (id) => {
+    const cliente = clientes.find((c) => c.id_cliente === id);
     const cliente = clientes.find((c) => c.id_cliente === id);
     return cliente ? cliente.nome : "N/A";
   };

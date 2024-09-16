@@ -16,8 +16,9 @@ const Pedido = () => {
   const [cliente, setCliente] = useState([]);
   const [precoTotal, setPrecoTotal] = useState(0);
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const [pedido, setPedido] = useState({
-    tipo: "",
+    tipo: "", // Inicialize com uma string vazia, não null
     forma_pagamento: "",
     observacao: "",
     data_para_entregar: "",
@@ -32,10 +33,12 @@ const Pedido = () => {
   });
 
   const [itensPedido, setItensPedido] = useState([]);
-  const [tipoEntrega, setTipoEntrega] = useState("");
+
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // Para a mensagem de sucesso
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  
   useEffect(() => {
     const fetchProduto = async () => {
       try {
@@ -60,8 +63,10 @@ const Pedido = () => {
   }, []);
 
   const handleChange = (e) => {
-    setPedido((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setPedido((prev) => ({ ...prev, [name]: value }));
   };
+
   useEffect(() => {
     setPrecoTotal(calcularPrecoTotal(itensPedido));
   }, [itensPedido]); // Dependência: quando itensPedido mudar, recalcula o preço total
@@ -72,19 +77,40 @@ const Pedido = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+  
+    // Verifica se todos os campos obrigatórios estão preenchidos
+    const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
+  
+    if (!tipo || !forma_pagamento || !fk_id_cliente || (tipo !== "3" && !data_para_entregar)) {
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
+  
+    if (itensPedido.length === 0) {
+      setError("Adicione pelo menos um item ao pedido.");
+      return;
+    }
+  
+    // Limpa a mensagem de erro antes de tentar submeter o pedido
+    setError(null);
+  
     const dadosParaAtualizar = {
       pedido,
-      itensPedido
+      itensPedido,
     };
+  
     try {
       await axios.post("http://localhost:8800/pedido", dadosParaAtualizar);
-      console.log("EXECUTEI");
-      navigate("/pedido");
+      console.log("Pedido adicionado com sucesso");
+      showSuccess("Pedido adicionado com sucesso");
+  
     } catch (err) {
       console.log(err);
-      //setError(true);
+      setError("Ocorreu um erro ao adicionar o pedido.");
     }
   };
+  
+
   const handleAdicionarItem = () => {
     const produtoSelecionado = produto.find(
       (p) => p.id_produto === parseInt(novoItem.fk_id_produto)
@@ -109,8 +135,6 @@ const Pedido = () => {
     setItensPedido((prev) => prev.filter((_, i) => i !== index));
   };
 
-
-  // Função para adicionar o cliente e fechar o modal
   // Função para adicionar o cliente e fechar o modal
   const adicionarCliente = async (novoCliente) => {
     try {
@@ -138,7 +162,15 @@ const Pedido = () => {
       console.log("Erro ao atualizar a lista de clientes:", err);
     }
   };
-
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/readPedido"); // Redirecionar após 3 segundos
+    }, 1500);
+  };
+  
   console.log(pedido);
   console.log(novoItem);
   console.log(itensPedido);
@@ -148,9 +180,7 @@ const Pedido = () => {
     <div>
       <div className="form" id="pedidos">
         <h1>Novo Pedido</h1>
-
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>} {/* Mensagem de sucesso */}
-
+      
         <p>Produto:</p>
         <p>
           <select
@@ -198,19 +228,17 @@ const Pedido = () => {
             id="tipo_entrega"
             value={pedido.tipo}
             onChange={(e) => {
-              setTipoEntrega(e.target.value);
               handleChange(e);
             }}
           >
             <option value="">Selecione um tipo de entrega</option>
-            <option value="entrega">Entrega</option>
-            <option value="entrega_ifood">Entrega Ifood</option>
-            <option value="retirada">Retirada</option>
+            <option value="1">1. Entrega</option>
+            <option value="2">2. Entrega Ifood</option>
+            <option value="3">3. Retirada</option>
           </select>
         </p>
 
-
-        {tipoEntrega === "entrega" || tipoEntrega === "entrega_ifood" ? (
+        {(pedido.tipo === "1" || pedido.tipo === "2") && (
           <div>
             <p>
               <label>Data e Hora da Entrega:</label>
@@ -225,7 +253,7 @@ const Pedido = () => {
               />
             </p>
           </div>
-        ) : null}
+        )}
 
         <div>
           <p>Cliente:</p>
@@ -243,7 +271,6 @@ const Pedido = () => {
               ))}
             </select>
           </p>
-
 
           <div className="form">
             {successMessage &&
@@ -277,10 +304,10 @@ const Pedido = () => {
             onChange={handleChange}
           >
             <option value="">Selecione a forma de pagamento</option>
-            <option value="dinheiro">Dinheiro</option>
-            <option value="pix">Pix</option>
-            <option value="debito">Débito</option>
-            <option value="credito">Crédito</option>
+            <option value="1">Dinheiro</option>
+            <option value="2">Pix</option>
+            <option value="3">Débito</option>
+            <option value="4">Crédito</option>
           </select>
         </p>
         <p>
@@ -292,10 +319,18 @@ const Pedido = () => {
             onChange={handleChange}
           />
         </p>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <p>
           <button onClick={handleClick}>Adicionar Pedido</button>
         </p>
       </div>
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

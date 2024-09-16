@@ -64,3 +64,31 @@ export const register = (req, res) => {
       secure:true
     }).status(200).json("User has been logged out.")
   };
+
+  export const getUsuario= (req, res) => {
+    
+    
+    //CHECK EXISTING USER
+    const q = "SELECT * FROM usuario";
+  
+    db.query(q, (err, data) => {
+      if (err) return res.status(500).send(err);
+  
+      return res.status(200).json(data);
+    });
+  };
+
+
+
+  export const getUsuarios= (req, res) => {
+  
+  };
+
+  export const getAllUsuario= (req, res) => {
+    
+  
+  };
+
+  export const  deleteUsuario= (req, res) => {
+  
+  };
