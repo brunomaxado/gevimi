@@ -92,14 +92,15 @@ const Books = () => {
               <td>{getCategoriaNome(book.fk_id_categoria)}</td>
               <td>R${book.preco_unitario}</td>
               <td>
-                <button className="delete" onClick={() => handleDeleteClick(book.id_produto)}>Delete</button>
-                <button className="update">
+              <button className="update">
                   <Link
                     to={`/gerenciarproduto/${book.id_produto}`}
                   >
                     Update
                   </Link>
                 </button>
+                <button className="delete" onClick={() => handleDeleteClick(book.id_produto)}>Delete</button>
+                
               </td>
             </tr>
           ))}

@@ -117,6 +117,7 @@ const Cliente = () => {
           name="cpf"
           value={cliente.cpf}
           onChange={handleChange}
+          required
         /></p>
         <p>
         <input
@@ -125,6 +126,7 @@ const Cliente = () => {
           name="celular"
           value={cliente.celular}
           onChange={handleChange}
+          required
         /></p>
         <p>
         <input
@@ -149,6 +151,7 @@ const Cliente = () => {
           name="bairro"
           value={cliente.bairro}
           onChange={handleChange}
+          required
         /></p>
         <p>
         <input
@@ -157,6 +160,7 @@ const Cliente = () => {
           name="rua"
           value={cliente.rua}
           onChange={handleChange}
+          required
         /></p>
         <p>
         <input
@@ -165,6 +169,7 @@ const Cliente = () => {
           name="numero"
           value={cliente.numero}
           onChange={handleChange}
+          required
         /></p>
         <p>
         <button onClick={handleClick}>Adicionar</button>          
