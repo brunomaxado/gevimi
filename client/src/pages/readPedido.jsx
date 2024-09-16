@@ -129,6 +129,7 @@ const ReadPedido = () => {
     }
   };
   
+  
 console.log(selectedPedidoId);
   return (
     <div className="tabela">
@@ -192,7 +193,6 @@ console.log(selectedPedidoId);
     Finalizar
   </button>
 </td>
-
             </tr>
           ))}
         </tbody>

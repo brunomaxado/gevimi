@@ -203,7 +203,7 @@ const Pedido = () => {
         <ul>
           {itensPedido.map((item, index) => (
             <li key={index}>
-              {item.nome} - R${item.preco_unitario}
+             <p>{item.nome} - R${item.preco_unitario}</p>
               <input
                 type="number"
                 value={item.quantidade}
