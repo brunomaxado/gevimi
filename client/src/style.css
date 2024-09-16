@@ -688,3 +688,8 @@ li {
   list-style-type: none;
 }
 
+.button-disabled {
+  background-color: #d3d3d3; /* Cinza claro */
+  color: #888; /* Texto mais claro */
+  cursor: not-allowed; /* Indicador visual de que está desabilitado */
+}

@@ -10,6 +10,7 @@ const ReadPedido = () => {
   const [produtos, setProdutos] = useState([]); 
   const [usuarios, setUsuarios] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedPedidoId, setSelectedPedidoId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,6 +94,15 @@ const ReadPedido = () => {
     }
   };
 
+  const getStatus = (status) => {
+    switch (status) {
+        case 1: return "Finalizado";
+        case 2: return "Em andamento";
+        case 3: return "Não finalizado";
+        default: return "Desconhecido";
+    }
+  };
+
   // Função para retornar o texto de acordo com o tipo de entrega
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
@@ -103,6 +113,23 @@ const ReadPedido = () => {
     }
   };
 
+
+  const handleClickFinalizar = async (id) => {
+    try {
+      // Envia o status atualizado para 'finalizado' (1)
+      await axios.put(`http://localhost:8800/pedido/${id}`, { status: 1 });
+      console.log("Pedido finalizado com sucesso");
+  
+      // Atualiza a lista de pedidos após a atualização
+      const res = await axios.get("http://localhost:8800/pedido");
+      setPedidos(res.data);
+    } catch (err) {
+      console.error("Erro ao finalizar o pedido:", err);
+      setError("Erro ao finalizar o pedido.");
+    }
+  };
+  
+console.log(selectedPedidoId);
   return (
     <div className="tabela">
       <h1>Pedidos e Itens</h1>
@@ -130,7 +157,7 @@ const ReadPedido = () => {
               <td>{pedido.id_pedido}</td>
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
               <td>{getTipoEntrega(pedido.tipo)}</td> {/* Exibindo o texto da entrega */}
-              <td>{pedido.status}</td>
+              <td>{getStatus(pedido.status)}</td>
               <td>{getFormaPagamento(pedido.forma_pagamento)}</td> {/* Exibindo o texto da forma de pagamento */}
               <td>
                 {pedido.itensPedido.map((item) => (
@@ -152,11 +179,20 @@ const ReadPedido = () => {
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
               <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
               <td>
-                <button className="delete">Cancelar</button>
-                <button className="update">
-                  <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
-                </button>
-              </td>
+  <button className="delete">Cancelar</button>
+  <button className="update">
+    <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
+  </button>
+  
+  <button
+    className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
+    onClick={() => handleClickFinalizar(pedido.id_pedido)}
+    disabled={pedido.status === 1} // Desabilita o botão se o status for 'Finalizado'
+  >
+    Finalizar
+  </button>
+</td>
+
             </tr>
           ))}
         </tbody>

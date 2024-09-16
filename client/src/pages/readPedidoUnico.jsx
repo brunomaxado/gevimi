@@ -110,7 +110,18 @@ const ReadPedidoUnico = () => {
         return "Desconhecido";
     }
   };
-
+  const getStatus = (status) => {
+    switch (status) {
+      case 1:
+        return "Finalizado";
+      case 2:
+        return "Em andamento";
+      case 3:
+        return "Não finalizado";
+      default:
+        return "Desconhecido";
+    }
+  };
   if (!pedido) return <p>Carregando...</p>;
 
   // CSS como constante
@@ -189,7 +200,7 @@ const ReadPedidoUnico = () => {
   </div>
   <div style={styles.formGroup}>
     <label style={styles.label}>Status:</label>
-    <input style={styles.input} type="text" value={pedido.status || "N/A"} readOnly />
+    <input style={styles.input} type="text" value={getStatus(pedido.pedido.status)|| "N/A" } readOnly />
   </div>
 </div>
 
@@ -250,7 +261,18 @@ const ReadPedidoUnico = () => {
     readOnly
   />
 </div>
-
+<div style={styles.formGroup}>
+  <label style={styles.label}>Finalizado em:</label>
+  <input
+    style={styles.input}
+    type="text"
+    value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
+        ? new Date(pedido.pedido.data_finalizado).toLocaleString()
+        : "Sem data"
+    }
+    readOnly
+  />
+</div>
     <div style={styles.formGroup}>
   <label style={{ ...styles.label, textAlign: "center" }}>Produtos:</label>
   <div style={{ ...styles.produtoList, textAlign: "center" }}>

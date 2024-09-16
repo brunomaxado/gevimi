@@ -161,3 +161,15 @@ import db from "../config/db.js";
 
 
   }
+
+  export const finalizaPedido = (req, res) => {
+    const pedidoId = req.params.id_pedido; // Obtém o id_pedido dos parâmetros da requisição
+    const q = "UPDATE pedido SET `status` = 1 WHERE `id_pedido` = ?"; // Query SQL para atualizar o status
+  
+    // Executa a query com o id_pedido fornecido
+    db.query(q, [pedidoId], (err, data) => {
+      if (err) return res.status(500).json(err); // Retorna um erro se a query falhar
+      return res.json("Status do pedido atualizado com sucesso."); // Retorna uma mensagem de sucesso
+    });
+  };
+  
