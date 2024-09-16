@@ -10,7 +10,7 @@ const Footer = () => {
 
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
 
-      <a href="/"><img id="logo" src="../Icone.png"></img></a>
+     <img id="logo" src="../Icone.png"></img>
 
       <li id="nome" className="esquerda">
         <span> Usuário: {currentUser?.nome} </span>
