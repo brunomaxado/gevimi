@@ -51,7 +51,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Header.css */
 * {
   margin: 0px;
   padding: 0px;
@@ -63,7 +62,6 @@ body {
 
 }
 
-/* Defina o corpo da aplicação para preencher a tela inteira */
 html,
 body {
   margin: 0;
@@ -75,7 +73,6 @@ body {
 header,
 main {
   flex-grow: 1;
-  /* Faz com que o conteúdo principal ocupe o máximo de espaço possível */
 }
 
 div p {
@@ -94,8 +91,6 @@ p:hover {
   background-image: url(../public/logo.png);
   border-radius: 20px;
   min-height: 380px;
-
-  /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -119,17 +114,18 @@ p#registro:hover {
   background-color: var(--amarelotoque);
 }
 
-/* Add styles to the form container */
 .container {
-  position: absolute;
-  padding: 10px;
-  max-width: 300px;
-  padding: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 2vh;
+  align-items: center;
+  justify-content: right;
   color: var(--amarelologo);
   background-color: var(--pretofundo);
 }
 
-/* Full-width input fields */
+
 input[type=text],
 input[type=password],
 input[type=number] {
@@ -232,7 +228,6 @@ div.tabela {
   width: 100vw;
   z-index: 1000;
   height: 15vh;
-  /* Defina a altura exata do header */
 }
 
 .footer {
@@ -287,7 +282,6 @@ img {
 
 .nav-link:hover {
   color: var(--amarelotoque);
-  /* Laranja dourado ao passar o mouse */
   border-radius: 5px;
 }
 
@@ -311,7 +305,6 @@ img {
   size-adjust: inherit;
 }
 
-/* Estilos para o Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -343,7 +336,7 @@ img {
   border-radius: 5px;
   position: absolute;
   top: 10px;
-  right: 10px; 
+  right: 10px;
 }
 
 
@@ -460,7 +453,6 @@ div.auth button {
   border-radius: 10px;
 }
 
-/*configurações da scrollbar*/
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -488,8 +480,6 @@ div.auth button {
   justify-content: center;
   text-align: center;
   min-height: 100vh;
-  /* Define a altura mínima como 100% da tela */
-
 
   .addHome {
     cursor: pointer;
@@ -497,11 +487,6 @@ div.auth button {
     background-color: var(--vermelhointenso);
     color: var(--branco);
     font-weight: bold;
-  }
-
-  h1 {
-    margin-bottom: 5vh;
-    margin-top: 15vh;
   }
 
   p#erro {
@@ -532,8 +517,6 @@ div.auth button {
     }
   }
 
-
-
   button.categoriaAdd {
     width: 270px;
     border: none;
@@ -549,13 +532,12 @@ div.auth button {
     background-color: var(--amarelotoque);
   }
 
-  /*formulário para adição e alteração */
   .form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    h1{
+    h1 {
       padding-top: 20vh;
     }
 
@@ -599,7 +581,6 @@ div.auth button {
 .success-modal {
   position: fixed;
   top: 60px;
-  /* Logo abaixo do header */
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--sombramodal);
@@ -629,7 +610,7 @@ div.auth button {
   }
 }
 
-button{
+button {
   width: auto;
   border: 1px solid var(--pretofundo);
   margin: 2px;
@@ -641,12 +622,13 @@ button{
   border-radius: 10px;
 }
 
-button:hover{
+button:hover {
   background-color: var(--amarelotoque);
 }
 
 #pedidos {
   padding-top: 20vh;
+
   p {
     color: var(--pretoletra);
   }
@@ -704,15 +686,39 @@ li {
 }
 
 .button-disabled {
-  background-color: #d3d3d3; /* Cinza claro */
-  color: #888; /* Texto mais claro */
-  cursor: not-allowed; /* Indicador visual de que está desabilitado */
+  background-color: var(--meiotom);
+  color: var(--cinza);
+  cursor: not-allowed;
 }
 
-#login{
+#login {
   width: 100%;
   border-radius: 20px;
-  div{
+
+  div {
     padding: 10px;
+  }
+}
+
+
+#login.auth {
+  width: 70vw;
+  height: 70vh;
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#imagem {
+  margin: 5vh;
+  align-content: center;
+  justify-content: left;
+
+  img {
+    height: 30vh;
+    max-width: 30vw;
+    width: auto;
   }
 }

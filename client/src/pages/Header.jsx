@@ -39,6 +39,9 @@ const Header = () => {
                 </li>
               </ul>
             </li>
+          <li className="nav-item">
+          <span className="material-symbols-outlined">monitoring </span>
+            </li>
 
             <li id="pedido" className="nav-item, direita">
               <Link to="/pedido" className="nav-link">Novo Pedido</Link>

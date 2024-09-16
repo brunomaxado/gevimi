@@ -47,7 +47,7 @@ const Login = () => {
       <div id="imagem">
         <img src="../logo_login.png"></img>
       </div>
-      <div id="formulario">
+
         <form class="container">
           <h1>Login</h1>
           <p>Usuário:</p>
@@ -72,7 +72,7 @@ const Login = () => {
 
         </form>
       </div>
-    </div>
+
 
   );
 };
