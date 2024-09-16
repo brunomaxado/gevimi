@@ -111,6 +111,7 @@ p#registro {
 
 a {
   text-decoration: none;
+  color: var(--pretoletra);
 }
 
 p#registro:hover {

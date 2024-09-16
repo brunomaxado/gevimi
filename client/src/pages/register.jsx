@@ -28,7 +28,7 @@ const Register = () => {
   };
 console.log(inputs);
   return (
-    <div className="auth">
+    <div className="auth, login">
       <h1>Register</h1>
       <form>
       <input
@@ -55,9 +55,9 @@ console.log(inputs);
         />
         <button onClick={handleSubmit}>Registrar</button>
         {err && <p>{err}</p>}
-        <span>
-          Já tem uma conta? <Link to="/login">Entrar</Link>
-        </span>
+        <button>
+         <Link to="/login">Entrar</Link>
+        </button>
       </form>
     </div>
   );
