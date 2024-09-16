@@ -12,7 +12,7 @@ const ReadCliente = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Estado para a pesquisa
   const [isSorted, setIsSorted] = useState(false); // Estado para ordenação
   const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
-  const clientesPerPage = 10; // Número de clientes exibidos por página
+  const clientesPerPage = 5; // Número de clientes exibidos por página
   const navigate = useNavigate();
 
   useEffect(() => {

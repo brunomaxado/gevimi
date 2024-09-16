@@ -47,6 +47,7 @@
 }
 body{
   padding: 0px;
+  overflow-x: hidden;
 }
 
 /* Header.css */
@@ -207,7 +208,7 @@ table {
 
 div.tabela {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 th,
@@ -222,6 +223,7 @@ tr:hover {
 }
 
 div.tabela {
+  overflow-y: hidden;
   overflow-x: auto;
 }
 
