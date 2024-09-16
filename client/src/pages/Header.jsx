@@ -20,6 +20,9 @@ const Header = () => {
               </div>
               <ul className="dropdown-menu">
                 <li>
+                 <Link to="/readPedido" className="nav-link"><p> Listar Pedido</p> </Link>
+                </li>
+                <li>
                  <Link to="/viewProduto" className="nav-link"><p> Listar Produto</p> </Link>
                 </li>
                 <li>
