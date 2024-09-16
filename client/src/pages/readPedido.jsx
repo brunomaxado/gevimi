@@ -164,7 +164,8 @@ const ReadPedido = () => {
   const currentPedidos = filteredPedidos.slice(indexOfFirstPedido, indexOfLastPedido);
 
   const paginateNext = () => {
-    if (currentPage < Math.ceil(filteredPedidos.length / pedidosPerPage)) {
+    const totalPages = Math.ceil(filteredPedidos.length / pedidosPerPage);
+    if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -219,18 +220,12 @@ const ReadPedido = () => {
               <td>
                 {pedido.itensPedido.map((item) => (
                   <div key={item.id_item_pedido}>
-                    {getProdutoNome(item.fk_id_produto)} x{item.quantidade};
+                    {getProdutoNome(item.fk_id_produto)} / {getProdutoPreco(item.fk_id_produto)} x {item.quantidade}
                   </div>
                 ))}
               </td>
-              <td>
-                R${calcularTotalItens(pedido.itensPedido).toFixed(2)}
-              </td>
-              <td>
-                {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
-                  ? new Date(pedido.data_para_entregar).toLocaleString()
-                  : "Sem data"}
-              </td>
+              <td>{calcularTotalItens(pedido.itensPedido).toFixed(2)}</td>
+              <td>{new Date(pedido.data_para_entregar).toLocaleString()}</td>
               <td>{new Date(pedido.data_realizado).toLocaleString()}</td>
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
               <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
@@ -242,7 +237,7 @@ const ReadPedido = () => {
                 <button
                   className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
                   onClick={() => handleClickFinalizar(pedido.id_pedido)}
-                  disabled={pedido.status === 1} // Desabilita o botão se o status for 'Finalizado'
+                  disabled={pedido.status === 1}
                 >
                   Finalizar
                 </button>

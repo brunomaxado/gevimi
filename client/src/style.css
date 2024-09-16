@@ -225,6 +225,7 @@ tr:hover {
 }
 
 div.tabela {
+  height: 100%;
   overflow-y: hidden;
   overflow-x: auto;
 }
@@ -485,7 +486,7 @@ div.auth button {
 }
 
 .app {
-  height: 100vh;
+  height: 200vh;
   padding: 0;
   display: flex;
   flex-direction: column;
