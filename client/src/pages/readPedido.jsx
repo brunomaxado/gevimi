@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 
 const ReadPedido = () => {
   const [pedidos, setPedidos] = useState([]);
-  const [clientes, setClientes] = useState([]); // Renaming cliente to clientes
+  const [clientes, setClientes] = useState([]); 
+  const [produtos, setProdutos] = useState([]); 
+  const [usuarios, setUsuarios] = useState([]);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,62 +21,147 @@ const ReadPedido = () => {
         console.log(err);
       }
     };
-    const fetchClientes = async () => { // Renaming the function to fetchClientes
+
+    const fetchClientes = async () => { 
       try {
         const response = await axios.get("http://localhost:8800/allcliente");
-        setClientes(response.data); // Renaming cliente to clientes
+        setClientes(response.data); 
       } catch (err) {
         console.log(err);
       }
     };
+
+    const fetchUsuarios = async () => { 
+      try {
+        const response = await axios.get("http://localhost:8800/usuario");
+        setUsuarios(response.data); 
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const fetchProdutos = async () => { 
+      try {
+        const response = await axios.get("http://localhost:8800/books");
+        setProdutos(response.data); 
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchAllPedidos();
     fetchClientes();
+    fetchProdutos();
+    fetchUsuarios();
   }, []);
 
   const getClienteNome = (id) => {
-    const cliente = clientes.find((c) => c.id_cliente === id); // Using clientes state
+    const cliente = clientes.find((c) => c.id_cliente === id);
     return cliente ? cliente.nome : "N/A";
+  };
+
+  const getUsuarioNome = (id) => {
+    const usuario = usuarios.find((u) => u.id_usuario === id);
+    return usuario ? usuario.nome : "N/A";
+  };
+
+  const getProdutoNome = (id) => {
+    const produto = produtos.find((u) => u.id_produto === id); 
+    return produto ? produto.nome : "N/A";
+  };
+
+  const getProdutoPreco = (id) => {
+    const produto = produtos.find((p) => p.id_produto === id);
+    return produto ? produto.preco_unitario : 0;
+  };
+
+  const calcularTotalItens = (itensPedido) => {
+    return itensPedido.reduce((total, item) => {
+      const precoUnitario = getProdutoPreco(item.fk_id_produto);
+      return total + (precoUnitario * item.quantidade);
+    }, 0);
+  };
+
+  // Função para retornar o texto de acordo com a forma de pagamento
+  const getFormaPagamento = (formaPagamento) => {
+    switch (formaPagamento) {
+      case 1: return "Dinheiro";
+      case 2: return "Pix";
+      case 3: return "Débito";
+      case 4: return "Crédito";
+      default: return "Desconhecido";
+    }
+  };
+
+  // Função para retornar o texto de acordo com o tipo de entrega
+  const getTipoEntrega = (tipoEntrega) => {
+    switch (tipoEntrega) {
+      case 1: return "Entrega";
+      case 2: return "Entrega iFood";
+      case 3: return "Retirada";
+      default: return "Desconhecido";
+    }
   };
 
   return (
     <div className="tabela">
-    <h1>Pedidos e Itens</h1>
-    <table>
-      <thead>
-        <tr>
-        <th> ID</th>
-          <th>Tipo</th>
-          <th>Forma de Pagamento</th>
-          <th>Observação</th>
-          <th>Data de Entrega</th>
-          <th>Data de Realização</th>
-          <th>Cliente</th>
-          <th>Usuário</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {pedidos.map((pedido) => (
-          <tr key={pedido.id_produto}>
-            <td>{pedido.id_produto}</td>
-            <td>{pedido.tipo}</td>
-            <td>{pedido.forma_pagamento}</td>
-            <td>{pedido.observacao}</td>
-            <td>{new Date(pedido.data_para_entregar).toLocaleString()}</td>
-            <td>{new Date(pedido.data_realizado).toLocaleString()}</td>
-            <td>{getClienteNome(pedido.fk_id_cliente)}</td>
-            <td>{pedido.fk_id_usuario}</td>
-            <td>
-              <button className="delete">Delete</button>
-              <button className="update">
-                <Link>Update</Link>
-              </button>
-            </td>
+      <h1>Pedidos e Itens</h1>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th>Forma de Pagamento</th>
+            <th>Produto/xUnidade</th>
+            <th>Total</th>
+            <th>Data de Entrega</th>
+            <th>Data de Realização</th>
+            <th>Data Finalizado</th>
+            <th>Usuário</th>
+            <th>Ações</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {pedidos.map((pedido) => (
+            <tr key={pedido.id_produto}>
+              <td>{pedido.id_pedido}</td>
+              <td>{getClienteNome(pedido.fk_id_cliente)}</td>
+              <td>{getTipoEntrega(pedido.tipo)}</td> {/* Exibindo o texto da entrega */}
+              <td>{pedido.status}</td>
+              <td>{getFormaPagamento(pedido.forma_pagamento)}</td> {/* Exibindo o texto da forma de pagamento */}
+              <td>
+                {pedido.itensPedido.map((item) => (
+                  <div key={item.id_item_pedido}>
+                    {getProdutoNome(item.fk_id_produto)} x{item.quantidade};
+                  </div>
+                ))}
+              </td>
+              <td>
+                R${calcularTotalItens(pedido.itensPedido).toFixed(2)}
+              </td>
+              <td>
+  {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
+    ? new Date(pedido.data_para_entregar).toLocaleString()
+    : "Sem data"}
+</td>
+
+              <td>{new Date(pedido.data_realizado).toLocaleString()}</td>
+              <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
+              <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
+              <td>
+                <button className="delete">Cancelar</button>
+                <button className="update">
+                  <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
