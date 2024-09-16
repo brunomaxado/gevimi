@@ -8,10 +8,9 @@ const Header = () => {
   return (
     <header className="header">
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
-      <nav className="nav">
-        <ul className="nav-list">
-          <div class="esquerda">
-            <li id="logo" className="nav-item">
+      <div class="nav">
+         <ul className="nav-list">
+            <li id="logo" className="nav-item, esquerda">
               <a href="/home"><img src="../Icone.png"></img></a>
             </li>
 
@@ -37,19 +36,18 @@ const Header = () => {
                 </li>
               </ul>
             </li>
-          </div>
-          <div class="esquerda">
-            <li id="pedido" className="nav-item">
+
+            <li id="pedido" className="nav-item, direita">
               <Link to="/pedido" className="nav-link">Novo Pedido</Link>
             </li>
 
 
 
             <li className="nav-item dropdown">
-              <div>
+
                 <span className="material-symbols-outlined"> manage_accounts </span>
 
-              </div>
+ 
               <ul className="dropdown-menu">
                 <li>
                   <Link to="/" className="nav-link">
@@ -70,9 +68,10 @@ const Header = () => {
               </ul>
             </li>
 
-          </div>
+          
         </ul>
-      </nav>
+         
+        </div>
     </header>
   );
 };

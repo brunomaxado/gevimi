@@ -99,66 +99,75 @@ const Cliente = () => {
 
   return (
     <div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
+      {error && <p id="erro">{error}</p>}
+      <div class="cliente">
         <h1>Adicionar Cliente</h1>
-        <input
+        <p><input
           type="text"
           placeholder="Nome"
           name="nome"
           value={cliente.nome}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="number"
           placeholder="CPF"
           name="cpf"
           value={cliente.cpf}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="number"
           placeholder="Celular"
           name="celular"
           value={cliente.celular}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="number"
           placeholder="CEP"
           name="cep"
           value={cliente.cep}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="text"
           placeholder="Cidade"
           name="cidade"
           value={cliente.cidade}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="text"
           placeholder="Bairro"
           name="bairro"
           value={cliente.bairro}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="text"
           placeholder="Rua"
           name="rua"
           value={cliente.rua}
           onChange={handleChange}
-        />
+        /></p>
+        <p>
         <input
           type="text"
           placeholder="Número"
           name="numero"
           value={cliente.numero}
           onChange={handleChange}
-        />
-        <button onClick={handleClick}>Adicionar</button>
+        /></p>
+        <p>
+        <button onClick={handleClick}>Adicionar</button>          
+        </p>
       </div>
 
       {showSuccessModal && (

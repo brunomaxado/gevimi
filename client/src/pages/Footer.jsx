@@ -6,16 +6,18 @@ import axios from "axios";
 const Footer = () => {
   const { currentUser, logout } = useContext(AuthContext);
   return (
-    
     <footer className="footer">
-      
+
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
 
-            <a href="/"><img id="logo" src="../Icone.png"></img></a>
+      <a href="/"><img id="logo" src="../Icone.png"></img></a>
 
-          <li id="nome">
-            <span> Usuário: {currentUser?.nome} </span>
-          </li>
+      <li id="nome">
+        <span> Usuário: {currentUser?.nome} </span>
+      </li>
+      <li>
+        <span class="material-symbols-outlined" onClick={logout} >logout</span>
+      </li>
 
     </footer>
   );
