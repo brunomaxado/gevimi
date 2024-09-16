@@ -59,24 +59,18 @@ import db from "../config/db.js";
   export const deletePedido = (req, res) => {
     const pedidoId = req.params.id_pedido;
   
-    // Query para deletar os itens associados ao pedido
-    const queryItensPedido = "DELETE FROM item_pedido WHERE fk_id_pedido = ?";
+    // Query para fazer o soft delete do pedido (atualizando data_deletado)
+    const softDeletePedidoQuery = "UPDATE pedido SET data_deletado = NOW() WHERE id_pedido = ?";
   
-    // Query para deletar o pedido
-    const queryPedido = "DELETE FROM pedido WHERE id_pedido = ?";
+    db.query(softDeletePedidoQuery, [pedidoId], (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Erro ao marcar o pedido como deletado", err });
+      }
   
-    // Deletar os itens do pedido
-    db.query(queryItensPedido, [pedidoId], (err, result) => {
-      if (err) return res.status(500).json({ message: "Erro ao deletar os itens do pedido", err });
-  
-      // Deletar o pedido
-      db.query(queryPedido, [pedidoId], (err, result) => {
-        if (err) return res.status(500).json({ message: "Erro ao deletar o pedido", err });
-  
-        return res.status(200).json({ message: "Pedido e itens associados foram deletados com sucesso." });
-      });
+      return res.status(200).json({ message: "Pedido foi marcado como deletado com sucesso." });
     });
   };
+  
   
 
   export const getPedido = (req, res) => {
@@ -86,7 +80,7 @@ import db from "../config/db.js";
     const queryPedido = `
       SELECT * 
       FROM pedido 
-      WHERE id_pedido = ?
+      WHERE id_pedido = ? and data_deletado is NULL
     `;
   
     // Buscar o pedido pelo ID
@@ -173,6 +167,69 @@ import db from "../config/db.js";
     db.query(q, [pedidoId], (err, data) => {
       if (err) return res.status(500).json(err); // Retorna um erro se a query falhar
       return res.json("Status do pedido atualizado com sucesso."); // Retorna uma mensagem de sucesso
+    });
+  };
+  
+  export const getPedidoEntrega = (req, res) => {
+    // Query para buscar todos os pedidos com data de entrega mais próxima
+    const queryPedidos = `
+      SELECT *
+      FROM pedido
+      WHERE data_deletado IS NULL 
+        AND tipo <> 3 
+        AND status <> 1
+        AND data_para_entregar IS NOT NULL
+      ORDER BY data_para_entregar ASC
+    `;
+  
+    // Buscar todos os pedidos
+    db.query(queryPedidos, (err, pedidosData) => {
+      if (err) {
+        console.error("Erro ao buscar os pedidos:", err);
+        return res.status(500).json({ message: "Erro ao buscar os pedidos", error: err });
+      }
+  
+      if (pedidosData.length === 0) {
+        return res.status(404).json({ message: "Nenhum pedido encontrado" });
+      }
+  
+      // Para cada pedido, buscar os itens associados
+      const promises = pedidosData.map((pedido) => {
+        const queryItensPedido = `
+          SELECT * 
+          FROM item_pedido 
+          WHERE fk_id_pedido = ?
+        `;
+  
+        return new Promise((resolve, reject) => {
+          db.query(queryItensPedido, [pedido.id_pedido], (err, itensPedidoData) => {
+            if (err) {
+              console.error(`Erro ao buscar itens do pedido ${pedido.id_pedido}:`, err);
+              return reject(err);
+            }
+  
+            // Associa os itens ao pedido e inclui o tempo até a entrega
+            resolve({ 
+              ...pedido, 
+              itensPedido: itensPedidoData,
+              tempo_ate_entrega: {
+                dias: pedido.dias_ate_entrega,
+                horas: pedido.horas_ate_entrega
+              }
+            });
+          });
+        });
+      });
+  
+      // Resolver todas as promessas e retornar os pedidos com os itens associados
+      Promise.all(promises)
+        .then((pedidosComItens) => {
+          return res.status(200).json(pedidosComItens);
+        })
+        .catch((err) => {
+          console.error("Erro ao processar pedidos:", err);
+          return res.status(500).json({ message: "Erro ao processar os pedidos", error: err });
+        });
     });
   };
   

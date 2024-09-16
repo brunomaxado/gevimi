@@ -55,9 +55,9 @@ const ReadPedidoUnico = () => {
     fetchUsuarios();
   }, [pedidoId]);
 
-  const getClienteNome = (id) => {
+  const getClienteDetalhes = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
-    return cliente ? cliente.nome : "N/A";
+    return cliente ? cliente : {}; // Retorna o cliente completo ou um objeto vazio
   };
 
   const getUsuarioNome = (id) => {
@@ -197,7 +197,7 @@ const ReadPedidoUnico = () => {
             <input style={styles.input} type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
           </div>
         </div>
-
+  
         <div style={styles.formGroupHorizontal}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Forma de Pagamento:</label>
@@ -208,7 +208,7 @@ const ReadPedidoUnico = () => {
             <input style={styles.input} type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
           </div>
         </div>
-
+  
         <div style={styles.formGroupHorizontal}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Data de Entrega:</label>
@@ -233,19 +233,44 @@ const ReadPedidoUnico = () => {
             />
           </div>
         </div>
-
+  
         <div style={styles.formGroupHorizontal}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Cliente:</label>
-            <input style={styles.input} type="text" value={getClienteNome(pedido.pedido.fk_id_cliente)} readOnly />
+            <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).nome || "N/A"} readOnly />
           </div>
-
+  
           <div style={styles.formGroup}>
             <label style={styles.label}>Usuário:</label>
             <input style={styles.input} type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
           </div>
         </div>
-
+  
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Cidade:</label>
+          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).cidade || "N/A"} readOnly />
+        </div>
+  
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Endereço:</label>
+          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).endereco || "N/A"} readOnly />
+        </div>
+  
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Bairro:</label>
+          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).bairro || "N/A"} readOnly />
+        </div>
+  
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Rua:</label>
+          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).rua || "N/A"} readOnly />
+        </div>
+  
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Número:</label>
+          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).numero || "N/A"} readOnly />
+        </div>
+  
         <div style={styles.formGroup}>
           <label style={styles.label}>Observação:</label>
           <input
@@ -255,7 +280,7 @@ const ReadPedidoUnico = () => {
             readOnly
           />
         </div>
-        
+  
         <div style={styles.formGroup}>
           <label style={styles.label}>Finalizado em:</label>
           <input
@@ -268,7 +293,7 @@ const ReadPedidoUnico = () => {
             readOnly
           />
         </div>
-
+  
         <div style={styles.formGroup}>
           <label style={{ ...styles.label, textAlign: "center" }}>Produtos:</label>
           <div style={{ ...styles.produtoList, textAlign: "center" }}>
@@ -286,7 +311,7 @@ const ReadPedidoUnico = () => {
             )}
           </div>
         </div>
-
+  
         <div style={styles.formGroup}>
           <label style={styles.label}>Total:</label>
           <input

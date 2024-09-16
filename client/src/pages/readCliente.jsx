@@ -7,12 +7,12 @@ const ReadCliente = () => {
   const [clientes, setClientes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedClienteId, setSelectedClienteId] = useState(null);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Novo estado para o modal de sucesso
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para a pesquisa
-  const [isSorted, setIsSorted] = useState(false); // Estado para ordenação
-  const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
-  const clientesPerPage = 5; // Número de clientes exibidos por página
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSorted, setIsSorted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const clientesPerPage = 5;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,16 +36,16 @@ const ReadCliente = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8800/cliente/${selectedClienteId}`);
-      setClientes(clientes.filter(cliente => cliente.id_cliente !== selectedClienteId)); // Atualiza a lista de clientes sem recarregar a página
-      setShowModal(false); // Fecha o modal de confirmação
-      setSuccessMessage("Cliente deletado com sucesso!"); // Define a mensagem de sucesso
-      setShowSuccessModal(true); // Exibe o modal de sucesso
+      setClientes(clientes.filter(cliente => cliente.id_cliente !== selectedClienteId));
+      setShowModal(false);
+      setSuccessMessage("Cliente deletado com sucesso!");
+      setShowSuccessModal(true);
       setTimeout(() => {
-        setShowSuccessModal(false); // Fecha o modal de sucesso após 3 segundos
+        setShowSuccessModal(false);
       }, 3000);
     } catch (err) {
       console.log(err);
-      setShowModal(false); // Fecha o modal de confirmação mesmo em caso de erro
+      setShowModal(false);
     }
   };
 
@@ -71,7 +71,6 @@ const ReadCliente = () => {
     setIsSorted(!isSorted);
   };
 
-  // Filtra os clientes baseado no termo de pesquisa em múltiplos campos
   const filteredClientes = clientes.filter((cliente) =>
     cliente.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.cpf.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,19 +82,16 @@ const ReadCliente = () => {
     cliente.numero.toString().includes(searchTerm)
   );
 
-  // Paginação: calcula os clientes para a página atual
   const indexOfLastCliente = currentPage * clientesPerPage;
   const indexOfFirstCliente = indexOfLastCliente - clientesPerPage;
   const currentClientes = filteredClientes.slice(indexOfFirstCliente, indexOfLastCliente);
 
-  // Muda para a próxima página
   const paginateNext = () => {
     if (currentPage < Math.ceil(filteredClientes.length / clientesPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  // Muda para a página anterior
   const paginatePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -133,7 +129,7 @@ const ReadCliente = () => {
         <tbody>
           {currentClientes.map((cliente) => (
             <tr key={cliente.id_cliente}>
-              <td>{cliente.id_cliente}</td> {/* Coluna de ID */}
+              <td>{cliente.id_cliente}</td>
               <td>{cliente.nome}</td>
               <td>{cliente.cpf}</td>
               <td>{cliente.celular}</td>

@@ -13,6 +13,7 @@ const ReadPedido = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showModal, setShowModal] = useState(false); // Estado para o modal de confirmação
+  const [modalType, setModalType] = useState(""); // Novo estado para distinguir o tipo de ação no modal
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,17 +58,17 @@ const ReadPedido = () => {
     fetchProdutos();
     fetchUsuarios();
   }, []);
+
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
-  
-    // Limpa o modal após 2 segundos (2000 milissegundos)
+
     setTimeout(() => {
       setShowSuccessModal(false);
-      setSuccessMessage(""); // Limpa a mensagem após o fechamento
-    }, 2000); // Ajuste o tempo conforme necessário
+      setSuccessMessage(""); 
+    }, 2000); 
   };
-  
+
   const getClienteNome = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
     return cliente ? cliente.nome : "N/A";
@@ -118,39 +119,64 @@ const ReadPedido = () => {
   };
 
   const handleClickFinalizar = (id) => {
-    setSelectedPedidoId(id); // Define o ID do pedido selecionado
-    setShowModal(true); // Mostra o modal de confirmação
+    setSelectedPedidoId(id);
+    setModalType("finalizar");
+    setShowModal(true);
+  };
+
+  const handleClickCancelar = (id) => {
+    setSelectedPedidoId(id);
+    setModalType("cancelar");
+    setShowModal(true);
   };
 
   const handleFinalizar = async () => {
     try {
-      // Obtém a data atual
-      const currentDate = new Date().toISOString(); // Formato ISO para compatibilidade com o backend
-  
+      const currentDate = new Date().toISOString();
+
       await axios.put(`http://localhost:8800/pedido/${selectedPedidoId}`, { 
         status: 1,
-        data_finalizado: currentDate // Envia a data de finalização para o backend
+        data_finalizado: currentDate
       });
-  
-      // Atualiza o estado local com a nova data de finalização
+
       setPedidos(pedidos.map(pedido =>
         pedido.id_pedido === selectedPedidoId
           ? { ...pedido, status: 1, data_finalizado: currentDate }
           : pedido
       ));
-  
+
       showSuccess("Pedido finalizado com sucesso.");
-      setShowModal(false); // Fecha o modal de confirmação
+      setShowModal(false);
     } catch (err) {
       console.error("Erro ao finalizar o pedido:", err);
       setError("Erro ao finalizar o pedido.");
-      setShowModal(false); // Fecha o modal de confirmação em caso de erro
+      setShowModal(false);
     }
   };
-  
+
+  const handleCancelar = async () => {
+    try {
+      await axios.delete(`http://localhost:8800/pedido/${selectedPedidoId}`);
+      setPedidos(pedidos.filter(pedido => pedido.id_pedido !== selectedPedidoId));
+      showSuccess("Pedido cancelado com sucesso.");
+      setShowModal(false);
+    } catch (err) {
+      console.error("Erro ao cancelar o pedido:", err);
+      setError("Erro ao cancelar o pedido.");
+      setShowModal(false);
+    }
+  };
+
+  const handleConfirm = () => {
+    if (modalType === "finalizar") {
+      handleFinalizar();
+    } else if (modalType === "cancelar") {
+      handleCancelar();
+    }
+  };
 
   const handleCancel = () => {
-    setShowModal(false); // Fecha o modal de confirmação sem fazer alterações
+    setShowModal(false);
   };
 
   return (
@@ -189,9 +215,7 @@ const ReadPedido = () => {
                   </div>
                 ))}
               </td>
-              <td>
-                R${calcularTotalItens(pedido.itensPedido).toFixed(2)}
-              </td>
+              <td>R${calcularTotalItens(pedido.itensPedido).toFixed(2)}</td>
               <td>
                 {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
                   ? new Date(pedido.data_para_entregar).toLocaleString()
@@ -201,13 +225,13 @@ const ReadPedido = () => {
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
               <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
               <td>
-                <button className="delete">Cancelar</button>
+                <button className="delete" onClick={() => handleClickCancelar(pedido.id_pedido)}>Cancelar</button>
                 <button className="update">
                   <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
                 </button>
                 <button
                   className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
-                  onClick={() => handleClickFinalizar(pedido.id_pedido)} // Passa o ID do pedido
+                  onClick={() => handleClickFinalizar(pedido.id_pedido)}
                   disabled={pedido.status === 1}
                 >
                   Finalizar
@@ -222,18 +246,25 @@ const ReadPedido = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <h2>Confirmar Finalização</h2>
-            <p>Tem certeza que deseja finalizar o pedido?</p>
-            <button className="modal-button" onClick={handleFinalizar}>Sim</button>
-            <button className="modal-button" onClick={handleCancel}>Não</button>
+            <h2>Confirmar Ação</h2>
+            <p>
+              {modalType === "finalizar"
+                ? "Tem certeza que deseja finalizar o pedido?"
+                : "Tem certeza que deseja cancelar o pedido?"}
+            </p>
+            <div className="modal-buttons">
+              <button className="confirm" onClick={handleConfirm}>Sim</button>
+              <button className="cancel" onClick={handleCancel}>Não</button>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Modal de sucesso */}
       {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <span>{successMessage}</span>
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{successMessage}</h2>
           </div>
         </div>
       )}
