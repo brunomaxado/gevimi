@@ -26,10 +26,10 @@ const Header = () => {
                  <Link to="/viewProduto" className="nav-link"><p> Listar Produto</p> </Link>
                 </li>
                 <li>
-                <Link to="/produto" className="nav-link"><p> Novo Produto</p> </Link>
+                 <Link to="/readCliente" className="nav-link"><p>Listar Cliente</p></Link>
                 </li>
                 <li>
-                 <Link to="/readCliente" className="nav-link"><p>Listar Cliente</p></Link>
+                <Link to="/produto" className="nav-link"><p> Novo Produto</p> </Link>
                 </li>
                 <li>
                  <Link to="/cliente" className="nav-link"><p>Novo Cliente</p></Link>

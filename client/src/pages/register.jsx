@@ -29,7 +29,7 @@ const Register = () => {
 console.log(inputs);
   return (
     <div className="auth, login">
-      <h1>Register</h1>
+      <h1>Registro</h1>
       <form>
       <input
           required
