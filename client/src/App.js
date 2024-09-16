@@ -7,6 +7,7 @@ import GerenciarProduto from "./pages/editarProduto";
 import Categoria from "./pages/Categoria";
 import Cliente from "./pages/Cliente";
 import ReadCliente from "./pages/readCliente";
+import ReadPedido from "./pages/readPedido";
 import EditarCliente from "./pages/editarCliente";
 import Login from "./pages/login";
 import Home from "./pages/home";
@@ -39,6 +40,7 @@ function App() {
           <Route path="/cliente" element={<Private Component={Cliente} />} />
           <Route path="/categoria" element={<Private Component={Categoria} />} />
           <Route path="/readCliente" element={<Private Component={ReadCliente} />} />
+          <Route path="/readPedido" element={<Private Component={ReadPedido} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
           <Route path="/home" element={<Private Component={Home} />} />
           <Route path="/" element={<Login />} />
