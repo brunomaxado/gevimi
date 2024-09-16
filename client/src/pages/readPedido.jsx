@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
-import { Link } from "react-router-dom";
 
 const ReadPedido = () => {
   const [pedidos, setPedidos] = useState([]);
-  const [clientes, setClientes] = useState([]); 
-  const [produtos, setProdutos] = useState([]); 
+  const [clientes, setClientes] = useState([]);
+  const [produtos, setProdutos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedPedidoId, setSelectedPedidoId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para a pesquisa
+  const [sortCriterion, setSortCriterion] = useState('id'); // Estado para o critério de ordenação
+  const [isSortedAscending, setIsSortedAscending] = useState(true); // Estado para a ordem de ordenação (crescente ou decrescente)
+  const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
+  const [error, setError] = useState(null); // Estado para mensagens de erro
+  const pedidosPerPage = 5; // Número de pedidos exibidos por página
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,28 +26,28 @@ const ReadPedido = () => {
       }
     };
 
-    const fetchClientes = async () => { 
+    const fetchClientes = async () => {
       try {
         const response = await axios.get("http://localhost:8800/allcliente");
-        setClientes(response.data); 
+        setClientes(response.data);
       } catch (err) {
         console.log(err);
       }
     };
 
-    const fetchUsuarios = async () => { 
+    const fetchUsuarios = async () => {
       try {
         const response = await axios.get("http://localhost:8800/usuario");
-        setUsuarios(response.data); 
+        setUsuarios(response.data);
       } catch (err) {
         console.log(err);
       }
     };
 
-    const fetchProdutos = async () => { 
+    const fetchProdutos = async () => {
       try {
         const response = await axios.get("http://localhost:8800/books");
-        setProdutos(response.data); 
+        setProdutos(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -67,7 +70,7 @@ const ReadPedido = () => {
   };
 
   const getProdutoNome = (id) => {
-    const produto = produtos.find((u) => u.id_produto === id); 
+    const produto = produtos.find((p) => p.id_produto === id);
     return produto ? produto.nome : "N/A";
   };
 
@@ -83,7 +86,6 @@ const ReadPedido = () => {
     }, 0);
   };
 
-  // Função para retornar o texto de acordo com a forma de pagamento
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
       case 1: return "Dinheiro";
@@ -94,16 +96,6 @@ const ReadPedido = () => {
     }
   };
 
-  const getStatus = (status) => {
-    switch (status) {
-        case 1: return "Finalizado";
-        case 2: return "Em andamento";
-        case 3: return "Não finalizado";
-        default: return "Desconhecido";
-    }
-  };
-
-  // Função para retornar o texto de acordo com o tipo de entrega
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
       case 1: return "Entrega";
@@ -113,14 +105,20 @@ const ReadPedido = () => {
     }
   };
 
+  const getStatus = (status) => {
+    switch (status) {
+      case 1: return "Finalizado";
+      case 2: return "Em andamento";
+      case 3: return "Não finalizado";
+      default: return "Desconhecido";
+    }
+  };
 
   const handleClickFinalizar = async (id) => {
     try {
-      // Envia o status atualizado para 'finalizado' (1)
       await axios.put(`http://localhost:8800/pedido/${id}`, { status: 1 });
       console.log("Pedido finalizado com sucesso");
-  
-      // Atualiza a lista de pedidos após a atualização
+
       const res = await axios.get("http://localhost:8800/pedido");
       setPedidos(res.data);
     } catch (err) {
@@ -128,13 +126,71 @@ const ReadPedido = () => {
       setError("Erro ao finalizar o pedido.");
     }
   };
-  
-  
-console.log(selectedPedidoId);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSort = (criterion) => {
+    const sortedPedidos = [...pedidos].sort((a, b) => {
+      if (criterion === 'id') {
+        return isSortedAscending
+          ? a.id_pedido - b.id_pedido
+          : b.id_pedido - a.id_pedido;
+      } else if (criterion === 'data_entrega') {
+        return isSortedAscending
+          ? new Date(a.data_para_entregar) - new Date(b.data_para_entregar)
+          : new Date(b.data_para_entregar) - new Date(a.data_para_entregar);
+      } else if (criterion === 'data_realizacao') {
+        return isSortedAscending
+          ? new Date(a.data_realizado) - new Date(b.data_realizado)
+          : new Date(b.data_realizado) - new Date(a.data_realizado);
+      }
+      return 0;
+    });
+    setPedidos(sortedPedidos);
+    setSortCriterion(criterion);
+    setIsSortedAscending(!isSortedAscending);
+  };
+
+  const filteredPedidos = pedidos.filter((pedido) =>
+    getClienteNome(pedido.fk_id_cliente).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pedido.id_pedido.toString().includes(searchTerm) ||
+    pedido.itensPedido.some(item => getProdutoNome(item.fk_id_produto).toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  const indexOfLastPedido = currentPage * pedidosPerPage;
+  const indexOfFirstPedido = indexOfLastPedido - pedidosPerPage;
+  const currentPedidos = filteredPedidos.slice(indexOfFirstPedido, indexOfLastPedido);
+
+  const paginateNext = () => {
+    if (currentPage < Math.ceil(filteredPedidos.length / pedidosPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const paginatePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="tabela">
       <h1>Pedidos e Itens</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      <p>
+        <button onClick={() => handleSort('id')}>Ordenar por ID {isSortedAscending ? "Crescente" : "Decrescente"}</button>
+        <button onClick={() => handleSort('data_entrega')}>Ordenar por Data de Entrega {isSortedAscending ? "Crescente" : "Decrescente"}</button>
+        <button onClick={() => handleSort('data_realizacao')}>Ordenar por Data de Realização {isSortedAscending ? "Crescente" : "Decrescente"}</button>
+      </p>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        placeholder="Procurar por ID, cliente, produto..."
+        title="Digite um ID, nome do cliente, produto, etc."
+      />
       <table>
         <thead>
           <tr>
@@ -153,13 +209,13 @@ console.log(selectedPedidoId);
           </tr>
         </thead>
         <tbody>
-          {pedidos.map((pedido) => (
-            <tr key={pedido.id_produto}>
+          {currentPedidos.map((pedido) => (
+            <tr key={pedido.id_pedido}>
               <td>{pedido.id_pedido}</td>
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
-              <td>{getTipoEntrega(pedido.tipo)}</td> {/* Exibindo o texto da entrega */}
+              <td>{getTipoEntrega(pedido.tipo)}</td>
               <td>{getStatus(pedido.status)}</td>
-              <td>{getFormaPagamento(pedido.forma_pagamento)}</td> {/* Exibindo o texto da forma de pagamento */}
+              <td>{getFormaPagamento(pedido.forma_pagamento)}</td>
               <td>
                 {pedido.itensPedido.map((item) => (
                   <div key={item.id_item_pedido}>
@@ -171,32 +227,41 @@ console.log(selectedPedidoId);
                 R${calcularTotalItens(pedido.itensPedido).toFixed(2)}
               </td>
               <td>
-  {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
-    ? new Date(pedido.data_para_entregar).toLocaleString()
-    : "Sem data"}
-</td>
-
+                {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
+                  ? new Date(pedido.data_para_entregar).toLocaleString()
+                  : "Sem data"}
+              </td>
               <td>{new Date(pedido.data_realizado).toLocaleString()}</td>
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
               <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
               <td>
-  <button className="delete">Cancelar</button>
-  <button className="update">
-    <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
-  </button>
-  
-  <button
-    className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
-    onClick={() => handleClickFinalizar(pedido.id_pedido)}
-    disabled={pedido.status === 1} // Desabilita o botão se o status for 'Finalizado'
-  >
-    Finalizar
-  </button>
-</td>
+                <button className="delete">Cancelar</button>
+                <button className="update">
+                  <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
+                </button>
+                <button
+                  className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
+                  onClick={() => handleClickFinalizar(pedido.id_pedido)}
+                  disabled={pedido.status === 1} // Desabilita o botão se o status for 'Finalizado'
+                >
+                  Finalizar
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Paginação */}
+      <div className="pagination">
+        <button onClick={paginatePrev} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <span>Página {currentPage} de {Math.ceil(filteredPedidos.length / pedidosPerPage)}</span>
+        <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredPedidos.length / pedidosPerPage)}>
+          Próximo
+        </button>
+      </div>
     </div>
   );
 };
