@@ -5,6 +5,7 @@
   --pretofundo: #121212;
   --meiotom: #d4d4d4;
   --branco: #fff;
+  --fundobranco: #E4E1DD;
   --amarelologo: #EAC452;
   --amarelotoque: #FFA500;
   --vermelho: #5c0000;
@@ -50,6 +51,7 @@
 body {
   padding: 0px;
   overflow-x: hidden;
+  background-color: var(--fundobranco);
 }
 
 * {
@@ -135,7 +137,7 @@ input[type=number] {
   margin: 5px 0 22px 0;
   border: 1px solid var(--pretofundo);
   border-radius: 10px;
-  background: var(--branco);
+  background: var(--fundobranco);
 }
 
 input[type=text]:focus,
@@ -327,7 +329,7 @@ img {
 
 .modal-content {
   position: relative;
-  background-color: var(--branco);
+  background-color: var(--fundobranco);
   padding: 50px;
   border-radius: 5px;
   box-shadow: 0 2px 10px var(--pretofundo);
@@ -579,8 +581,14 @@ div.auth button {
       width: 270px;
       padding: 10px;
       border: 1px solid var(--cinza);
+      background-color: var(--fundobranco);
     }
   }
+}
+
+.categoria-select{
+  background-color: var(--fundobranco);
+  border-radius: 10px;
 }
 
 .success-modal {
