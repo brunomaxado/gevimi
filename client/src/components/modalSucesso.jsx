@@ -11,10 +11,9 @@ const ModalSucesso = ({ onClose, message }) => {
   );
 };
 
-// Estilos
 const modalSucessoStyle = {
   position: 'fixed',
-  top: '60px', // Logo abaixo do header
+  top: '60px', 
   left: 0,
   width: '100%',
   display: 'flex',

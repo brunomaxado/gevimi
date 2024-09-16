@@ -65,12 +65,10 @@ export const addProduto = (req, res) => {
 export const deleteProduto = (req, res) => {
   const produtoId = req.params.id_produto;
 
-  // Tenta deletar diretamente o produto
   const deleteProdutoQuery = "DELETE FROM produto WHERE id_produto = ?";
 
   db.query(deleteProdutoQuery, [produtoId], (err, data) => {
     if (err) {
-      // Se ocorrer erro por FK, executa o soft delete (atualiza data_deletado)
       if (err.code === 'ER_ROW_IS_REFERENCED_2') {
         const softDeleteQuery = "UPDATE produto SET data_deletado = NOW() WHERE id_produto = ?";
         
@@ -85,7 +83,6 @@ export const deleteProduto = (req, res) => {
         return res.status(500).json("Erro ao deletar o produto: " + err.message);
       }
     } else {
-      // Caso o produto seja deletado com sucesso
       return res.json("Produto foi deletado com sucesso!");
     }
   });

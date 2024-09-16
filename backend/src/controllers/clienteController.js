@@ -1,6 +1,5 @@
 import db from "../config/db.js";
 
-// Controlador para obter todos os clientes
 export const getClientes = (req, res) => {
   const q = "SELECT * FROM cliente where data_deletado is NULL";
 
@@ -25,7 +24,6 @@ export const getAllCliente = (req, res) => {
     return res.status(200).json(data);
   });
 };
-// Controlador para obter um cliente específico pelo ID
 export const getCliente = (req, res) => {
   const q = "SELECT * FROM cliente WHERE id_cliente = ?";
   
@@ -40,7 +38,6 @@ export const getCliente = (req, res) => {
   });
 };
 
-// Controlador para adicionar um novo cliente
 export const addCliente = (req, res) => {
   const q =
     "INSERT INTO cliente(`nome`, `cpf`, `celular`, `cep`, `rua`, `numero`,`cidade`, `bairro` ) VALUES (?)";
@@ -62,16 +59,13 @@ export const addCliente = (req, res) => {
   });
 };
 
-// Controlador para deletar um cliente
 export const deleteCliente = (req, res) => {
   const clienteId = req.params.id_cliente;
 
-  // Tenta deletar diretamente o cliente
   const deleteClienteQuery = "DELETE FROM cliente WHERE id_cliente = ?";
 
   db.query(deleteClienteQuery, [clienteId], (err, data) => {
     if (err) {
-      // Se ocorrer erro por FK, executa o soft delete (atualiza data_deletado)
       if (err.code === 'ER_ROW_IS_REFERENCED_2') {
         const softDeleteQuery = "UPDATE cliente SET data_deletado = NOW() WHERE id_cliente = ?";
 
@@ -82,11 +76,9 @@ export const deleteCliente = (req, res) => {
           return res.json("Cliente não pôde ser deletado devido a dependências, mas foi marcado como deletado (soft delete).");
         });
       } else {
-        // Outro tipo de erro
         return res.status(500).json("Erro ao deletar o cliente: " + err.message);
       }
     } else {
-      // Caso o cliente seja deletado com sucesso
       if (data.affectedRows === 0) {
         return res.status(404).json({ message: "Cliente não encontrado" });
       }
@@ -95,7 +87,6 @@ export const deleteCliente = (req, res) => {
   });
 };
 
-// Controlador para atualizar um cliente
 export const updateCliente = (req, res) => {
   const clienteId = req.params.id_cliente;
   const q =

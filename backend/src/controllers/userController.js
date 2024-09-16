@@ -5,14 +5,14 @@ import jwt from "jsonwebtoken";
 export const register = (req, res) => {
     
     
-    //CHECK EXISTING USER
+    
     const q = "SELECT * FROM usuario WHERE login = ?";
   
     db.query(q, [req.body.login], (err, data) => {
       if (err) return res.status(500).json(err);
       if (data.length) return res.status(409).json("User already exists!");
   
-      //Hash the password and create a user
+    
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(req.body.senha, salt);
   
@@ -28,7 +28,7 @@ export const register = (req, res) => {
 
  
   export const login = (req, res) => {
-    //CHECK USER
+    
   
     const q = "SELECT * FROM usuario WHERE login = ?";
   
@@ -36,7 +36,7 @@ export const register = (req, res) => {
       if (err) return res.status(500).json(err);
       if (data.length === 0) return res.status(404).json("User not found!");
   
-      //Check password
+    
       const isPasswordCorrect = bcrypt.compareSync(
         req.body.senha,
         data[0].senha
@@ -68,7 +68,7 @@ export const register = (req, res) => {
   export const getUsuario= (req, res) => {
     
     
-    //CHECK EXISTING USER
+    
     const q = "SELECT * FROM usuario";
   
     db.query(q, (err, data) => {

@@ -95,13 +95,13 @@ const db = mysql.createConnection({
     `;
   
     const values = [
-      req.body.nome,            // nome
-      req.body.descricao,       // descricao
-      req.body.promocao,        // promocao
-      req.body.preco_desconto,  // preco_desconto
-      req.body.preco_unitario,  // preco_unitario
-      req.body.imagem,          // imagem
-      req.body.fk_id_categoria  // fk_id_categoria
+      req.body.nome,            
+      req.body.descricao,       
+      req.body.promocao,        
+      req.body.preco_desconto,  
+      req.body.preco_unitario,  
+      req.body.imagem,          
+      req.body.fk_id_categoria  
     ];
   
     db.query(q, [...values, produtoId], (err, data) => {
@@ -126,7 +126,7 @@ const db = mysql.createConnection({
     const q = "INSERT INTO categoria(`nome`) VALUES (?)";
   
     const values = [
-        req.body.nome,             // nome
+        req.body.nome,            
       ];
   
     db.query(q, [values], (err, data) => {
@@ -140,13 +140,11 @@ const db = mysql.createConnection({
   app.delete("/categoria/:id_categoria", (req, res) => {
     const categoriaId = req.params.id_categoria;
   
-    // Primeiro, torne `fk_id_categoria` nulo para todos os produtos que referenciam essa categoria
     const nullifyFKQuery = "UPDATE produto SET fk_id_categoria = NULL WHERE fk_id_categoria = ?";
   
     db.query(nullifyFKQuery, [categoriaId], (err, data) => {
       if (err) return res.status(500).send(err);
   
-      // Agora que as chaves estrangeiras foram anuladas, você pode deletar a categoria
       const deleteCategoriaQuery = "DELETE FROM categoria WHERE id_categoria = ?";
   
       db.query(deleteCategoriaQuery, [categoriaId], (err, data) => {
@@ -170,7 +168,7 @@ const db = mysql.createConnection({
     `;
   
     const values = [
-      req.body.nome,            // nome
+      req.body.nome,            
     ];
   
     db.query(q, [...values, produtoId], (err, data) => {
@@ -197,13 +195,13 @@ const db = mysql.createConnection({
     const q = "INSERT INTO cliente(`id_cliente`, `nome`, `cpf`, `celular`, `cep`, `logradouro`, `numero`) VALUES (?)";
   
     const values = [
-      req.body.id_cliente,  // id_cliente
-      req.body.nome,        // nome
-      req.body.cpf,         // cpf
-      req.body.celular,     // celular
-      req.body.cep,         // cep
-      req.body.logradouro,  // logradouro
-      req.body.numero       // numero
+      req.body.id_cliente,  
+      req.body.nome,        
+      req.body.cpf,         
+      req.body.celular,     
+      req.body.cep,         
+      req.body.logradouro,  
+      req.body.numero       
     ];
   
     db.query(q, [values], (err, data) => {
@@ -238,12 +236,12 @@ const db = mysql.createConnection({
     `;
   
     const values = [
-      req.body.nome,         // nome
-      req.body.cpf,          // cpf
-      req.body.celular,      // celular
-      req.body.cep,          // cep
-      req.body.logradouro,   // logradouro
-      req.body.numero        // numero
+      req.body.nome,         
+      req.body.cpf,          
+      req.body.celular,      
+      req.body.cep,          
+      req.body.logradouro,   
+      req.body.numero        
     ];
   
     db.query(q, [...values, clienteId], (err, data) => {

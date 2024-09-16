@@ -26,12 +26,11 @@ const Private = ({ Component }) => {
 };
 
 function App() {
-  const { currentUser } = useAuth(); // Obtenha o usuário atual do contexto de autenticação
-
+  const { currentUser } = useAuth(); 
   return (
     <><div className="app">
       <BrowserRouter>
-        {currentUser && <Header />} {/* Exibe o Header somente se houver um usuário autenticado */}
+        {currentUser && <Header />}
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -11,8 +11,8 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:3000", // endereço do seu front-end
-    credentials: true, // permite envio de cookies
+    origin: "http://localhost:3000", 
+    credentials: true, 
   }));
 app.use(express.json());
 app.use(cookieParser());
