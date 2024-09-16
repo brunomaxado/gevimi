@@ -109,7 +109,7 @@ const Categoria = () => {
         <div className="modal">
           <div className="modal-content">
           <span
-        className="close"
+        className="close-modal"
         onClick={() => {
           setShowAddModal(false);
           setErrorMessage(""); // Limpar a mensagem de erro ao fechar o modal
@@ -134,7 +134,7 @@ const Categoria = () => {
       {showUpdateModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowUpdateModal(false)}>&times;</span>
+            <span className="close-modal" onClick={() => setShowUpdateModal(false)}>&times;</span>
             <h2>Atualizar Categoria</h2>
             <input
               type="text"
@@ -151,7 +151,7 @@ const Categoria = () => {
       {showDeleteModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={closeDeleteModal}>&times;</span>
+            <span className="close-modal" onClick={closeDeleteModal}>&times;</span>
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir esta categoria?</p>
             <button className="modal-button" onClick={handleDelete}>Sim</button>
