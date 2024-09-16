@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+
 const ReadPedidoUnico = () => {
   const [pedido, setPedido] = useState(null);
   const [clientes, setClientes] = useState([]);
@@ -29,7 +30,7 @@ const ReadPedidoUnico = () => {
         console.log(err);
       }
     };
-    console.log(pedido);
+
     const fetchUsuarios = async () => {
       try {
         const response = await axios.get("http://localhost:8800/usuario");
@@ -41,7 +42,7 @@ const ReadPedidoUnico = () => {
 
     const fetchProdutos = async () => {
       try {
-        const response = await axios.get("http://localhost:8800/books");
+        const response = await axios.get("http://localhost:8800/allbooks");
         setProdutos(response.data);
       } catch (err) {
         console.log(err);
@@ -69,15 +70,10 @@ const ReadPedidoUnico = () => {
     return produto ? produto.nome : "N/A";
   };
 
-  const getProdutoPreco = (id) => {
-    const produto = produtos.find((p) => p.id_produto === id);
-    return produto ? produto.preco_unitario : 0;
-  };
-
+  // Ajustar para usar preco_unitario_atual
   const calcularTotalItens = (itensPedido) => {
     return itensPedido.reduce((total, item) => {
-      const precoUnitario = getProdutoPreco(item.fk_id_produto);
-      return total + precoUnitario * item.quantidade;
+      return total + (item.preco_unitario_atual ? item.preco_unitario_atual * item.quantidade : 0);
     }, 0);
   };
 
@@ -110,6 +106,7 @@ const ReadPedidoUnico = () => {
         return "Desconhecido";
     }
   };
+
   const getStatus = (status) => {
     switch (status) {
       case 1:
@@ -122,6 +119,7 @@ const ReadPedidoUnico = () => {
         return "Desconhecido";
     }
   };
+
   if (!pedido) return <p>Carregando...</p>;
 
   // CSS como constante
@@ -184,125 +182,125 @@ const ReadPedidoUnico = () => {
       fontWeight: "bold",
     },
   };
-  //<td>{getClienteNome(pedido.fk_id_cliente)}</td>
-  //            <td>{getTipoEntrega(pedido.tipo)}</td> {/* Exibindo o texto da entrega */}
-  console.log(pedido.pedido.tipo);
-  console.log(pedido);
-  
+
   return (
     <div style={styles.container}>
-  <h1>Detalhes do Pedido</h1>
-  <form style={styles.form}>
-  <div style={styles.formGroupHorizontal}>
-  <div style={styles.formGroup}>
-    <label style={styles.label}>ID Pedido:</label>
-    <input style={styles.input} type="text" value={pedidoId} readOnly />
-  </div>
-  <div style={styles.formGroup}>
-    <label style={styles.label}>Status:</label>
-    <input style={styles.input} type="text" value={getStatus(pedido.pedido.status)|| "N/A" } readOnly />
-  </div>
-</div>
-
-    <div style={styles.formGroupHorizontal}>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>Forma de Pagamento:</label>
-        <input style={styles.input} type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
-      </div>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>Tipo:</label>
-        <input style={styles.input} type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
-      </div>
-    </div>
-
-    <div style={styles.formGroupHorizontal}>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>Data de Entrega:</label>
-        <input
-          style={styles.input}
-          type="text"
-          value={
-            pedido.pedido.data_para_entregar && !isNaN(Date.parse(pedido.pedido.data_para_entregar))
-              ? new Date(pedido.pedido.data_para_entregar).toLocaleString()
-              : "Sem data"
-          }
-          readOnly
-        />
-      </div>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>Data de Realização:</label>
-        <input
-          style={styles.input}
-          type="text"
-          value={pedido.pedido.data_realizado ? new Date(pedido.pedido.data_realizado).toLocaleString() : "Sem data"}
-          readOnly
-        />
-      </div>
-    </div>
-
-    {/* Alinhando Cliente e Usuário lado a lado */}
-    <div style={styles.formGroupHorizontal}>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>Cliente:</label>
-        <input style={styles.input} type="text" value={getClienteNome(pedido.pedido.fk_id_cliente)} readOnly />
-      </div>
-
-      <div style={styles.formGroup}>
-        <label style={styles.label}>Usuário:</label>
-        <input style={styles.input} type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
-      </div>
-    </div>
-    <div style={styles.formGroup}>
-  <label style={styles.label}>Observação:</label>
-  <input
-    style={styles.input}
-    type="text"
-    value={pedido.pedido.observacao || "Sem observação"}
-    readOnly
-  />
-</div>
-<div style={styles.formGroup}>
-  <label style={styles.label}>Finalizado em:</label>
-  <input
-    style={styles.input}
-    type="text"
-    value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
-        ? new Date(pedido.pedido.data_finalizado).toLocaleString()
-        : "Sem data"
-    }
-    readOnly
-  />
-</div>
-    <div style={styles.formGroup}>
-  <label style={{ ...styles.label, textAlign: "center" }}>Produtos:</label>
-  <div style={{ ...styles.produtoList, textAlign: "center" }}>
-    {pedido.itensPedido && pedido.itensPedido.length > 0 ? (
-      pedido.itensPedido.map((item) => (
-        <div style={{ ...styles.produtoItem, justifyContent: "center" }} key={item.id_item_pedido}>
-          <span>
-            {getProdutoNome(item.fk_id_produto)} x{item.quantidade} - 
-          Uni: R$ {getProdutoPreco(item.fk_id_produto).toFixed(2)} {/* Preço unitário centralizado */}
-          </span>
+      <h1>Detalhes do Pedido</h1>
+      <form style={styles.form}>
+        <div style={styles.formGroupHorizontal}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>ID Pedido:</label>
+            <input style={styles.input} type="text" value={pedidoId} readOnly />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Status:</label>
+            <input style={styles.input} type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
+          </div>
         </div>
-      ))
-    ) : (
-      <div>Nenhum produto</div>
-    )}
-  </div>
-</div>
 
+        <div style={styles.formGroupHorizontal}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Forma de Pagamento:</label>
+            <input style={styles.input} type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Tipo:</label>
+            <input style={styles.input} type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
+          </div>
+        </div>
 
-    <div style={styles.formGroup}>
-      <label style={styles.label}>Total:</label>
-      <input
-        style={styles.input}
-        type="text"
-        value={`R$ ${calcularTotalItens(pedido.itensPedido).toFixed(2)}`}
-        readOnly
-      />
+        <div style={styles.formGroupHorizontal}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Data de Entrega:</label>
+            <input
+              style={styles.input}
+              type="text"
+              value={
+                pedido.pedido.data_para_entregar && !isNaN(Date.parse(pedido.pedido.data_para_entregar))
+                  ? new Date(pedido.pedido.data_para_entregar).toLocaleString()
+                  : "Sem data"
+              }
+              readOnly
+            />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Data de Realização:</label>
+            <input
+              style={styles.input}
+              type="text"
+              value={pedido.pedido.data_realizado ? new Date(pedido.pedido.data_realizado).toLocaleString() : "Sem data"}
+              readOnly
+            />
+          </div>
+        </div>
+
+        <div style={styles.formGroupHorizontal}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Cliente:</label>
+            <input style={styles.input} type="text" value={getClienteNome(pedido.pedido.fk_id_cliente)} readOnly />
+          </div>
+
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Usuário:</label>
+            <input style={styles.input} type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
+          </div>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Observação:</label>
+          <input
+            style={styles.input}
+            type="text"
+            value={pedido.pedido.observacao || "Sem observação"}
+            readOnly
+          />
+        </div>
+        
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Finalizado em:</label>
+          <input
+            style={styles.input}
+            type="text"
+            value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
+                ? new Date(pedido.pedido.data_finalizado).toLocaleString()
+                : "Sem data"
+            }
+            readOnly
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={{ ...styles.label, textAlign: "center" }}>Produtos:</label>
+          <div style={{ ...styles.produtoList, textAlign: "center" }}>
+            {pedido.itensPedido && pedido.itensPedido.length > 0 ? (
+              pedido.itensPedido.map((item) => (
+                <div style={{ ...styles.produtoItem, justifyContent: "center" }} key={item.id_item_pedido}>
+                  <span>
+                    {getProdutoNome(item.fk_id_produto)} x{item.quantidade} - 
+                    Uni: R$ {(item.preco_unitario_atual ? item.preco_unitario_atual.toFixed(2) : "N/A")}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div>Nenhum produto</div>
+            )}
+          </div>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Total:</label>
+          <input
+            style={styles.input}
+            type="text"
+            value={`R$ ${calcularTotalItens(pedido.itensPedido) ? calcularTotalItens(pedido.itensPedido).toFixed(2) : "0.00"}`}
+            readOnly
+          />
+        </div>
+      </form>
+      <Link to={`/readPedido`}>
+        <button>Voltar</button>
+      </Link>
     </div>
-  </form>
-</div>
   );
 };
 

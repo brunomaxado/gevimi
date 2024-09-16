@@ -29,10 +29,10 @@ import db from "../config/db.js";
       // Preparar as promessas para inserir cada item do pedido
       const promises = itensPedido.map((item) => {
         const queryItemPedido = `
-          INSERT INTO item_pedido (quantidade, fk_id_pedido, fk_id_produto) 
-          VALUES (?, ?, ?)
+          INSERT INTO item_pedido (quantidade, preco_unitario_atual, fk_id_pedido, fk_id_produto) 
+          VALUES (?, ?, ?, ?)
         `;
-        const itemValues = [item.quantidade, pedidoId, item.fk_id_produto];
+        const itemValues = [item.quantidade, item.preco_unitario_atual, pedidoId, item.fk_id_produto];
   
         // Retorna uma promise para cada inserção
         return new Promise((resolve, reject) => {
@@ -116,11 +116,14 @@ import db from "../config/db.js";
       });
     });
   };
+
+
   export const getPedidos = (req, res) => {
     // Query para buscar todos os pedidos
     const queryPedidos = `
       SELECT * 
       FROM pedido
+      where data_deletado is null
     `;
   
     // Buscar todos os pedidos

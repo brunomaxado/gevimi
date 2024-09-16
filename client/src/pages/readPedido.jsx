@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
-import { Link } from "react-router-dom";
 
 const ReadPedido = () => {
   const [pedidos, setPedidos] = useState([]);
-  const [clientes, setClientes] = useState([]); 
-  const [produtos, setProdutos] = useState([]); 
+  const [clientes, setClientes] = useState([]);
+  const [produtos, setProdutos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [error, setError] = useState(null);
   const [selectedPedidoId, setSelectedPedidoId] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showModal, setShowModal] = useState(false); // Estado para o modal de confirmação
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const ReadPedido = () => {
 
     const fetchProdutos = async () => { 
       try {
-        const response = await axios.get("http://localhost:8800/books");
+        const response = await axios.get("http://localhost:8800/allbooks");
         setProdutos(response.data); 
       } catch (err) {
         console.log(err);
@@ -55,7 +57,17 @@ const ReadPedido = () => {
     fetchProdutos();
     fetchUsuarios();
   }, []);
-
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+  
+    // Limpa o modal após 2 segundos (2000 milissegundos)
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      setSuccessMessage(""); // Limpa a mensagem após o fechamento
+    }, 2000); // Ajuste o tempo conforme necessário
+  };
+  
   const getClienteNome = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
     return cliente ? cliente.nome : "N/A";
@@ -71,19 +83,12 @@ const ReadPedido = () => {
     return produto ? produto.nome : "N/A";
   };
 
-  const getProdutoPreco = (id) => {
-    const produto = produtos.find((p) => p.id_produto === id);
-    return produto ? produto.preco_unitario : 0;
-  };
-
   const calcularTotalItens = (itensPedido) => {
     return itensPedido.reduce((total, item) => {
-      const precoUnitario = getProdutoPreco(item.fk_id_produto);
-      return total + (precoUnitario * item.quantidade);
+      return total + (item.preco_unitario_atual * item.quantidade);
     }, 0);
   };
 
-  // Função para retornar o texto de acordo com a forma de pagamento
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
       case 1: return "Dinheiro";
@@ -103,7 +108,6 @@ const ReadPedido = () => {
     }
   };
 
-  // Função para retornar o texto de acordo com o tipo de entrega
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
       case 1: return "Entrega";
@@ -113,24 +117,42 @@ const ReadPedido = () => {
     }
   };
 
+  const handleClickFinalizar = (id) => {
+    setSelectedPedidoId(id); // Define o ID do pedido selecionado
+    setShowModal(true); // Mostra o modal de confirmação
+  };
 
-  const handleClickFinalizar = async (id) => {
+  const handleFinalizar = async () => {
     try {
-      // Envia o status atualizado para 'finalizado' (1)
-      await axios.put(`http://localhost:8800/pedido/${id}`, { status: 1 });
-      console.log("Pedido finalizado com sucesso");
+      // Obtém a data atual
+      const currentDate = new Date().toISOString(); // Formato ISO para compatibilidade com o backend
   
-      // Atualiza a lista de pedidos após a atualização
-      const res = await axios.get("http://localhost:8800/pedido");
-      setPedidos(res.data);
+      await axios.put(`http://localhost:8800/pedido/${selectedPedidoId}`, { 
+        status: 1,
+        data_finalizado: currentDate // Envia a data de finalização para o backend
+      });
+  
+      // Atualiza o estado local com a nova data de finalização
+      setPedidos(pedidos.map(pedido =>
+        pedido.id_pedido === selectedPedidoId
+          ? { ...pedido, status: 1, data_finalizado: currentDate }
+          : pedido
+      ));
+  
+      showSuccess("Pedido finalizado com sucesso.");
+      setShowModal(false); // Fecha o modal de confirmação
     } catch (err) {
       console.error("Erro ao finalizar o pedido:", err);
       setError("Erro ao finalizar o pedido.");
+      setShowModal(false); // Fecha o modal de confirmação em caso de erro
     }
   };
   
-  
-console.log(selectedPedidoId);
+
+  const handleCancel = () => {
+    setShowModal(false); // Fecha o modal de confirmação sem fazer alterações
+  };
+
   return (
     <div className="tabela">
       <h1>Pedidos e Itens</h1>
@@ -154,12 +176,12 @@ console.log(selectedPedidoId);
         </thead>
         <tbody>
           {pedidos.map((pedido) => (
-            <tr key={pedido.id_produto}>
+            <tr key={pedido.id_pedido}>
               <td>{pedido.id_pedido}</td>
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
-              <td>{getTipoEntrega(pedido.tipo)}</td> {/* Exibindo o texto da entrega */}
+              <td>{getTipoEntrega(pedido.tipo)}</td>
               <td>{getStatus(pedido.status)}</td>
-              <td>{getFormaPagamento(pedido.forma_pagamento)}</td> {/* Exibindo o texto da forma de pagamento */}
+              <td>{getFormaPagamento(pedido.forma_pagamento)}</td>
               <td>
                 {pedido.itensPedido.map((item) => (
                   <div key={item.id_item_pedido}>
@@ -171,32 +193,50 @@ console.log(selectedPedidoId);
                 R${calcularTotalItens(pedido.itensPedido).toFixed(2)}
               </td>
               <td>
-  {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
-    ? new Date(pedido.data_para_entregar).toLocaleString()
-    : "Sem data"}
-</td>
-
+                {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
+                  ? new Date(pedido.data_para_entregar).toLocaleString()
+                  : "Sem data"}
+              </td>
               <td>{new Date(pedido.data_realizado).toLocaleString()}</td>
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
               <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
               <td>
-  <button className="delete">Cancelar</button>
-  <button className="update">
-    <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
-  </button>
-  
-  <button
-    className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
-    onClick={() => handleClickFinalizar(pedido.id_pedido)}
-    disabled={pedido.status === 1} // Desabilita o botão se o status for 'Finalizado'
-  >
-    Finalizar
-  </button>
-</td>
+                <button className="delete">Cancelar</button>
+                <button className="update">
+                  <Link to={`/readPedido/${pedido.id_pedido}`}>Gerenciar</Link>
+                </button>
+                <button
+                  className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
+                  onClick={() => handleClickFinalizar(pedido.id_pedido)} // Passa o ID do pedido
+                  disabled={pedido.status === 1}
+                >
+                  Finalizar
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Modal de confirmação */}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Confirmar Finalização</h2>
+            <p>Tem certeza que deseja finalizar o pedido?</p>
+            <button className="modal-button" onClick={handleFinalizar}>Sim</button>
+            <button className="modal-button" onClick={handleCancel}>Não</button>
+          </div>
+        </div>
+      )}
+
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

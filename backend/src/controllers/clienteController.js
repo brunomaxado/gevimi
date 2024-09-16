@@ -12,11 +12,12 @@ export const getClientes = (req, res) => {
 export const getAllCliente = (req, res) => {
   const q = `
   SELECT 
+  id_cliente,
     (CASE 
       WHEN data_deletado IS NOT NULL 
       THEN CONCAT('[DELETADO] ', nome) 
       ELSE nome 
-     END) AS nome_novo, cliente.*
+     END) AS nome,  cpf, celular, cep, rua, numero, cidade, bairro
   FROM cliente
 `;
   db.query(q, (err, data) => {

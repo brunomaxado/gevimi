@@ -28,6 +28,7 @@ const Pedido = () => {
 
   const [novoItem, setNovoItem] = useState({
     fk_id_produto: "",
+    preco_unitario_atual: null,
     quantidade: 1,
     preco_unitario: 0,
   });
@@ -57,6 +58,7 @@ const Pedido = () => {
         console.log(err);
       }
     };
+ 
 
     fetchProduto();
     fetchCliente();
@@ -75,61 +77,72 @@ const Pedido = () => {
     setNovoItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
   
-    // Verifica se todos os campos obrigatórios estão preenchidos
-    const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
+const handleClick = async (e) => {
+  e.preventDefault();
+
+  // Verifica se todos os campos obrigatórios estão preenchidos
+  const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
+
+  if (!tipo || !forma_pagamento || !fk_id_cliente || (tipo !== "3" && !data_para_entregar)) {
+    setError("Todos os campos obrigatórios devem ser preenchidos.");
+    return;
+  }
+
+  if (itensPedido.length === 0) {
+    setError("Adicione pelo menos um item ao pedido.");
+    return;
+  }
+
+  // Limpa a mensagem de erro antes de tentar submeter o pedido
+  setError(null);
+
+  const dadosParaAtualizar = {
+    pedido,
+    itensPedido, // Agora cada item contém o preco_unitario_atual correto
+  };
+
+  try {
+    await axios.post("http://localhost:8800/pedido", dadosParaAtualizar);
+    console.log("Pedido adicionado com sucesso");
+    showSuccess("Pedido adicionado com sucesso");
+
+  } catch (err) {
+    console.log(err);
+    setError("Ocorreu um erro ao adicionar o pedido.");
+  }
+};
   
-    if (!tipo || !forma_pagamento || !fk_id_cliente || (tipo !== "3" && !data_para_entregar)) {
-      setError("Todos os campos obrigatórios devem ser preenchidos.");
-      return;
-    }
-  
-    if (itensPedido.length === 0) {
-      setError("Adicione pelo menos um item ao pedido.");
-      return;
-    }
-  
-    // Limpa a mensagem de erro antes de tentar submeter o pedido
-    setError(null);
-  
-    const dadosParaAtualizar = {
-      pedido,
-      itensPedido,
+
+const handleAdicionarItem = () => {
+  const produtoSelecionado = produto.find(
+    (p) => p.id_produto === parseInt(novoItem.fk_id_produto)
+  );
+
+  if (produtoSelecionado) {
+    console.log("Produto Selecionado:", produtoSelecionado);
+    console.log("Preço Unitário do Produto:", produtoSelecionado.preco_unitario);
+
+    const itemAdicionado = {
+      ...novoItem,
+      nome: produtoSelecionado.nome,
+      preco_unitario: produtoSelecionado.preco_unitario, // Preço do produto no momento da seleção
+      preco_unitario_atual: produtoSelecionado.preco_unitario, // Salva o preço atual
     };
-  
-    try {
-      await axios.post("http://localhost:8800/pedido", dadosParaAtualizar);
-      console.log("Pedido adicionado com sucesso");
-      showSuccess("Pedido adicionado com sucesso");
-  
-    } catch (err) {
-      console.log(err);
-      setError("Ocorreu um erro ao adicionar o pedido.");
-    }
-  };
-  
 
-  const handleAdicionarItem = () => {
-    const produtoSelecionado = produto.find(
-      (p) => p.id_produto === parseInt(novoItem.fk_id_produto)
-    );
-    if (produtoSelecionado) {
-      const itemAdicionado = {
-        ...novoItem,
-        nome: produtoSelecionado.nome,
-        preco_unitario: produtoSelecionado.preco_unitario,
-      };
+    setItensPedido((prev) => [...prev, itemAdicionado]);
 
-      setItensPedido((prev) => [...prev, itemAdicionado]);
+    setNovoItem((prev) => ({
+      ...prev,
+      fk_id_produto: "",
+    }));
 
-      setNovoItem((prev) => ({
-        ...prev,
-        fk_id_produto: "",
-      }));
-    }
-  };
+    console.log("Item Adicionado com Preço Unitário Atual:", itemAdicionado);
+  } else {
+    console.log("Nenhum produto encontrado para o ID:", novoItem.fk_id_produto);
+  }
+};
+
 
   const handleRemoverItem = (index) => {
     setItensPedido((prev) => prev.filter((_, i) => i !== index));
