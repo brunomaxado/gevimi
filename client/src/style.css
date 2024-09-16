@@ -14,6 +14,7 @@
   --verdemodal: #155724;
   --verdeclaro: #c3e6cb;
   --sombramodal: #d4edda;
+  --fundoclaro: #00000080;
   --fontepadrao: "Noto Serif", serif;
 }
 
@@ -195,11 +196,12 @@ li#pedido a:hover {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
+  height: 70%;
 }
 
 div.tabela {
-  width: 100%;
+  width: 90%;
   overflow-x: hidden;
 }
 
@@ -215,8 +217,8 @@ tr:hover {
 }
 
 div.tabela {
-  height: 100%;
-  overflow-y: hidden;
+  height: 70%;
+  overflow-y: auto;
   overflow-x: auto;
 }
 
@@ -237,7 +239,6 @@ div.tabela {
   display: flex;
   flex-direction: row;
   width: 100vw;
-  margin-top: 100vh;
   height: 15vh;
   margin-bottom: 0px;
   left: 0;
@@ -472,8 +473,8 @@ div.auth button {
 }
 
 .app {
-  height: 200vh;
-  padding: 0;
+  padding-top: 20vh;
+  padding-bottom: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -512,6 +513,8 @@ div.auth button {
       margin-bottom: 20vh;
     }
 
+    
+
     button:hover {
       background-color: var(--amarelotoque);
     }
@@ -536,10 +539,6 @@ div.auth button {
     display: flex;
     flex-direction: column;
     gap: 20px;
-
-    h1 {
-      padding-top: 20vh;
-    }
 
     input {
       width: 270px;
@@ -721,4 +720,49 @@ li {
     max-width: 30vw;
     width: auto;
   }
+}
+
+.modal-cliente {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.modal-content-cliente {
+  position: relative;
+  background-color: var(--sombramodal);
+  margin: 5vw;
+
+  padding: 20vh;
+  border-radius: 10px;
+}
+
+button.close-cliente {
+  position: absolute !important;
+  top: 15vh !important;
+  right: 15vw !important;
+  width: 1vw !important;
+  background-color: transparent !important;
+  border: none !important;
+  font-size: 20px !important;
+  cursor: pointer !important;
+}
+
+.close-cliente:hover,
+.close-cliente:focus {
+  color: var(--vermelhointenso) !important;
+}
+
+.atualizar-cliente{
+  border: 1px solid var(--pretofundo) !important;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
 }

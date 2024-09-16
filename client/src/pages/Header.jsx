@@ -40,7 +40,7 @@ const Header = () => {
               </ul>
             </li>
           <li className="nav-item">
-          <span className="material-symbols-outlined">monitoring </span>
+          <Link to="/estatistica" className="material-symbols-outlined">monitoring </Link>
             </li>
 
             <li id="pedido" className="nav-item, direita">

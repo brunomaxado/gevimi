@@ -161,26 +161,20 @@ const handleAdicionarItem = () => {
     setItensPedido((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Função para adicionar o cliente e fechar o modal
   const adicionarCliente = async (novoCliente) => {
     try {
-      // Atualiza a lista de clientes com o novo cliente
       const response = await axios.get("http://localhost:8800/cliente");
       setCliente(response.data);
 
-      // Seleciona o novo cliente
       setPedido((prev) => ({
         ...prev,
         fk_id_cliente: novoCliente.id_cliente,
       }));
 
-      // Mensagem de sucesso
       setSuccessMessage("Cliente cadastrado com sucesso!");
 
-      // Fecha o modal
       setShowModal(false);
 
-      // Remove a mensagem de sucesso após 3 segundos
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
@@ -193,7 +187,7 @@ const handleAdicionarItem = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/readPedido"); // Redirecionar após 3 segundos
+      navigate("/readPedido");
     }, 1500);
   };
   
@@ -286,8 +280,8 @@ const handleAdicionarItem = () => {
           <p>
             <select
               name="fk_id_cliente"
-              value={pedido.fk_id_cliente || ""} // Certifica-se de que o cliente novo está selecionado
-              onChange={handleChange} // Atualiza o estado quando o usuário seleciona um cliente diferente
+              value={pedido.fk_id_cliente || ""} 
+              onChange={handleChange}
             >
               <option value="">Selecione o cliente</option>
               {cliente.map((cliente) => (
@@ -312,11 +306,10 @@ const handleAdicionarItem = () => {
               </span>
             </p>
 
-            {/* Exibir o modal quando showModal for true */}
             {showModal && (
               <ModalCliente
                 onClose={() => setShowModal(false)}
-                adicionarCliente={adicionarCliente} // Passa a função para adicionar o cliente
+                adicionarCliente={adicionarCliente} 
               />
             )}
           </div>

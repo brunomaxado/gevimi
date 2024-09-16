@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import '../style.css'; 
 // Funções de validação
 const validateCPF = (cpf) => {
     // Remove caracteres não numéricos
@@ -60,15 +60,15 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado para o modal de sucesso
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/readCliente"); // Redirecionar após 3 segundos
+      navigate("/readCliente"); 
     }, 2000);
   };
   const handleChange = (e) => {
@@ -80,13 +80,13 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
     e.preventDefault();
     const { nome, cpf, celular, cep, cidade, bairro, rua } = cliente;
 
-    // Verificação de campos obrigatórios
+   
     if (!nome || !cpf || !celular || !cidade || !bairro || !rua || !cep) {
       
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-    // Validações
+   
     if (!validateCPF(cpf)) {
       setError("CPF inválido.");
       return;
@@ -104,7 +104,7 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
         const response = await axios.post("http://localhost:8800/cliente", cliente);
         console.log("Cliente adicionado com sucesso");
   
-        // Chama a função para adicionar o cliente no componente pai e fechar o modal
+       
         adicionarCliente(response.data);
   
       } catch (err) {
@@ -115,9 +115,9 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
   };
 
   return (
-    <div style={modalStyle}>
-      <div style={modalContentStyle}>
-        <button style={closeButtonStyle} onClick={onClose}>X</button>
+    <div class="modal-cliente">
+      <div class="modal-content-cliente">
+        <button class="close-cliente" onClick={onClose}>X</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div>
           <h1>Adicionar Cliente</h1>
@@ -137,7 +137,7 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
           />
           <input
             type="number"
-            placeholder="Celular/ somente numero botar em todso"
+            placeholder="Celular/ somente números"
             name="celular"
             value={cliente.celular}
             onChange={handleChange}
@@ -177,7 +177,7 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
             value={cliente.numero}
             onChange={handleChange}
           />
-          <button style={modalButtonStyle} onClick={handleClick}>Atualizar</button>
+          <button class="atualizar-cliente" onClick={handleClick}>Atualizar</button>
         </div>
       </div>
       {showSuccessModal && (
@@ -190,47 +190,6 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
 
     </div>
   );
-};
-
-// Estilos inline
-const modalStyle = {
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
-const modalContentStyle = {
-  backgroundColor: '#fff',
-  padding: '20px',
-  borderRadius: '5px',
-  width: '400px',
-  position: 'relative',
-};
-
-const closeButtonStyle = {
-  position: 'absolute',
-  top: '10px',
-  right: '10px',
-  backgroundColor: 'transparent',
-  border: 'none',
-  fontSize: '20px',
-  cursor: 'pointer',
-};
-
-const modalButtonStyle = {
-  backgroundColor: '#007bff',
-  color: '#fff',
-  border: 'none',
-  padding: '10px 20px',
-  cursor: 'pointer',
-  borderRadius: '5px',
-  marginTop: '10px',
 };
 
 export default ModalCliente;

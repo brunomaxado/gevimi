@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import '../style.css'; // Certifique-se de importar o arquivo CSS
+import '../style.css';
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false); // Estado para controlar a visibilidade do modal de adição
-  const [showUpdateModal, setShowUpdateModal] = useState(false); // Estado para controlar a visibilidade do modal de atualização
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar a visibilidade do modal de exclusão
-  const [newCategoria, setNewCategoria] = useState(""); // Estado para o nome da nova categoria
-  const [currentCategoria, setCurrentCategoria] = useState({ id: "", nome: "" }); // Estado para a categoria que será atualizada
-  const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null); // Estado para armazenar o ID da categoria a ser excluída
+  const [showAddModal, setShowAddModal] = useState(false); 
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [newCategoria, setNewCategoria] = useState(""); 
+  const [currentCategoria, setCurrentCategoria] = useState({ id: "", nome: "" }); 
+  const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null); 
   
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado para o modal de sucesso
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para a mensagem de erro no formulário
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -48,13 +48,12 @@ const Categoria = () => {
     }
     try {
       await axios.post("http://localhost:8800/categoria", { nome: newCategoria });
-      setNewCategoria(""); // Limpa o campo após a adição
-      setShowAddModal(false); // Fecha o modal
-      // Atualize a lista de categorias
+      setNewCategoria("");
+      setShowAddModal(false); 
       const res = await axios.get("http://localhost:8800/categoria");
       setCategoria(res.data);
       showSuccess("Categoria adicionada com sucesso!");
-      setErrorMessage(""); // Limpa a mensagem de erro
+      setErrorMessage(""); 
     } catch (err) {
       console.log(err);
     }
@@ -64,9 +63,8 @@ const Categoria = () => {
     try {
       if (currentCategoria.nome) {
         await axios.put(`http://localhost:8800/categoria/${currentCategoria.id}`, { nome: currentCategoria.nome });
-        setCurrentCategoria({ id: "", nome: "" }); // Limpa os campos após a atualização
-        setShowUpdateModal(false); // Fecha o modal
-        // Atualize a lista de categorias
+        setCurrentCategoria({ id: "", nome: "" });
+        setShowUpdateModal(false); 
         const res = await axios.get("http://localhost:8800/categoria");
         setCategoria(res.data);
         showSuccess("Categoria atualizada com sucesso!");
@@ -91,13 +89,13 @@ const Categoria = () => {
     setCategoriaIdToDelete(null);
   };
 
-  // Função para mostrar o modal de sucesso
+
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-    }, 3000); // O modal fechará automaticamente após 3 segundos
+    }, 3000); 
   };
 
   return (
@@ -112,7 +110,7 @@ const Categoria = () => {
         className="close-modal"
         onClick={() => {
           setShowAddModal(false);
-          setErrorMessage(""); // Limpar a mensagem de erro ao fechar o modal
+          setErrorMessage(""); 
         }}
       >
         &times;
@@ -124,7 +122,7 @@ const Categoria = () => {
               onChange={(e) => setNewCategoria(e.target.value)}
               placeholder=" Nome da Categoria"
             />
-            {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Exibe a mensagem de erro */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>} 
             <br /> <br />
             <button onClick={handleAdd}>Adicionar</button>
           </div>
