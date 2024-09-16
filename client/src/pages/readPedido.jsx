@@ -299,15 +299,19 @@ const ReadPedido = () => {
 
       {/* Paginação */}
       <div className="pagination">
-        {[...Array(totalPages).keys()].map((number) => (
-          <button
-            key={number + 1}
-            onClick={() => paginate(number + 1)}
-            className={currentPage === number + 1 ? "active" : ""}
-          >
-            {number + 1}
-          </button>
-        ))}
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span>Página {currentPage} de {totalPages}</span>
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Próximo
+        </button>
       </div>
 
       {/* Modal de confirmação */}

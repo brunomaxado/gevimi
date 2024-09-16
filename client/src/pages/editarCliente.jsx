@@ -56,14 +56,13 @@ const EditarCliente = () => {
     bairro: ""
   });
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado para o modal de sucesso
-const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensagem de sucesso
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+const [successMessage, setSuccessMessage] = useState(""); 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const clienteId = location.pathname.split("/")[2];
 
-  // Função para buscar os dados do cliente
   const fetchCliente = async () => {
     try {
       const response = await axios.get(`http://localhost:8800/cliente/${clienteId}`);
@@ -87,20 +86,19 @@ const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensa
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/readCliente"); // Redirecionar após 3 segundos
+      navigate("/readCliente"); 
     }, 1000);
   };
   
   const handleClick = async (e) => {
     e.preventDefault();
     const { nome, cpf, celular, cep, cidade, bairro, rua } = cliente;
-    // Verificação de campos obrigatórios
+  
     if (!nome || !cpf || !celular || !cidade || !bairro || !rua || !cep) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
   
-    // Validações
     if (!validateCPF(cpf)) {
       setError("CPF inválido.");
       return;
@@ -117,7 +115,7 @@ const [successMessage, setSuccessMessage] = useState(""); // Estado para a mensa
     try {
       await axios.put(`http://localhost:8800/cliente/${clienteId}`, cliente);
       console.log("Cliente atualizado com sucesso");
-      showSuccess("Cliente atualizado com sucesso"); // Chama a função de sucesso
+      showSuccess("Cliente atualizado com sucesso"); 
     } catch (err) {
       console.error("Erro ao atualizar o cliente:", err);
       setError("Erro ao atualizar o cliente.");
@@ -161,7 +159,7 @@ return (
           name="celular"
           value={cliente.celular}
           onChange={handleChange}
-          maxLength={11} // Para garantir que o celular tenha o tamanho correto
+          maxLength={11} 
         />
         <input
           type="number"

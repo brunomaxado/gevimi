@@ -264,8 +264,14 @@ div.tabela {
 .nav-item {
   font-size: 18px;
   padding: 5vh;
+  align-self: center;
   margin-left: 5vw;
   margin-right: 5vw;
+}
+
+.nav-item:hover{
+  background-color: var(--cinza);
+  border-radius: 15px;
 }
 
 .nav-link {
@@ -347,8 +353,8 @@ img {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: var(--pretofundo);
-  color: var(--branco);
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
   cursor: pointer;
 }
 

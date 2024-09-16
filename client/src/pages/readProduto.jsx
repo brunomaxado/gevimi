@@ -188,9 +188,9 @@ const ReadProduto = () => {
               <td>R${produto.preco_unitario}</td>
               <td>
                 <button className="update">
-                  <Link to={`/gerenciarproduto/${produto.id_produto}`}>Update</Link>
+                  <Link to={`/gerenciarproduto/${produto.id_produto}`}>Atualizar</Link>
                 </button>
-                <button className="delete" onClick={() => handleDeleteClick(produto.id_produto)}>Delete</button>
+                <button className="delete" onClick={() => handleDeleteClick(produto.id_produto)}>Excluir</button>
               </td>
             </tr>
           ))}

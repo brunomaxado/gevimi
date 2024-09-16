@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import '../style.css'; // Certifique-se de importar o arquivo CSS
+import '../style.css';
 
 const Home = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -12,42 +12,45 @@ const Home = () => {
   const [selectedPedidoId, setSelectedPedidoId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [showModal, setShowModal] = useState(false); // Estado para o modal de confirmação
-  const [modalType, setModalType] = useState(""); // Novo estado para distinguir o tipo de ação no modal
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllPedidos = async () => {
       try {
         const res = await axios.get("http://localhost:8800/pedidoentrega");
-        setPedidos(res.data);
+        const sortedPedidos = res.data.sort((a, b) => new Date(a.data_para_entregar) - new Date(b.data_para_entregar));
+        setPedidos(sortedPedidos);
       } catch (err) {
         console.log(err);
       }
     };
 
-    const fetchClientes = async () => { 
+    const fetchClientes = async () => {
       try {
         const response = await axios.get("http://localhost:8800/allcliente");
-        setClientes(response.data); 
+        setClientes(response.data);
       } catch (err) {
         console.log(err);
       }
     };
 
-    const fetchUsuarios = async () => { 
+    const fetchUsuarios = async () => {
       try {
         const response = await axios.get("http://localhost:8800/usuario");
-        setUsuarios(response.data); 
+        setUsuarios(response.data);
       } catch (err) {
         console.log(err);
       }
     };
 
-    const fetchProdutos = async () => { 
+    const fetchProdutos = async () => {
       try {
         const response = await axios.get("http://localhost:8800/allprodutos");
-        setProdutos(response.data); 
+        setProdutos(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -65,8 +68,8 @@ const Home = () => {
 
     setTimeout(() => {
       setShowSuccessModal(false);
-      setSuccessMessage(""); 
-    }, 2000); 
+      setSuccessMessage("");
+    }, 2000);
   };
 
   const getClienteNome = (id) => {
@@ -80,7 +83,7 @@ const Home = () => {
   };
 
   const getProdutoNome = (id) => {
-    const produto = produtos.find((u) => u.id_produto === id); 
+    const produto = produtos.find((u) => u.id_produto === id);
     return produto ? produto.nome : "N/A";
   };
 
@@ -102,10 +105,10 @@ const Home = () => {
 
   const getStatus = (status) => {
     switch (status) {
-        case 1: return "Finalizado";
-        case 2: return "Em andamento";
-        case 3: return "Não finalizado";
-        default: return "Desconhecido";
+      case 1: return "Finalizado";
+      case 2: return "Em andamento";
+      case 3: return "Não finalizado";
+      default: return "Desconhecido";
     }
   };
 
@@ -134,7 +137,7 @@ const Home = () => {
     try {
       const currentDate = new Date().toISOString();
 
-      await axios.put(`http://localhost:8800/pedido/${selectedPedidoId}`, { 
+      await axios.put(`http://localhost:8800/pedido/${selectedPedidoId}`, {
         status: 1,
         data_finalizado: currentDate
       });
@@ -179,9 +182,20 @@ const Home = () => {
     setShowModal(false);
   };
 
+  const indexOfLastPedido = currentPage * itemsPerPage;
+  const indexOfFirstPedido = indexOfLastPedido - itemsPerPage;
+  const currentPedidos = pedidos.slice(indexOfFirstPedido, indexOfLastPedido);
+  const totalPages = Math.ceil(pedidos.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   return (
     <div className="tabela">
-      <h1>ENTREGAR EM ABERTO POR ORDEM DE DATA ENTREGA</h1>
+      <h1>ENTREGAS EM ABERTO POR ORDEM DE DATA ENTREGA</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <table>
         <thead>
@@ -201,7 +215,7 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {pedidos.map((pedido) => (
+          {currentPedidos.map((pedido) => (
             <tr key={pedido.id_pedido}>
               <td>{pedido.id_pedido}</td>
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
@@ -242,7 +256,22 @@ const Home = () => {
         </tbody>
       </table>
 
-      {/* Modal de confirmação */}
+      <div>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span>Página {currentPage} de {totalPages}</span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Próximo
+        </button>
+      </div>
+
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -260,7 +289,6 @@ const Home = () => {
         </div>
       )}
 
-      {/* Modal de sucesso */}
       {showSuccessModal && (
         <div className="modal">
           <div className="modal-content">

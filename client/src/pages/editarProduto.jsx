@@ -17,7 +17,6 @@ const GerenciarProduto = () => {
   const produtoId = location.pathname.split("/")[2];
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  // Função para buscar os dados do produto
   const fetchProduto = async () => {
     try {
       console.log("Fetching product with ID:", produtoId);
@@ -62,11 +61,9 @@ const GerenciarProduto = () => {
       return;
     }
   
-    // Adicione logs para depuração
     console.log("ID da categoria do livro:", produto.fk_id_categoria);
     console.log("Categorias disponíveis:", categorias);
   
-    // Verifica se o ID da categoria do produto existe na lista de categorias
     const categoriaExiste = categorias.some(
       (categoria) => Number(categoria.id_categoria) === Number(produto.fk_id_categoria)
     );
@@ -81,7 +78,6 @@ const GerenciarProduto = () => {
       console.log("Produto atualizado com sucesso");
     
       showSuccess("Produto atualizado com sucesso");
-     // navigate("/viewProduto");
     } catch (err) {
       console.error("Erro ao atualizar o produto:", err);
       setError("Erro ao atualizar o produto.");
@@ -93,14 +89,12 @@ const GerenciarProduto = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/viewProduto"); // Redirecionar após 3 segundos
+      navigate("/viewProduto"); 
     }, 1500);
   };
   
     
-  console.log(produto); // Adicione isto dentro do componente
- // console.log(produto.fk_id_categoria);
-  //console.log((categoria).id_categoria);
+  console.log(produto); 
   return (
     <div>
       <div className="form">

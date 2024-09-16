@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../style.css'; // Importa o arquivo de estilo
+import '../style.css'; 
 import { AuthContext } from "../context/authContext";
 import React, { useContext } from "react";
 import axios from "axios";
@@ -12,12 +12,10 @@ const Footer = () => {
 
       <a href="/"><img id="logo" src="../Icone.png"></img></a>
 
-      <li id="nome">
+      <li id="nome" className="esquerda">
         <span> Usuário: {currentUser?.nome} </span>
       </li>
-      <li>
-        <span class="material-symbols-outlined" onClick={logout} >logout</span>
-      </li>
+      
 
     </footer>
   );

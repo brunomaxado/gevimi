@@ -4,16 +4,16 @@ import '../style.css';
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false); 
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [newCategoria, setNewCategoria] = useState(""); 
-  const [currentCategoria, setCurrentCategoria] = useState({ id: "", nome: "" }); 
-  const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null); 
-  
-  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+  const [newCategoria, setNewCategoria] = useState("");
+  const [currentCategoria, setCurrentCategoria] = useState({ id: "", nome: "" });
+  const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null);
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -49,11 +49,11 @@ const Categoria = () => {
     try {
       await axios.post("http://localhost:8800/categoria", { nome: newCategoria });
       setNewCategoria("");
-      setShowAddModal(false); 
+      setShowAddModal(false);
       const res = await axios.get("http://localhost:8800/categoria");
       setCategoria(res.data);
       showSuccess("Categoria adicionada com sucesso!");
-      setErrorMessage(""); 
+      setErrorMessage("");
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +64,7 @@ const Categoria = () => {
       if (currentCategoria.nome) {
         await axios.put(`http://localhost:8800/categoria/${currentCategoria.id}`, { nome: currentCategoria.nome });
         setCurrentCategoria({ id: "", nome: "" });
-        setShowUpdateModal(false); 
+        setShowUpdateModal(false);
         const res = await axios.get("http://localhost:8800/categoria");
         setCategoria(res.data);
         showSuccess("Categoria atualizada com sucesso!");
@@ -95,26 +95,26 @@ const Categoria = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-    }, 3000); 
+    }, 3000);
   };
 
   return (
     <div className="tabela">
-      <h1>GEVIMI</h1>
+      <h1>Categorias</h1>
       <button className="categoriaAdd" onClick={() => setShowAddModal(true)}>Nova Categoria</button>
-      
+
       {showAddModal && (
         <div className="modal">
           <div className="modal-content">
-          <span
-        className="close-modal"
-        onClick={() => {
-          setShowAddModal(false);
-          setErrorMessage(""); 
-        }}
-      >
-        &times;
-      </span>
+            <span
+              className="close-modal"
+              onClick={() => {
+                setShowAddModal(false);
+                setErrorMessage("");
+              }}
+            >
+              &times;
+            </span>
             <h2>Adicionar Nova Categoria</h2>
             <input
               type="text"
@@ -122,7 +122,7 @@ const Categoria = () => {
               onChange={(e) => setNewCategoria(e.target.value)}
               placeholder=" Nome da Categoria"
             />
-            {errorMessage && <p className="error-message">{errorMessage}</p>} 
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <br /> <br />
             <button onClick={handleAdd}>Adicionar</button>
           </div>
@@ -181,10 +181,13 @@ const Categoria = () => {
               <td>{categoria.id_categoria}</td>
               <td>{categoria.nome}</td>
               <td>
-                <button className="delete" onClick={() => openDeleteModal(categoria.id_categoria)}>Delete</button>
                 <button className="update" onClick={() => openUpdateModal(categoria)}>
-                  Update
+                  Atualizar
                 </button>
+                <button className="delete" onClick={() => openDeleteModal(categoria.id_categoria)}>
+                  Excluir
+                </button>
+
               </td>
             </tr>
           ))}

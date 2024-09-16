@@ -139,8 +139,8 @@ const ReadCliente = () => {
               <td>{cliente.rua}</td>
               <td>{cliente.numero}</td>
               <td>
-                <button className="update" onClick={() => handleUpdateClick(cliente.id_cliente)}>Update</button>
-                <button className="delete" onClick={() => handleDeleteClick(cliente.id_cliente)}>Delete</button>
+                <button className="update" onClick={() => handleUpdateClick(cliente.id_cliente)}>Atualizar</button>
+                <button className="delete" onClick={() => handleDeleteClick(cliente.id_cliente)}>Excluir</button>
               </td>
             </tr>
           ))}
