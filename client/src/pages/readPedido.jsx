@@ -12,8 +12,13 @@ const ReadPedido = () => {
   const [selectedPedidoId, setSelectedPedidoId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [showModal, setShowModal] = useState(false); // Estado para o modal de confirmação
-  const [modalType, setModalType] = useState(""); // Novo estado para distinguir o tipo de ação no modal
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Barra de pesquisa
+  const [sortConfig, setSortConfig] = useState(null); // Configuração de ordenação
+  const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Estado para o número de itens por página
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -179,10 +184,72 @@ const ReadPedido = () => {
     setShowModal(false);
   };
 
+  const sortData = (key) => {
+    let sortedPedidos = [...pedidos];
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+      sortedPedidos.reverse();
+      setSortConfig({ key, direction: "desc" });
+    } else {
+      sortedPedidos.sort((a, b) => {
+        if (key === "cliente") {
+          return getClienteNome(a.fk_id_cliente).localeCompare(getClienteNome(b.fk_id_cliente));
+        } else if (key === "data_para_entregar" || key === "data_finalizado") {
+          return new Date(a[key]) - new Date(b[key]);
+        }
+        return 0;
+      });
+      setSortConfig({ key, direction: "asc" });
+    }
+    setPedidos(sortedPedidos);
+  };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const filteredPedidos = pedidos.filter((pedido) =>
+    getClienteNome(pedido.fk_id_cliente).toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredPedidos.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredPedidos.length / itemsPerPage);
+
   return (
     <div className="tabela">
       <h1>Pedidos e Itens</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {/* Barra de Pesquisa */}
+      <input
+        type="text"
+        placeholder="Pesquisar por nome do cliente"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-bar"
+      />
+
+      {/* Seleção de Itens por Página */}
+      <div className="items-per-page">
+        <label htmlFor="itemsPerPage">Itens por página:</label>
+        <select
+          id="itemsPerPage"
+          value={itemsPerPage}
+          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+        >
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+        </select>
+      </div>
+
+      {/* Botões de Ordenação */}
+      <div className="sort-buttons">
+        <button onClick={() => sortData("cliente")}>Ordenar por Cliente</button>
+        <button onClick={() => sortData("data_para_entregar")}>Ordenar por Data de Entrega</button>
+        <button onClick={() => sortData("data_finalizado")}>Ordenar por Data Finalizado</button>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -201,7 +268,7 @@ const ReadPedido = () => {
           </tr>
         </thead>
         <tbody>
-          {pedidos.map((pedido) => (
+          {currentItems.map((pedido) => (
             <tr key={pedido.id_pedido}>
               <td>{pedido.id_pedido}</td>
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
@@ -241,6 +308,19 @@ const ReadPedido = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Paginação */}
+      <div className="pagination">
+        {[...Array(totalPages).keys()].map((number) => (
+          <button
+            key={number + 1}
+            onClick={() => paginate(number + 1)}
+            className={currentPage === number + 1 ? "active" : ""}
+          >
+            {number + 1}
+          </button>
+        ))}
+      </div>
 
       {/* Modal de confirmação */}
       {showModal && (
