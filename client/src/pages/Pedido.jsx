@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import ModalCliente from "../components/modalCliente";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
@@ -190,7 +190,19 @@ const handleAdicionarItem = () => {
       navigate("/readPedido");
     }, 1500);
   };
-  
+
+  const primeiroCampoRef = useRef(null);
+
+
+  useEffect(() => {
+    // Quando o componente for montado, o campo recebe o foco
+    if (primeiroCampoRef.current) {
+      primeiroCampoRef.current.focus();
+    }
+  }, [])
+
+
+
   console.log(pedido);
   console.log(novoItem);
   console.log(itensPedido);
@@ -201,10 +213,11 @@ const handleAdicionarItem = () => {
       <div className="form" id="pedidos">
         <h1>Novo Pedido</h1>
       
-        <p>Produto:</p>
+        <p>Produto:<label className="asterisco">*</label></p>
         <p>
           <select
             name="fk_id_produto"
+            ref={primeiroCampoRef}
             value={novoItem.fk_id_produto}
             onChange={handleItemChange}
           >
@@ -241,14 +254,15 @@ const handleAdicionarItem = () => {
           ))}
         </ul>
         <p>Preço Total: R${precoTotal}</p>
-        <p>Tipo de Entrega:</p>
+        <p>Tipo de Entrega:<label className="asterisco">*</label></p>
         <p>
           <select
             name="tipo"
+            required
             id="tipo_entrega"
             value={pedido.tipo}
             onChange={(e) => {
-              handleChange(e);
+            handleChange(e);
             }}
           >
             <option value="">Selecione um tipo de entrega</option>
@@ -262,6 +276,7 @@ const handleAdicionarItem = () => {
           <div>
             <p>
               <label>Data e Hora da Entrega:</label>
+              <label className="asterisco">*</label>
             </p>
             <p>
               <input
@@ -314,10 +329,11 @@ const handleAdicionarItem = () => {
             )}
           </div>
         </div>
-        <p>Forma de Pagamento:</p>
+        <p>Forma de Pagamento:<label className="asterisco">*</label></p>
         <p>
           <select
             name="forma_pagamento"
+            required
             id="forma_pagamento"
             value={pedido.forma_pagamento}
             onChange={handleChange}

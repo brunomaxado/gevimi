@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const validateCPF = (cpf) => {
@@ -97,20 +97,34 @@ const Cliente = () => {
     }
   };
 
+  const primeiroCampoRef = useRef(null);
+
+
+  useEffect(() => {
+    // Quando o componente for montado, o campo recebe o foco
+    if (primeiroCampoRef.current) {
+      primeiroCampoRef.current.focus();
+    }
+  }, [])
+    
+
+
   return (
     <div class="novoCliente">
       {error && <p id="erro">{error}</p>}
       <div class="cliente">
         <h1>Adicionar Cliente</h1>
-        <p><input
+        <p>
+          <label className="asterisco">*</label><input
           type="text"
           placeholder="Nome"
           name="nome"
+          ref={primeiroCampoRef}
           value={cliente.nome}
           onChange={handleChange}
           required
         /></p>
-        <p>
+        <p> <label className="asterisco">*</label>
         <input
           type="number"
           placeholder="CPF"
@@ -119,7 +133,7 @@ const Cliente = () => {
           onChange={handleChange}
           required
         /></p>
-        <p>
+        <p> <label className="asterisco">*</label>
         <input
           type="number"
           placeholder="Celular"
@@ -128,7 +142,7 @@ const Cliente = () => {
           onChange={handleChange}
           required
         /></p>
-        <p>
+        <p> <label className="asterisco-branco">*</label>
         <input
           type="number"
           placeholder="CEP"
@@ -136,15 +150,16 @@ const Cliente = () => {
           value={cliente.cep}
           onChange={handleChange}
         /></p>
-        <p>
+        <p> <label className="asterisco">*</label>
         <input
           type="text"
           placeholder="Cidade"
           name="cidade"
           value={cliente.cidade}
           onChange={handleChange}
+          required
         /></p>
-        <p>
+        <p> <label className="asterisco">*</label>
         <input
           type="text"
           placeholder="Bairro"
@@ -153,7 +168,7 @@ const Cliente = () => {
           onChange={handleChange}
           required
         /></p>
-        <p>
+        <p>  <label className="asterisco">*</label>
         <input
           type="text"
           placeholder="Rua"
@@ -162,7 +177,7 @@ const Cliente = () => {
           onChange={handleChange}
           required
         /></p>
-        <p>
+        <p> <label className="asterisco">*</label>
         <input
           type="text"
           placeholder="Número"

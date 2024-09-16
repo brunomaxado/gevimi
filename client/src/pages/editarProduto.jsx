@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef  } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const GerenciarProduto = () => {
@@ -92,7 +92,15 @@ const GerenciarProduto = () => {
       navigate("/viewProduto"); 
     }, 1500);
   };
-  
+  const primeiroCampoRef = useRef(null);
+
+
+  useEffect(() => {
+    // Quando o componente for montado, o campo recebe o foco
+    if (primeiroCampoRef.current) {
+      primeiroCampoRef.current.focus();
+    }
+  }, [])
     
   console.log(produto); 
   return (
@@ -102,6 +110,7 @@ const GerenciarProduto = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
         <input
           type="text"
+          ref={primeiroCampoRef}
           placeholder="Nome"
           name="nome"
           value={produto.nome}

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Produto = () => {
@@ -59,6 +59,17 @@ const Produto = () => {
 
     fetchCategorias();
   }, []);
+
+  const primeiroCampoRef = useRef(null);
+
+
+  useEffect(() => {
+    // Quando o componente for montado, o campo recebe o foco
+    if (primeiroCampoRef.current) {
+      primeiroCampoRef.current.focus();
+    }
+  }, [])
+
   console.log(produto);
   return (
     <div>
@@ -67,12 +78,14 @@ const Produto = () => {
       <div className="form">
         <h1>Novo Produto</h1>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <p>Nome:</p>
+        <p>Nome: <label className="asterisco">*</label></p>
         <input
           type="text"
+          ref={primeiroCampoRef}
           placeholder="Nome"
           name="nome"
           onChange={handleChange}
+          required
         />
         <p>Descrição:</p>
         <input
@@ -82,17 +95,19 @@ const Produto = () => {
           onChange={handleChange}
         />
 
-        <p>Preço Regular:</p>
+        <p>Preço Regular: <label className="asterisco">*</label></p>
         <input
           type="number"
           placeholder="preco_unitario"
           name="preco_unitario"
           onChange={handleChange}
+          required
         />
-        <p>Categoria:</p>
+        <p>Categoria: <label className="asterisco">*</label></p>
         <select
           name="fk_id_categoria"
           onChange={handleChange}
+          required
         >
           <option value="">Selecione uma categoria</option>
           {categorias.map((categoria) => (
@@ -102,7 +117,7 @@ const Produto = () => {
           ))}
         </select>
 
-        <button onClick={handleClick}>adicionar</button>
+        <button onClick={handleClick}>Adicionar</button>
       </div>
     </div>
     {showSuccessModal && (

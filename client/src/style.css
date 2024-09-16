@@ -858,3 +858,13 @@ button.close-cliente {
 .subnav:hover .subnav-content {
   display: block;
 }
+.asterisco-branco{
+  color: var(--fundobranco);
+}
+.asterisco{
+  color: var(--vermelhointenso);
+}
+
+input{
+  background-color: var(--fundobranco);
+}
