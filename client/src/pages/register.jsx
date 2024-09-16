@@ -21,7 +21,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8800/register", inputs);
-      navigate("/books");
+      navigate("/readProduto");
     } catch (err) {
       setError(err.response.data);
     }

@@ -711,3 +711,10 @@ li {
   cursor: not-allowed; /* Indicador visual de que está desabilitado */
 }
 
+#login{
+  width: 100%;
+  border-radius: 20px;
+  div{
+    padding: 10px;
+  }
+}

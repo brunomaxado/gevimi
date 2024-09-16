@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
+
 
 const Login = () => {
   const [inputs, setInputs] = useState({
@@ -32,20 +33,33 @@ const Login = () => {
     }
   };
 
+  const primeiroCampoRef = useRef(null);
+
+  useEffect(() => {
+    // Quando o componente for montado, o campo recebe o foco
+    if (primeiroCampoRef.current) {
+      primeiroCampoRef.current.focus();
+    }
+  }, [])
+
   return (
-    <div className="auth"id="imagem_logo">
-
-
-      <div>
+    <div className="auth" id="login">
+      <div id="imagem">
+        <img src="../logo_login.png"></img>
+      </div>
+      <div id="formulario">
         <form class="container">
           <h1>Login</h1>
+          <p>Usuário:</p>
           <input
             required
             type="text"
+            ref={primeiroCampoRef}
             placeholder="usuário"
             name="login"
             onChange={handleChange}
           />
+          <p>Senha:</p>
           <input
             required
             type="password"

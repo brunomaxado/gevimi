@@ -3,11 +3,11 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
 
-const Books = () => {
-  const [books, setBooks] = useState([]);
+const ReadProduto = () => {
+  const [produto, setProduto] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedBookId, setSelectedBookId] = useState(null);
+  const [selectedProdutoId, setSelectedProdutoId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,10 +19,10 @@ const Books = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAllBooks = async () => {
+    const fetchAllProduto = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/books");
-        setBooks(res.data);
+        const res = await axios.get("http://localhost:8800/readProduto");
+        setProduto(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -37,12 +37,12 @@ const Books = () => {
       }
     };
 
-    fetchAllBooks();
+    fetchAllProduto();
     fetchCategorias();
   }, []);
 
   const handleDeleteClick = (id) => {
-    setSelectedBookId(id);
+    setSelectedProdutoId(id);
     setShowModal(true);
   };
 
@@ -57,8 +57,8 @@ const Books = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8800/books/${selectedBookId}`);
-      setBooks(books.filter(book => book.id_produto !== selectedBookId));
+      await axios.delete(`http://localhost:8800/readProduto/${selectedProdutoId}`);
+      setProduto(produto.filter(produto => produto.id_produto !== selectedProdutoId));
       showSuccess("Produto deletado com sucesso");
       setShowModal(false);
     } catch (err) {
@@ -92,14 +92,14 @@ const Books = () => {
     setCurrentPage(1); // Resetar a página para 1 após mudar a categoria
   };
 
-  const filteredBooks = books.filter(book => {
-    const matchesSearch = book.nome ? book.nome.toLowerCase().includes(searchTerm.toLowerCase()) : false;
-    const matchesCategoria = selectedCategoria ? book.fk_id_categoria === parseInt(selectedCategoria) : true;
+  const filteredProduto = produto.filter(produto => {
+    const matchesSearch = produto.nome ? produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) : false;
+    const matchesCategoria = selectedCategoria ? produto.fk_id_categoria === parseInt(selectedCategoria) : true;
     return matchesSearch && matchesCategoria;
   });
 
-  const sortBooks = (books) => {
-    return books.sort((a, b) => {
+  const sortProduto = (produto) => {
+    return produto.sort((a, b) => {
       const aValue = a[sortColumn];
       const bValue = b[sortColumn];
 
@@ -114,16 +114,16 @@ const Books = () => {
     });
   };
 
-  const sortedBooks = sortBooks(filteredBooks);
+  const sortedProduto = sortProduto(filteredProduto);
 
   // Paginação: calcula os livros para a página atual
-  const indexOfLastBook = currentPage * itemsPerPage;
-  const indexOfFirstBook = indexOfLastBook - itemsPerPage;
-  const currentBooks = sortedBooks.slice(indexOfFirstBook, indexOfLastBook);
+  const indexOfLastProduto = currentPage * itemsPerPage;
+  const indexOfFirstProduto = indexOfLastProduto - itemsPerPage;
+  const currentProduto = sortedProduto.slice(indexOfFirstProduto, indexOfLastProduto);
 
   // Muda para a próxima página
   const paginateNext = () => {
-    if (currentPage < Math.ceil(filteredBooks.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredProduto.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -137,7 +137,7 @@ const Books = () => {
 
   return (
     <div className="tabela">
-      <h1>GEVIMI</h1>
+      <h1>Listar produtos:</h1>
       
       <input
         type="text"
@@ -180,17 +180,17 @@ const Books = () => {
           </tr>
         </thead>
         <tbody>
-          {currentBooks.map((book) => (
-            <tr key={book.id_produto}>
-              <td>{book.nome}</td>
-              <td>{book.descricao}</td>
-              <td>{getCategoriaNome(book.fk_id_categoria)}</td>
-              <td>R${book.preco_unitario}</td>
+          {currentProduto.map((produto) => (
+            <tr key={produto.id_produto}>
+              <td>{produto.nome}</td>
+              <td>{produto.descricao}</td>
+              <td>{getCategoriaNome(produto.fk_id_categoria)}</td>
+              <td>R${produto.preco_unitario}</td>
               <td>
                 <button className="update">
-                  <Link to={`/gerenciarproduto/${book.id_produto}`}>Update</Link>
+                  <Link to={`/gerenciarproduto/${produto.id_produto}`}>Update</Link>
                 </button>
-                <button className="delete" onClick={() => handleDeleteClick(book.id_produto)}>Delete</button>
+                <button className="delete" onClick={() => handleDeleteClick(produto.id_produto)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -202,8 +202,8 @@ const Books = () => {
         <button onClick={paginatePrev} disabled={currentPage === 1}>
           Anterior
         </button>
-        <span>Página {currentPage} de {Math.ceil(filteredBooks.length / itemsPerPage)}</span>
-        <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredBooks.length / itemsPerPage)}>
+        <span>Página {currentPage} de {Math.ceil(filteredProduto.length / itemsPerPage)}</span>
+        <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredProduto.length / itemsPerPage)}>
           Próximo
         </button>
       </div>
@@ -230,4 +230,4 @@ const Books = () => {
   );
 };
 
-export default Books;
+export default ReadProduto;
