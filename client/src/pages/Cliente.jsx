@@ -108,6 +108,7 @@ const Cliente = () => {
           name="nome"
           value={cliente.nome}
           onChange={handleChange}
+          required
         /></p>
         <p>
         <input

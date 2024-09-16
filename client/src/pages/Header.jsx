@@ -54,18 +54,16 @@ const Header = () => {
               <ul className="dropdown-menu">
                 <li>
                   <Link to="/" className="nav-link">
-                    <div>
+
                       <span class="material-symbols-outlined" onClick={logout} >logout</span>
-                      <span><p>Sair</p> </span>
-                    </div>
+
                   </Link>
                 </li>
                 <li>
                   <Link to="/register" className="nav-link">
-                    <div>
+
                       <span class="material-symbols-outlined"> person_add </span>
-                      <span> <p>Registrar Usuário</p></span>
-                    </div>
+
                   </Link>
                 </li>
               </ul>

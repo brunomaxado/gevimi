@@ -10,10 +10,10 @@
   --vermelho: #5c0000;
   --verde: #003300;
   --cinza: #495057;
-  --vermelhointenso:#ff0000;
-  --verdemodal:#155724;
-  --verdeclaro:#c3e6cb;
-  --sombramodal:#d4edda;
+  --vermelhointenso: #ff0000;
+  --verdemodal: #155724;
+  --verdeclaro: #c3e6cb;
+  --sombramodal: #d4edda;
   --fontepadrao: "Noto Serif", serif;
 }
 
@@ -159,8 +159,8 @@ input[type=number]:focus {
 }
 
 img#logo {
-height: 14vh; 
- padding: 15px;
+  height: 14vh;
+  padding: 15px;
 }
 
 li.nav-item.dropdown {
@@ -236,11 +236,11 @@ div.tabela {
   text-decoration: none;
   display: flex;
   flex-direction: row;
-  margin-top: auto;
   width: 100%;
+  margin-top: 200vh;
   height: 15vh;
   margin-bottom: 0px;
-  bottom: 0;
+  left: 0;  
   position: relative;
 }
 
@@ -326,7 +326,7 @@ body {
 }
 
 .close-modal {
-  background-color:  var(--vermelho);
+  background-color: var(--vermelho);
   color: var(--branco);
   border: none;
   padding: 10px;
@@ -479,8 +479,6 @@ div.auth button {
 
 
   .addHome {
-    padding: 10px;
-    margin-top: 20px;
     cursor: pointer;
     border: none;
     background-color: var(--vermelhointenso);
@@ -493,29 +491,33 @@ div.auth button {
     margin-top: 15vh;
   }
 
-  p#erro{
+  p#erro {
     color: var(--vermelhointenso);
   }
 
-.cliente{
-  input{
-    width: 270px;
+  .cliente {
+    input {
+      width: 270px;
+      height: auto ;
 
+    }
+
+    button {
+      width: 270px;
+      border: none;
+      padding: 10px;
+      background-color: var(--amarelologo);
+      color: var(--pretoletra);
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 10px;
+      margin-bottom: 20vh;
+    }
+
+    button:hover {
+      background-color: var(--amarelotoque);
+    }
   }
-  button{
-    width: 270px;
-    border: none;
-    padding: 10px;
-    background-color: var(--amarelologo);
-    color: var(--pretoletra);
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 10px;
-  }
-  button:hover{
-    background-color: var(--amarelotoque);
-  }
-}
 
 
 
@@ -632,7 +634,7 @@ div.auth button {
   justify-content: center;
 }
 
-.Produto p{
+.Produto p {
   color: var(--pretoletra);
 }
 
@@ -650,7 +652,7 @@ div.auth button {
   justify-content: center;
 }
 
-div.nav{
+div.nav {
   display: flex;
   flex-direction: row;
   height: 10vh;
@@ -663,6 +665,6 @@ div.pedido {
 
 }
 
-li{
+li {
   list-style-type: none;
 }
