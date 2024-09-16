@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Books from "./pages/readProduto";
+import readProduto from "./pages/readProduto";
 import Header from "./pages/Header";
 import Produto from "./pages/Produto";
 import "./style.css";
@@ -35,7 +35,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/pedido" element={<Pedido />} />
-          <Route path="/viewProduto" element={<Private Component={Books} />} />
+          <Route path="/viewProduto" element={<Private Component={readProduto} />} />
           <Route path="/produto" element={<Private Component={Produto} />} />
           <Route path="/gerenciarproduto/:id_produto" element={<Private Component={GerenciarProduto} />} />
           <Route path="/cliente" element={<Private Component={Cliente} />} />
@@ -50,7 +50,7 @@ function App() {
       </BrowserRouter>
 
 
-    </div><Footer /></>
+    </div>{currentUser &&<Footer />}</>
   );
 }
 

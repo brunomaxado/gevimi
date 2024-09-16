@@ -70,12 +70,6 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  padding-top: 20vh;
 }
 
 header,
@@ -348,8 +342,8 @@ img {
   cursor: pointer;
   border-radius: 5px;
   position: absolute;
-  top: 10px; /* Ajuste conforme necessário */
-  right: 10px; /* Ajuste conforme necessário */
+  top: 10px;
+  right: 10px; 
 }
 
 
@@ -560,6 +554,10 @@ div.auth button {
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    h1{
+      padding-top: 20vh;
+    }
 
     input {
       width: 270px;

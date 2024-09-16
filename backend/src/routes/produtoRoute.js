@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.get("/readProduto", getProdutos);
-router.get("/allprodutoss", getAllProdutos);
+router.get("/allprodutos", getAllProdutos);
 router.get("/readProduto/:id_produto", getProduto);
 router.post("/readProduto", addProduto);
 router.delete("/readProduto/:id_produto", deleteProduto);

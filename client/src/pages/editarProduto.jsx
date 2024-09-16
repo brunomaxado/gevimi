@@ -77,7 +77,7 @@ const GerenciarProduto = () => {
     }
   
     try {
-      await axios.put(`http://localhost:8800/produtos/${produtoId}`, produto);
+      await axios.put(`http://localhost:8800/readProduto/${produtoId}`, produto);
       console.log("Produto atualizado com sucesso");
     
       showSuccess("Produto atualizado com sucesso");

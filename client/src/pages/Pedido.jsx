@@ -120,28 +120,41 @@ const handleAdicionarItem = () => {
   );
 
   if (produtoSelecionado) {
-    console.log("Produto Selecionado:", produtoSelecionado);
-    console.log("Preço Unitário do Produto:", produtoSelecionado.preco_unitario);
+    // Verifica se o produto já foi adicionado
+    const itemExistente = itensPedido.find(
+      (item) => item.fk_id_produto === novoItem.fk_id_produto
+    );
 
-    const itemAdicionado = {
-      ...novoItem,
-      nome: produtoSelecionado.nome,
-      preco_unitario: produtoSelecionado.preco_unitario, // Preço do produto no momento da seleção
-      preco_unitario_atual: produtoSelecionado.preco_unitario, // Salva o preço atual
-    };
+    if (itemExistente) {
+      // Se o produto já foi adicionado, incrementa a quantidade
+      const itensAtualizados = itensPedido.map((item) =>
+        item.fk_id_produto === novoItem.fk_id_produto
+          ? { ...item, quantidade: parseInt(item.quantidade) + parseInt(novoItem.quantidade) }
+          : item
+      );
+      setItensPedido(itensAtualizados);
+    } else {
+      // Se o produto ainda não foi adicionado, adiciona o novo item
+      const itemAdicionado = {
+        ...novoItem,
+        nome: produtoSelecionado.nome,
+        preco_unitario: produtoSelecionado.preco_unitario, // Preço do produto no momento da seleção
+        preco_unitario_atual: produtoSelecionado.preco_unitario, // Salva o preço atual
+      };
 
-    setItensPedido((prev) => [...prev, itemAdicionado]);
+      setItensPedido((prev) => [...prev, itemAdicionado]);
+    }
 
     setNovoItem((prev) => ({
       ...prev,
       fk_id_produto: "",
+      quantidade: 1, // Reseta a quantidade para 1 após adicionar o produto
     }));
-
-    console.log("Item Adicionado com Preço Unitário Atual:", itemAdicionado);
   } else {
     console.log("Nenhum produto encontrado para o ID:", novoItem.fk_id_produto);
   }
 };
+
 
 
   const handleRemoverItem = (index) => {
@@ -299,7 +312,7 @@ const handleAdicionarItem = () => {
               </span>
             </p>
 
-            {/* Exibir o modal quando `showModal` for true */}
+            {/* Exibir o modal quando showModal for true */}
             {showModal && (
               <ModalCliente
                 onClose={() => setShowModal(false)}
