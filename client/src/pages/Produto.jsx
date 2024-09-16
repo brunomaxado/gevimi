@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Produto = () => {
-  const [book, setBook] = useState({
+  const [produto, setProduto] = useState({
     nome: "",
     descricao: "",
     preco_unitario: false,  // Adicionando promocao ao estado inicial
@@ -17,7 +17,7 @@ const Produto = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const handleChange = (e) => {
-    setBook((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setProduto((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const showSuccess = (message) => {
     setSuccessMessage(message);
@@ -31,14 +31,14 @@ const Produto = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const { nome,descricao, preco_unitario, fk_id_categoria } = book;
+    const { nome,descricao, preco_unitario, fk_id_categoria } = produto;
 
     if (!nome ||!preco_unitario) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
     try {
-      await axios.post("http://localhost:8800/books", book);
+      await axios.post("http://localhost:8800/readProduto", produto);
       console.log("Produto adicionado com sucesso");
       showSuccess("Produto adicionado com sucesso");
     } catch (err) {
@@ -59,7 +59,7 @@ const Produto = () => {
 
     fetchCategorias();
   }, []);
-  console.log(book);
+  console.log(produto);
   return (
     <div>
       

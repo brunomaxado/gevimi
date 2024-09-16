@@ -19,7 +19,7 @@ const db = mysql.createConnection({
     res.json("hello");
   });
   
-  app.get("/books", (req, res) => {
+  app.get("/readProduto", (req, res) => {
     const q = "SELECT * FROM produto";
 
     db.query(q, (err, data) => {
@@ -31,7 +31,7 @@ const db = mysql.createConnection({
     });
   });
   
-  app.get("/books/:id_produto", (req, res) => {
+  app.get("/readProduto/:id_produto", (req, res) => {
     const id = req.params.id_produto;
     const q = "SELECT * FROM produto WHERE id_produto = ?";
     db.query(q, [id], (err, data) => {
@@ -47,7 +47,7 @@ const db = mysql.createConnection({
   });
   
   
-  app.post("/books", (req, res) => {
+  app.post("/readProduto", (req, res) => {
     const q = "INSERT INTO produto(`nome`, `descricao`, `promocao`, `preco_desconto`, preco_unitario, imagem, fk_id_categoria) VALUES (?)";
   
     const values = [
@@ -68,18 +68,18 @@ const db = mysql.createConnection({
   
 
 
-  app.delete("/books/:id_produto", (req, res) => {
-    const bookId = req.params.id_produto;
+  app.delete("/readProduto/:id_produto", (req, res) => {
+    const produtoId = req.params.id_produto;
     const q = " DELETE FROM produto WHERE id_produto = ? ";
   
-    db.query(q, [bookId], (err, data) => {
+    db.query(q, [produtoId], (err, data) => {
       if (err) return res.send(err);
       return res.json(data);
     });
   });
   
-  app.put("/books/:id_produto", (req, res) => {
-    const bookId = req.params.id_produto;
+  app.put("/readProduto/:id_produto", (req, res) => {
+    const produtoId = req.params.id_produto;
     const q = `
       UPDATE produto 
       SET 
@@ -104,7 +104,7 @@ const db = mysql.createConnection({
       req.body.fk_id_categoria  // fk_id_categoria
     ];
   
-    db.query(q, [...values, bookId], (err, data) => {
+    db.query(q, [...values, produtoId], (err, data) => {
       if (err) return res.send(err);
       return res.json(data);
     });
@@ -160,7 +160,7 @@ const db = mysql.createConnection({
   
   
   app.put("/categoria/:id_categoria", (req, res) => {
-    const bookId = req.params.id_categoria;
+    const produtoId = req.params.id_categoria;
     const q = `
       UPDATE categoria
       SET 
@@ -173,7 +173,7 @@ const db = mysql.createConnection({
       req.body.nome,            // nome
     ];
   
-    db.query(q, [...values, bookId], (err, data) => {
+    db.query(q, [...values, produtoId], (err, data) => {
       if (err) return res.send(err);
       return res.json(data);
     });

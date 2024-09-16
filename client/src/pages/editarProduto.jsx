@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const GerenciarProduto = () => {
-  const [book, setBook] = useState({
+  const [produto, setProduto] = useState({
     nome: "",
     descricao: "",
     preco_unitario: null,
@@ -14,15 +14,15 @@ const GerenciarProduto = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const bookId = location.pathname.split("/")[2];
+  const produtoId = location.pathname.split("/")[2];
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   // Função para buscar os dados do produto
   const fetchProduto = async () => {
     try {
-      console.log("Fetching product with ID:", bookId);
-      const response = await axios.get(`http://localhost:8800/books/${bookId}`);
-      setBook(response.data);
+      console.log("Fetching product with ID:", produtoId);
+      const response = await axios.get(`http://localhost:8800/readProduto/${produtoId}`);
+      setProduto(response.data);
     } catch (err) {
       console.error("Erro ao buscar o produto:", err);
       setError("Produto não encontrado.");
@@ -43,11 +43,11 @@ const GerenciarProduto = () => {
     };
 
     fetchCategorias();
-  }, [bookId]);
+  }, [produtoId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBook((prev) => ({ ...prev, [name]: value }));
+    setProduto((prev) => ({ ...prev, [name]: value }));
   };
 
 
@@ -55,7 +55,7 @@ const GerenciarProduto = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     
-    const { nome, preco_unitario } = book;
+    const { nome, preco_unitario } = produto;
   
     if (!nome || !preco_unitario) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
@@ -63,12 +63,12 @@ const GerenciarProduto = () => {
     }
   
     // Adicione logs para depuração
-    console.log("ID da categoria do livro:", book.fk_id_categoria);
+    console.log("ID da categoria do livro:", produto.fk_id_categoria);
     console.log("Categorias disponíveis:", categorias);
   
     // Verifica se o ID da categoria do produto existe na lista de categorias
     const categoriaExiste = categorias.some(
-      (categoria) => Number(categoria.id_categoria) === Number(book.fk_id_categoria)
+      (categoria) => Number(categoria.id_categoria) === Number(produto.fk_id_categoria)
     );
   
     if (!categoriaExiste) {
@@ -77,7 +77,7 @@ const GerenciarProduto = () => {
     }
   
     try {
-      await axios.put(`http://localhost:8800/books/${bookId}`, book);
+      await axios.put(`http://localhost:8800/produtos/${produtoId}`, produto);
       console.log("Produto atualizado com sucesso");
     
       showSuccess("Produto atualizado com sucesso");
@@ -98,8 +98,8 @@ const GerenciarProduto = () => {
   };
   
     
-  console.log(book); // Adicione isto dentro do componente
- // console.log(book.fk_id_categoria);
+  console.log(produto); // Adicione isto dentro do componente
+ // console.log(produto.fk_id_categoria);
   //console.log((categoria).id_categoria);
   return (
     <div>
@@ -110,14 +110,14 @@ const GerenciarProduto = () => {
           type="text"
           placeholder="Nome"
           name="nome"
-          value={book.nome}
+          value={produto.nome}
           onChange={handleChange}
         />
         <input
           type="text"
           placeholder="Descrição"
           name="descricao"
-          value={book.descricao}
+          value={produto.descricao}
           onChange={handleChange}
         />
 
@@ -126,13 +126,13 @@ const GerenciarProduto = () => {
           type="number"
           placeholder="Preço unitário"
           name="preco_unitario"
-          value={book.preco_unitario || ""}
+          value={produto.preco_unitario || ""}
           onChange={handleChange}
         />
 
         <select
           name="fk_id_categoria"
-          value={book.fk_id_categoria}
+          value={produto.fk_id_categoria}
           onChange={handleChange}
         >
           <option value="">Selecione uma categoria</option>

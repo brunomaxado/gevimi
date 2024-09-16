@@ -43,7 +43,7 @@ const Pedido = () => {
   useEffect(() => {
     const fetchProduto = async () => {
       try {
-        const response = await axios.get("http://localhost:8800/books");
+        const response = await axios.get("http://localhost:8800/readProduto");
         setProduto(response.data);
       } catch (err) {
         console.log(err);
