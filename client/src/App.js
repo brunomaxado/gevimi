@@ -15,6 +15,7 @@ import Home from "./pages/home";
 import Pedido from "./pages/Pedido";
 import Footer from "./pages/Footer";
 import Register from "./pages/register";
+import Dashboard from "./pages/dashboard";
 import React from "react";
 import useAuth from "./context/useAuth";
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="/readPedido" element={<Private Component={ReadPedido} />} />
           <Route path="/readPedido/:id_pedido" element={<Private Component={ReadPedidoUnico} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
+          <Route path="/estatistica" element={<Private Component={Dashboard} />} />
           <Route path="/home" element={<Private Component={Home} />} />
           <Route path="/" element={<Login />} />
         </Routes>
