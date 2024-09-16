@@ -27,7 +27,7 @@ function App() {
   const { currentUser } = useAuth(); // Obtenha o usuário atual do contexto de autenticação
 
   return (
-    <div className="app">
+    <><div className="app">
       <BrowserRouter>
         {currentUser && <Header />} {/* Exibe o Header somente se houver um usuário autenticado */}
         <Routes>
@@ -46,9 +46,9 @@ function App() {
           <Route path="/" element={<Login />} />
         </Routes>
       </BrowserRouter>
-    
-     <Footer />
-    </div>
+
+
+    </div><Footer /></>
   );
 }
 

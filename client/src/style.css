@@ -128,18 +128,21 @@ p#registro:hover {
 
 /* Full-width input fields */
 input[type=text],
-input[type=password] {
+input[type=password],
+input[type=number] {
   width: 100%;
   padding: 10px;
   margin: 5px 0 22px 0;
-  border: none;
+  border: 1px solid var(--pretofundo);
+  border-radius: 10px;
   background: var(--branco);
 }
 
 input[type=text]:focus,
-input[type=password]:focus {
+input[type=password]:focus,
+input[type=number]:focus {
   background-color: var(--meiotom);
-  outline: none;
+
 }
 
 .btn {
@@ -156,8 +159,8 @@ input[type=password]:focus {
 }
 
 img#logo {
-  width: 50%;
-  padding: 10px;
+height: 14vh; 
+ padding: 15px;
 }
 
 li.nav-item.dropdown {
@@ -173,6 +176,7 @@ li.nav-item.dropdown:hover {
 li#nome {
   color: var(--amarelotoque);
   font-weight: bold;
+  list-style-type: none;
   padding: 10px;
 }
 
@@ -222,7 +226,7 @@ div.tabela {
   top: 0;
   width: 100%;
   z-index: 1000;
-  height: 80px;
+  height: 15vh;
   /* Defina a altura exata do header */
 }
 
@@ -234,27 +238,32 @@ div.tabela {
   flex-direction: row;
   margin-top: auto;
   width: 100%;
-  height: auto;
+  height: 15vh;
+  margin-bottom: 0px;
   bottom: 0;
   position: relative;
 }
 
 .nav {
   display: flex;
-  justify-content: center;
 }
 
 .nav-list {
+  width: 100vw;
   list-style-type: none;
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 50px;
+  flex-direction: row;
+  margin-left: 5vw;
+  margin-right: 5vw;
 }
 
 .nav-item {
   font-size: 18px;
-  padding: 5px;
+  padding: 5vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
 }
 
 .nav-link {
@@ -265,8 +274,8 @@ div.tabela {
   padding: 5px;
 }
 
-li#logo.nav-item img {
-  width: 40%;
+img {
+  height: 10vh;
 }
 
 .nav-link:hover {
@@ -433,7 +442,7 @@ div.auth button {
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
-  border: 1px solid var(--pretofundo);
+  border: none;
   cursor: pointer;
   border-radius: 10px;
 }
@@ -484,9 +493,35 @@ div.auth button {
     margin-top: 15vh;
   }
 
+  p#erro{
+    color: var(--vermelhointenso);
+  }
+
+.cliente{
+  input{
+    width: 270px;
+
+  }
+  button{
+    width: 270px;
+    border: none;
+    padding: 10px;
+    background-color: var(--amarelologo);
+    color: var(--pretoletra);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+  button:hover{
+    background-color: var(--amarelotoque);
+  }
+}
+
+
+
   button.categoriaAdd {
     width: 270px;
-    border: 1px solid var(--pretofundo);
+    border: none;
     padding: 10px;
     background-color: var(--amarelologo);
     color: var(--pretoletra);
@@ -521,7 +556,7 @@ div.auth button {
 
     button {
       width: 270px;
-      border: 1px solid var(--pretofundo);
+      border: none;
       padding: 10px;
       background-color: var(--amarelologo);
       color: var(--pretoletra);
@@ -604,13 +639,21 @@ div.auth button {
 .esquerda {
   display: flex;
   flex-direction: row;
-
+  justify-content: center;
+  margin-left: 5vh;
 }
 
 .direita {
+  margin-left: 30vw;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+}
 
+div.nav{
+  display: flex;
+  flex-direction: row;
+  height: 10vh;
 }
 
 div.pedido {
@@ -618,4 +661,8 @@ div.pedido {
   margin-top: 10px;
   margin-bottom: 10px;
 
+}
+
+li{
+  list-style-type: none;
 }
