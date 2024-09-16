@@ -84,11 +84,11 @@ const handleClick = async (e) => {
   // Verifica se todos os campos obrigatórios estão preenchidos
   const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
 
-  if (!tipo || !forma_pagamento || !fk_id_cliente || (tipo !== "3" && !data_para_entregar)) {
+  if (!tipo || !forma_pagamento || ((tipo === "1" || tipo === "2") && !fk_id_cliente) || (tipo !== "3" && !data_para_entregar)) {
     setError("Todos os campos obrigatórios devem ser preenchidos.");
     return;
   }
-
+  
   if (itensPedido.length === 0) {
     setError("Adicione pelo menos um item ao pedido.");
     return;
