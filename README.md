@@ -55,7 +55,7 @@ ps. Instale as versões mais recentes disponíveis.
      CREATE DATABASE gevimi;
      ```
 
-   - Execute as queries necessárias para criar as tabelas e dados iniciais. Essas queries podem ser encontradas no arquivo `/src/backend/db.sql` (ou outro arquivo SQL fornecido).
+   - Execute as queries necessárias para criar as tabelas e dados iniciais. Essas queries podem ser encontradas no arquivo.
 
 4. **Executar o Frontend (Client):**
 
