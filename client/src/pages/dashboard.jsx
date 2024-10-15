@@ -54,15 +54,15 @@ const Dashboard = () => {
   return (
     <div style={styles.container}>
       <div style={{ ...styles.card, ...styles.totalRetirada }}>
-        <div>Total Retirada</div>
+        <div>Total Entrega</div>
         <div>{dashboard.totals?.total_retirada || 0}</div>
       </div>
       <div style={{ ...styles.card, ...styles.totalEntregas }}>
-        <div>Total Entregas</div>
+        <div>Total Retirada</div>
         <div>{dashboard.totals?.total_entrega || 0}</div>
       </div>
       <div style={{ ...styles.card, ...styles.totalAbertos }}>
-        <div>Total Abertos</div>
+        <div>Total Finalizados</div>
         <div>{dashboard.totals?.total_aberto || 0}</div>
       </div>
       <div style={{ ...styles.card, ...styles.faturamento }}>
@@ -70,7 +70,7 @@ const Dashboard = () => {
         <div>R${dashboard.totalPrice?.toFixed(2) || "0.00"}</div>
       </div>
       <div style={{ ...styles.card, ...styles.totalFinalizados }}>
-        <div>Total Finalizados</div>
+        <div>Total Abertos</div>
         <div>{dashboard.totals?.total_finalizado || 0}</div>
       </div>
     </div>

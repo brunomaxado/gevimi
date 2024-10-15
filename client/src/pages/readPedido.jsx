@@ -167,7 +167,7 @@ const ReadPedido = () => {
       setShowModal(false);
     } catch (err) {
       console.error("Erro ao cancelar o pedido:", err);
-      setError("Erro ao cancelar o pedido.");
+      setError(err);
       setShowModal(false);
     }
   };
@@ -280,7 +280,7 @@ const ReadPedido = () => {
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
               <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
               <td>
-                <button className="delete" onClick={() => handleClickCancelar(pedido.id_pedido)}>Cancelar</button>
+                <button className={pedido.status === 1 ? "finalizar button-disabled" : "delete"}onClick={() => handleClickCancelar(pedido.id_pedido)}  disabled={pedido.status === 1 } >Cancelar</button>
                 <button className="update">
                   <Link to={`/readPedido/${pedido.id_pedido}`}>Visualizar</Link>
                 </button>

@@ -167,6 +167,7 @@ const Categoria = () => {
       )}
 
       <br /><br /><br /><br />
+      
       <table>
         <thead>
           <tr>

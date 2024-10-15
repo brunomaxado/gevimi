@@ -1,7 +1,7 @@
 import db from "../config/db.js";
 
 export const getCategorias = (req, res) => {
-  const q = "SELECT * FROM categoria where data_deletado is NULL";
+  const q = "SELECT * FROM categoria ";
 
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
@@ -12,12 +12,7 @@ export const getCategorias = (req, res) => {
 export const getAllCategoria = (req, res) => {
    const q = `
   SELECT 
-    id_categoria,
-    (CASE 
-      WHEN data_deletado IS NOT NULL 
-      THEN CONCAT('[DELETADO] ', nome) 
-      ELSE nome 
-     END) AS nome
+    *
   FROM categoria
 `;
 
@@ -26,6 +21,7 @@ export const getAllCategoria = (req, res) => {
     return res.status(200).json(data);
   });
 };
+
 export const getCategoria = (req, res) => {
   const q = "SELECT * FROM categoria WHERE id_categoria = ?";
 
@@ -52,29 +48,33 @@ export const addCategoria = (req, res) => {
 };
 
 export const deleteCategoria = (req, res) => {
-  const categoriaId = req.params.id_categoria;
+  // Verifica se a categoria está sendo usada em produtos
+  const checkQuery = "SELECT * FROM produto WHERE id_categoria = ?";
+  
+  db.query(checkQuery, [req.params.id_categoria], (err, data) => {
+    if (err) return res.status(500).json(err);
 
-  const deleteCategoriaQuery = "DELETE FROM categoria WHERE id_categoria = ?";
-
-  db.query(deleteCategoriaQuery, [categoriaId], (err, data) => {
-    if (err) {
-      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-        const softDeleteQuery = "UPDATE categoria SET data_deletado = NOW() WHERE id_categoria = ?";
-
-        db.query(softDeleteQuery, [categoriaId], (err, data) => {
-          if (err) {
-            return res.status(500).json("Erro ao realizar o soft delete da categoria.");
-          }
-          return res.json("Categoria não pôde ser deletada devido a dependências, mas foi marcada como deletada (soft delete).");
-        });
-      } else {
-        return res.status(500).json("Erro ao deletar a categoria: " + err.message);
-      }
-    } else {
-      return res.json("Categoria foi deletada com sucesso!");
+    // Se a categoria estiver sendo referenciada em produtos, retorna erro
+    if (data.length > 0) {
+      return res.status(400).json({ message: "Não é possível deletar a categoria pois ela está sendo referenciada em um produto." });
     }
+
+    // Se não houver referências, pode deletar a categoria
+    const deleteQuery = "DELETE FROM categoria WHERE id_categoria = ?";
+    
+    db.query(deleteQuery, [req.params.id_categoria], (err, result) => {
+      if (err) return res.status(500).json(err);
+      
+      // Verifica se alguma linha foi afetada (ou seja, se a categoria foi deletada)
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Categoria não encontrada." });
+      }
+      
+      return res.status(200).json("Categoria deletada com sucesso.");
+    });
   });
 };
+
 
 
 export const updateCategoria = (req, res) => {

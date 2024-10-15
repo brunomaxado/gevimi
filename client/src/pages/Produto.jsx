@@ -2,12 +2,12 @@ import axios from "axios";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
+import FormProduto from "../components/formProduto";
 const Produto = () => {
   const [produto, setProduto] = useState({
     nome: "",
     descricao: "",
-    preco_unitario: false,  // Adicionando promocao ao estado inicial
+    preco_unitario: "", // Corrigido para string para capturar valores numéricos
     fk_id_categoria: null,
   });
 
@@ -16,9 +16,8 @@ const Produto = () => {
   const [categorias, setCategorias] = useState([]);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const handleChange = (e) => {
-    setProduto((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+
+  // Função para exibir mensagem de sucesso
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
@@ -28,25 +27,32 @@ const Produto = () => {
     }, 1200);
   };
 
+  // Manipula mudanças nos campos do formulário
+  const handleChange = (e) => {
+    setProduto((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
-  const handleClick = async (e) => {
+  // Manipula o envio do formulário
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { nome,descricao, preco_unitario, fk_id_categoria } = produto;
+    const { nome, preco_unitario } = produto;
 
-    if (!nome ||!preco_unitario) {
+    if (!nome || !preco_unitario) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
+
     try {
       await axios.post("http://localhost:8800/readProduto", produto);
       console.log("Produto adicionado com sucesso");
       showSuccess("Produto adicionado com sucesso");
     } catch (err) {
       console.log(err);
-      // setError(true);
+      setError("Erro ao adicionar o produto.");
     }
   };
 
+  // Carrega as categorias ao montar o componente
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -60,67 +66,24 @@ const Produto = () => {
     fetchCategorias();
   }, []);
 
-  const primeiroCampoRef = useRef(null);
-
-
-  useEffect(() => {
-    // Quando o componente for montado, o campo recebe o foco
-    if (primeiroCampoRef.current) {
-      primeiroCampoRef.current.focus();
-    }
-  }, [])
-
-  console.log(produto);
   return (
     <div>
-      
-    <div class="Produto">
-      <div className="form">
-        <h1>Novo Produto</h1>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <p>Nome: <label className="asterisco">*</label></p>
-        <input
-          type="text"
-          ref={primeiroCampoRef}
-          placeholder="Nome"
-          name="nome"
-          onChange={handleChange}
-          required
-        />
-        <p>Descrição:</p>
-        <input
-          type="text"
-          placeholder="descricao"
-          name="descricao"
-          onChange={handleChange}
-        />
-
-        <p>Preço Regular: <label className="asterisco">*</label></p>
-        <input
-          type="number"
-          placeholder="preco_unitario"
-          name="preco_unitario"
-          onChange={handleChange}
-          required
-        />
-        <p>Categoria: <label className="asterisco">*</label></p>
-        <select
-          name="fk_id_categoria"
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecione uma categoria</option>
-          {categorias.map((categoria) => (
-            <option key={categoria.id_categoria} value={categoria.id_categoria}>
-              {categoria.nome}
-            </option>
-          ))}
-        </select>
-
-        <button onClick={handleClick}>Adicionar</button>
+       <h1>NOVO PRODUTO</h1>
+      <div className="Produto">
+        <div className="form">
+          {/* Reutilizando o componente de formulário */}
+          <FormProduto
+            produto={produto}
+            categorias={categorias}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            error={error}
+          />
+        </div>
       </div>
-    </div>
-    {showSuccessModal && (
+
+      {/* Modal de sucesso */}
+      {showSuccessModal && (
         <div className="success-modal">
           <div className="success-modal-content">
             <span>{successMessage}</span>

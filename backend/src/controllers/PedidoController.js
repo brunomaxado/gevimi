@@ -51,29 +51,13 @@ import db from "../config/db.js";
 
 
 
-  export const deletePedido = (req, res) => {
-    const pedidoId = req.params.id_pedido;
-  
-    const softDeletePedidoQuery = "UPDATE pedido SET data_deletado = NOW() WHERE id_pedido = ?";
-  
-    db.query(softDeletePedidoQuery, [pedidoId], (err, result) => {
-      if (err) {
-        return res.status(500).json({ message: "Erro ao marcar o pedido como deletado", err });
-      }
-  
-      return res.status(200).json({ message: "Pedido foi marcado como deletado com sucesso." });
-    });
-  };
-  
-  
-
   export const getPedido = (req, res) => {
     const pedidoId = req.params.id_pedido;
   
     const queryPedido = `
       SELECT * 
       FROM pedido 
-      WHERE id_pedido = ? and data_deletado is NULL
+      WHERE id_pedido = ? 
     `;
   
     db.query(queryPedido, [pedidoId], (err, pedidoData) => {
@@ -105,7 +89,7 @@ import db from "../config/db.js";
     const queryPedidos = `
       SELECT * 
       FROM pedido
-      where data_deletado is null
+     
     `;
   
     db.query(queryPedidos, (err, pedidosData) => {
@@ -209,6 +193,57 @@ import db from "../config/db.js";
           console.error("Erro ao processar pedidos:", err);
           return res.status(500).json({ message: "Erro ao processar os pedidos", error: err });
         });
+    });
+  };
+  
+
+
+  export const deletePedido = (req, res) => {
+    const pedidoId = req.params.id_pedido;
+  
+    // Verifica se o pedido pode ser deletado
+    const checkQuery = `
+      SELECT * 
+      FROM pedido 
+      WHERE id_pedido = ? 
+        AND tipo <> 3 
+        AND status <> 1
+    `;
+  
+    db.query(checkQuery, [pedidoId], (err, pedidoData) => {
+      if (err) return res.status(500).json({ message: "Erro ao verificar o pedido", err });
+  
+      // Verifica se o pedido foi encontrado e pode ser deletado
+      if (pedidoData.length === 0) {
+        return res.status(404).json({ message: "Pedido não encontrado ou não pode ser deletado." });
+      }
+  
+      // Realiza a exclusão dos itens do pedido
+      const deleteItensQuery = `
+        DELETE FROM item_pedido 
+        WHERE fk_id_pedido = ?
+      `;
+  
+      db.query(deleteItensQuery, [pedidoId], (err) => {
+        if (err) return res.status(500).json({ message: "Erro ao deletar itens do pedido", err });
+  
+        // Agora que os itens foram deletados, deletamos o pedido
+        const deleteQuery = `
+          DELETE FROM pedido 
+          WHERE id_pedido = ?
+        `;
+  
+        db.query(deleteQuery, [pedidoId], (err, result) => {
+          if (err) return res.status(500).json({ message: "Erro ao deletar o pedido", err });
+          
+          // Verifica se a exclusão foi bem-sucedida
+          if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Pedido não encontrado." });
+          }
+          
+          return res.status(200).json({ message: "Pedido e itens deletados com sucesso." });
+        });
+      });
     });
   };
   

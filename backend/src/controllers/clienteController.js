@@ -1,7 +1,7 @@
 import db from "../config/db.js";
 
 export const getClientes = (req, res) => {
-  const q = "SELECT * FROM cliente where data_deletado is NULL";
+  const q = "SELECT * FROM cliente ";
 
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
@@ -11,12 +11,7 @@ export const getClientes = (req, res) => {
 export const getAllCliente = (req, res) => {
   const q = `
   SELECT 
-  id_cliente,
-    (CASE 
-      WHEN data_deletado IS NOT NULL 
-      THEN CONCAT('[DELETADO] ', nome) 
-      ELSE nome 
-     END) AS nome,  cpf, celular, cep, rua, numero, cidade, bairro
+  *
   FROM cliente
 `;
   db.query(q, (err, data) => {
@@ -60,32 +55,33 @@ export const addCliente = (req, res) => {
 };
 
 export const deleteCliente = (req, res) => {
-  const clienteId = req.params.id_cliente;
+  // Verifica se o cliente está sendo referenciado em pedidos
+  const checkQuery = "SELECT * FROM pedido WHERE id_cliente = ?";
+  
+  db.query(checkQuery, [req.params.id_cliente], (err, data) => {
+    if (err) return res.status(500).json(err);
 
-  const deleteClienteQuery = "DELETE FROM cliente WHERE id_cliente = ?";
-
-  db.query(deleteClienteQuery, [clienteId], (err, data) => {
-    if (err) {
-      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-        const softDeleteQuery = "UPDATE cliente SET data_deletado = NOW() WHERE id_cliente = ?";
-
-        db.query(softDeleteQuery, [clienteId], (err, data) => {
-          if (err) {
-            return res.status(500).json("Erro ao realizar o soft delete do cliente.");
-          }
-          return res.json("Cliente não pôde ser deletado devido a dependências, mas foi marcado como deletado (soft delete).");
-        });
-      } else {
-        return res.status(500).json("Erro ao deletar o cliente: " + err.message);
-      }
-    } else {
-      if (data.affectedRows === 0) {
-        return res.status(404).json({ message: "Cliente não encontrado" });
-      }
-      return res.status(200).json({ message: "Cliente foi deletado com sucesso!" });
+    // Se o cliente estiver sendo referenciado em pedidos, retorna erro
+    if (data.length > 0) {
+      return res.status(400).json({ message: "Não é possível deletar o cliente pois ele está sendo referenciado em um pedido." });
     }
+
+    // Se não houver referências, pode deletar o cliente
+    const deleteQuery = "DELETE FROM cliente WHERE id_cliente = ?";
+    
+    db.query(deleteQuery, [req.params.id_cliente], (err, result) => {
+      if (err) return res.status(500).json(err);
+      
+      // Verifica se alguma linha foi afetada (ou seja, se o cliente foi deletado)
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Cliente não encontrado." });
+      }
+      
+      return res.status(200).json({ message: "Cliente deletado com sucesso." });
+    });
   });
 };
+
 
 export const updateCliente = (req, res) => {
   const clienteId = req.params.id_cliente;

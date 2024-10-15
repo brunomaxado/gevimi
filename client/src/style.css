@@ -514,7 +514,6 @@ div.auth button {
     input {
       width: 270px;
       height: auto;
-
     }
 
     button {
@@ -529,12 +528,16 @@ div.auth button {
       margin-bottom: 20vh;
     }
 
-    
-
     button:hover {
       background-color: var(--amarelotoque);
     }
-  }
+
+    /* Adicionando regra para <p> */
+    p {
+      color: black; /* Define a cor do texto como preto */
+    }
+}
+
 
   button.categoriaAdd {
     width: 270px;
@@ -867,4 +870,65 @@ button.close-cliente {
 
 input{
   background-color: var(--fundobranco);
+}
+
+.navbar {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.nav-item {
+  list-style: none;
+}
+
+.direita {
+  margin-left: auto; /* Se quiser alinhar à direita */
+}
+
+
+.error-message {
+  color: red; /* Define a cor do texto como vermelho */
+}
+
+
+.form-row {
+  display: flex;
+  justify-content: space-between; /* Para espaçar os campos igualmente */
+  margin-bottom: 15px; /* Espaço entre as linhas */
+}
+
+.form-group {
+  flex: 1; /* Os campos ocuparão igualmente o espaço */
+  margin-right: 15px; /* Espaço entre os campos */
+}
+
+.form-group:last-child {
+  margin-right: 0; /* Remove a margem do último campo */
+}
+
+.form-group.nome {
+  flex: 0 0 100%; /* Faz o campo "Nome" ocupar 100% da largura */
+  width: "100%"
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+.full-width {
+  width: 100%;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input {
+    background-color: #f0f8ff; /* Um branco meio azulado, próximo do estilo padrão */
+    color: #000;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
 }

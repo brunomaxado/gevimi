@@ -2,7 +2,7 @@ import db from "../config/db.js";
 
 
 export const getProdutos = (req, res) => {
-  const q = "SELECT * FROM produto  WHERE data_deletado IS NULL";
+  const q = "SELECT * FROM produto";
 
   db.query(q, (err, data) => {
     if (err) return res.status(500).send(err);
@@ -14,12 +14,7 @@ export const getProdutos = (req, res) => {
 export const getAllProdutos = (req, res) => {
   const q = `
     SELECT 
-    id_produto,
-      (CASE 
-        WHEN data_deletado IS NOT NULL 
-        THEN CONCAT('[DELETADO] ', nome) 
-        ELSE nome 
-       END) AS nome, descricao, preco_unitario
+   *
     FROM produto
   `;
 
@@ -63,30 +58,33 @@ export const addProduto = (req, res) => {
 };
 
 export const deleteProduto = (req, res) => {
-  const produtoId = req.params.id_produto;
+  // Verifica se o produto está sendo referenciado em pedidos
+  const checkQuery = "SELECT * FROM item_pedido WHERE fk_id_produto = ?"; // Substitua 'item_pedido' pela tabela correta
 
-  const deleteProdutoQuery = "DELETE FROM produto WHERE id_produto = ?";
+  db.query(checkQuery, [req.params.id_produto], (err, data) => {
+    if (err) return res.status(500).json(err);
 
-  db.query(deleteProdutoQuery, [produtoId], (err, data) => {
-    if (err) {
-      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-        const softDeleteQuery = "UPDATE produto SET data_deletado = NOW() WHERE id_produto = ?";
-        
-        db.query(softDeleteQuery, [produtoId], (err, data) => {
-          if (err) {
-            return res.status(500).json("Erro ao realizar o soft delete do produto.");
-          }
-          return res.json("Produto não pôde ser deletado devido a dependências, mas foi marcado como deletado (soft delete).");
-        });
-      } else {
-        // Outro tipo de erro
-        return res.status(500).json("Erro ao deletar o produto: " + err.message);
-      }
-    } else {
-      return res.json("Produto foi deletado com sucesso!");
+    // Se o produto estiver sendo referenciado em pedidos, retorna erro
+    if (data.length > 0) {
+      return res.status(400).json({ message: "Não é possível deletar o produto pois ele está sendo referenciado em um pedido." });
     }
+
+    // Se não houver referências, pode deletar o produto
+    const deleteQuery = "DELETE FROM produto WHERE id_produto = ?";
+
+    db.query(deleteQuery, [req.params.id_produto], (err, result) => {
+      if (err) return res.status(500).json(err);
+      
+      // Verifica se alguma linha foi afetada (ou seja, se o produto foi deletado)
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Produto não encontrado." });
+      }
+
+      return res.status(200).json({ message: "Produto deletado com sucesso." });
+    });
   });
 };
+
 
 export const updateProduto = (req, res) => {
   const produtoId = req.params.id_produto;
