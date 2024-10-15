@@ -24,8 +24,7 @@ DROP TABLE IF EXISTS `categoria`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categoria` (
   `id_categoria` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(25) NOT NULL,
-  `data_deletado` datetime DEFAULT NULL,
+  `nome` varchar(25) NOT NULL UNIQUE,
   PRIMARY KEY (`id_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,14 +48,14 @@ DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE `cliente` (
   `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
-  `cpf` varchar(11) DEFAULT NULL,
+  `cpf` varchar(11) DEFAULT NULL UNIQUE,
   `celular` varchar(11) DEFAULT NULL,
   `cep` varchar(8) DEFAULT NULL,
-  `rua` varchar(255) DEFAULT NULL,
+  `logradouro` varchar(255) DEFAULT NULL,
   `numero` varchar(10) DEFAULT NULL,
   `cidade` varchar(100) DEFAULT NULL,
   `bairro` varchar(100) DEFAULT NULL,
-  `data_deletado` datetime DEFAULT NULL,
+   `observacao` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -82,7 +81,6 @@ CREATE TABLE `item_pedido` (
   `quantidade` int(11) NOT NULL,
   `fk_id_pedido` int(11) NOT NULL,
   `fk_id_produto` int(11) NOT NULL,
-  `data_deletado` datetime DEFAULT NULL,
   `preco_unitario_atual` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id_item_pedido`),
   KEY `fk_item_pedido_pedido` (`fk_id_pedido`),
@@ -120,7 +118,6 @@ CREATE TABLE `pedido` (
   `fk_id_usuario` int(11) NOT NULL,
   `fk_id_cliente` int(11) DEFAULT NULL,
   `preco_total` decimal(10,2) DEFAULT NULL,
-  `data_deletado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `fk_pedido_usuario` (`fk_id_usuario`),
   KEY `fk_pedido_cliente` (`fk_id_cliente`),
@@ -221,11 +218,10 @@ DROP TABLE IF EXISTS `produto`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `produto` (
   `id_produto` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) NOT NULL,
+  `nome` varchar(255) NOT NULL UNIQUE,
   `descricao` text NOT NULL,
   `preco_unitario` decimal(10,2) NOT NULL,
   `fk_id_categoria` int(11) DEFAULT NULL,
-  `data_deletado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_produto`),
   KEY `fk_produto_categoria` (`fk_id_categoria`),
   CONSTRAINT `fk_produto_categoria` FOREIGN KEY (`fk_id_categoria`) REFERENCES `categoria` (`id_categoria`)
@@ -251,11 +247,10 @@ DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
-  `login` varchar(255) NOT NULL,
+  `login` varchar(255) NOT NULL UNIQUE,
   `senha` varchar(255) NOT NULL,
   `data_criado` datetime NOT NULL DEFAULT current_timestamp(),
   `administrador` tinyint(1) NOT NULL,
-  `data_deletado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
