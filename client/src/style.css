@@ -67,7 +67,7 @@ body {
 
 html,
 body {
-  margin: 0;
+  margin-top: 0;
   padding: 0;
   height: 100%;
   width: 100%;
@@ -154,7 +154,7 @@ input[type=number]:focus {
   padding: 16px 20px;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 100px;
 }
 
 .btn:hover {
@@ -506,9 +506,6 @@ div.auth button {
     font-weight: bold;
   }
 
-  p#erro {
-    color: var(--vermelhointenso);
-  }
 
   .cliente {
     input {
@@ -525,7 +522,7 @@ div.auth button {
       font-weight: bold;
       cursor: pointer;
       border-radius: 10px;
-      margin-bottom: 20vh;
+      margin-bottom: 15px
     }
 
     button:hover {
@@ -644,6 +641,8 @@ button {
   font-weight: bold;
   cursor: pointer;
   border-radius: 10px;
+  margin-top: 20px;
+  font-size: 16px;
 }
 
 button:hover {
@@ -887,48 +886,129 @@ input{
 }
 
 
+p#erro {
+  font-style:italic;
+  font-size: 18px;
+  color:#e01f1f;
+}
 .error-message {
+  font-style:italic;
+  font-size: 16;
   color: red; /* Define a cor do texto como vermelho */
 }
-
+.form-container {
+  margin-top: 50px;
+  max-width: 800px; /* Define uma largura máxima */
+  margin: 0 auto; /* Centraliza o formulário na página */
+  justify-content: flex-start;
+}
 
 .form-row {
-  display: flex;
-  justify-content: space-between; /* Para espaçar os campos igualmente */
-  margin-bottom: 15px; /* Espaço entre as linhas */
+  display: flex; 
+  gap: 50px; /* Espaçamento entre os campos */
+  margin-bottom: 5px;
+  flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+  width: 100%; /* Garante que a linha ocupe a largura total */
 }
 
 .form-group {
-  flex: 1; /* Os campos ocuparão igualmente o espaço */
-  margin-right: 15px; /* Espaço entre os campos */
+  flex: 1; /* Os campos ocuparão o mesmo espaço */
+  min-width: 200px; /* Define um tamanho mínimo para cada campo */
 }
 
-.form-group:last-child {
-  margin-right: 0; /* Remove a margem do último campo */
-}
 
-.form-group.nome {
-  flex: 0 0 100%; /* Faz o campo "Nome" ocupar 100% da largura */
-  width: "100%"
-}
-
-label {
+.form-container label {
   display: block;
   margin-bottom: 5px;
+  text-align: left;
 }
-.full-width {
+.form-container .form-group input {
+  position: relative;
+  height: 50px;
   width: 100%;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius:  6px;
+  padding: 0 15px;
 }
 
 input[type="text"],
 input[type="number"],
 input[type="tel"],
-input {
-    background-color: #f0f8ff; /* Um branco meio azulado, próximo do estilo padrão */
-    color: #000;
-    border: 1px solid #ccc;
-    padding: 8px;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
+select,
+textarea {
+  background-color: #f0f8ff;
+  color: #000;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  width: 100%; /* Garante que o input ocupe toda a largura do grupo */
+  box-sizing: border-box;
+  font-size: 16px;
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius:  6px;
+  padding: 0 15px;
+}
+.form-container .form-group textarea {
+  position: relative;
+  height: 50px; /* Essa altura pode ser ajustada para textarea, se necessário */
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius: 6px;
+  padding: 0 15px;
+  box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
+}
+
+.page-container {
+  margin-top: 50px;
+  max-width: 800px;
+  margin: 0 auto;
+  position: sticky; /* Mantém o formulário fixo */
+  top: 20px; /* Define a distância do topo da página */
+  padding: 20px;
+  z-index: 100; /* Para garantir que o formulário esteja acima de outros elementos */
+}
+
+.form-title {
+  margin: 0; /* Remove margens para que o título não afete o layout */
+  padding: 20px 0; /* Ajuste o padding se necessário */
+  text-align: center; /* Centraliza o título, se desejado */
+  font-size: 24px; /* Ajusta o tamanho da fonte conforme necessário */
+  color: #333; /* Defina a cor do texto, se desejado */
+}
+
+.form-container .form-group select {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius:  6px;
+  padding: 0 15px;
+
+  background-color: #f0f8ff;
+  color: #000;
+  border: 1px solid #ccc;
+  border: 1px solid var(--pretofundo);
+}
+
+.form-container .form-group select::after {
+
+}
+
+.form-container .form-group select:focus {
+
 }

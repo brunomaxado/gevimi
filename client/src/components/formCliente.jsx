@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios"; // Certifique-se de que o axios está importado
 
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
@@ -39,10 +40,11 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
     cpf: "",
     celular: "",
     cep: "",
-    rua: "",
+    logradouro: "",
     numero: "",
     cidade: "",
     bairro: "",
+    observacao: "",
     ...initialData // Preenche os dados iniciais, se houver
   });
 
@@ -54,159 +56,190 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
     setCliente((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { nome, cpf, celular, cep, cidade, bairro, rua } = cliente;
 
-    if (!nome || !cpf || !celular || !cidade || !bairro || !rua || !cep) {
-      setError("Todos os campos obrigatórios devem ser preenchidos.");
-      return;
-    }
-
-    if (!validateCPF(cpf)) {
-      setError("CPF inválido.");
-      return;
-    }
-    if (!validateCelular(celular)) {
-      setError("Celular inválido. Deve conter 11 dígitos.");
-      return;
-    }
-    if (!validateCEP(cep)) {
-      setError("CEP inválido. Deve conter 8 dígitos.");
-      return;
-    }
-
-    // Chama a função passada via props para submeter os dados
-    onSubmit(cliente);
-  };
 
   useEffect(() => {
     if (primeiroCampoRef.current) {
       primeiroCampoRef.current.focus();
     }
   }, []);
+  const [clientes, setClientes] = useState([]); // Novo state para armazenar os clientes
 
+  const fetchAllClientes = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/cliente");
+      setClientes(res.data);
+    } catch (err) {
+      console.error("Erro ao buscar clientes:", err);
+    }
+  };
+  
+  useEffect(() => {
+    fetchAllClientes(); // Carrega os clientes quando o componente é montado
+    if (primeiroCampoRef.current) {
+      primeiroCampoRef.current.focus();
+    }
+  }, []);
+  const isCpfCadastrado = (cpf) => {
+    return clientes.some((c) => c.cpf === cpf); // Verifica se algum cliente já possui o CPF
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { nome, cpf, celular, cep, cidade, bairro, logradouro } = cliente;
+  
+    if (!nome || !cpf || !celular || !cidade || !bairro || !logradouro || !cep) {
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
+  
+    if (!validateCPF(cpf)) {
+      setError("CPF inválido.");
+      return;
+    }
+  
+    if (isCpfCadastrado(cpf)) {
+      setError("Este CPF já está cadastrado.");
+      return;
+    }
+  
+    onSubmit(cliente); // Submete o formulário se todas as validações passarem
+  };
+  
   return (
-    <form onSubmit={handleSubmit} class="form-container">
-      {error && <p id="erro">{error}</p>}
-      <div className="cliente">
+    <form onSubmit={handleSubmit} className="form-container">
+ 
 
-      <div className="form-row"> 
-    <div className="form-group nome"> {/* Campo Nome ocupará 100% da largura */}
+  <div className="cliente">
+
+    {/* Nome */}
+    <div className="form-row">
+      <div className="form-group">
         <label> Nome: <span className="asterisco">*</span> </label>
         <input
-            type="text"
-            placeholder="Nome"
-            name="nome"
-            ref={primeiroCampoRef}
-            value={cliente.nome}
-            onChange={handleChange}
-            required
-            style={{ width: "100%" }} // Garanta que o campo de entrada ocupe 100%
+          type="text"
+          placeholder="Nome"
+          name="nome"
+          ref={primeiroCampoRef}
+          value={cliente.nome}
+          onChange={handleChange}
+          required
         />
-    </div> 
-</div>
-
-<div className="form-row"> 
-    <div className="form-group">
-        <p>
-            <p> CPF:  <label className="asterisco">*</label> </p>
-            <input
-                type="number"
-                placeholder="CPF"
-                name="cpf"
-                value={cliente.cpf}
-                onChange={handleChange}
-                required
-            />
-        </p>
-    </div> 
-    <div className="form-group">
-        <p>
-            <p> CELULAR: <label className="asterisco">*</label> </p>
-            <input
-                type="number"
-                placeholder="Celular"
-                name="celular"
-                value={cliente.celular}
-                onChange={handleChange}
-                required
-            />
-        </p>
-    </div> 
-</div> 
-
-<div className="form-row"> 
-    <div className="form-group">
-        <p>
-            <p> CIDADE: <label className="asterisco">*</label> </p>
-            <input
-                type="text"
-                placeholder="Cidade"
-                name="cidade"
-                value={cliente.cidade}
-                onChange={handleChange}
-                required
-            />
-        </p>
-    </div> 
-    <div className="form-group">
-        <p>
-            <p> CEP: <label className="asterisco-branco">*</label> </p>
-            <input
-                type="number"
-                placeholder="CEP"
-                name="cep"
-                value={cliente.cep}
-                onChange={handleChange}
-                
-            />
-        </p>
-    </div> 
-</div> 
-
-<div className="form-row"> 
-    <div className="form-group">
-        <p>
-            <p> BAIRRO:  <label className="asterisco">*</label> </p>
-            <input
-                type="text"
-                placeholder="Bairro"
-                name="bairro"
-                value={cliente.bairro}
-                onChange={handleChange}
-                required
-                style={{ width: "100%" }} // Garanta que o campo de entrada ocupe 100%
-            />
-        </p>
-    </div> 
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-        <h1>{initialData.nome ? "Editar Cliente" : "Adicionar Cliente"}</h1>
-   
-        
-        <button type="submit">
-          {initialData.nome ? "Salvar Alterações" : "Adicionar"}
-        </button>
       </div>
-    </form>
+    </div>
+
+    {/* CPF e Celular */}
+    <div className="form-row">
+      <div className="form-group">
+        <label> CPF: <span className="asterisco">*</span> </label>
+        <input
+          type="text"
+          placeholder="CPF"
+          name="cpf"
+          value={cliente.cpf}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label> Celular: <span className="asterisco">*</span> </label>
+        <input
+          type="text"
+          placeholder="Celular"
+          name="celular"
+          value={cliente.celular}
+          onChange={handleChange}
+          required
+        />
+      </div>
+    </div>
+
+    {/* Cidade e CEP */}
+    <div className="form-row">
+      <div className="form-group">
+        <label> Cidade: <span className="asterisco">*</span> </label>
+        <input
+          type="text"
+          placeholder="Cidade"
+          name="cidade"
+          value={cliente.cidade}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label> CEP:  </label>
+        <input
+          type="text"
+          placeholder="CEP"
+          name="cep"
+          value={cliente.cep}
+          onChange={handleChange}
+          required
+        />
+      </div>
+    </div>
+
+    {/* Bairro, Logradouro e Número */}
+    <div className="form-row">
+      <div className="form-group">
+        <label> Bairro: <span className="asterisco">*</span> </label>
+        <input
+          type="text"
+          placeholder="Bairro"
+          name="bairro"
+          value={cliente.bairro}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label> Logradouro: <span className="asterisco">*</span> </label>
+        <input
+          type="text"
+          placeholder="Logradouro"
+          name="logradouro"
+          value={cliente.logradouro}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label> Número: <span className="asterisco">*</span> </label>
+        <input
+          type="text"
+          placeholder="Número"
+          name="numero"
+          value={cliente.numero}
+          onChange={handleChange}
+          required
+        />
+      </div>
+    </div>
+
+    {/* Observação */}
+    <div className="form-row">
+      <div className="form-group">
+        <label> Observação: </label>
+        <input
+          type="text"
+          placeholder="Observação"
+          name="observacao"
+          value={cliente.observacao}
+          onChange={handleChange}
+        
+        />
+      </div>
+    </div>
+    {error && <p id="erro">{error}</p>}
+    <button type="submit">
+      {initialData.nome ? "ATUALIZAR" : "ADICIONAR"}
+    </button>
+  </div>
+</form>
+
+
   );
+  
 };
 
 export default FormCliente;

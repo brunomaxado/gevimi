@@ -47,6 +47,7 @@ const EditarCliente = () => {
 
   return (
     <div>
+      <h1> EDITAR CLIENTE</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {/* Modal de sucesso */}

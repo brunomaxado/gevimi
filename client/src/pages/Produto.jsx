@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import FormProduto from "../components/formProduto";
+
 const Produto = () => {
   const [produto, setProduto] = useState({
     nome: "",
@@ -68,29 +69,29 @@ const Produto = () => {
 
   return (
     <div>
-       <h1>NOVO PRODUTO</h1>
-      <div className="Produto">
-        <div className="form">
-          {/* Reutilizando o componente de formulário */}
-          <FormProduto
-            produto={produto}
-            categorias={categorias}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            error={error}
-          />
+      <div className="form"> 
+  <h1>NOVO PRODUTO</h1>
+
+  <FormProduto
+          produto={produto}
+          categorias={categorias}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          error={error} // Passa o estado de erro para o FormProduto
+          initialData={produto} // Passa os dados iniciais para o FormProduto
+        />
+
+    {/* Modal de sucesso */}
+    {showSuccessModal && (
+      <div className="success-modal">
+        <div className="success-modal-content">
+          <span>{successMessage}</span>
         </div>
       </div>
+    )}
+  </div>
+  </div>
 
-      {/* Modal de sucesso */}
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <span>{successMessage}</span>
-          </div>
-        </div>
-      )}
-    </div>
   );
 };
 

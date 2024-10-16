@@ -91,14 +91,15 @@ const GerenciarProduto = () => {
   return (
     <div>
       <div className="form">
-        <h1>ALTERAR PRODUTO</h1>
+      <h1>EDITAR PRODUTO</h1>
         {/* Utilizando o FormProduto aqui */}
         <FormProduto
           produto={produto}
           categorias={categorias}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          error={error}
+          error={error} // Passa o estado de erro para o FormProduto
+          initialData={produto} // Passa os dados iniciais para o FormProduto
         />
       </div>
 
