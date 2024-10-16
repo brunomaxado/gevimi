@@ -906,7 +906,7 @@ p#erro {
 .form-row {
   display: flex; 
   gap: 50px; /* Espaçamento entre os campos */
-  margin-bottom: 5px;
+  margin-bottom: 1px;
   flex-wrap: wrap; /* Permite que os itens quebrem a linha */
   width: 100%; /* Garante que a linha ocupe a largura total */
 }
@@ -1005,10 +1005,22 @@ textarea {
   border: 1px solid var(--pretofundo);
 }
 
-.form-container .form-group select::after {
 
+.form-group.preco {
+  display: flex;
+  align-items: center; /* Alinha verticalmente o símbolo e o campo */
+  position: relative; /* Para posicionar o R$ no input */
 }
 
-.form-container .form-group select:focus {
+.form-group.preco input {
+  padding-left: 30px; /* Dá espaço à esquerda para o símbolo */
+}
 
+.form-group.preco span {
+  position: absolute;
+  left: 10px;
+  top: 50%; /* Centraliza verticalmente */
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #333; /* Cor do texto do símbolo */
 }
