@@ -489,6 +489,7 @@ div.auth button {
 }
 
 .app {
+  margin-left: 50px;
   padding-top: 20vh;
   padding-bottom: 20vh;
   display: flex;
@@ -1115,27 +1116,5 @@ textarea {
   background: var(--amarelologo);
 }
 
-.navigation ul li.active a::before{
-  content: '';
-  position: absolute;
-  top: -30px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: var(--pretofundo);
-  border-radius: 50%;
-  box-shadow: 15px 15px 0 var(--amarelologo);
-}
 
-.navigation ul li.active a::after{
-  content: '';
-  position: absolute;
-  bottom: -30px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: var(--pretofundo);
-  border-radius: 50%;
-  box-shadow: 15px -15px 0 var(--amarelologo);
-}
 

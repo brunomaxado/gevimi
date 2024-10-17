@@ -26,19 +26,21 @@ const Header = () => {
               </div>
             </div>
 
-          <li className="nav-item">
-            <Link to="/estatistica" className="material-symbols-outlined">monitoring </Link>
-          </li>
-
+         
           <li id="pedido" className="nav-item, direita">
-            <Link to="/pedido" className="nav-link">Novo Pedido</Link>
+            <Link to="/pedido">
+            <span className="icon"><ion-icon name="storefront-outline"></ion-icon></span>
+            <span className="title">Novo Pedido</span>
+            </Link>
+           
           </li>
 
 
 
           <li className="nav-item dropdown">
 
-            <span className="material-symbols-outlined"> manage_accounts </span>
+          <span className="icon"><ion-icon name="people-circle-outline"></ion-icon></span>
+          <span className="title">Usuário: |{currentUser?.nome}|</span>
 
 
             <ul className="dropdown-menu">
