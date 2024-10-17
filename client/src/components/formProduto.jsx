@@ -45,7 +45,6 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
   <div className="form-group">
     <label> Preço Unitário: <span className="asterisco">*</span> </label>
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <span style={{ marginRight: '15px', fontSize: '122px' }}>R$</span>
       <input
         type="number"
         placeholder="Preço Unitário"

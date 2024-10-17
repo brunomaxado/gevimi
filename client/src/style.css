@@ -898,6 +898,7 @@ p#erro {
 }
 .form-container {
   margin-top: 50px;
+  position: relative;
   max-width: 800px; /* Define uma largura máxima */
   margin: 0 auto; /* Centraliza o formulário na página */
   justify-content: flex-start;
@@ -912,6 +913,7 @@ p#erro {
 }
 
 .form-group {
+
   flex: 1; /* Os campos ocuparão o mesmo espaço */
   min-width: 200px; /* Define um tamanho mínimo para cada campo */
 }
@@ -1006,21 +1008,36 @@ textarea {
 }
 
 
-.form-group.preco {
-  display: flex;
-  align-items: center; /* Alinha verticalmente o símbolo e o campo */
-  position: relative; /* Para posicionar o R$ no input */
-}
-
-.form-group.preco input {
-  padding-left: 30px; /* Dá espaço à esquerda para o símbolo */
-}
-
-.form-group.preco span {
-  position: absolute;
-  left: 10px;
-  top: 50%; /* Centraliza verticalmente */
-  transform: translateY(-50%);
+/* Estilo para o campo de senha */
+.senha-input {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
   font-size: 1rem;
-  color: #333; /* Cor do texto do símbolo */
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius: 6px;
+  padding: 0 15px;
+  background-color: #f0f8ff;
+  color: #000;
+  border: 1px solid var(--pretofundo);
+}
+
+/* Estilo para os radio buttons */
+.radio-group {
+  display: flex; /* Exibe os radio buttons lado a lado */
+  gap: 10px; /* Espaço entre os radio buttons */
+  align-items: center; /* Alinha verticalmente com os textos */
+}
+
+/* Mantém o estilo para o input dentro do form-group */
+.form-container .form-group input[type="radio"] {
+  margin-right: 5px; /* Espaço entre o radio e o texto */
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  padding-right: 52px;
 }

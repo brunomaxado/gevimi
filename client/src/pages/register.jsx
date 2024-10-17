@@ -1,13 +1,16 @@
-import React from "react";
-import { useState } from "react";
+// Register.jsx
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import FormUsuario from "../components/formUsuario"; // Importando o novo formulário
+
 
 const Register = () => {
   const [inputs, setInputs] = useState({
     nome: "",
     login: "",
     senha: "",
+    isAdmin: "false",  // Valor inicial para isAdmin (pode ser "false" ou vazio)
   });
   const [err, setError] = useState(null);
 
@@ -26,39 +29,20 @@ const Register = () => {
       setError(err.response.data);
     }
   };
-console.log(inputs);
+
   return (
     <div className="auth, login">
-      <h1>Registro</h1>
-      <form>
-      <input
-          required
-          type="text"
-          placeholder="nome"
-          name="nome"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="text"
-          placeholder="entrar"
-          name="login"
-          onChange={handleChange}
-        />
-
-        <input
-          required
-          type="password"
-          placeholder="senha"
-          name="senha"
-          onChange={handleChange}
-        />
-        <button onClick={handleSubmit}>Registrar</button>
-        {err && <p>{err}</p>}
-        <button>
-         <Link to="/login">Entrar</Link>
-        </button>
-      </form>
+      <h1>NOVO USUÁRIO</h1>
+      <br /> 
+      <br /> 
+      <div className="form"> 
+      <FormUsuario
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        inputs={inputs}
+        err={err}
+      />
+    </div>
     </div>
   );
 };
