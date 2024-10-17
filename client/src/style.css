@@ -1041,3 +1041,101 @@ textarea {
   align-items: center;
   padding-right: 52px;
 }
+
+
+/* menu lateral*/
+.navigation{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: var(--pretofundo);
+  width: 70px;
+  box-shadow: 10px 0 0 var(--amarelologo);
+  border-left: 10px solid var(--pretofundo);
+  overflow-x: hidden;
+  transition: 0.5s;
+  border-bottom-right-radius: 10px;
+  z-index: 1000;
+}
+
+.navigation:hover{
+  width: 300px;
+}
+
+.navigation ul{
+  position: relative;
+  top: 0;
+  width: 100%;
+  padding-left: 5px;
+  padding-top: 20px;
+}
+
+.navigation ul li{
+  position: relative;
+  list-style: none;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a{
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: var(--branco);
+}
+
+.navigation ul li a .icon{
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon{
+  position: relative;
+  font-size: 1.5rem;
+  z-index: 2000;
+}
+
+.navigation ul li a .title{
+  position: relative;
+  display: block;
+  padding-left: 10px;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+}
+
+.navigation ul li.active{
+  background: var(--amarelologo);
+}
+
+.navigation ul li.active a::before{
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--pretofundo);
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 var(--amarelologo);
+}
+
+.navigation ul li.active a::after{
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--pretofundo);
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 var(--amarelologo);
+}
+

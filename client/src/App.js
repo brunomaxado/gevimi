@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import readProduto from "./pages/readProduto";
 import Header from "./pages/Header";
+import Menu from "./pages/MenuLateral";
 import Produto from "./pages/Produto";
 import "./style.css";
 import GerenciarProduto from "./pages/editarProduto";
@@ -31,6 +32,8 @@ function App() {
     <><div className="app">
       <BrowserRouter>
         {currentUser && <Header />}
+        {currentUser && <Menu />}
+
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
