@@ -1043,7 +1043,7 @@ textarea {
   height: 100vh;
   background: var(--pretofundo);
   width: 70px;
-  box-shadow: 10px 0 0 var(--amarelologo);
+  box-shadow: 10px 0 0 var(--amarelotoque);
   border-left: 10px solid var(--pretofundo);
   overflow-x: hidden;
   transition: 0.5s;
@@ -1103,34 +1103,16 @@ textarea {
   white-space: nowrap;
 }
 
+.navigation ul li a:hover{
+  color: var(--amarelotoque);
+}
+
 .navigation ul li.active {
-  background: var(--amarelologo);
+  background: var(--amarelotoque);
 }
-
-.navigation ul li.active a::before {
-  content: '';
-  position: absolute;
-  top: -30px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: var(--pretofundo);
-  border-radius: 50%;
-  box-shadow: 15px 15px 0 var(--amarelologo);
+.navigation ul li.active a{
+  color: var(--pretoletra);
 }
-
-.navigation ul li.active a::after {
-  content: '';
-  position: absolute;
-  bottom: -30px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: var(--pretofundo);
-  border-radius: 50%;
-  box-shadow: 15px -15px 0 var(--amarelologo);
-}
-
 /* CSS para o dropdown fechado */
 .dropdown-content {
   max-height: 0;
@@ -1154,8 +1136,8 @@ textarea {
 }
 
 .dropdown-content a:hover {
-  background: var(--amarelologo);
-  color: var(--pretoletra);
+  background: var(--amarelotoque);
+  color: var(--pretoletra) !important;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }

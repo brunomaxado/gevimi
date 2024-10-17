@@ -14,18 +14,6 @@ const Header = () => {
             <a href="/home"><img src="../Icone.png"></img></a>
           </li>
 
-            <div class="subnav">
-              <li class="subnavbtn, material-symbols-outlined">store</li>
-              <div class="subnav-content">
-              <Link to="/readPedido"><p> Listar Pedido</p> </Link>
-              <Link to="/viewProduto"><p> Listar Produto</p> </Link>
-              <Link to="/readCliente"><p>Listar Cliente</p></Link>
-              <Link to="/produto"><p> Novo Produto</p> </Link>
-              <Link to="/cliente"><p>Novo Cliente</p></Link>
-                <Link to="/categoria"><p>Categoria</p></Link>
-              </div>
-            </div>
-
          
           <li id="pedido" className="nav-item, direita">
             <Link to="/pedido">
