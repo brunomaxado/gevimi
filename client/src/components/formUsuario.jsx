@@ -52,13 +52,13 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, err }) => {
       <div className="form-row">
         <div className="form-group">
           <label>Administrador:</label>
-          <div className="radio-group">
+          <div className="radio-group" style={{ display: "flex", gap: "10px" }}>
             <label>
               <input
                 type="radio"
-                name="isAdmin"
-                value="true"
-                checked={inputs.isAdmin === "true"}
+                name="administrador"
+                value="1"
+                checked={inputs.administrador === "1"}
                 onChange={handleChange}
               />
               Sim
@@ -66,9 +66,9 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, err }) => {
             <label>
               <input
                 type="radio"
-                name="isAdmin"
-                value="false"
-                checked={inputs.isAdmin === "false"}
+                name="administrador"
+                value="0"
+                checked={inputs.administrador === "0"}
                 onChange={handleChange}
               />
               Não

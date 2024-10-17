@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, logout, getUsuario, deleteUsuario, getUsuarios, getAllUsuario } from "../controllers/userController.js";
+import { register, login, logout, getUsuario, deleteUsuario, getUsuarios, getAllUsuario, alterarSenha } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -12,5 +12,5 @@ router.get("/usuario",getUsuario);
 router.get("/usuario/:id",getUsuarios);
 router.delete("/usuario/:id",deleteUsuario);
 router.get("/allusuario",getAllUsuario);
-
+router.put("/alterarsenha", alterarSenha);
 export default router;

@@ -3,28 +3,25 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
-    
-    
-    
-    const q = "SELECT * FROM usuario WHERE login = ?";
-  
-    db.query(q, [req.body.login], (err, data) => {
+  const q = "SELECT * FROM usuario WHERE login = ?";
+
+  db.query(q, [req.body.login], (err, data) => {
+    if (err) return res.status(500).json(err);
+    if (data.length) return res.status(409).json("User already exists!");
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.senha, salt);
+
+    // Inclui o campo 'administrador' no insert
+    const q = "INSERT INTO usuario(`nome`, `login`, `senha`, `administrador`) VALUES (?)";
+    const values = [req.body.nome, req.body.login, hash, req.body.administrador]; // Incluindo o valor para administrador
+
+    db.query(q, [values], (err, data) => {
       if (err) return res.status(500).json(err);
-      if (data.length) return res.status(409).json("User already exists!");
-  
-    
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(req.body.senha, salt);
-  
-      const q = "INSERT INTO usuario(`nome`,`login`,`senha`) VALUES (?)";
-      const values = [req.body.nome, req.body.login, hash];
-  
-      db.query(q, [values], (err, data) => {
-        if (err) return res.status(500).json(err);
-        return res.status(200).json("Usuário Criado.");
-      });
+      return res.status(200).json("Usuário Criado.");
     });
-  };
+  });
+};
 
  
   export const login = (req, res) => {
@@ -92,3 +89,42 @@ export const register = (req, res) => {
   export const  deleteUsuario= (req, res) => {
   
   };
+
+
+  export const alterarSenha = (req, res) => {
+    const { id_usuario, senhaAntiga, senhaNova } = req.body;
+  
+    // Verifique se a nova senha é diferente da antiga
+    if (senhaAntiga === senhaNova) {
+      return res.status(400).json("A nova senha deve ser diferente da antiga.");
+    }
+  
+    // Primeiro, pegue o usuário do banco de dados pelo id
+    const q = "SELECT * FROM usuario WHERE id_usuario = ?";
+  
+    db.query(q, [id_usuario], (err, data) => {
+      if (err) return res.status(500).json(err);
+      if (data.length === 0) return res.status(404).json("Usuário não encontrado!");
+  
+      const usuario = data[0];
+  
+      // Verifica se a senha antiga está correta
+      const isPasswordCorrect = bcrypt.compareSync(senhaAntiga, usuario.senha);
+      if (!isPasswordCorrect) {
+        return res.status(400).json("Senha antiga incorreta!");
+      }
+  
+      // Gera o hash da nova senha
+      const salt = bcrypt.genSaltSync(10);
+      const hashSenhaNova = bcrypt.hashSync(senhaNova, salt);
+  
+      // Atualiza a senha no banco de dados
+      const updateQuery = "UPDATE usuario SET senha = ? WHERE id_usuario = ?";
+      db.query(updateQuery, [hashSenhaNova, id_usuario], (err, result) => {
+        if (err) return res.status(500).json(err);
+  
+        return res.status(200).json("Senha alterada com sucesso.");
+      });
+    });
+  };
+  
