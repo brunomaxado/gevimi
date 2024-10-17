@@ -1035,8 +1035,8 @@ textarea {
 }
 
 
-/* menu lateral*/
-.navigation{
+/* menu lateral */
+.navigation {
   position: fixed;
   top: 0;
   left: 0;
@@ -1051,11 +1051,11 @@ textarea {
   z-index: 1000;
 }
 
-.navigation:hover{
+.navigation:hover {
   width: 300px;
 }
 
-.navigation ul{
+.navigation ul {
   position: relative;
   top: 0;
   width: 100%;
@@ -1063,7 +1063,7 @@ textarea {
   padding-top: 20px;
 }
 
-.navigation ul li{
+.navigation ul li {
   position: relative;
   list-style: none;
   width: 100%;
@@ -1071,7 +1071,7 @@ textarea {
   border-bottom-left-radius: 20px;
 }
 
-.navigation ul li a{
+.navigation ul li a {
   position: relative;
   display: flex;
   width: 100%;
@@ -1079,7 +1079,7 @@ textarea {
   color: var(--branco);
 }
 
-.navigation ul li a .icon{
+.navigation ul li a .icon {
   position: relative;
   display: block;
   min-width: 60px;
@@ -1088,13 +1088,13 @@ textarea {
   line-height: 70px;
 }
 
-.navigation ul li a .icon ion-icon{
+.navigation ul li a .icon ion-icon {
   position: relative;
   font-size: 1.5rem;
   z-index: 2000;
 }
 
-.navigation ul li a .title{
+.navigation ul li a .title {
   position: relative;
   display: block;
   padding-left: 10px;
@@ -1103,9 +1103,59 @@ textarea {
   white-space: nowrap;
 }
 
-.navigation ul li.active{
+.navigation ul li.active {
   background: var(--amarelologo);
 }
 
+.navigation ul li.active a::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--pretofundo);
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 var(--amarelologo);
+}
 
+.navigation ul li.active a::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--pretofundo);
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 var(--amarelologo);
+}
 
+/* CSS para o dropdown fechado */
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+/* CSS para abrir o dropdown ao passar o mouse */
+.list:hover .dropdown-content {
+  max-height: 500px; /* Um valor grande para garantir que o conteúdo seja exibido */
+  opacity: 1;
+}
+
+/* Estilo para os links dentro do dropdown */
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: var(--branco);
+}
+
+.dropdown-content a:hover {
+  background: var(--amarelologo);
+  color: var(--pretoletra);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
