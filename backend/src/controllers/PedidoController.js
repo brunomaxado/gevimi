@@ -142,8 +142,7 @@ import db from "../config/db.js";
     const queryPedidos = `
       SELECT *
       FROM pedido
-      WHERE data_deletado IS NULL 
-        AND tipo <> 3 
+      WHERE tipo <> 3 
         AND status <> 1
         AND data_para_entregar IS NOT NULL
       ORDER BY data_para_entregar ASC

@@ -9,7 +9,7 @@ export const getDashboardData = (req, res) => {
       COUNT(CASE WHEN data_finalizado IS NULL THEN 1 END) AS total_finalizado,
       COUNT(CASE WHEN data_finalizado IS NOT NULL THEN 1 END) AS total_aberto
     FROM pedido
-    WHERE data_deletado IS NULL
+ 
   `;
 
   const queryTotalPrice = `
@@ -19,8 +19,7 @@ export const getDashboardData = (req, res) => {
       item_pedido i
     INNER JOIN 
       pedido p ON p.id_pedido = i.fk_id_pedido
-    WHERE 
-      p.data_deletado IS NULL
+  
   `;
 
   db.query(queryTotals, (err, totalsData) => {

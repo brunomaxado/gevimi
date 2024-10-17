@@ -19,11 +19,22 @@ import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import React from "react";
 import useAuth from "./context/useAuth";
+import AlterarSenha from "./pages/alterarSenha";
 
 const Private = ({ Component }) => {
   const { currentUser } = useAuth();
 
   return currentUser ? <Component /> : <Login />;
+};
+const AdminPrivate = ({ Component }) => {
+  const { currentUser } = useAuth();
+
+  // Verifica se o usuário está logado e se é administrador
+  return currentUser && currentUser.administrador === 1 ? (
+    <Component />
+  ) : (
+    <Login /> // Redireciona para o login se não for admin ou não estiver logado
+  );
 };
 
 function App() {
@@ -36,7 +47,8 @@ function App() {
 
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<AdminPrivate Component={Register} />} /> {/* Apenas admins podem registrar novos usuários */}
+  
           <Route path="/pedido" element={<Pedido />} />
           <Route path="/viewProduto" element={<Private Component={readProduto} />} />
           <Route path="/produto" element={<Private Component={Produto} />} />
@@ -48,6 +60,7 @@ function App() {
           <Route path="/readPedido/:id_pedido" element={<Private Component={ReadPedidoUnico} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
           <Route path="/estatistica" element={<Private Component={Dashboard} />} />
+          <Route path="/alterarsenha" element={<Private Component={AlterarSenha} />} />
           <Route path="/home" element={<Private Component={Home} />} />
           <Route path="/" element={<Login />} />
         </Routes>

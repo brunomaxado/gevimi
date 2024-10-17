@@ -939,6 +939,7 @@ p#erro {
 
 input[type="text"],
 input[type="number"],
+input[type="password"]
 input[type="tel"],
 select,
 textarea {
@@ -1011,20 +1012,10 @@ textarea {
 
 /* Estilo para o campo de senha */
 .senha-input {
-  position: relative;
-  height: 50px;
-  width: 100%;
-  outline: none;
-  font-size: 1rem;
-  margin-top: 8px;
-  border: 1px solid;
-  border-radius: 6px;
-  padding: 0 15px;
-  background-color: #f0f8ff;
-  color: #000;
-  border: 1px solid var(--pretofundo);
+  background-color: #f0f8ff !important; /* Força a cor de fundo */
+  color: #000 !important; /* Força a cor do texto */
+  border: 1px solid var(--pretofundo) !important; /* Força a borda */
 }
-
 /* Estilo para os radio buttons */
 .radio-group {
   display: flex; /* Exibe os radio buttons lado a lado */

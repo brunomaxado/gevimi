@@ -10,7 +10,7 @@ const Register = () => {
     nome: "",
     login: "",
     senha: "",
-    isAdmin: "false",  // Valor inicial para isAdmin (pode ser "false" ou vazio)
+    administrador: "0",// Valor inicial para isAdmin (pode ser "false" ou vazio)
   });
   const [err, setError] = useState(null);
 
@@ -18,8 +18,9 @@ const Register = () => {
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
+  };
+ console.log(inputs);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
