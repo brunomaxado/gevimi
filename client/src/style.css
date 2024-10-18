@@ -167,13 +167,8 @@ img#logo {
 }
 
 li.nav-item.dropdown {
-  padding-top: 20px;
   border-radius: 5px;
-}
-
-li.nav-item.dropdown:hover {
-  background-color: var(--cinza);
-  color: var(--amarelotoque);
+  height: 7vh;
 }
 
 li#nome {
@@ -184,6 +179,7 @@ li#nome {
 }
 
 li#pedido a {
+  height: 7vh;
   background-color: var(--amarelologo);
   color: var(--pretoletra);
   border-radius: 10px;
@@ -228,11 +224,11 @@ div.tabela {
 .header {
   background-color: var(--pretofundo);
   padding: 10px 0;
-  position: fixed;
+  position: absolute;
   top: 0;
   width: 100vw;
   z-index: 1000;
-  height: 15vh;
+  height: 10vh;
 }
 
 .footer {
@@ -265,16 +261,25 @@ div.tabela {
 }
 
 .nav-item {
+  color: var(--amarelotoque);
+  height: auto;
   font-size: 18px;
-  padding: 5vh;
-  align-self: center;
+  padding: 1vh;
+  margin-top: 0px;  
   margin-left: 5vw;
   margin-right: 5vw;
 }
 
-.nav-item:hover{
-  background-color: var(--cinza);
-  border-radius: 15px;
+.nav-item .icon{
+  position: relative;
+  display: block;
+  text-align: center;
+  line-height: 5px;
+}
+
+.nav-item .icon ion-icon{
+  position: relative;
+  font-size: 1.5rem;
 }
 
 .nav-link {
@@ -372,10 +377,6 @@ img {
 }
 
 
-.nav-link:hover {
-  background-color: var(--cinza);
-}
-
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -400,9 +401,6 @@ img {
   display: block;
 }
 
-.dropdown-menu .nav-link:hover {
-  background-color: var(--cinza);
-}
 
 .nav-item:hover .dropdown-menu {
   display: block;
@@ -1043,11 +1041,10 @@ textarea {
   height: 100vh;
   background: var(--pretofundo);
   width: 70px;
-  box-shadow: 10px 0 0 var(--amarelologo);
+  box-shadow: 10px 0 0 var(--amarelotoque);
   border-left: 10px solid var(--pretofundo);
   overflow-x: hidden;
   transition: 0.5s;
-  border-bottom-right-radius: 10px;
   z-index: 1000;
 }
 
@@ -1103,34 +1100,16 @@ textarea {
   white-space: nowrap;
 }
 
+.navigation ul li a:hover{
+  color: var(--amarelotoque);
+}
+
 .navigation ul li.active {
-  background: var(--amarelologo);
+  background: var(--amarelotoque);
 }
-
-.navigation ul li.active a::before {
-  content: '';
-  position: absolute;
-  top: -30px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: var(--pretofundo);
-  border-radius: 50%;
-  box-shadow: 15px 15px 0 var(--amarelologo);
+.navigation ul li.active a{
+  color: var(--pretoletra);
 }
-
-.navigation ul li.active a::after {
-  content: '';
-  position: absolute;
-  bottom: -30px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background: var(--pretofundo);
-  border-radius: 50%;
-  box-shadow: 15px -15px 0 var(--amarelologo);
-}
-
 /* CSS para o dropdown fechado */
 .dropdown-content {
   max-height: 0;
@@ -1154,8 +1133,8 @@ textarea {
 }
 
 .dropdown-content a:hover {
-  background: var(--amarelologo);
-  color: var(--pretoletra);
+  background: var(--amarelotoque);
+  color: var(--pretoletra) !important;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
