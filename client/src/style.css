@@ -167,13 +167,8 @@ img#logo {
 }
 
 li.nav-item.dropdown {
-  padding-top: 20px;
   border-radius: 5px;
-}
-
-li.nav-item.dropdown:hover {
-  background-color: var(--cinza);
-  color: var(--amarelotoque);
+  height: 7vh;
 }
 
 li#nome {
@@ -184,6 +179,7 @@ li#nome {
 }
 
 li#pedido a {
+  height: 7vh;
   background-color: var(--amarelologo);
   color: var(--pretoletra);
   border-radius: 10px;
@@ -228,11 +224,11 @@ div.tabela {
 .header {
   background-color: var(--pretofundo);
   padding: 10px 0;
-  position: fixed;
+  position: absolute;
   top: 0;
   width: 100vw;
   z-index: 1000;
-  height: 15vh;
+  height: 10vh;
 }
 
 .footer {
@@ -265,16 +261,25 @@ div.tabela {
 }
 
 .nav-item {
+  color: var(--amarelotoque);
+  height: auto;
   font-size: 18px;
-  padding: 5vh;
-  align-self: center;
+  padding: 1vh;
+  margin-top: 0px;  
   margin-left: 5vw;
   margin-right: 5vw;
 }
 
-.nav-item:hover{
-  background-color: var(--cinza);
-  border-radius: 15px;
+.nav-item .icon{
+  position: relative;
+  display: block;
+  text-align: center;
+  line-height: 5px;
+}
+
+.nav-item .icon ion-icon{
+  position: relative;
+  font-size: 1.5rem;
 }
 
 .nav-link {
@@ -372,10 +377,6 @@ img {
 }
 
 
-.nav-link:hover {
-  background-color: var(--cinza);
-}
-
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -400,9 +401,6 @@ img {
   display: block;
 }
 
-.dropdown-menu .nav-link:hover {
-  background-color: var(--cinza);
-}
 
 .nav-item:hover .dropdown-menu {
   display: block;
@@ -1047,7 +1045,6 @@ textarea {
   border-left: 10px solid var(--pretofundo);
   overflow-x: hidden;
   transition: 0.5s;
-  border-bottom-right-radius: 10px;
   z-index: 1000;
 }
 

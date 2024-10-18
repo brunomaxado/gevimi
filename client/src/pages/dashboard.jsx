@@ -7,7 +7,7 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '20px',
-    padding: '20px',
+    padding: '50px',
     justifyContent: 'center'
   },
   card: {

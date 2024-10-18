@@ -31,6 +31,17 @@ const Menu = () => {
                 </li>
                 <li className="list">
                     <Link to="#">
+                        <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span className="title">Usuário</span>
+                        <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
+                    </Link>
+                    <div className="dropdown-content">
+                        <Link to="/register"><span className="title">Registrar</span></Link>
+                        <Link to="/"><span className="title">Editar</span></Link>
+                    </div>
+                </li>
+                <li className="list">
+                    <Link to="/readCliente">
                         <span className="icon"><ion-icon name="people-outline"></ion-icon></span>
                         <span className="title">Clientes</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
@@ -41,7 +52,7 @@ const Menu = () => {
                     </div>
                 </li>
                 <li className="list">
-                    <Link to="#">
+                    <Link to="/viewProduto">
                         <span className="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
                         <span className="title">Produtos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
