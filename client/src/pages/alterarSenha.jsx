@@ -26,7 +26,7 @@ const AlterarSenha = () => {
 
     const fetchUsuario = async () => {
       try {
-        const response = await axios.get(`http://localhost:8800/readUsuario/${usuarioId}`);
+        const response = await axios.get(`http://localhost:8800/usuario/${usuarioId}`);
         // Atualiza o nome do usuário no estado
         setSenhaData((prev) => ({ ...prev, nome: response.data.nome }));
       } catch (err) {

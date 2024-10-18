@@ -10,6 +10,7 @@ import Cliente from "./pages/Cliente";
 import ReadCliente from "./pages/readCliente";
 import ReadPedido from "./pages/readPedido";
 import ReadPedidoUnico from "./pages/readPedidoUnico";
+import ReadUsuario from "./pages/readUsuario";
 import EditarCliente from "./pages/editarCliente";
 import Login from "./pages/login";
 import Home from "./pages/home";
@@ -33,7 +34,18 @@ const AdminPrivate = ({ Component }) => {
   return currentUser && currentUser.administrador === 1 ? (
     <Component />
   ) : (
-    <Login /> // Redireciona para o login se não for admin ou não estiver logado
+    <Home /> // Redireciona para o login se não for admin ou não estiver logado
+  );
+};
+
+const LoginPrivate = ({ Component }) => {
+  const { currentUser } = useAuth();
+
+  // Só permite acessar a página de login se o usuário estiver deslogado
+  return currentUser === null ? (
+    <Component />
+  ) : (
+    <Home /> // Redireciona para a página "home" se o usuário estiver logado
   );
 };
 
@@ -46,9 +58,9 @@ function App() {
         {currentUser && <Menu />}
 
         <Routes>
-          <Route path="/login" element={<Login />} />
+         
           <Route path="/register" element={<AdminPrivate Component={Register} />} /> {/* Apenas admins podem registrar novos usuários */}
-  
+          <Route path="/login" element={<LoginPrivate Component={Login} />} />
           <Route path="/pedido" element={<Pedido />} />
           <Route path="/viewProduto" element={<Private Component={readProduto} />} />
           <Route path="/produto" element={<Private Component={Produto} />} />
@@ -57,12 +69,13 @@ function App() {
           <Route path="/categoria" element={<Private Component={Categoria} />} />
           <Route path="/readCliente" element={<Private Component={ReadCliente} />} />
           <Route path="/readPedido" element={<Private Component={ReadPedido} />} />
+          <Route path="/readUsuario" element={<Private Component={ReadUsuario} />} />
           <Route path="/readPedido/:id_pedido" element={<Private Component={ReadPedidoUnico} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
           <Route path="/estatistica" element={<Private Component={Dashboard} />} />
           <Route path="/alterarsenha" element={<Private Component={AlterarSenha} />} />
           <Route path="/home" element={<Private Component={Home} />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<LoginPrivate Component={Login} />} />
         </Routes>
       </BrowserRouter>
 

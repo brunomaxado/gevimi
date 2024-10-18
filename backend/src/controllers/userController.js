@@ -77,9 +77,27 @@ export const register = (req, res) => {
 
 
 
-  export const getUsuarios= (req, res) => {
+  export const getUsuarios = (req, res) => {
+    const usuarioId = req.params.id_usuario; // Obtém o ID do usuário dos parâmetros da rota
   
+    if (!usuarioId) {
+      return res.status(400).json({ message: "ID do usuário não fornecido." });
+    }
+  
+    // Consulta SQL para buscar o usuário pelo ID
+    const q = "SELECT * FROM usuario WHERE id_usuario = ?";
+  
+    db.query(q, [usuarioId], (err, data) => {
+      if (err) return res.status(500).json({ message: "Erro no servidor", error: err }); // Retorna erro de servidor
+  
+      if (data.length === 0) {
+        return res.status(404).json({ message: "Usuário não encontrado." }); // Retorna 404 se o usuário não for encontrado
+      }
+  
+      return res.status(200).json(data[0]); // Retorna os dados do usuário encontrado
+    });
   };
+  
 
   export const getAllUsuario= (req, res) => {
     
