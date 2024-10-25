@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import CurrencyInput from 'react-currency-input-field'; // Importando a biblioteca
 
 // Estilos para o dashboard
 const styles = {
@@ -52,6 +53,8 @@ const Dashboard = () => {
   }
 
   return (
+    <div> 
+    
     <div style={styles.container}>
       <div style={{ ...styles.card, ...styles.totalRetirada }}>
         <div>Total Entrega</div>
@@ -73,6 +76,7 @@ const Dashboard = () => {
         <div>Total Abertos</div>
         <div>{dashboard.totals?.total_finalizado || 0}</div>
       </div>
+    </div>
     </div>
   );
 };
