@@ -12,6 +12,7 @@ import ReadPedido from "./pages/readPedido";
 import ReadPedidoUnico from "./pages/readPedidoUnico";
 import ReadUsuario from "./pages/readUsuario";
 import EditarCliente from "./pages/editarCliente";
+import EditarUsuario from "./pages/editarUsuario";
 import Login from "./pages/login";
 import Home from "./pages/home";
 import Pedido from "./pages/Pedido";
@@ -72,6 +73,7 @@ function App() {
           <Route path="/readUsuario" element={<Private Component={ReadUsuario} />} />
           <Route path="/readPedido/:id_pedido" element={<Private Component={ReadPedidoUnico} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
+          <Route path="/editarUsuario/:id_usuario" element={<Private Component={EditarUsuario} />} />
           <Route path="/estatistica" element={<Private Component={Dashboard} />} />
           <Route path="/alterarsenha" element={<Private Component={AlterarSenha} />} />
           <Route path="/home" element={<Private Component={Home} />} />
