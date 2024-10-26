@@ -6,21 +6,21 @@ const EditarUsuario = () => {
   const [usuario, setUsuario] = useState({
     nome: "",
     login: "",
-    senha: "",
-    administrador: "0", // Inicializa como 'Não'
+    administrador: "0",
   });
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [novaSenha, setNovaSenha] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const usuarioId = location.pathname.split("/")[2]; // Extrai o ID da URL
+  const usuarioId = location.pathname.split("/")[2];
 
-  // Função para buscar os dados do usuário
   const fetchUsuario = async () => {
     try {
       const response = await axios.get(`http://localhost:8800/usuario/${usuarioId}`);
-      const { nome, login, administrador } = response.data; // Inclui 'administrador'
+      const { nome, login, administrador } = response.data;
       setUsuario((prev) => ({ ...prev, nome, login, administrador: String(administrador) }));
     } catch (err) {
       console.error("Erro ao buscar o usuário:", err);
@@ -40,7 +40,7 @@ const EditarUsuario = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { nome, login, senha, administrador } = usuario;
+    const { nome, login, administrador } = usuario;
 
     if (!nome || !login) {
       setError("Os campos Nome e Login são obrigatórios.");
@@ -48,14 +48,30 @@ const EditarUsuario = () => {
     }
 
     const payload = { nome, login, administrador: parseInt(administrador) };
-    if (senha) payload.senha = senha;
 
     try {
-      await axios.put(`http://localhost:8800/usuario/${usuarioId}`, payload);
+      await axios.put(`http://localhost:8800/editarusuario/${usuarioId}`, payload);
       showSuccess("Usuário atualizado com sucesso.");
     } catch (err) {
       console.error("Erro ao atualizar o usuário:", err);
       setError("Erro ao atualizar o usuário.");
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    if (!novaSenha) {
+      setError("A senha não pode estar vazia.");
+      return;
+    }
+
+    try {
+      await axios.put(`http://localhost:8800/novosenha/${usuarioId}`, { senha: novaSenha });
+      showSuccess("Senha atualizada com sucesso.");
+      setShowPasswordModal(false);
+      setNovaSenha("");
+    } catch (err) {
+      console.error("Erro ao atualizar a senha:", err);
+      setError("Erro ao atualizar a senha.");
     }
   };
 
@@ -64,7 +80,7 @@ const EditarUsuario = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/viewUsuario");
+      navigate("/readUsuario");
     }, 1500);
   };
 
@@ -97,20 +113,9 @@ const EditarUsuario = () => {
         </div>
 
         <div className="form-group">
-          <label>Senha (Deixe em branco para não alterar):</label>
-          <input
-            type="password"
-            name="senha"
-            value={usuario.senha}
-            onChange={handleChange}
-            placeholder="Nova senha"
-          />
-        </div>
-
-        <div className="form-group">
           <label>Administrador:</label>
-          <div>
-            <label>
+          <div className="radio-group">
+            <label className="radio-option">
               <input
                 type="radio"
                 name="administrador"
@@ -120,7 +125,7 @@ const EditarUsuario = () => {
               />
               Sim
             </label>
-            <label>
+            <label className="radio-option">
               <input
                 type="radio"
                 name="administrador"
@@ -134,12 +139,32 @@ const EditarUsuario = () => {
         </div>
 
         <button type="submit">Salvar Alterações</button>
+        <button type="button" onClick={() => setShowPasswordModal(true)}>
+          Nova Senha
+        </button>
       </form>
 
       {showSuccessModal && (
         <div className="success-modal">
           <div className="success-modal-content">
             <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
+
+      {showPasswordModal && (
+        <div className="password-modal">
+          <div className="password-modal-content">
+            <h2>Atualizar Senha</h2>
+            <input
+              type="password"
+              placeholder="Nova Senha"
+              value={novaSenha}
+              onChange={(e) => setNovaSenha(e.target.value)}
+              required
+            />
+            <button onClick={handlePasswordChange}>Atualizar Senha</button>
+            <button onClick={() => setShowPasswordModal(false)}>Cancelar</button>
           </div>
         </div>
       )}
