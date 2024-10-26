@@ -14,6 +14,7 @@ const Categoria = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -35,9 +36,14 @@ const Categoria = () => {
         setShowDeleteModal(false);
         setCategoriaIdToDelete(null);
         showSuccess("Categoria excluída com sucesso!");
+        setDeleteErrorMessage("");
       }
     } catch (err) {
-      console.log(err);
+      if (err.response && err.response.status === 400) {
+        setDeleteErrorMessage(err.response.data.message);
+      } else {
+        setDeleteErrorMessage("Erro ao tentar deletar a categoria.");
+      }
     }
   };
 
@@ -82,13 +88,14 @@ const Categoria = () => {
   const openDeleteModal = (id) => {
     setCategoriaIdToDelete(id);
     setShowDeleteModal(true);
+    setDeleteErrorMessage(""); // Resetar mensagem de erro ao abrir o modal
   };
 
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
     setCategoriaIdToDelete(null);
+    setDeleteErrorMessage("");
   };
-
 
   const showSuccess = (message) => {
     setSuccessMessage(message);
@@ -151,7 +158,11 @@ const Categoria = () => {
           <div className="modal-content">
             <span className="close-modal" onClick={closeDeleteModal}>&times;</span>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir esta categoria?</p>
+            {deleteErrorMessage ? (
+              <p className="error-message">{deleteErrorMessage}</p>
+            ) : (
+              <p>Tem certeza que deseja excluir esta categoria?</p>
+            )}
             <button className="modal-button" onClick={handleDelete}>Sim</button>
             <button className="modal-button" onClick={closeDeleteModal}>Não</button>
           </div>
@@ -188,7 +199,6 @@ const Categoria = () => {
                 <button className="delete" onClick={() => openDeleteModal(categoria.id_categoria)}>
                   Excluir
                 </button>
-
               </td>
             </tr>
           ))}
