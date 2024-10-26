@@ -37,7 +37,8 @@ const Menu = () => {
                     </Link>
                     <div className="dropdown-content">
                         <Link to="/register"><span className="title">Registrar</span></Link>
-                        <Link to="/"><span className="title">Editar</span></Link>
+                        <Link to="/editarUsuario"><span className="title">Editar</span></Link>
+                        <Link to="/readUsuario"><span className="title">Listar</span></Link>
                     </div>
                 </li>
                 <li className="list">
@@ -60,6 +61,17 @@ const Menu = () => {
                     <div className="dropdown-content">
                         <Link to="/produto"><span className="title">Novo produto</span></Link>
                         <Link to="/viewProduto"><span className="title">Listar produto</span></Link>
+                    </div>
+                </li>
+                <li className="list">
+                    <Link to="/readPedido">
+                        <span className="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
+                        <span className="title">Pedidos</span>
+                        <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
+                    </Link>
+                    <div className="dropdown-content">
+                        <Link to="/pedido"><span className="title">Novo pedido</span></Link>
+                        <Link to="/readPedido"><span className="title">Listar pedidos</span></Link>
                     </div>
                 </li>
                 <li className="list">
