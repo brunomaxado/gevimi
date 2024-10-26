@@ -37,7 +37,7 @@ const Menu = () => {
                     </Link>
                     <div className="dropdown-content">
                         <Link to="/register"><span className="title">Registrar</span></Link>
-                        <Link to="/editarUsuario"><span className="title">Editar</span></Link>
+                        <Link to="/alterarSenha"><span className="title">Editar</span></Link>
                         <Link to="/readUsuario"><span className="title">Listar</span></Link>
                     </div>
                 </li>
