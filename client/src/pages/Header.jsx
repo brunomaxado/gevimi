@@ -15,7 +15,7 @@ const Header = () => {
          
           <li id="pedido" className=" direita">
             <Link to="/pedido">
-            <span className="icon"><ion-icon name="storefront-outline"></ion-icon></span>
+
             <span className="title">Novo Pedido</span>
             </Link>
            

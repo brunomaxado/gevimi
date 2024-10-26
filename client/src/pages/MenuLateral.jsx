@@ -65,7 +65,7 @@ const Menu = () => {
                 </li>
                 <li className="list">
                     <Link to="/readPedido">
-                        <span className="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="storefront-outline"></ion-icon></span>
                         <span className="title">Pedidos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
