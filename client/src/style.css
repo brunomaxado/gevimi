@@ -1032,30 +1032,42 @@ textarea {
   align-items: center;
   padding-right: 52px;
 }
-
-
 /* menu lateral */
+
 .navigation {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   background: var(--pretofundo);
-  width: 70px;
+  width: 70px; /* Largura inicial */
   box-shadow: 10px 0 0 var(--amarelotoque);
   border-left: 10px solid var(--pretofundo);
   overflow-x: hidden;
-  transition: 0.5s;
+  transition: width 0.5s;
   z-index: 1000;
 }
 
-.navigation:hover {
-  width: 300px;
+.navigation.open {
+  width: 300px; /* Largura quando aberto */
+}
+
+.menu-button {
+  position: absolute;
+  top: 10px; /* Distância do topo */
+  left: 10px; /* Distância da esquerda */
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 1.5rem;
+  color: var(--branco);
+  z-index: 1001; /* Garante que o botão fique acima dos ícones */
 }
 
 .navigation ul {
   position: relative;
-  top: 0;
+  top: 50px; /* Ajuste para deixar espaço para o botão do menu */
   width: 100%;
   padding-left: 5px;
   padding-top: 20px;
@@ -1092,6 +1104,33 @@ textarea {
   z-index: 2000;
 }
 
+.nav-item .icon-menor{
+  position: relative;
+  display: block;
+  text-align: center;
+  line-height: 5px;
+}
+
+.nav-item .icon-menor ion-icon{
+  position: relative;
+  font-size: 1.0rem;
+}
+
+.navigation ul li a .icon-menor {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 70px;
+}
+
+.navigation ul li a .icon-menor ion-icon {
+  position: relative;
+  font-size: 1.0rem;
+  z-index: 2000;
+}
+
 .navigation ul li a .title {
   position: relative;
   display: block;
@@ -1101,17 +1140,19 @@ textarea {
   white-space: nowrap;
 }
 
-.navigation ul li a:hover{
+.navigation ul li a:hover {
   color: var(--amarelotoque);
 }
 
 .navigation ul li.active {
   background: var(--amarelotoque);
 }
-.navigation ul li.active a{
+
+.navigation ul li.active a {
   color: var(--pretoletra);
 }
-/* CSS para o dropdown fechado */
+
+/* CSS para o dropdown */
 .dropdown-content {
   max-height: 0;
   overflow: hidden;
@@ -1119,9 +1160,8 @@ textarea {
   transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
-/* CSS para abrir o dropdown ao passar o mouse */
-.list:hover .dropdown-content {
-  max-height: 500px; /* Um valor grande para garantir que o conteúdo seja exibido */
+.dropdown-content.show {
+  max-height: 500px; /* Um valor alto para garantir que o conteúdo apareça */
   opacity: 1;
 }
 
@@ -1139,6 +1179,9 @@ textarea {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
+
+
+/*fim menu*/
 .pagination {
   display: flex;
   justify-content: center; /* Centraliza o conteúdo */
