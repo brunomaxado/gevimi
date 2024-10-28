@@ -67,7 +67,7 @@ const Menu = () => {
                     </div>
                 </li>)}
                 <li className="list">
-                    <Link to="/readClient" onClick={handleLinkClick}>
+                    <Link to="/readCliente" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="people-outline"></ion-icon></span>
                         <span className="title">Clientes</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
