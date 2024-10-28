@@ -57,6 +57,33 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
     setCliente((prev) => ({ ...prev, [name]: value }));
   };
 
+  const buscarEndereco = async (cep) => {
+    if (validateCEP(cep)) {
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = response.data;
+
+        if (!data.erro) {
+          setCliente((prev) => ({
+            ...prev,
+            logradouro: data.logradouro,
+            bairro: data.bairro,
+            cidade: data.localidade,
+            estado: data.uf // Adiciona o estado, se necessário
+          }));
+          setError(null);
+        } else {
+          setError("CEP não encontrado.");
+        }
+      } catch (err) {
+        console.error("Erro ao buscar endereço:", err);
+        setError("Erro ao buscar endereço.");
+      }
+    } else {
+      setError("CEP inválido.");
+    }
+  };
+
   useEffect(() => {
     if (primeiroCampoRef.current) {
       primeiroCampoRef.current.focus();
@@ -170,7 +197,10 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
               placeholder="CEP"
               name="cep"
               value={cliente.cep}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                buscarEndereco(e.target.value); // Chama a função ao alterar o CEP
+              }}
               required
             />
           </div>

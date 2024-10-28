@@ -359,14 +359,14 @@ const ReadPedido = () => {
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Anterior
+          <ion-icon name="caret-back-outline"></ion-icon>
         </button>
         <span>Página {currentPage} de {totalPages}</span>
         <button
           onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
-          Próximo
+          <ion-icon name="caret-forward-outline"></ion-icon>
         </button>
       </div>
 

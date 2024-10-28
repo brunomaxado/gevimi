@@ -200,11 +200,11 @@ const ReadProduto = () => {
       {/* Paginação */}
       <div className="pagination">
         <button onClick={paginatePrev} disabled={currentPage === 1}>
-          Anterior
+        <ion-icon name="caret-back-outline"></ion-icon>
         </button>
         <span>Página {currentPage} de {Math.ceil(filteredProduto.length / itemsPerPage)}</span>
         <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredProduto.length / itemsPerPage)}>
-          Próximo
+        <ion-icon name="caret-forward-outline"></ion-icon>
         </button>
       </div>
 
