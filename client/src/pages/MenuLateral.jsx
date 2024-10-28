@@ -44,7 +44,8 @@ const Menu = () => {
                         <span className="title">Categorias</span>
                     </Link>
                 </li>
-                <li className="list">
+                {currentUser.administrador === 1 && (
+                <li className="list" >
                     <Link to="/readUsuario" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span className="title">Usuário</span>
@@ -64,7 +65,7 @@ const Menu = () => {
                             <span className="title">Listar</span>
                         </Link>
                     </div>
-                </li>
+                </li>)}
                 <li className="list">
                     <Link to="/readClient" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="people-outline"></ion-icon></span>
