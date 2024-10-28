@@ -45,7 +45,7 @@ const Menu = () => {
                     </Link>
                 </li>
                 <li className="list">
-                    <Link to="#" onClick={handleLinkClick}>
+                    <Link to="/readUsuario" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span className="title">Usuário</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
@@ -66,7 +66,7 @@ const Menu = () => {
                     </div>
                 </li>
                 <li className="list">
-                    <Link to="#" onClick={handleLinkClick}>
+                    <Link to="/readClient" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="people-outline"></ion-icon></span>
                         <span className="title">Clientes</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
@@ -83,7 +83,7 @@ const Menu = () => {
                     </div>
                 </li>
                 <li className="list">
-                    <Link to="#" onClick={handleLinkClick}>
+                    <Link to="/viewProduto" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
                         <span className="title">Produtos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
@@ -100,7 +100,7 @@ const Menu = () => {
                     </div>
                 </li>
                 <li className="list">
-                    <Link to="#" onClick={handleLinkClick}>
+                    <Link to="/readPedido" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="storefront-outline"></ion-icon></span>
                         <span className="title">Pedidos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
