@@ -110,9 +110,9 @@ const Cliente = () => {
 
 
   return (
-    <div class="novoCliente">
+    <div className="novoCliente">
       {error && <p id="erro">{error}</p>}
-      <div class="cliente">
+      <div className="cliente">
         <h1>Adicionar Cliente</h1>
         <p>
           

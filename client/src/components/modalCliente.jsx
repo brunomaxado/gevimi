@@ -115,9 +115,9 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
   };
 
   return (
-    <div class="modal-cliente">
-      <div class="modal-content-cliente">
-        <button class="close-cliente" onClick={onClose}>X</button>
+    <div className="modal-cliente">
+      <div className="modal-content-cliente">
+        <button className="close-cliente" onClick={onClose}>X</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div>
           <h1>Adicionar Cliente</h1>
@@ -177,7 +177,7 @@ const ModalCliente = ({ onClose, adicionarCliente }) => {
             value={cliente.numero}
             onChange={handleChange}
           />
-          <button class="atualizar-cliente" onClick={handleClick}>Atualizar</button>
+          <button className="atualizar-cliente" onClick={handleClick}>Atualizar</button>
         </div>
       </div>
       {showSuccessModal && (

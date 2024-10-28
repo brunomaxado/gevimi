@@ -48,7 +48,7 @@ const Login = () => {
         <img src="../logo_login.png"></img>
       </div>
 
-        <form class="container">
+        <form className="container">
           <h1>Login</h1>
           <p>Usuário:</p>
           <input
@@ -67,7 +67,7 @@ const Login = () => {
             name="senha"
             onChange={handleChange}
           />
-          <button class="btn" onClick={handleSubmit}>Entrar</button>
+          <button className="btn" onClick={handleSubmit}>Entrar</button>
           {err && <p>{err}</p>}
 
         </form>

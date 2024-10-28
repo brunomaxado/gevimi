@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header className="header">
       <link rel="stylesheet" href="https://fonts.googleapis.com/" />
-      <div class="nav">
+      <div className="nav">
         <ul className="nav-list">
  
 
