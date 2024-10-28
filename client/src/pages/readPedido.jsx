@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Check';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search'; // Importando o ícone de pesquisa
+
 
 const ReadPedido = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -18,6 +23,7 @@ const ReadPedido = () => {
   const [sortConfig, setSortConfig] = useState(null); // Configuração de ordenação
   const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
   const [itemsPerPage] = useState(10); // Itens por página
+  const [statusFilter, setStatusFilter] = useState(""); // Estado para o filtro de status
 
   const navigate = useNavigate();
 
@@ -107,21 +113,30 @@ const ReadPedido = () => {
 
   const getStatus = (status) => {
     switch (status) {
-        case 1: return "Finalizado";
-        case 2: return "Em andamento";
-        case 3: return "Não finalizado";
-        default: return "Desconhecido";
+      case 1:
+        return <span className="status status-finalizado">Finalizado</span>;
+      case 2:
+        return <span className="status status-em-andamento">Em andamento</span>;
+      case 3:
+        return <span className="status status-nao-finalizado">Não finalizado</span>;
+      default:
+        return <span className="status status-desconhecido">Desconhecido</span>;
     }
   };
-
+  
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
-      case 1: return "Entrega";
-      case 2: return "Entrega iFood";
-      case 3: return "Retirada";
-      default: return "Desconhecido";
+      case 1:
+        return <span className="tipo-entrega tipo-entrega-entrega">Entrega</span>;
+      case 2:
+        return <span className="tipo-entrega tipo-entrega-ifood">Entrega iFood</span>;
+      case 3:
+        return <span className="tipo-entrega tipo-entrega-retirada">Retirada</span>;
+      default:
+        return <span className="tipo-entrega tipo-entrega-desconhecido">Desconhecido</span>;
     }
   };
+  
 
   const handleClickFinalizar = (id) => {
     setSelectedPedidoId(id);
@@ -208,9 +223,11 @@ const ReadPedido = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Filtrando os pedidos com base na pesquisa
-  const filteredPedidos = pedidos.filter((pedido) =>
-    getClienteNome(pedido.fk_id_cliente).toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPedidos = pedidos.filter((pedido) => {
+    const matchesSearch = getClienteNome(pedido.fk_id_cliente).toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter ? pedido.status === parseInt(statusFilter) : true;
+    return matchesSearch && matchesStatus;
+  });
 
   // Calculando os índices para a paginação
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -220,23 +237,40 @@ const ReadPedido = () => {
 
   return (
     <div className="tabela">
-      <h1>Pedidos e Itens</h1>
+      <h1>Pedidos</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {/* Barra de Pesquisa */}
-      <input
+
+ <div className="search-box">
+    <SearchIcon className="search-icon" />
+    <input
         type="text"
-        placeholder="Pesquisar por nome do cliente"
+        placeholder="Pesquisar..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-bar"
-      />
-
+    />
+</div>
+     {/* Filtro por Status */}
+     <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="status-filter"
+        >
+          <option value="">Todos os Status</option>
+          <option value="1">Finalizado</option>
+          <option value="2">Em andamento</option>
+          <option value="3">Não finalizado</option>
+        </select>
+      
+      
+{/*
       <div className="sort-buttons">
         <button onClick={() => sortData("cliente")}>Ordenar por Cliente</button>
         <button onClick={() => sortData("data_para_entregar")}>Ordenar por Data de Entrega</button>
         <button onClick={() => sortData("data_finalizado")}>Ordenar por Data de Finalização</button>
-      </div>
+      </div>  */}
 
       <table>
         <thead>
@@ -244,15 +278,13 @@ const ReadPedido = () => {
             <th>ID</th>
             <th>Cliente</th>
             <th>Tipo</th>
-            <th>Status</th>
-            <th>Forma de Pagamento</th>
             <th>Produto/xUnidade</th>
             <th>Total</th>
             <th>Data de Entrega</th>
-            <th>Data de Realização</th>
             <th>Data Finalizado</th>
-            <th>Usuário</th>
+            <th>Status</th>
             <th>Ações</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -261,8 +293,6 @@ const ReadPedido = () => {
               <td>{pedido.id_pedido}</td>
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
               <td>{getTipoEntrega(pedido.tipo)}</td>
-              <td>{getStatus(pedido.status)}</td>
-              <td>{getFormaPagamento(pedido.forma_pagamento)}</td>
               <td>
                 {pedido.itensPedido.map((item) => (
                   <div key={item.id_item_pedido}>
@@ -276,22 +306,48 @@ const ReadPedido = () => {
                   ? new Date(pedido.data_para_entregar).toLocaleString()
                   : "Sem data"}
               </td>
-              <td>{new Date(pedido.data_realizado).toLocaleString()}</td>
               <td>{pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleString() : "Não finalizado"}</td>
-              <td>{getUsuarioNome(pedido.fk_id_usuario)}</td>
+
+              <td>{getStatus(pedido.status)}</td>
               <td>
-                <button className={pedido.status === 1 ? "finalizar button-disabled" : "delete"}onClick={() => handleClickCancelar(pedido.id_pedido)}  disabled={pedido.status === 1 } >Cancelar</button>
-                <button className="update">
-                  <Link to={`/readPedido/${pedido.id_pedido}`}>Visualizar</Link>
-                </button>
-                <button
-                  className={pedido.status === 1 ? "finalizar button-disabled" : "finalizar"}
-                  onClick={() => handleClickFinalizar(pedido.id_pedido)}
-                  disabled={pedido.status === 1}
-                >
-                  Finalizar
-                </button>
-              </td>
+  {/* Ícone de deletar */}
+  {pedido.status !== 1 && (
+    <span
+      className="action-icon delete"
+      onClick={() => handleClickCancelar(pedido.id_pedido)}
+      title="Cancelar"
+      style={{ cursor: "pointer" }}
+    >
+      <DeleteIcon /> {/* Ícone de deletar */}
+    </span>
+  )}
+
+  {/* Ícone de visualizar */}
+  <Link
+    to={`/readPedido/${pedido.id_pedido}`}
+    title="Visualizar"
+    className="action-icon visualizar"
+    style={{ textDecoration: 'none', cursor: 'pointer' }}
+  >
+    <VisibilityIcon /> {/* Ícone de visualizar */}
+  </Link>
+
+  {/* Ícone de finalizar */}
+  {pedido.status !== 1 && (
+    <span
+      className="action-icon finalizar"
+      onClick={() => handleClickFinalizar(pedido.id_pedido)}
+      title="Finalizar"
+      style={{ cursor: "pointer" }}
+    >
+      <EditIcon /> {/* Ícone de editar */}
+    </span>
+  )}
+</td>
+
+
+
+
             </tr>
           ))}
         </tbody>
@@ -319,11 +375,11 @@ const ReadPedido = () => {
         <div className="modal">
           <div className="modal-content">
             <h2>Confirmar Ação</h2>
-            <p>
+            <h1>
               {modalType === "finalizar"
                 ? "Tem certeza que deseja finalizar o pedido?"
                 : "Tem certeza que deseja cancelar o pedido?"}
-            </p>
+            </h1>
             <div className="modal-buttons">
               <button className="confirm" onClick={handleConfirm}>Sim</button>
               <button className="cancel" onClick={handleCancel}>Não</button>

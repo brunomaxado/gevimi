@@ -3,7 +3,7 @@
 :root {
   --pretoletra: #000000;
   --pretofundo: #121212;
-  --meiotom: #d4d4d4;
+  --meiotom: #cfcfcf;
   --branco: #fff;
   --fundobranco: #E4E1DD;
   --amarelologo: #EAC452;
@@ -197,6 +197,7 @@ table {
   border-collapse: collapse;
   width: 90%;
   height: 70%;
+  color: #000;
 }
 
 div.tabela {
@@ -1137,4 +1138,106 @@ textarea {
   color: var(--pretoletra) !important;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
+}
+.pagination {
+  display: flex;
+  justify-content: center; /* Centraliza o conteúdo */
+  align-items: center; /* Centraliza verticalmente */
+  gap: 10px; /* Espaçamento entre os botões */
+  margin-top: 20px; /* Espaçamento acima da paginação */
+}
+.search-box {
+  position: relative;
+  float: left; /* Muda de right para left */
+  margin-bottom: 10px;
+}
+
+.search-box input {
+  height: 34px;
+  border-radius: 20px;
+  padding-left: 40px; /* Aumente o padding se necessário */
+  border-color: #ddd;
+  box-shadow: none;
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: #3FBAE4;
+}
+
+.search-box .search-icon {
+  color: #a0a5b1;
+  position: absolute;
+  font-size: 19px;
+  top: 27%; /* Muda para centralizar verticalmente */
+  left: 10px;
+  z-index: 1; /* Garante que o ícone fique acima do input */
+  
+}
+
+
+.action-icon {
+  color: #03A9F4; /* Cor do ícone */
+  font-size: 24px; /* Tamanho do ícone */
+  margin: 0 8px; /* Espaçamento entre os ícones */
+  transition: color 0.3s;
+}
+
+.action-icon:hover {
+  color: #0397d6; /* Cor ao passar o mouse */
+}
+
+.action-icon.delete {
+  color: #f44336; /* Cor personalizada para deletar */
+}
+
+.action-icon.finalizar {
+  color: #4CAF50; /* Cor personalizada para finalizar */
+}
+
+.action-icon.button-disabled {
+  color: #ccc; /* Cor quando desativado */
+  cursor: not-allowed; /* Indicação de desabilitado */
+}
+
+.status, .tipo-entrega {
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* Status Colors */
+.status-finalizado {
+  background-color: #4CAF50; /* Verde */
+}
+
+.status-em-andamento {
+  background-color: #FFC107; /* Amarelo */
+}
+
+.status-nao-finalizado {
+  background-color: #F44336; /* Vermelho */
+}
+
+.status-desconhecido {
+  background-color: #9E9E9E; /* Cinza */
+}
+
+/* Tipo de Entrega Colors */
+.tipo-entrega-entrega {
+  background-color: #2196F3; /* Azul */
+}
+
+.tipo-entrega-ifood {
+  background-color: #c126f0; /* Vermelho Claro */
+}
+
+.tipo-entrega-retirada {
+  background-color: #4CAF50; /* Verde */
+}
+
+.tipo-entrega-desconhecido {
+  background-color: #9E9E9E; /* Cinza */
 }
