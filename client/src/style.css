@@ -408,28 +408,26 @@ img {
 }
 
 td button.delete {
-  background-color: var(--vermelho);
+  background-color: transparent;
   border: none;
   text-decoration: none;
-  color: var(--branco);
+  color: var(--vermelhointenso);
   padding: 10px 20px;
-  text-align: center;
   display: inline-block;
-  font-size: 16px;
+  font-size: 1rem;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 10px;
 }
 
 td button.update {
-  background-color: var(--verde);
+  background-color: transparent;
   border: none;
-  color: var(--branco);
+  color: var(--verde);
+  font-size: 1rem;
   padding: 10px 20px;
-  text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 10px;
@@ -437,7 +435,7 @@ td button.update {
 
 td button.update a {
   text-decoration: none;
-  color: var(--branco);
+  color: var(--verde);
 }
 
 div.auth {

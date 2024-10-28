@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import '../style.css';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
@@ -178,7 +180,7 @@ const Categoria = () => {
       )}
 
       <br /><br /><br /><br />
-      
+
       <table>
         <thead>
           <tr>
@@ -194,10 +196,10 @@ const Categoria = () => {
               <td>{categoria.nome}</td>
               <td>
                 <button className="update" onClick={() => openUpdateModal(categoria)}>
-                  Atualizar
+                  <EditIcon />
                 </button>
                 <button className="delete" onClick={() => openDeleteModal(categoria.id_categoria)}>
-                  Excluir
+                  <DeleteIcon />
                 </button>
               </td>
             </tr>

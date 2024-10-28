@@ -123,8 +123,8 @@ const ReadUsuario = () => {
               <td>{usuario.login}</td>
               <td>{usuario.administrador === 1 ? "Sim" : "Não"}</td>
               <td>
-                <button className="update" onClick={() => handleUpdateClick(usuario.id_usuario)}>Atualizar</button>
-                <button className="delete" onClick={() => handleDeleteClick(usuario.id_usuario)}>Excluir</button>
+                <button className="update" onClick={() => handleUpdateClick(usuario.id_usuario)}><ion-icon name="pencil-outline"></ion-icon></button>
+                <button className="delete" onClick={() => handleDeleteClick(usuario.id_usuario)}><ion-icon name="trash-outline"></ion-icon></button>
               </td>
             </tr>
           ))}

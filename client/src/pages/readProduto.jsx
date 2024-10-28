@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ReadProduto = () => {
   const [produto, setProduto] = useState([]);
@@ -188,9 +190,13 @@ const ReadProduto = () => {
               <td>R${produto.preco_unitario}</td>
               <td>
                 <button className="update">
-                  <Link to={`/gerenciarproduto/${produto.id_produto}`}>Atualizar</Link>
+                  <Link to={`/gerenciarproduto/${produto.id_produto}`}>
+                  <EditIcon />
+                  </Link>
                 </button>
-                <button className="delete" onClick={() => handleDeleteClick(produto.id_produto)}>Excluir</button>
+                <button className="delete" onClick={() => handleDeleteClick(produto.id_produto)}>
+                  <DeleteIcon />
+                  </button>
               </td>
             </tr>
           ))}

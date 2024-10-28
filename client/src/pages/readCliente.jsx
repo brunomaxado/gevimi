@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ReadCliente = () => {
   const [clientes, setClientes] = useState([]);
@@ -78,7 +80,7 @@ const ReadCliente = () => {
     cliente.cep.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.cidade.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.bairro.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cliente.rua.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cliente.logradouro.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.numero.toString().includes(searchTerm)
   );
 
@@ -121,8 +123,9 @@ const ReadCliente = () => {
             <th>CEP</th>
             <th>Cidade</th>
             <th>Bairro</th>
-            <th>Rua</th>
+            <th>Logradouro</th>
             <th>Número</th>
+            <th>Observação</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -136,11 +139,16 @@ const ReadCliente = () => {
               <td>{cliente.cep}</td>
               <td>{cliente.cidade}</td>
               <td>{cliente.bairro}</td>
-              <td>{cliente.rua}</td>
+              <td>{cliente.logradouro}</td>
               <td>{cliente.numero}</td>
+              <td>{cliente.observacao}</td>
               <td>
-                <button className="update" onClick={() => handleUpdateClick(cliente.id_cliente)}>Atualizar</button>
-                <button className="delete" onClick={() => handleDeleteClick(cliente.id_cliente)}>Excluir</button>
+                <button className="update" onClick={() => handleUpdateClick(cliente.id_cliente)}>
+                  <EditIcon />
+                </button>
+                <button className="delete" onClick={() => handleDeleteClick(cliente.id_cliente)}>
+                  <DeleteIcon />
+                </button>
               </td>
             </tr>
           ))}
@@ -150,11 +158,11 @@ const ReadCliente = () => {
       {/* Paginação */}
       <div className="pagination">
         <button onClick={paginatePrev} disabled={currentPage === 1}>
-        <ion-icon name="caret-back-outline"></ion-icon>
+          <ion-icon name="caret-back-outline"></ion-icon>
         </button>
         <span>Página {currentPage} de {Math.ceil(filteredClientes.length / clientesPerPage)}</span>
         <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredClientes.length / clientesPerPage)}>
-        <ion-icon name="caret-forward-outline"></ion-icon>
+          <ion-icon name="caret-forward-outline"></ion-icon>
         </button>
       </div>
 
