@@ -1146,6 +1146,7 @@ textarea {
 
 .navigation ul li.active {
   background: var(--amarelotoque);
+  color: var(--pretoletra);
 }
 
 .navigation ul li.active a {
@@ -1174,8 +1175,8 @@ textarea {
 }
 
 .dropdown-content a:hover {
-  background: var(--amarelotoque);
-  color: var(--pretoletra) !important;
+  color: var(--amarelotoque) !important;
+  background-color: var(--fundoclaro);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
