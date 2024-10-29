@@ -27,7 +27,11 @@ const CreateCliente = () => {
   };
 
   return (
-    <div>
+    <div 
+    style={{
+        transform: 'scale(0.8)', // Diminui a escala para 80% do tamanho original
+        transformOrigin: 'center center'}}>
+
       <h1>NOVO CLIENTE</h1>
      
       <FormCliente onSubmit={handleSubmit} />

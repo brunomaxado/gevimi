@@ -62,21 +62,30 @@ body {
   font-style: normal;
   text-decoration: none;
   box-sizing: border-box;
-
 }
 
 html,
 body {
-  margin-top: 0;
-  padding: 0;
-  height: 100%;
+  height: 10px;
   width: 100%;
 }
 
-header,
+header {
+  background-color: var(--pretofundo);
+  padding: 10px 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 1000;
+  height: 10vh;
+}
+
 main {
+  /* Adiciona um padding-top igual à altura do header */
+  padding-top: 10vh; /* Isso faz o main começar logo abaixo do header */
   flex-grow: 1;
 }
+
 
 div p {
   color: #000;
@@ -222,15 +231,7 @@ div.tabela {
   overflow-x: auto;
 }
 
-.header {
-  background-color: var(--pretofundo);
-  padding: 10px 0;
-  position: absolute;
-  top: 0;
-  width: 100vw;
-  z-index: 1000;
-  height: 10vh;
-}
+
 
 .footer {
   background-color: var(--pretofundo);
@@ -910,7 +911,7 @@ p#erro {
   gap: 50px; /* Espaçamento entre os campos */
   margin-bottom: 1px;
   flex-wrap: wrap; /* Permite que os itens quebrem a linha */
-  min-width: 100%; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
+  min-width: 10px; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
 }
 .form-row2 {
   display: flex; 
