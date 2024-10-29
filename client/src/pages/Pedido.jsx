@@ -83,8 +83,8 @@ const handleClick = async (e) => {
 
   // Verifica se todos os campos obrigatórios estão preenchidos
   const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
-
-  if (!tipo || !forma_pagamento || ((tipo === "1" || tipo === "2") && !fk_id_cliente) || (tipo !== "3" && !data_para_entregar)) {
+//
+  if (!tipo || !forma_pagamento || ((tipo === "1" || tipo === "3") && !fk_id_cliente) || (tipo !== "4" && !data_para_entregar)) {
     setError("Todos os campos obrigatórios devem ser preenchidos.");
     return;
   }
@@ -207,59 +207,20 @@ const handleAdicionarItem = () => {
   console.log(novoItem);
   console.log(itensPedido);
   console.log(precoTotal);
-
   return (
     <div>
-      <div className="form" id="pedidos">
-        <h1>Novo Pedido</h1>
-      
-        <p>Produto:<label className="asterisco">*</label></p>
-        <p>
-          <select
-            name="fk_id_produto"
-            ref={primeiroCampoRef}
-            value={novoItem.fk_id_produto}
-            onChange={handleItemChange}
-          >
-            <option value="">Selecione um produto</option>
-            {produto.map((produto) => (
-              <option key={produto.id_produto} value={produto.id_produto}>
-                {produto.nome}
-              </option>
-            ))}
-          </select>
-        </p>
-        <p>
-          <button onClick={handleAdicionarItem}>Adicionar Produto</button>
-        </p>
-        <h2>Itens do Pedido</h2>
-        <ul>
-          {itensPedido.map((item, index) => (
-            <li key={index}>
-             <p>{item.nome} - R${item.preco_unitario}</p>
-              <input
-                type="number"
-                value={item.quantidade}
-                min="1"
-                onChange={(e) => {
-                  const updatedItens = [...itensPedido];
-                  updatedItens[index].quantidade = e.target.value;
-                  setItensPedido(updatedItens);
-                }}
-              />
-              <p>
-                <button onClick={() => handleRemoverItem(index)}>Remover</button>
-              </p>
-            </li>
-          ))}
-        </ul>
-        <p>Preço Total: R${precoTotal}</p>
-        <p>Tipo de Entrega:<label className="asterisco">*</label></p>
-        <p>
+      <h1> NOVO PEDIDO</h1>
+        <div className="form-row2">
+        <div className="form-group">
+    <form className="form-container">
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <div className="form-row">
+        <div className="form-group">
+          <label> Tipo: <span className="asterisco">*</span> </label>
           <select
             name="tipo"
             required
-            id="tipo_entrega"
             value={pedido.tipo}
             onChange={(e) => {
             handleChange(e);
@@ -269,16 +230,21 @@ const handleAdicionarItem = () => {
             <option value="1">1. Entrega</option>
             <option value="2">2. Entrega Ifood</option>
             <option value="3">3. Retirada</option>
+            <option value="4">4. Comum</option>
           </select>
-        </p>
+        </div>
+      </div>
+      {(pedido.tipo === "1" || pedido.tipo === "2" || pedido.tipo === "3") && (
+        <div className="form-row">
+        <div className="form-group"> 
+          
 
-        {(pedido.tipo === "1" || pedido.tipo === "2") && (
+       
           <div>
-            <p>
-              <label>Data e Hora da Entrega:</label>
-              <label className="asterisco">*</label>
-            </p>
-            <p>
+           
+            <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
+            
+          
               <input
                 type="datetime-local"
                 placeholder="Data da Entrega"
@@ -286,14 +252,31 @@ const handleAdicionarItem = () => {
                 value={pedido.data_para_entregar}
                 onChange={handleChange}
               />
-            </p>
+           
           </div>
-        )}
+          
+       
+        </div>
+        <div className="form-group"> 
+        
+        <label> Frete: <span className="asterisco">*</span> </label>
+        <input
+            type="number"
+            placeholder="Frete"
+            name="frete"
+            value={produto.descricao}
+            onChange={handleChange}
+          />
 
-        <div>
-          <p>Cliente:</p>
-          <p>
-            <select
+        </div>
+        </div>
+      )}
+      <div className="form-row">
+        <div className="form-group">
+        {(pedido.tipo === "1" || pedido.tipo === "3")  && ( <label> Cliente: <span className="asterisco">*</span> </label>) }
+        {(pedido.tipo === "4" || pedido.tipo === "2" )  && ( <label> Cliente: </label>) }
+       
+        <select
               name="fk_id_cliente"
               value={pedido.fk_id_cliente || ""} 
               onChange={handleChange}
@@ -305,13 +288,6 @@ const handleAdicionarItem = () => {
                 </option>
               ))}
             </select>
-          </p>
-
-          <div className="form">
-            {successMessage &&
-              <p style={{ color: "green" }}>
-                {successMessage}
-              </p>}
             <p>
               Cliente não cadastrado?{" "}
               <span
@@ -327,11 +303,16 @@ const handleAdicionarItem = () => {
                 adicionarCliente={adicionarCliente} 
               />
             )}
-          </div>
+
         </div>
-        <p>Forma de Pagamento:<label className="asterisco">*</label></p>
-        <p>
-          <select
+        
+      </div>
+      <div className="form-row">
+      <div className="form-group">
+
+    
+      <label> Forma Pagamento: <span className="asterisco">*</span> </label>
+      <select
             name="forma_pagamento"
             required
             id="forma_pagamento"
@@ -344,29 +325,94 @@ const handleAdicionarItem = () => {
             <option value="3">Débito</option>
             <option value="4">Crédito</option>
           </select>
-        </p>
-        <p>
-          <input
-            type="text"
-            placeholder="Observação"
-            name="observacao"
-            value={pedido.observacao}
-            onChange={handleChange}
-          />
-        </p>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <p>
-          <button onClick={handleClick}>Adicionar Pedido</button>
-        </p>
-      </div>
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <span>{successMessage}</span>
           </div>
         </div>
-      )}
+     
+    </form>
     </div>
+    
+
+    <div className="form-group">
+
+    
+    {/* Seleção de Produto */}
+   
+    <label> Produto: <span className="asterisco">*</span> </label>
+                    <select
+                    
+                      name="fk_id_produto"
+                      ref={primeiroCampoRef}
+                      value={novoItem.fk_id_produto}
+                      onChange={handleItemChange}
+                    >
+                      <option value="">Selecione um produto</option>
+                      {produto.map((produto) => (
+                        <option key={produto.id_produto} value={produto.id_produto}>
+                          {produto.nome}
+                        </option>
+                      ))}
+                    </select>
+                
+
+                  <button className="submit" onClick={handleAdicionarItem}>
+                    Adicionar Produto
+                  </button>
+               
+ {/* Itens do Pedido */}
+<h2 className="fw-bold mb-3">Itens do Pedido</h2>
+<ul className="list-group">
+  {itensPedido.map((item, index) => (
+    <li
+      key={index}
+      className="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {/* Nome e Preço */}
+      <span className="me-auto text-truncate" style={{ maxWidth: '200px' }}>
+        {item.nome} - R${item.preco_unitario}
+      </span>
+
+      {/* Campo de Quantidade e Botão Remover */}
+      <div className="d-flex align-items-center">
+        <input
+          type="number"
+          className="form-control form-control-sm"
+          value={item.quantidade}
+          min="1"
+          style={{ width: '60px', marginRight: '10px' }}
+          onChange={(e) => {
+            const updatedItens = [...itensPedido];
+            updatedItens[index].quantidade = e.target.value;
+            setItensPedido(updatedItens);
+          }}
+        />
+        <p
+          className="text-danger fw-bold"
+          style={{ cursor: 'pointer', margin: '0' }}
+          onClick={() => handleRemoverItem(index)}
+        >
+          x
+        </p>
+      </div>
+    </li>
+  ))}
+</ul>
+
+
+
+                  {/* Preço Total */}
+                  <div className="d-flex justify-content-between mt-4">
+                    <h5 className="fw-bold">Preço Total:</h5>
+                    <h5>R${precoTotal}</h5>
+                  </div>
+    
+  </div>
+
+</div>
+
+
+</div>
+
+
   );
 };
 

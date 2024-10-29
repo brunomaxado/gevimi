@@ -79,7 +79,7 @@ main {
 }
 
 div p {
-  color: var(--amarelologo);
+  color: #000;
 }
 
 p:hover {
@@ -408,26 +408,28 @@ img {
 }
 
 td button.delete {
-  background-color: transparent;
+  background-color: var(--vermelho);
   border: none;
   text-decoration: none;
-  color: var(--vermelhointenso);
+  color: var(--branco);
   padding: 10px 20px;
+  text-align: center;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 10px;
 }
 
 td button.update {
-  background-color: transparent;
+  background-color: var(--verde);
   border: none;
-  color: var(--verde);
-  font-size: 1rem;
+  color: var(--branco);
   padding: 10px 20px;
+  text-align: center;
   text-decoration: none;
   display: inline-block;
+  font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 10px;
@@ -435,7 +437,7 @@ td button.update {
 
 td button.update a {
   text-decoration: none;
-  color: var(--verde);
+  color: var(--branco);
 }
 
 div.auth {
@@ -900,6 +902,7 @@ p#erro {
   max-width: 800px; /* Define uma largura máxima */
   margin: 0 auto; /* Centraliza o formulário na página */
   justify-content: flex-start;
+  padding-bottom: 300px;
 }
 
 .form-row {
@@ -907,7 +910,14 @@ p#erro {
   gap: 50px; /* Espaçamento entre os campos */
   margin-bottom: 1px;
   flex-wrap: wrap; /* Permite que os itens quebrem a linha */
-  width: 100%; /* Garante que a linha ocupe a largura total */
+  min-width: 100%; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
+}
+.form-row2 {
+  display: flex; 
+  gap: 150px; /* Espaçamento entre os campos */
+  margin-bottom: 1px;
+  flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+  min-width: 600px; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
 }
 
 .form-group {
@@ -938,6 +948,7 @@ input[type="text"],
 input[type="number"],
 input[type="password"]
 input[type="tel"],
+input[type="datetime-local"],
 select,
 textarea {
   background-color: #f0f8ff;
@@ -954,6 +965,7 @@ textarea {
   outline: none;
   font-size: 1rem;
   margin-top: 8px;
+  margin-bottom: 8px;
   border: 1px solid;
   border-radius:  6px;
   padding: 0 15px;
@@ -992,19 +1004,21 @@ textarea {
 .form-container .form-group select {
   position: relative;
   height: 50px;
-  width: 100%;
+  width:100%;
   outline: none;
   font-size: 1rem;
   margin-top: 8px;
-  border: 1px solid;
+  margin-bottom: 18px;
+   border: 1px solid;
   border-radius:  6px;
   padding: 0 15px;
 
   background-color: #f0f8ff;
   color: #000;
-  border: 1px solid #ccc;
+
   border: 1px solid var(--pretofundo);
 }
+
 
 
 /* Estilo para o campo de senha */
@@ -1167,7 +1181,7 @@ textarea {
 /* Estilo para os links dentro do dropdown */
 .dropdown-content a {
   display: block;
-  padding: 10px;
+ padding-left: 40px;
   text-decoration: none;
   color: var(--branco);
 }
@@ -1283,3 +1297,19 @@ textarea {
 .tipo-entrega-desconhecido {
   background-color: #9E9E9E; /* Cinza */
 }
+@media (min-width: 1025px) {
+  .h-custom {
+  height: 100vh !important;
+  }
+  }
+  
+  .card-registration .select-input.form-control[readonly]:not([disabled]) {
+  font-size: 1rem;
+  line-height: 2.15;
+  padding-left: .75em;
+  padding-right: .75em;
+  }
+  
+  .card-registration .select-arrow {
+  top: 13px;
+  }

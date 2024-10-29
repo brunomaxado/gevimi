@@ -48,7 +48,7 @@ const Menu = () => {
                 <li className="list" >
                     <Link to="/readUsuario" onClick={handleLinkClick}>
                         <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
-                        <span className="title">Usuário</span>
+                        <span className="title">Usuários</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
@@ -58,11 +58,7 @@ const Menu = () => {
                         </Link>
                         <Link to="/alterarSenha" onClick={handleLinkClick}>
                             <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Editar</span>
-                        </Link>
-                        <Link to="/readUsuario" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Listar</span>
+                            <span className="title">Nova Senha</span>
                         </Link>
                     </div>
                 </li>)}
@@ -77,10 +73,7 @@ const Menu = () => {
                             <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
                             <span className="title">Novo cliente</span>
                         </Link>
-                        <Link to="/readCliente" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Listar clientes</span>
-                        </Link>
+                  
                     </div>
                 </li>
                 <li className="list">
@@ -94,10 +87,7 @@ const Menu = () => {
                             <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
                             <span className="title">Novo produto</span>
                         </Link>
-                        <Link to="/viewProduto" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Listar produto</span>
-                        </Link>
+                
                     </div>
                 </li>
                 <li className="list">
@@ -111,10 +101,7 @@ const Menu = () => {
                             <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
                             <span className="title">Novo pedido</span>
                         </Link>
-                        <Link to="/readPedido" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Listar pedidos</span>
-                        </Link>
+                  
                     </div>
                 </li>
                 <li className="list">
