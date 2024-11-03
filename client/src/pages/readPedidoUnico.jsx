@@ -10,7 +10,7 @@ const ReadPedidoUnico = () => {
   const [usuarios, setUsuarios] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const pedidoId = location.pathname.split("/")[2]; // Extrair o ID do pedido da URL
+  const pedidoId = location.pathname.split("/")[2];
 
   useEffect(() => {
     const fetchPedido = async () => {
@@ -57,7 +57,7 @@ const ReadPedidoUnico = () => {
 
   const getClienteDetalhes = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
-    return cliente ? cliente : {}; // Retorna o cliente completo ou um objeto vazio
+    return cliente ? cliente : {};
   };
 
   const getUsuarioNome = (id) => {
@@ -70,14 +70,12 @@ const ReadPedidoUnico = () => {
     return produto ? produto.nome : "N/A";
   };
 
-  // Ajustar para usar preco_unitario_atual
   const calcularTotalItens = (itensPedido) => {
     return itensPedido.reduce((total, item) => {
       return total + (item.preco_unitario_atual ? item.preco_unitario_atual * item.quantidade : 0);
     }, 0);
   };
 
-  // Função para retornar o texto de acordo com a forma de pagamento
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
       case 1:
@@ -93,7 +91,6 @@ const ReadPedidoUnico = () => {
     }
   };
 
-  // Função para retornar o texto de acordo com o tipo de entrega
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
       case 1:
@@ -122,98 +119,36 @@ const ReadPedidoUnico = () => {
 
   if (!pedido) return <p>Carregando...</p>;
 
-  // CSS como constante
-  const styles = {
-    container: {
-      maxWidth: "800px",
-      margin: "20px auto",
-      padding: "20px",
-      border: "1px solid #ccc",
-      borderRadius: "8px",
-      backgroundColor: "#f9f9f9",
-      position: "relative",
-    },
-    form: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "16px",
-    },
-    formGroup: {
-      display: "flex",
-      flexDirection: "column",
-    },
-    formGroupHorizontal: {
-      display: "flex",
-      justifyContent: "space-between",
-      gap: "16px",
-    },
-    label: {
-      fontWeight: "bold",
-      marginBottom: "4px",
-      fontSize: "14px",
-    },
-    input: {
-      padding: "8px",
-      border: "1px solid #ddd",
-      borderRadius: "4px",
-      fontSize: "14px",
-      backgroundColor: "#fff",
-    },
-    status: {
-      position: "absolute",
-      top: "20px",
-      right: "20px",
-      fontWeight: "bold",
-      fontSize: "16px",
-      color: "#007bff",
-    },
-    produtoList: {
-      marginTop: "10px",
-      borderTop: "1px solid #ddd",
-      paddingTop: "10px",
-    },
-    produtoItem: {
-      display: "flex",
-      justifyContent: "space-between",
-      padding: "8px 0",
-      borderBottom: "1px solid #ddd",
-    },
-    total: {
-      fontWeight: "bold",
-    },
-  };
-
   return (
-    <div style={styles.container}>
+    <div>
       <h1>Detalhes do Pedido</h1>
-      <form style={styles.form}>
-        <div style={styles.formGroupHorizontal}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>ID Pedido:</label>
-            <input style={styles.input} type="text" value={pedidoId} readOnly />
+      <form>
+        <div>
+          <div>
+            <label>ID Pedido:</label>
+            <input type="text" value={pedidoId} readOnly />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Status:</label>
-            <input style={styles.input} type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
-          </div>
-        </div>
-  
-        <div style={styles.formGroupHorizontal}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Forma de Pagamento:</label>
-            <input style={styles.input} type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
-          </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Tipo:</label>
-            <input style={styles.input} type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
+          <div>
+            <label>Status:</label>
+            <input type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
           </div>
         </div>
   
-        <div style={styles.formGroupHorizontal}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Data de Entrega:</label>
+        <div>
+          <div>
+            <label>Forma de Pagamento:</label>
+            <input type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
+          </div>
+          <div>
+            <label>Tipo:</label>
+            <input type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
+          </div>
+        </div>
+  
+        <div>
+          <div>
+            <label>Data de Entrega:</label>
             <input
-              style={styles.input}
               type="text"
               value={
                 pedido.pedido.data_para_entregar && !isNaN(Date.parse(pedido.pedido.data_para_entregar))
@@ -223,10 +158,9 @@ const ReadPedidoUnico = () => {
               readOnly
             />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Data de Realização:</label>
+          <div>
+            <label>Data de Realização:</label>
             <input
-              style={styles.input}
               type="text"
               value={pedido.pedido.data_realizado ? new Date(pedido.pedido.data_realizado).toLocaleString() : "Sem data"}
               readOnly
@@ -234,57 +168,55 @@ const ReadPedidoUnico = () => {
           </div>
         </div>
   
-        <div style={styles.formGroupHorizontal}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Cliente:</label>
-            <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).nome || "N/A"} readOnly />
+        <div>
+          <div>
+            <label>Cliente:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).nome || "N/A"} readOnly />
           </div>
   
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Usuário:</label>
-            <input style={styles.input} type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
+          <div>
+            <label>Usuário:</label>
+            <input type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
           </div>
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Cidade:</label>
-          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).cidade || "N/A"} readOnly />
+        <div>
+          <label>Cidade:</label>
+          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).cidade || "N/A"} readOnly />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Endereço:</label>
-          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).endereco || "N/A"} readOnly />
+        <div>
+          <label>Endereço:</label>
+          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).endereco || "N/A"} readOnly />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Bairro:</label>
-          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).bairro || "N/A"} readOnly />
+        <div>
+          <label>Bairro:</label>
+          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).bairro || "N/A"} readOnly />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Rua:</label>
-          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).rua || "N/A"} readOnly />
+        <div>
+          <label>Rua:</label>
+          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).rua || "N/A"} readOnly />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Número:</label>
-          <input style={styles.input} type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).numero || "N/A"} readOnly />
+        <div>
+          <label>Número:</label>
+          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).numero || "N/A"} readOnly />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Observação:</label>
+        <div>
+          <label>Observação:</label>
           <input
-            style={styles.input}
             type="text"
             value={pedido.pedido.observacao || "Sem observação"}
             readOnly
           />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Finalizado em:</label>
+        <div>
+          <label>Finalizado em:</label>
           <input
-            style={styles.input}
             type="text"
             value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
                 ? new Date(pedido.pedido.data_finalizado).toLocaleString()
@@ -294,12 +226,12 @@ const ReadPedidoUnico = () => {
           />
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={{ ...styles.label, textAlign: "center" }}>Produtos:</label>
-          <div style={{ ...styles.produtoList, textAlign: "center" }}>
+        <div>
+          <label>Produtos:</label>
+          <div>
             {pedido.itensPedido && pedido.itensPedido.length > 0 ? (
               pedido.itensPedido.map((item) => (
-                <div style={{ ...styles.produtoItem, justifyContent: "center" }} key={item.id_item_pedido}>
+                <div key={item.id_item_pedido}>
                   <span>
                     {getProdutoNome(item.fk_id_produto)} x{item.quantidade} - 
                     Uni: R$ {(item.preco_unitario_atual ? item.preco_unitario_atual.toFixed(2) : "N/A")}
@@ -312,10 +244,9 @@ const ReadPedidoUnico = () => {
           </div>
         </div>
   
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Total:</label>
+        <div>
+          <label>Total:</label>
           <input
-            style={styles.input}
             type="text"
             value={`R$ ${calcularTotalItens(pedido.itensPedido) ? calcularTotalItens(pedido.itensPedido).toFixed(2) : "0.00"}`}
             readOnly

@@ -47,6 +47,9 @@ const Dashboard = () => {
 
     fetchDashboard();
   }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (loading) {
     return <div>Carregando...</div>;

@@ -228,9 +228,22 @@ li#pedido a:hover {
   text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
   white-space: normal; /* Permite que o texto quebre */
 }
+.coluna-cep {
+  width: 9%; 
+  text-align: center;/* ou um valor maior que as outras colunas */
+}
+.coluna-cpf {
 
+  text-align: center;/* ou um valor maior que as outras colunas */
+}
 .coluna-cliente {
   width: 15%; /* ou um valor maior que as outras colunas */
+}
+.coluna-nome {
+  width: 20%; /* ou um valor maior que as outras colunas */
+}
+.coluna-endereco{
+  width: 20%; /* ou um valor maior que as outras colunas */
 }
 .coluna-center {
   text-align: center; /* Alinha o texto ao centro */

@@ -3,14 +3,11 @@ import axios from "axios";
 import '../style.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-<<<<<<< HEAD
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom";
-=======
 import { Button, Modal, Alert } from 'react-bootstrap';
 import HelpCategoria from "../components/modalHelpCategoria"; // Importando o HelpCategoria
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
->>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
@@ -23,15 +20,11 @@ const Categoria = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-<<<<<<< HEAD
   const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-=======
   const [isHelpCategoriaOpen, setIsHelpCategoriaOpen] = useState(false); // Estado para o modal de ajuda
-
->>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -44,11 +37,11 @@ const Categoria = () => {
     };
     fetchAllCategorias();
   }, []);
-<<<<<<< HEAD
  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const handleDelete = async () => {
     try {
       if (categoriaIdToDelete !== null) {
@@ -67,8 +60,6 @@ const Categoria = () => {
       }
     }
   };
-=======
->>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
 
   const handleAdd = async () => {
     if (!newCategoria) {
@@ -100,7 +91,6 @@ const Categoria = () => {
     }
   };
 
-<<<<<<< HEAD
   const openUpdateModal = (categoria) => {
     setCurrentCategoria({ id: categoria.id_categoria, nome: categoria.nome });
     setShowUpdateModal(true);
@@ -110,20 +100,6 @@ const Categoria = () => {
     setCategoriaIdToDelete(id);
     setShowDeleteModal(true);
     setDeleteErrorMessage("");
-=======
-  const handleDelete = async () => {
-    try {
-      if (categoriaIdToDelete !== null) {
-        await axios.delete(`http://localhost:8800/categoria/${categoriaIdToDelete}`);
-        setCategoria(categoria.filter(c => c.id_categoria !== categoriaIdToDelete));
-        setShowDeleteModal(false);
-        setCategoriaIdToDelete(null);
-        showSuccess("Categoria excluída com sucesso!");
-      }
-    } catch (err) {
-      console.error("Erro ao tentar deletar a categoria:", err);
-    }
->>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
   };
 
   const showSuccess = (message) => {
@@ -136,49 +112,45 @@ const Categoria = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    // Resete para a página 1 ao fazer uma nova busca
-    setCurrentPage(1);
-};
+    setCurrentPage(1); // Resete para a página 1 ao fazer uma nova busca
+  };
 
-const filteredCategorias = categoria.filter(c => {
+  const filteredCategorias = categoria.filter(c => {
     return c.nome.toLowerCase().includes(searchTerm.toLowerCase());
-});
+  });
 
-// Paginação
-const indexOfLastCategoria = currentPage * itemsPerPage;
-const indexOfFirstCategoria = indexOfLastCategoria - itemsPerPage;
-const currentCategorias = filteredCategorias.slice(indexOfFirstCategoria, indexOfLastCategoria);
-const totalPages = Math.ceil(filteredCategorias.length / itemsPerPage);
+  // Paginação
+  const indexOfLastCategoria = currentPage * itemsPerPage;
+  const indexOfFirstCategoria = indexOfLastCategoria - itemsPerPage;
+  const currentCategorias = filteredCategorias.slice(indexOfFirstCategoria, indexOfLastCategoria);
+  const totalPages = Math.ceil(filteredCategorias.length / itemsPerPage);
 
-// Atualize a lógica de navegação para ir para a página correta ao pesquisar
-const paginateNext = () => {
+  const paginateNext = () => {
     if (currentPage < totalPages) {
-        setCurrentPage(currentPage + 1);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (currentPage === totalPages && totalPages > 1) {
-        setCurrentPage(totalPages - 1); // Retorna para a página anterior se estiver na última
+      setCurrentPage(currentPage + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-};
+  };
 
-const paginatePrev = () => {
+  const paginatePrev = () => {
     if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      setCurrentPage(currentPage - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-};
+  };
 
   return (
     <div>
       {/* Botão para abrir o modal de ajuda */}
-      <div className=" d-flex flex-row-reverse">
-        <button className="btn" onClick={() => setIsHelpProdutoOpen(true)}>
+      <div className="d-flex flex-row-reverse">
+        <button className="btn" onClick={() => setIsHelpCategoriaOpen(true)}>
           <HelpOutlineIcon />
         </button>
       </div>
       {/* Modal de ajuda */}
-      <HelpProduto
-        isOpen={isHelpProdutoOpen}
-        onRequestClose={() => setIsHelpProdutoOpen(false)}
+      <HelpCategoria
+        isOpen={isHelpCategoriaOpen}
+        onRequestClose={() => setIsHelpCategoriaOpen(false)}
       />
       <h1>Categorias:</h1>
       <div className="tabela">
@@ -195,10 +167,7 @@ const paginatePrev = () => {
           </div>
           <button 
             className="limpar-filtro" 
-            onClick={() => {
-              setSearchTerm("");
-             
-            }}
+            onClick={() => setSearchTerm("")}
           >
             Limpar Filtros
           </button>
@@ -244,20 +213,20 @@ const paginatePrev = () => {
         </div>
 
         <div className="pagination">
-  {currentPage !== 1 && (
-    <button onClick={paginatePrev}>
-      <ion-icon name="caret-back-outline"></ion-icon>
-    </button>
-  )}
-  <span>{currentPage} de {totalPages}</span>
-  {currentPage < totalPages && filteredCategorias.length > 0 && (
-    <button onClick={paginateNext}>
-      <ion-icon name="caret-forward-outline"></ion-icon>
-    </button>
-  )}
-</div>
+          {currentPage !== 1 && (
+            <button onClick={paginatePrev}>
+              <ion-icon name="caret-back-outline"></ion-icon>
+            </button>
+          )}
+          <span>{currentPage} de {totalPages}</span>
+          {currentPage < totalPages && filteredCategorias.length > 0 && (
+            <button onClick={paginateNext}>
+              <ion-icon name="caret-forward-outline"></ion-icon>
+            </button>
+          )}
+        </div>
 
-
+        {/* Modal de confirmação de exclusão */}
         {showDeleteModal && (
           <div className="modal">
             <div className="modal-content">
@@ -270,43 +239,13 @@ const paginatePrev = () => {
           </div>
         )}
 
+        {/* Modal de sucesso */}
         {showSuccessModal && (
           <div className="success-modal">
             <div className="success-modal-content">
-              <h2>{successMessage}</h2>
-            </div>
-          </div>
-        )}
-
-        {showAddModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Adicionar Categoria</h2>
-              <input
-                type="text"
-                value={newCategoria}
-                onChange={(e) => setNewCategoria(e.target.value)}
-                placeholder="Nome da Categoria"
-              />
-              <button className="modal-button" onClick={handleAdd}>Adicionar</button>
-              <button className="modal-button" onClick={() => setShowAddModal(false)}>Cancelar</button>
-              {errorMessage && <p className="error-message">{errorMessage}</p>}
-            </div>
-          </div>
-        )}
-
-        {showUpdateModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Atualizar Categoria</h2>
-              <input
-                type="text"
-                value={currentCategoria.nome}
-                onChange={(e) => setCurrentCategoria({ ...currentCategoria, nome: e.target.value })}
-                placeholder="Nome da Categoria"
-              />
-              <button className="modal-button" onClick={handleUpdate}>Atualizar</button>
-              <button className="modal-button" onClick={() => setShowUpdateModal(false)}>Cancelar</button>
+              <Alert variant="success" onClose={() => setShowSuccessModal(false)} dismissible>
+                {successMessage}
+              </Alert>
             </div>
           </div>
         )}
