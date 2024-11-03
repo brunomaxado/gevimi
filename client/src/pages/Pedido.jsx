@@ -5,7 +5,7 @@ import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import HelpPedido from "../components/modalHelpPedido";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-
+import More from '@mui/icons-material/Add';
 const calcularPrecoTotal = (itens) => {
   return itens.reduce((total, item) => {
     return total + item.preco_unitario * item.quantidade;
@@ -24,6 +24,7 @@ const Pedido = () => {
     forma_pagamento: "",
     observacao: "",
     data_para_entregar: "",
+    frete: 0,
     fk_id_usuario: currentUser?.id_usuario,
     fk_id_cliente: null,
   });
@@ -212,53 +213,47 @@ const handleAdicionarItem = () => {
   console.log(precoTotal);
   return (
     <div>
-       {/* Botão para abrir o modal de ajuda */}
-       <div className=" d-flex flex-row-reverse">
+      {/* Botão para abrir o modal de ajuda
+      <div className="d-flex flex-row-reverse">
         <button className="btn" onClick={() => setIsHelpPedidoOpen(true)}>
           <HelpOutlineIcon />
         </button>
       </div>
-      {/* Modal de ajuda */}
+      {/* Modal de ajuda 
       <HelpPedido
         isOpen={isHelpPedidoOpen}
         onRequestClose={() => setIsHelpPedidoOpen(false)}
-      />
-      <h1> NOVO PEDIDO</h1>
-        <div className="form-row2">
-        <div className="form-group">
-    <form className="form-container">
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      />  */}
+      <h1>NOVO PEDIDO</h1>
+      
+      <form className="form-container-pedido">
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div className="form-row">
-        <div className="form-group">
-          <label> Tipo: <span className="asterisco">*</span> </label>
-          <select
-            name="tipo"
-            required
-            value={pedido.tipo}
-            onChange={(e) => {
-            handleChange(e);
-            }}
-          >
-            <option value="">Selecione um tipo de entrega</option>
-            <option value="1">1. Entrega</option>
-            <option value="2">2. Entrega Ifood</option>
-            <option value="3">3. Retirada</option>
-            <option value="4">4. Comum</option>
-          </select>
+        <div className="form-esquerda-pedido">
+        <div className="form-row-pedido">
+          <div className="form-group-pedido">
+            <label> Tipo: <span className="asterisco">*</span> </label>
+            <select
+              name="tipo"
+              required
+              value={pedido.tipo}
+              onChange={(e) => {
+                handleChange(e);
+              }}
+            >
+              <option value="">Selecione um tipo de entrega</option>
+              <option value="1">1. Entrega</option>
+              <option value="2">2. Entrega Ifood</option>
+              <option value="3">3. Retirada</option>
+              <option value="4">4. Comum</option>
+            </select>
+          </div>
         </div>
-      </div>
-      {(pedido.tipo === "1" || pedido.tipo === "2" || pedido.tipo === "3") && (
-        <div className="form-row">
-        <div className="form-group"> 
-          
-
-       
-          <div>
-           
-            <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
-            
-          
+        
+        {(pedido.tipo === "1" || pedido.tipo === "2" || pedido.tipo === "3") && (
+          <div className="form-row-pedido">
+            <div className="form-group-pedido">
+              <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
               <input
                 type="datetime-local"
                 placeholder="Data da Entrega"
@@ -266,33 +261,31 @@ const handleAdicionarItem = () => {
                 value={pedido.data_para_entregar}
                 onChange={handleChange}
               />
-           
+            </div>
+            
+            <div className="form-group-pedido">
+              <label> Frete: <span className="asterisco">*</span> </label>
+              <input
+                type="number"
+                placeholder="Frete"
+                name="frete"
+                value={pedido.frete}
+                onChange={handleChange}
+              />
+            </div>
           </div>
-          
-       
-        </div>
-        <div className="form-group"> 
+        )}
         
-        <label> Frete: <span className="asterisco">*</span> </label>
-        <input
-            type="number"
-            placeholder="Frete"
-            name="frete"
-            value={produto.descricao}
-            onChange={handleChange}
-          />
-
-        </div>
-        </div>
-      )}
-      <div className="form-row">
-        <div className="form-group">
-        {(pedido.tipo === "1" || pedido.tipo === "3")  && ( <label> Cliente: <span className="asterisco">*</span> </label>) }
-        {(pedido.tipo === "4" || pedido.tipo === "2" )  && ( <label> Cliente: </label>) }
-       
-        <select
+        <div className="form-row-pedido">
+          <div className="form-group-pedido">
+            
+              <label> Cliente: <span className="asterisco">*</span> </label>
+            
+          
+            
+            <select
               name="fk_id_cliente"
-              value={pedido.fk_id_cliente || ""} 
+              value={pedido.fk_id_cliente || ""}
               onChange={handleChange}
             >
               <option value="">Selecione o cliente</option>
@@ -301,98 +294,85 @@ const handleAdicionarItem = () => {
                   {cliente.nome}
                 </option>
               ))}
+              
             </select>
-            <p>
-              Cliente não cadastrado?{" "}
-              <span
-                onClick={() => setShowModal(true)}
-              >
-                Cadastre aqui!
-              </span>
-            </p>
-
-            {showModal && (
-              <ModalCliente
-                onClose={() => setShowModal(false)}
-                adicionarCliente={adicionarCliente} 
-              />
-            )}
-
-        </div>
+         
+          </div>
         
-      </div>
-      <div className="form-row">
-      <div className="form-group">
-
-    
-      <label> Forma Pagamento: <span className="asterisco">*</span> </label>
-      <select
-            name="forma_pagamento"
-            required
-            id="forma_pagamento"
-            value={pedido.forma_pagamento}
-            onChange={handleChange}
-          >
-            <option value="">Selecione a forma de pagamento</option>
-            <option value="1">Dinheiro</option>
-            <option value="2">Pix</option>
-            <option value="3">Débito</option>
-            <option value="4">Crédito</option>
-          </select>
+        
+       
+          <div className="form-group-pedido">
+            <label> Forma Pagamento: <span className="asterisco">*</span> </label>
+            <select
+              name="forma_pagamento"
+              required
+              id="forma_pagamento"
+              value={pedido.forma_pagamento}
+              onChange={handleChange}
+            >
+              <option value="">Forma de pagamento</option>
+              <option value="1">Dinheiro</option>
+              <option value="2">Pix</option>
+              <option value="3">Débito</option>
+              <option value="4">Crédito</option>
+            </select>
           </div>
         </div>
-     
-    </form>
-    </div>
-    
+        <label> Observação: </label>
+            <input
+              type="text"
+              placeholder="Observação"
+              name="observacao"
+              value={pedido.observacao}
+              onChange={handleChange}
+            />
 
-    <div className="form-group">
+        </div>
+        <div className="form-direita-pedido">
+       
+        <div className="form-row-pedido">
+  <div className="form-group-pedido">
 
-    
-    {/* Seleção de Produto */}
-   
+
+
     <label> Produto: <span className="asterisco">*</span> </label>
-                    <select
-                    
-                      name="fk_id_produto"
-                      ref={primeiroCampoRef}
-                      value={novoItem.fk_id_produto}
-                      onChange={handleItemChange}
-                    >
-                      <option value="">Selecione um produto</option>
-                      {produto.map((produto) => (
-                        <option key={produto.id_produto} value={produto.id_produto}>
-                          {produto.nome}
-                        </option>
-                      ))}
-                    </select>
-                
 
-                  <button className="submit" onClick={handleAdicionarItem}>
-                    Adicionar Produto
-                  </button>
-               
- {/* Itens do Pedido */}
-<h2 className="fw-bold mb-3">Itens do Pedido</h2>
-<ul className="list-group">
-  {itensPedido.map((item, index) => (
-    <li
-      key={index}
-      className="list-group-item d-flex justify-content-between align-items-center"
+    <select
+      name="fk_id_produto"
+      ref={primeiroCampoRef}
+      value={novoItem.fk_id_produto}
+      onChange={handleItemChange}
     >
-      {/* Nome e Preço */}
-      <span className="me-auto text-truncate" style={{ maxWidth: '200px' }}>
+      <option value="">Selecione um produto</option>
+      {produto.map((produto) => (
+        <option key={produto.id_produto} value={produto.id_produto}>
+          {produto.nome}
+        </option>
+      ))}
+    </select>
+  </div>
+  
+  <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
+  <More /> {/* Adicionando o ícone More */}
+</button>
+
+</div>
+
+{/* Itens do Pedido */}
+<h2 className="order-items-header">Itens do Pedido</h2>
+<ul className="order-items-list">
+  {itensPedido.map((item, index) => (
+    <li key={index} className="order-item">
+      <span className="order-item-name">
         {item.nome} - R${item.preco_unitario}
       </span>
-
-      {/* Campo de Quantidade e Botão Remover */}
-      <div className="d-flex align-items-center">
+      
+      <div className="order-item-controls">
         <input
           type="number"
-          className="form-control form-control-sm"
+          className="order-item-quantity"
           value={item.quantidade}
           min="1"
-          style={{ width: '60px', marginRight: '10px' }}
           onChange={(e) => {
             const updatedItens = [...itensPedido];
             updatedItens[index].quantidade = e.target.value;
@@ -400,8 +380,7 @@ const handleAdicionarItem = () => {
           }}
         />
         <p
-          className="text-danger fw-bold"
-          style={{ cursor: 'pointer', margin: '0' }}
+          className="order-item-remove"
           onClick={() => handleRemoverItem(index)}
         >
           x
@@ -412,181 +391,26 @@ const handleAdicionarItem = () => {
 </ul>
 
 
-
-                  {/* Preço Total */}
-                  <div className="d-flex justify-content-between mt-4">
-                    <h5 className="fw-bold">Preço Total:</h5>
-                    <h5>R${precoTotal}</h5>
-                  </div>
-    
-  </div>
-
+{/* Preço Total */}
+<div className="d-flex justify-content-between mt-4">
+  <h5 className="fw-bold">Preço Total:</h5>
+  <h5>R${precoTotal}</h5>
 </div>
 
 
 
 
-<section class="h-100">
-  <div class="container h-100 py-5">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-10">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-normal mb-0">Shopping Cart</h3>
-          <div>
-            <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
-          </div>
         </div>
 
-        <div class="card rounded-3 mb-4">
-          <div class="card-body p-4">
-            <div class="row d-flex justify-content-between align-items-center">
-              <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-              </div>
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                  <i class="fas fa-minus"></i>
-                </button>
 
-                <input id="form1" min="0" name="quantity" value="2" type="number" class="form-control form-control-sm" />
 
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </div>
-              <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$499.00</h5>
-              </div>
-              <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="card rounded-3 mb-4">
-          <div class="card-body p-4">
-            <div class="row d-flex justify-content-between align-items-center">
-              <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-              </div>
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                  <i class="fas fa-minus"></i>
-                </button>
 
-                <input id="form1" min="0" name="quantity" value="2" type="number" class="form-control form-control-sm" />
-
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </div>
-              <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$499.00</h5>
-              </div>
-              <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card rounded-3 mb-4">
-          <div class="card-body p-4">
-            <div class="row d-flex justify-content-between align-items-center">
-              <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-              </div>
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                  <i class="fas fa-minus"></i>
-                </button>
-
-                <input id="form1" min="0" name="quantity" value="2" type="number" class="form-control form-control-sm" />
-
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </div>
-              <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$499.00</h5>
-              </div>
-              <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card rounded-3 mb-4">
-          <div class="card-body p-4">
-            <div class="row d-flex justify-content-between align-items-center">
-              <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-              </div>
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                  <i class="fas fa-minus"></i>
-                </button>
-
-                <input id="form1" min="0" name="quantity" value="2" type="number" class="form-control form-control-sm" />
-
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </div>
-              <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$499.00</h5>
-              </div>
-              <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4">
-          <div class="card-body p-4 d-flex flex-row">
-            <div data-mdb-input-init class="form-outline flex-fill">
-              <input type="text" id="form1" class="form-control form-control-lg" />
-              <label class="form-label" for="form1">Discount code</label>
-            </div>
-            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-warning btn-lg ms-3">Apply</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-body">
-            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
-          </div>
-        </div>
-
-      </div>
+      </form>
+      <button type="submit" onClick={handleClick}>Enviar Pedido</button>
     </div>
-  </div>
-</section>
-
-
-
-
-
-</div>
-
-
   );
+  
 };
 
 export default Pedido;

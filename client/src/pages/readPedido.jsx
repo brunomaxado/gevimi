@@ -348,12 +348,18 @@ useEffect(() => {
               <td>{getClienteNome(pedido.fk_id_cliente)}</td>
               <td class = "coluna-center">{getTipoEntrega(pedido.tipo)}</td>
               <td>
-                {pedido.itensPedido.map((item) => (
-                  <div key={item.id_item_pedido}>
-                    {getProdutoNome(item.fk_id_produto)} x{item.quantidade};
-                  </div>
-                ))}
-              </td>
+  {pedido.itensPedido.map((item) => (
+    <div key={item.id_item_pedido}>
+      {getProdutoNome(item.fk_id_produto)} x{item.quantidade};
+    </div>
+  ))}
+  {pedido.frete>0 && (
+    <div>
+      Frete
+    </div>
+  )}
+</td>
+
              
               <td>
   {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))

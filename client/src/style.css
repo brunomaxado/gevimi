@@ -758,6 +758,56 @@ div.auth button {
     border-radius: 10px;
 
   }
+
+
+  .order-items-header {
+    font-weight: bold;
+    margin-bottom: 1rem; /* Margem inferior para espaçamento */
+  }
+  
+  .order-items-list {
+    list-style-type: none; /* Remove os marcadores da lista */
+    padding: 0; /* Remove o preenchimento padrão */
+  }
+  
+  /* AQUI COMEÇA O ITEM PEDIDO  */
+  .order-item {
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os elementos */
+    align-items: center; /* Alinha verticalmente ao centro */
+    background-color: #d6d6d2; /* Cinza claro */
+    padding: 0.5rem; /* Adiciona preenchimento interno */
+    margin-bottom: 0.5rem; /* Espaçamento entre os itens */
+    border-radius: 4px; /* Arredonda os cantos do item */
+    padding-left: 6%;
+    height: 60px;
+  }
+  
+  .order-item-name {
+    max-width: 200px; /* Limita a largura do nome do item */
+    overflow: hidden; /* Oculta o texto que ultrapassa a largura */
+    white-space: nowrap; /* Evita que o texto quebre para a linha seguinte */
+    text-overflow: ellipsis; /* Adiciona reticências (...) para texto truncado */
+  }
+  
+  .order-item-controls {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os controles */
+  }
+  
+  .order-item-quantity {
+    background-color: #ebebeb;
+    width: 70px; /* Define a largura do campo de quantidade */
+    margin-right: 10px; /* Espaço entre o campo de quantidade e o ícone de remoção */
+  }
+  
+  .order-item-remove {
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    margin: 0; /* Remove a margem padrão */
+    color: #dc3545; /* Cor do texto para o botão de remoção (vermelho) */
+    font-weight: bold; /* Deixa o texto mais destacado */
+  }
+  
   button.adicionar-categoria{
     width: 15%;
     height: 10%;
@@ -1186,12 +1236,68 @@ p#erro {
   flex-wrap: wrap; /* Permite que os itens quebrem a linha */
   min-width: 500; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
 }
-.form-row2 {
-  display: flex; 
-  gap: 150px; /* Espaçamento entre os campos */
-  margin-bottom: 1px;
-  flex-wrap: wrap; /* Permite que os itens quebrem a linha */
-  min-width: 600px; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
+.form-container-pedido label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+.form-container-pedido .form-group input {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius:  6px;
+  padding: 0 15px;
+}
+.form-container-pedido {
+  
+  transform: scale(0.9); /* Ajuste o valor conforme o necessário */
+  display: flex; /* Usa flexbox para o contêiner do formulário */
+  justify-content: space-between; /* Cria espaço entre os elementos filhos */
+  width: 80%; /* Define a largura do contêiner */
+  margin: 0 auto; /* Centraliza o contêiner no eixo horizontal */
+
+}
+
+.form-esquerda-pedido {
+  flex: 0 0 45%; /* Define a largura da parte esquerda */
+  margin-right: 20px; /* Aumenta o espaçamento entre esquerda e direita */
+}
+
+.form-direita-pedido {
+  flex: 0 0 45%; /* Define a largura da parte direita */
+}
+
+button.adicionar-produto-pedido {
+  
+  width: 15%;
+  height: 100%;
+  border: none;
+  align-self: flex-end; /* Alinha o botão à parte de baixo do select */
+  margin-bottom: 2%; /* Ajuste para dar espaço, se necessário */
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+
+
+}
+
+.form-row-pedido {
+  display: flex;
+  gap: 20px;
+  margin: 0 auto 1px auto;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center; /* Garante que os itens fiquem alinhados verticalmente */
+}
+
+.form-group-pedido {
+  flex: 1;
+  min-width: 200px;
 }
 
 .form-group {
