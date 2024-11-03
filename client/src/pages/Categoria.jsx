@@ -3,8 +3,14 @@ import axios from "axios";
 import '../style.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+<<<<<<< HEAD
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom";
+=======
+import { Button, Modal, Alert } from 'react-bootstrap';
+import HelpCategoria from "../components/modalHelpCategoria"; // Importando o HelpCategoria
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+>>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
@@ -17,10 +23,15 @@ const Categoria = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+<<<<<<< HEAD
   const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+=======
+  const [isHelpCategoriaOpen, setIsHelpCategoriaOpen] = useState(false); // Estado para o modal de ajuda
+
+>>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -28,11 +39,12 @@ const Categoria = () => {
         const res = await axios.get("http://localhost:8800/categoria");
         setCategoria(res.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     fetchAllCategorias();
   }, []);
+<<<<<<< HEAD
  
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,6 +67,8 @@ const Categoria = () => {
       }
     }
   };
+=======
+>>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
 
   const handleAdd = async () => {
     if (!newCategoria) {
@@ -68,27 +82,25 @@ const Categoria = () => {
       const res = await axios.get("http://localhost:8800/categoria");
       setCategoria(res.data);
       showSuccess("Categoria adicionada com sucesso!");
-      setErrorMessage("");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
   const handleUpdate = async () => {
     try {
-      if (currentCategoria.nome) {
-        await axios.put(`http://localhost:8800/categoria/${currentCategoria.id}`, { nome: currentCategoria.nome });
-        setCurrentCategoria({ id: "", nome: "" });
-        setShowUpdateModal(false);
-        const res = await axios.get("http://localhost:8800/categoria");
-        setCategoria(res.data);
-        showSuccess("Categoria atualizada com sucesso!");
-      }
+      await axios.put(`http://localhost:8800/categoria/${currentCategoria.id}`, { nome: currentCategoria.nome });
+      setCurrentCategoria({ id: "", nome: "" });
+      setShowUpdateModal(false);
+      const res = await axios.get("http://localhost:8800/categoria");
+      setCategoria(res.data);
+      showSuccess("Categoria atualizada com sucesso!");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
+<<<<<<< HEAD
   const openUpdateModal = (categoria) => {
     setCurrentCategoria({ id: categoria.id_categoria, nome: categoria.nome });
     setShowUpdateModal(true);
@@ -98,6 +110,20 @@ const Categoria = () => {
     setCategoriaIdToDelete(id);
     setShowDeleteModal(true);
     setDeleteErrorMessage("");
+=======
+  const handleDelete = async () => {
+    try {
+      if (categoriaIdToDelete !== null) {
+        await axios.delete(`http://localhost:8800/categoria/${categoriaIdToDelete}`);
+        setCategoria(categoria.filter(c => c.id_categoria !== categoriaIdToDelete));
+        setShowDeleteModal(false);
+        setCategoriaIdToDelete(null);
+        showSuccess("Categoria excluída com sucesso!");
+      }
+    } catch (err) {
+      console.error("Erro ao tentar deletar a categoria:", err);
+    }
+>>>>>>> 97c51240fda9337de6524f69dfd1f561b4ed9813
   };
 
   const showSuccess = (message) => {
@@ -143,6 +169,17 @@ const paginatePrev = () => {
 
   return (
     <div>
+      {/* Botão para abrir o modal de ajuda */}
+      <div className=" d-flex flex-row-reverse">
+        <button className="btn" onClick={() => setIsHelpProdutoOpen(true)}>
+          <HelpOutlineIcon />
+        </button>
+      </div>
+      {/* Modal de ajuda */}
+      <HelpProduto
+        isOpen={isHelpProdutoOpen}
+        onRequestClose={() => setIsHelpProdutoOpen(false)}
+      />
       <h1>Categorias:</h1>
       <div className="tabela">
         <div className="filters-container-categoria">

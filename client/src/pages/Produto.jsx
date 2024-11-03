@@ -3,6 +3,9 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import FormProduto from "../components/formProduto";
+import HelpProduto from "../components/modalHelpProduto";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 
 const Produto = () => {
   const [produto, setProduto] = useState({
@@ -14,6 +17,8 @@ const Produto = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const [isHelpProdutoOpen, setIsHelpProdutoOpen] = useState(false); // Estado para o modal de ajuda
+
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [categorias, setCategorias] = useState([]);
@@ -71,6 +76,18 @@ const Produto = () => {
 
   return (
     <div>
+      {/* Botão para abrir o modal de ajuda */}
+      <div className=" d-flex flex-row-reverse">
+        <button className="btn" onClick={() => setIsHelpProdutoOpen(true)}>
+          <HelpOutlineIcon />
+        </button>
+      </div>
+      {/* Modal de ajuda */}
+      <HelpProduto
+        isOpen={isHelpProdutoOpen}
+        onRequestClose={() => setIsHelpProdutoOpen(false)}
+      />
+
       <div className="form"> 
   <h1>NOVO PRODUTO</h1>
 

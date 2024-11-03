@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import FormUsuario from "../components/formUsuario"; // Importando o novo formulário
-
+import HelpUsuario from "../components/modalHelpUsuario";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -13,6 +14,7 @@ const Register = () => {
     administrador: "0",// Valor inicial para isAdmin (pode ser "false" ou vazio)
   });
   const [err, setError] = useState(null);
+  const [isHelpUsuarioOpen, setIsHelpUsuarioOpen] = useState(false); // Estado para o modal de ajuda
 
   const navigate = useNavigate();
 
@@ -33,6 +35,17 @@ const Register = () => {
 
   return (
     <div className="auth, login">
+ {/* Botão para abrir o modal de ajuda */}
+ <div className=" d-flex flex-row-reverse">
+        <button className="btn" onClick={() => setIsHelpUsuarioOpen(true)}>
+          <HelpOutlineIcon />
+        </button>
+      </div>
+      {/* Modal de ajuda */}
+      <HelpUsuario
+        isOpen={isHelpUsuarioOpen}
+        onRequestClose={() => setIsHelpUsuarioOpen(false)}
+      />
       <h1>NOVO USUÁRIO</h1>
 
       <div className="form"> 
