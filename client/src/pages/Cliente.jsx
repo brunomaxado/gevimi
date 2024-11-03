@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FormCliente from "../components/formCliente";
@@ -25,11 +25,13 @@ const CreateCliente = () => {
       console.error("Erro ao adicionar o cliente:", err);
     }
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div 
     style={{
-        transform: 'scale(0.8)', // Diminui a escala para 80% do tamanho original
+        transform: 'scale(1,1)', // Diminui a escala para 80% do tamanho original
         transformOrigin: 'center center'}}>
 
       <h1>NOVO CLIENTE</h1>

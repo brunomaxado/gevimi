@@ -3,7 +3,7 @@
 :root {
   --pretoletra: #000000;
   --pretofundo: #121212;
-  --meiotom: #cfcfcf;
+  --meiotom: #bcbcbc;
   --branco: #fff;
   --fundobranco: #E4E1DD;
   --amarelologo: #EAC452;
@@ -202,22 +202,204 @@ li#pedido a:hover {
   border-radius: 10px;
 }
 
+.col-status {
+  width: 15%; /* Ajuste o valor conforme necessário */
+}
+
+.action-icons {
+
+  gap: 8px; /* Espaçamento horizontal entre os ícones */
+  align-items: center; /* Alinha os ícones verticalmente no centro */
+  text-align: center;
+}
+
+.action-icon {
+  display: inline-flex; /* Garante que o conteúdo interno fique alinhado */
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.action-icon:hover {
+  transform: scale(1.2); /* Efeito de zoom ao passar o mouse */
+}
+.coluna-descricao {
+  max-width: 250px; /* Ajuste conforme necessário */
+  overflow: hidden; /* Evita que o texto transborde */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  white-space: normal; /* Permite que o texto quebre */
+}
+
+.coluna-cliente {
+  width: 15%; /* ou um valor maior que as outras colunas */
+}
+.coluna-center {
+  text-align: center; /* Alinha o texto ao centro */
+
+}
+.coluna-center-finalizado {
+  text-align: center; /* Alinha o texto ao centro */
+  width: 10%;
+}
+.coluna-status {
+  width: 8%; /* Alinha o texto ao centro */
+  text-align: center;
+}
+.coluna-preco{
+  text-align: right; /* Alinha o texto à direita */
+  width: 8%;
+}
+
+.carrinho {
+  width: 15%; /* ou um valor maior que as outras colunas */
+}
+.coluna-data {
+  width: 12%; /* ou um valor maior que as outras colunas */
+}
+
+div.tabela-categoria  {
+  width: 70%;
+  table-layout: fixed; /* Define uma largura fixa para cada coluna */
+  align-items: center;
+  margin: 0 auto; /* Centraliza a tabela */
+}
+
+.filters-container-categoria {
+  padding-left: 16%;
+  display: flex;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+.filters-container-categoria  button.limpar-filtro {
+  margin-left: 1%; /* Ajuste este valor conforme necessário */
+  transform: scale(0.8); 
+  overflow-x: hidden;
+  
+}
+.filters-container-categoria button.adicionar-categoria {
+ /* Ajuste este valor conforme necessário */
+  margin-left: 25%;
+}
+.filters-container-produto button.adicionar-usuario{
+  /* Ajuste este valor conforme necessário */
+   margin-left: 42%;
+ }
+ .filters-container-produto button.adicionar-produto{
+  /* Ajuste este valor conforme necessário */
+   margin-left: 20%;
+ }
+.filters-container-categoria label {
+  display: block; /* Ou use inline-block */
+  text-align: left; /* Garante que o texto esteja alinhado à esquerda */
+  margin-bottom: 0px; /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
+  padding-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+.filters-container-produto {
+  padding-left: 7%;
+  display: flex;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+.filters-container-produto  button.limpar-filtro {
+  margin-left: 1%; /* Ajuste este valor conforme necessário */
+  transform: scale(0.8); 
+  overflow-x: hidden;
+  
+}
+.filters-container-produto  button.adicionar {
+ /* Ajuste este valor conforme necessário */
+  margin-left: 28%;
+  
+}
+
+.filters-container-produto label {
+  display: block; /* Ou use inline-block */
+  text-align: left; /* Garante que o texto esteja alinhado à esquerda */
+  margin-bottom: 0px; /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
+  padding-left: 10px;
+}
+
+
+
+
+
+.filters-container {
+  padding-left: 35px;
+  display: flex;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+.filters-container button.limpar-filtro {
+  margin-left: 1%; /* Ajuste este valor conforme necessário */
+  transform: scale(0.8); 
+  overflow-x: hidden;
+  
+}
+.filters-container button.adicionar {
+ /* Ajuste este valor conforme necessário */
+  margin-left: auto;
+  
+}
+
+.filters-container label {
+  display: block; /* Ou use inline-block */
+  text-align: left; /* Garante que o texto esteja alinhado à esquerda */
+  margin-bottom: 0px; /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
+  padding-left: 10px;
+}
+
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-item label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+table
 table {
   border-collapse: collapse;
   width: 90%;
   height: 70%;
   color: #000;
+
+}
+div.tabela table {
+  width: 100%;
+  table-layout: fixed; /* Define uma largura fixa para cada coluna */
+}
+div.tabela-produto table {
+  width: 88%;
+  table-layout: fixed; /* Define uma largura fixa para cada coluna */
+  align-items: center;
+  margin: 0 auto; /* Centraliza a tabela */
 }
 
+
 div.tabela {
-  width: 90%;
+  width: 100%;
+  transform: scale(0.9); 
   overflow-x: hidden;
+  
+    table-layout: fixed;
 }
 
 th,
 td {
-  padding: 8px;
+  padding: 8px 15px;
   text-align: left;
+  min-width: 100px;
   border-bottom: 1px solid var(--meiotom);
 }
 
@@ -232,6 +414,11 @@ div.tabela {
 }
 
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 .footer {
   background-color: var(--pretofundo);
@@ -490,9 +677,8 @@ div.auth button {
 
 .app {
   margin-left: 50px;
-  padding-top: 20vh;
-  padding-bottom: 20vh;
-  display: flex;
+  padding-top: 15vh;
+
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -547,7 +733,69 @@ div.auth button {
     cursor: pointer;
     border-radius: 10px;
   }
+  button.adicionar{
+    width: 12%;
+    height: 20%;
+    border: none;
+    padding: 12px;
+    background-color: var(--amarelologo);
+    color: var(--pretoletra);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
 
+  }
+  button.adicionar-categoria{
+    width: 15%;
+    height: 10%;
+    border: none;
+    padding: 12px;
+    background-color: var(--amarelologo);
+    color: var(--pretoletra);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+
+  }
+  button.adicionar-produto{
+    width: 15%;
+    height: 10%;
+    border: none;
+    padding: 12px;
+    background-color: var(--amarelologo);
+    color: var(--pretoletra);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+
+  }
+  button.adicionar-usuario{
+    width: 12%;
+    height: 10%;
+    border: none;
+    padding: 12px;
+    background-color: var(--amarelologo);
+    color: var(--pretoletra);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+
+  }
+  button.limpar-filtro{
+    width: 12%;
+    height: 20%;
+    border: none;
+    padding: 12px;
+    background-color: #36363611;
+    color: var(--pretoletra);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+
+  }
+  button.limpar-filtro:hover {
+    background-color: var(--amarelotoque);
+  }
   button.categoriaAdd:hover {
     background-color: var(--amarelotoque);
   }
@@ -899,11 +1147,23 @@ p#erro {
 }
 .form-container {
   margin-top: 50px;
+  transform: scale(0.9); /* Ajuste o valor conforme o necessário */
+  transform-origin: center center; /* Mantém a escala a partir do canto superior esquerdo */
   position: relative;
   max-width: 800px; /* Define uma largura máxima */
   margin: 0 auto; /* Centraliza o formulário na página */
   justify-content: flex-start;
   padding-bottom: 300px;
+}
+.form-container-usuario {
+  margin-top: 50px;
+  transform: scale(0.9); /* Ajuste o valor conforme o necessário */
+  transform-origin: center center; /* Mantém a escala a partir do canto superior esquerdo */
+  position: relative;
+  width:20%; /* Define uma largura máxima */
+  margin: 0 auto; /* Centraliza o formulário na página */
+  justify-content: flex-start;
+  
 }
 
 .form-row {
@@ -911,7 +1171,7 @@ p#erro {
   gap: 50px; /* Espaçamento entre os campos */
   margin-bottom: 1px;
   flex-wrap: wrap; /* Permite que os itens quebrem a linha */
-  min-width: 10px; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
+  min-width: 500; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
 }
 .form-row2 {
   display: flex; 
@@ -934,6 +1194,22 @@ p#erro {
   text-align: left;
 }
 .form-container .form-group input {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius:  6px;
+  padding: 0 15px;
+}
+.form-container-usuario label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+.form-container-usuario .form-group input {
   position: relative;
   height: 50px;
   width: 100%;
@@ -1208,11 +1484,19 @@ textarea {
   float: left; /* Muda de right para left */
   margin-bottom: 10px;
 }
+.filter-box select {
+  height: 34px;
+  border-radius: 20px;
+  padding-left: 20px; /* Aumente o padding se necessário */
+  border-color: #ddd;
+  box-shadow: none;
+  outline: none;
+}
 
 .search-box input {
   height: 34px;
   border-radius: 20px;
-  padding-left: 40px; /* Aumente o padding se necessário */
+  padding-left: 20px; /* Aumente o padding se necessário */
   border-color: #ddd;
   box-shadow: none;
   outline: none;
@@ -1224,13 +1508,10 @@ textarea {
 
 .search-box .search-icon {
   color: #a0a5b1;
-  position: absolute;
   font-size: 19px;
-  top: 27%; /* Muda para centralizar verticalmente */
-  left: 10px;
-  z-index: 1; /* Garante que o ícone fique acima do input */
-  
+ 
 }
+
 
 
 .action-icon {
@@ -1257,7 +1538,16 @@ textarea {
   cursor: not-allowed; /* Indicação de desabilitado */
 }
 
-.status, .tipo-entrega {
+.tipo-entrega {
+  width: 50%;
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+}
+.status{
+  width: 130%;
   padding: 4px 8px;
   border-radius: 12px;
   color: white;
@@ -1292,7 +1582,7 @@ textarea {
 }
 
 .tipo-entrega-retirada {
-  background-color: #4CAF50; /* Verde */
+  background-color: #824caf; /* Verde */
 }
 
 .tipo-entrega-desconhecido {

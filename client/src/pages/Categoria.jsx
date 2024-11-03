@@ -3,6 +3,8 @@ import axios from "axios";
 import '../style.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
+import { Link } from "react-router-dom";
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
@@ -12,11 +14,13 @@ const Categoria = () => {
   const [newCategoria, setNewCategoria] = useState("");
   const [currentCategoria, setCurrentCategoria] = useState({ id: "", nome: "" });
   const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null);
-
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     const fetchAllCategorias = async () => {
@@ -29,7 +33,10 @@ const Categoria = () => {
     };
     fetchAllCategorias();
   }, []);
-
+ 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const handleDelete = async () => {
     try {
       if (categoriaIdToDelete !== null) {
@@ -90,12 +97,6 @@ const Categoria = () => {
   const openDeleteModal = (id) => {
     setCategoriaIdToDelete(id);
     setShowDeleteModal(true);
-    setDeleteErrorMessage(""); // Resetar mensagem de erro ao abrir o modal
-  };
-
-  const closeDeleteModal = () => {
-    setShowDeleteModal(false);
-    setCategoriaIdToDelete(null);
     setDeleteErrorMessage("");
   };
 
@@ -104,108 +105,175 @@ const Categoria = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-    }, 3000);
+    }, 1200);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    // Resete para a página 1 ao fazer uma nova busca
+    setCurrentPage(1);
+};
+
+const filteredCategorias = categoria.filter(c => {
+    return c.nome.toLowerCase().includes(searchTerm.toLowerCase());
+});
+
+// Paginação
+const indexOfLastCategoria = currentPage * itemsPerPage;
+const indexOfFirstCategoria = indexOfLastCategoria - itemsPerPage;
+const currentCategorias = filteredCategorias.slice(indexOfFirstCategoria, indexOfLastCategoria);
+const totalPages = Math.ceil(filteredCategorias.length / itemsPerPage);
+
+// Atualize a lógica de navegação para ir para a página correta ao pesquisar
+const paginateNext = () => {
+    if (currentPage < totalPages) {
+        setCurrentPage(currentPage + 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (currentPage === totalPages && totalPages > 1) {
+        setCurrentPage(totalPages - 1); // Retorna para a página anterior se estiver na última
+    }
+};
+
+const paginatePrev = () => {
+    if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+};
+
   return (
-    <div className="tabela">
-      <h1>Categorias</h1>
-      <button className="categoriaAdd" onClick={() => setShowAddModal(true)}>Nova Categoria</button>
-
-      {showAddModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span
-              className="close-modal"
-              onClick={() => {
-                setShowAddModal(false);
-                setErrorMessage("");
-              }}
-            >
-              &times;
-            </span>
-            <h2>Adicionar Nova Categoria</h2>
+    <div>
+      <h1>Categorias:</h1>
+      <div className="tabela">
+        <div className="filters-container-categoria">
+          <div className="search-box">
+            <label><SearchIcon className="search-icon" /> Pesquisar:</label>
             <input
               type="text"
-              value={newCategoria}
-              onChange={(e) => setNewCategoria(e.target.value)}
-              placeholder=" Nome da Categoria"
+              placeholder="Pesquisar..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
             />
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <br /> <br />
-            <button onClick={handleAdd}>Adicionar</button>
           </div>
+          <button 
+            className="limpar-filtro" 
+            onClick={() => {
+              setSearchTerm("");
+             
+            }}
+          >
+            Limpar Filtros
+          </button>
+          <button className="adicionar-categoria" onClick={() => setShowAddModal(true)}>
+            Nova Categoria
+          </button>
         </div>
-      )}
 
-      {showUpdateModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close-modal" onClick={() => setShowUpdateModal(false)}>&times;</span>
-            <h2>Atualizar Categoria</h2>
-            <input
-              type="text"
-              value={currentCategoria.nome}
-              onChange={(e) => setCurrentCategoria({ ...currentCategoria, nome: e.target.value })}
-              placeholder=" Nome da Categoria"
-            />
-            <br /> <br />
-            <button className="modal-button" onClick={handleUpdate}>Atualizar</button>
+        <div className="tabela-categoria">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th className="coluna-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentCategorias.map((categoria) => (
+                <tr key={categoria.id_categoria}>
+                  <td>{categoria.nome}</td>
+                  <td className="coluna-center">
+                    <div className="action-icons">
+                      <span
+                        className="action-icon delete"
+                        onClick={() => openDeleteModal(categoria.id_categoria)}
+                        title="Deletar"
+                      >
+                        <DeleteIcon />
+                      </span>
+                      <span
+                        className="action-icon edit"
+                        onClick={() => openUpdateModal(categoria)}
+                        title="Editar"
+                      >
+                        <EditIcon />
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="pagination">
+  {currentPage !== 1 && (
+    <button onClick={paginatePrev}>
+      <ion-icon name="caret-back-outline"></ion-icon>
+    </button>
+  )}
+  <span>{currentPage} de {totalPages}</span>
+  {currentPage < totalPages && filteredCategorias.length > 0 && (
+    <button onClick={paginateNext}>
+      <ion-icon name="caret-forward-outline"></ion-icon>
+    </button>
+  )}
+</div>
+
+
+        {showDeleteModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Confirmar Exclusão</h2>
+              <p>Tem certeza que deseja excluir a categoria?</p>
+              <button className="modal-button" onClick={handleDelete}>Sim</button>
+              <button className="modal-button" onClick={() => setShowDeleteModal(false)}>Não</button>
+              {deleteErrorMessage && <p className="error-message">{deleteErrorMessage}</p>}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {showDeleteModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close-modal" onClick={closeDeleteModal}>&times;</span>
-            <h2>Confirmar Exclusão</h2>
-            {deleteErrorMessage ? (
-              <p className="error-message">{deleteErrorMessage}</p>
-            ) : (
-              <p>Tem certeza que deseja excluir esta categoria?</p>
-            )}
-            <button className="modal-button" onClick={handleDelete}>Sim</button>
-            <button className="modal-button" onClick={closeDeleteModal}>Não</button>
+        {showSuccessModal && (
+          <div className="success-modal">
+            <div className="success-modal-content">
+              <h2>{successMessage}</h2>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <span>{successMessage}</span>
+        {showAddModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Adicionar Categoria</h2>
+              <input
+                type="text"
+                value={newCategoria}
+                onChange={(e) => setNewCategoria(e.target.value)}
+                placeholder="Nome da Categoria"
+              />
+              <button className="modal-button" onClick={handleAdd}>Adicionar</button>
+              <button className="modal-button" onClick={() => setShowAddModal(false)}>Cancelar</button>
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <br /><br /><br /><br />
-
-      <table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Nome</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categoria.map((categoria) => (
-            <tr key={categoria.id_categoria}>
-              <td>{categoria.id_categoria}</td>
-              <td>{categoria.nome}</td>
-              <td>
-                <button className="update" onClick={() => openUpdateModal(categoria)}>
-                  <EditIcon />
-                </button>
-                <button className="delete" onClick={() => openDeleteModal(categoria.id_categoria)}>
-                  <DeleteIcon />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        {showUpdateModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Atualizar Categoria</h2>
+              <input
+                type="text"
+                value={currentCategoria.nome}
+                onChange={(e) => setCurrentCategoria({ ...currentCategoria, nome: e.target.value })}
+                placeholder="Nome da Categoria"
+              />
+              <button className="modal-button" onClick={handleUpdate}>Atualizar</button>
+              <button className="modal-button" onClick={() => setShowUpdateModal(false)}>Cancelar</button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

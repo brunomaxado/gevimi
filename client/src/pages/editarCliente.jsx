@@ -23,6 +23,7 @@ const EditarCliente = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Move a página para o topo
     fetchCliente();
   }, [clienteId]);
 
@@ -47,7 +48,7 @@ const EditarCliente = () => {
 
   return (
     <div>
-      <h1> EDITAR CLIENTE</h1>
+      <h1>EDITAR CLIENTE</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {/* Modal de sucesso */}
@@ -60,8 +61,6 @@ const EditarCliente = () => {
       )}
 
       <div>
-        
-
         {/* Renderiza o formulário somente se os dados do cliente já foram carregados */}
         {cliente ? (
           <FormCliente onSubmit={handleSubmit} initialData={cliente} />

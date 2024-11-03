@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
+import VisibilityIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
 
 const ReadUsuario = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -12,7 +15,7 @@ const ReadUsuario = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSorted, setIsSorted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const usuariosPerPage = 5;
+  const usuariosPerPage = 20;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +62,12 @@ const ReadUsuario = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reseta a página para 1 ao fazer uma nova pesquisa
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleSort = () => {
     const sortedUsuarios = [...usuarios].sort((a, b) => {
@@ -71,95 +79,135 @@ const ReadUsuario = () => {
     setIsSorted(!isSorted);
   };
 
+  // Filtra os usuários com base no termo de pesquisa
   const filteredUsuarios = usuarios.filter((usuario) =>
     usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     usuario.login.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Aplica a paginação na lista filtrada
   const indexOfLastUsuario = currentPage * usuariosPerPage;
   const indexOfFirstUsuario = indexOfLastUsuario - usuariosPerPage;
   const currentUsuarios = filteredUsuarios.slice(indexOfFirstUsuario, indexOfLastUsuario);
 
+  const totalPages = Math.ceil(filteredUsuarios.length / usuariosPerPage);
+
   const paginateNext = () => {
-    if (currentPage < Math.ceil(filteredUsuarios.length / usuariosPerPage)) {
+    if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const paginatePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   return (
-    <div className="tabela">
-      <h1>Usuários</h1>
-      <p>
-        <button onClick={handleSort}>Ordenar {isSorted ? "A-Z" : "Z-A"}</button>
-      </p>
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder="Procurar por nome, login..."
-        title="Digite um nome ou login"
-      />
-      <table id="tabelaUsuario">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Login</th>
-            <th>Administrador</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentUsuarios.map((usuario) => (
-            <tr key={usuario.id_usuario}>
-              <td>{usuario.id_usuario}</td>
-              <td>{usuario.nome}</td>
-              <td>{usuario.login}</td>
-              <td>{usuario.administrador === 1 ? "Sim" : "Não"}</td>
-              <td>
-                <button className="update" onClick={() => handleUpdateClick(usuario.id_usuario)}><ion-icon name="pencil-outline"></ion-icon></button>
-                <button className="delete" onClick={() => handleDeleteClick(usuario.id_usuario)}><ion-icon name="trash-outline"></ion-icon></button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <h1>Usuários</h1> 
+      <div className="tabela">
+        <div className="filters-container-produto">
+          <div className="search-box">
+            <label>
+              <SearchIcon className="search-icon" />  Pesquisar:
+            </label>
+            <input
+              type="text"
+              placeholder="Pesquisar..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
+          </div>
+          <button 
+              className="limpar-filtro" 
+              onClick={() => {
+                setSearchTerm("");
+                setCurrentPage(1); // Reseta a página para 1 ao limpar
+              }}
+          >
+            Limpar Filtros
+          </button>
+          <button className="adicionar-usuario" onClick={() => navigate('/register')}>
+            Novo Usuário
+          </button>
+        </div>
+        <div className="tabela-produto">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Login</th>
+                <th className="coluna-center">Administrador</th>
+                <th className="coluna-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentUsuarios.map((usuario) => (
+                <tr key={usuario.id_usuario}>
+                  <td>{usuario.nome}</td>
+                  <td>{usuario.login}</td>
+                  <td className="coluna-center">{usuario.is_administrador ? 'Sim' : 'Não'}</td>
+                  <td className="coluna-center">
+                    <div className="action-icons">
+                      <span
+                        className="action-icon delete"
+                        onClick={() => handleDeleteClick(usuario.id_usuario)}
+                        title="Deletar"
+                      >
+                        <DeleteIcon />
+                      </span>
+                      <span
+                        className="action-icon visualizar"
+                        onClick={() => handleUpdateClick(usuario.id_usuario)}
+                        title="Editar"
+                      >
+                        <VisibilityIcon />
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="pagination">
+          {currentPage !== 1 && (
+            <button onClick={paginatePrev}>
+              <ion-icon name="caret-back-outline"></ion-icon>
+            </button>
+          )}
+          <span>{currentPage} de {totalPages}</span>
+          {currentPage !== totalPages && (
+            <button onClick={paginateNext}>
+              <ion-icon name="caret-forward-outline"></ion-icon>
+            </button>
+          )}
+        </div>
 
-      {/* Paginação */}
-      <div className="pagination">
-        <button onClick={paginatePrev} disabled={currentPage === 1}>
-        <ion-icon name="caret-back-outline"></ion-icon>
-        </button>
-        <span>Página {currentPage} de {Math.ceil(filteredUsuarios.length / usuariosPerPage)}</span>
-        <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredUsuarios.length / usuariosPerPage)}>
-        <ion-icon name="caret-forward-outline"></ion-icon>
-        </button>
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Confirmar Exclusão</h2>
+              <p>Tem certeza que deseja excluir o usuário?</p>
+              <button className="modal-button" onClick={handleDelete}>Sim</button>
+              <button className="modal-button" onClick={handleCancel}>Não</button>
+            </div>
+          </div>
+        )}
+
+        {showSuccessModal && (
+          <div className="success-modal">
+            <div className="success-modal-content">
+              <h2>{successMessage}</h2>
+            </div>
+          </div>
+        )}
       </div>
-
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir o usuário?</p>
-            <button className="modal-button" onClick={handleDelete}>Sim</button>
-            <button className="modal-button" onClick={handleCancel}>Não</button>
-          </div>
-        </div>
-      )}
-
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <h2>{successMessage}</h2>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

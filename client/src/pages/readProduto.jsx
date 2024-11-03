@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import '../style.css'; // Certifique-se de importar o arquivo CSS
-import EditIcon from '@mui/icons-material/Edit';
+import '../style.css';
+import VisibilityIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
 
 const ReadProduto = () => {
   const [produto, setProduto] = useState([]);
@@ -16,8 +18,8 @@ const ReadProduto = () => {
   const [sortColumn, setSortColumn] = useState("nome");
   const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Número de itens exibidos por página
-  const [selectedCategoria, setSelectedCategoria] = useState(""); // Estado para categoria selecionada
+  const itemsPerPage = 20; 
+  const [selectedCategoria, setSelectedCategoria] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +44,9 @@ const ReadProduto = () => {
     fetchAllProduto();
     fetchCategorias();
   }, []);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const handleDeleteClick = (id) => {
     setSelectedProdutoId(id);
     setShowModal(true);
@@ -80,7 +84,7 @@ const ReadProduto = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Resetar a página para 1 após a pesquisa
+    setCurrentPage(1); 
   };
 
   const handleSort = (column) => {
@@ -91,7 +95,7 @@ const ReadProduto = () => {
 
   const handleCategoriaChange = (e) => {
     setSelectedCategoria(e.target.value);
-    setCurrentPage(1); // Resetar a página para 1 após mudar a categoria
+    setCurrentPage(1); 
   };
 
   const filteredProduto = produto.filter(produto => {
@@ -118,15 +122,19 @@ const ReadProduto = () => {
 
   const sortedProduto = sortProduto(filteredProduto);
 
-  // Paginação: calcula os livros para a página atual
+  // Paginação: calcula os produtos para a página atual
   const indexOfLastProduto = currentPage * itemsPerPage;
   const indexOfFirstProduto = indexOfLastProduto - itemsPerPage;
   const currentProduto = sortedProduto.slice(indexOfFirstProduto, indexOfLastProduto);
 
+  // Total de páginas
+  const totalPages = Math.ceil(filteredProduto.length / itemsPerPage);
+
   // Muda para a próxima página
   const paginateNext = () => {
-    if (currentPage < Math.ceil(filteredProduto.length / itemsPerPage)) {
+    if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -134,105 +142,134 @@ const ReadProduto = () => {
   const paginatePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   return (
-    <div className="tabela">
-      <h1>Listar produtos:</h1>
-      
-      <input
-        type="text"
-        placeholder="Pesquisar..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="search-input"
-      />
-
-      <select
-        value={selectedCategoria}
-        onChange={handleCategoriaChange}
-        className="categoria-select"
-      >
-        <option value="">Todas as Categorias</option>
-        {categorias.map(categoria => (
-          <option key={categoria.id_categoria} value={categoria.id_categoria}>
-            {categoria.nome}
-          </option>
-        ))}
-      </select>
-
-      <div className="sort-buttons">
-        <button onClick={() => handleSort("nome")}>
-          Ordenar por Nome {sortColumn === "nome"}
-        </button>
-        <button onClick={() => handleSort("preco_unitario")}>
-          Ordenar por Preço {sortColumn === "preco_unitario" }
-        </button>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Preço Unitário</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentProduto.map((produto) => (
-            <tr key={produto.id_produto}>
-              <td>{produto.nome}</td>
-              <td>{produto.descricao}</td>
-              <td>{getCategoriaNome(produto.fk_id_categoria)}</td>
-              <td>R${produto.preco_unitario}</td>
-              <td>
-                <button className="update">
-                  <Link to={`/gerenciarproduto/${produto.id_produto}`}>
-                  <EditIcon />
-                  </Link>
-                </button>
-                <button className="delete" onClick={() => handleDeleteClick(produto.id_produto)}>
-                  <DeleteIcon />
-                  </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Paginação */}
-      <div className="pagination">
-        <button onClick={paginatePrev} disabled={currentPage === 1}>
-        <ion-icon name="caret-back-outline"></ion-icon>
-        </button>
-        <span>Página {currentPage} de {Math.ceil(filteredProduto.length / itemsPerPage)}</span>
-        <button onClick={paginateNext} disabled={currentPage === Math.ceil(filteredProduto.length / itemsPerPage)}>
-        <ion-icon name="caret-forward-outline"></ion-icon>
-        </button>
-      </div>
-
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir o item?</p>
-            <button className="modal-button" onClick={handleDelete}>Sim</button>
-            <button className="modal-button" onClick={handleCancel}>Não</button>
+    <div>
+      <h1>Produtos:</h1>
+      <div className="tabela">
+        <div className="filters-container-produto">
+          <div className="search-box">
+            <label><SearchIcon className="search-icon" />  Pesquisar:</label>
+            <input
+              type="text"
+              placeholder="Pesquisar..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
           </div>
-        </div>
-      )}
 
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <h2>{successMessage}</h2>
+          <div className="filter-box">
+            <label>Categoria:</label>
+            <select
+              value={selectedCategoria}
+              onChange={handleCategoriaChange}
+            >
+              <option value="">Todas as Categorias</option>
+              {categorias.map(categoria => (
+                <option key={categoria.id_categoria} value={categoria.id_categoria}>
+                  {categoria.nome}
+                </option>
+              ))}
+            </select>
           </div>
+          <button 
+            className="limpar-filtro" 
+            onClick={() => {
+              setSearchTerm("");
+              setSelectedCategoria("");
+            }}
+          >
+            Limpar Filtros
+          </button>
+          <button className="adicionar-produto" onClick={() => navigate('/produto')}>
+            Novo Produto
+          </button>
         </div>
-      )}
-    </div>
+
+        <div className="tabela-produto">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th className="coluna-descricao">Descrição</th>
+                <th>Categoria</th>
+                <th className="coluna-preco">Preço Unitário</th>
+                <th className="coluna-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentProduto.map((produto) => (
+                <tr key={produto.id_produto}>
+                  <td>{produto.nome}</td>
+                  <td className="coluna-descricao">{produto.descricao}</td>
+                  <td>{getCategoriaNome(produto.fk_id_categoria)}</td>
+                  <td className="coluna-preco">R${produto.preco_unitario}</td>
+                  <td className="coluna-center">
+                    <div className="action-icons">
+                      <span
+                        className="action-icon delete"
+                        onClick={() => handleDeleteClick(produto.id_produto)}
+                        title="Cancelar"
+                      >
+                        <DeleteIcon />
+                      </span>
+                      <Link
+                        to={`/gerenciarProduto/${produto.id_produto}`}
+                        title="Visualizar"
+                        className="action-icon visualizar"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <VisibilityIcon />
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="pagination">
+          {/* Botão "Anterior" - Renderizado apenas se não for a primeira página */}
+          {currentPage !== 1 && (
+            <button onClick={paginatePrev}>
+              <ion-icon name="caret-back-outline"></ion-icon>
+            </button>
+          )}
+
+          <span>{currentPage} de {totalPages}</span>
+
+          {/* Botão "Próximo" - Renderizado apenas se não for a última página */}
+          {currentPage !== totalPages && (
+            <button onClick={paginateNext}>
+              <ion-icon name="caret-forward-outline"></ion-icon>
+            </button>
+          )}
+        </div>
+
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Confirmar Exclusão</h2>
+              <p>Tem certeza que deseja excluir o item?</p>
+              <button className="modal-button" onClick={handleDelete}>Sim</button>
+              <button className="modal-button" onClick={handleCancel}>Não</button>
+            </div>
+          </div>
+        )}
+
+        {showSuccessModal && (
+          <div className="success-modal">
+            <div className="success-modal-content">
+              <h2>{successMessage}</h2>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>   
   );
 };
 

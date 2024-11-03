@@ -99,12 +99,14 @@ const ReadCliente = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="tabela">
       <h1>Clientes</h1>
       <p>
-        <button onClick={handleSort}>Ordenar {isSorted ? "A-Z" : "Z-A"}</button>
+      <button onClick={() => navigate('/cliente')}>Novo Cliente</button>
       </p>
       <input
         type="text"

@@ -34,8 +34,7 @@ const Register = () => {
   return (
     <div className="auth, login">
       <h1>NOVO USUÁRIO</h1>
-      <br /> 
-      <br /> 
+
       <div className="form"> 
       <FormUsuario
         handleChange={handleChange}

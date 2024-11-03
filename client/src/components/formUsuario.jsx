@@ -77,7 +77,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, err }) => {
         </div>
       </div>
 
-      <button type="submit">Registrar</button>
+      <button type="submit">SALVAR</button>
     </form>
   );
 };

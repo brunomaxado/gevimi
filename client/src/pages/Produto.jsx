@@ -11,7 +11,9 @@ const Produto = () => {
     preco_unitario: "", // Corrigido para string para capturar valores numéricos
     fk_id_categoria: null,
   });
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [categorias, setCategorias] = useState([]);

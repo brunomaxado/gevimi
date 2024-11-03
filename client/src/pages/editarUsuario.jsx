@@ -36,7 +36,9 @@ const EditarUsuario = () => {
     const { name, value } = e.target;
     setUsuario((prev) => ({ ...prev, [name]: value }));
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,8 +87,9 @@ const EditarUsuario = () => {
   };
 
   return (
-    <div className="form-container">
-      <h1>EDITAR USUÁRIO</h1>
+    <div>  <h1>EDITAR USUÁRIO</h1>
+    <div className="form-container-usuario">
+     
       <form onSubmit={handleSubmit}>
         {error && <p className="error-message">{error}</p>}
 
@@ -168,6 +171,7 @@ const EditarUsuario = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

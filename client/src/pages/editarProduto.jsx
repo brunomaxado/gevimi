@@ -29,6 +29,10 @@ const GerenciarProduto = () => {
       setError("Produto não encontrado.");
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0); // Move a página para o topo
+    fetchProduto();
+  }, [produtoId]);
 
   useEffect(() => {
     fetchProduto();

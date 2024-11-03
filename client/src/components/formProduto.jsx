@@ -80,7 +80,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
       </div>
 
       <button type="submit">
-        {initialData.nome ? "ATUALIZAR" : "ADICIONAR"}
+        {initialData.nome ? "ATUALIZAR" : "SALVAR"}
       </button>
     </form>
   );
