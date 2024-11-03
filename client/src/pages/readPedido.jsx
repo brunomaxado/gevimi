@@ -134,7 +134,7 @@ const ReadPedido = () => {
       case 3:
         return <span className="tipo-entrega tipo-entrega-retirada">Retirada</span>;
         case 4:
-          return <span className="tipo-entrega tipo-comum">Comum</span>;
+          return <span className="tipo-entrega tipo-entrega-comum">Comum</span>;
       default:
         return <span className="tipo-entrega tipo-entrega-desconhecido">Desconhecido</span>;
     }

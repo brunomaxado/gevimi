@@ -1703,6 +1703,9 @@ textarea {
 .tipo-entrega-retirada {
   background-color: #824caf; /* Verde */
 }
+.tipo-entrega-comum {
+  background-color: #919191; /* Verde */
+}
 
 .tipo-entrega-desconhecido {
   background-color: #9E9E9E; /* Cinza */

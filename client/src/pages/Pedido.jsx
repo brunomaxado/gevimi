@@ -117,8 +117,8 @@ const handleClick = async (e) => {
   }
 };
   
-
-const handleAdicionarItem = () => {
+const  handleAdicionarItem = async (e) => {
+  e.preventDefault();
   const produtoSelecionado = produto.find(
     (p) => p.id_produto === parseInt(novoItem.fk_id_produto)
   );
@@ -407,7 +407,7 @@ const handleAdicionarItem = () => {
 
 
       </form>
-      <button type="submit" onClick={handleClick}>Enviar Pedido</button>
+      <button onClick={handleClick}>Enviar Pedido</button>
     </div>
   );
   
