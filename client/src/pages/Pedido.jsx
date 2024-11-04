@@ -243,17 +243,17 @@ const  handleAdicionarItem = async (e) => {
   console.log(precoTotal);
   return (
     <div>
-      {/* Botão para abrir o modal de ajuda
+      Botão para abrir o modal de ajuda
       <div className="d-flex flex-row-reverse">
         <button className="btn" onClick={() => setIsHelpPedidoOpen(true)}>
           <HelpOutlineIcon />
         </button>
       </div>
-      {/* Modal de ajuda 
+     
       <HelpPedido
         isOpen={isHelpPedidoOpen}
         onRequestClose={() => setIsHelpPedidoOpen(false)}
-      />  */}
+      />  
       <h1>NOVO PEDIDO</h1>
       
       <form className="form-container-pedido">
