@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../modal.css'; // Importa o arquivo de estilo para o modal
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Tooltip from './tooltip';
 
 const ModalHelpCliente = ({ isOpen, onRequestClose }) => {
   if (!isOpen) return null;
@@ -58,10 +59,17 @@ const CreateCliente = () => {
     <div>
       {/* Botão para abrir o modal de ajuda */}
       <div>
-        <span onClick={openModal} style={{ cursor: 'pointer', marginLeft: '10px' }}>
+      <Tooltip text="Clique para ajuda">
+        <button
+          onClick={openModal}
+          className="help-button"
+          aria-label="Ajuda" // Para acessibilidade
+        >
           <HelpOutlineIcon />
-        </span>
+        </button>
+        </Tooltip>
       </div>
+
 
       {/* Modal de ajuda */}
       <ModalHelpCliente isOpen={modalIsOpen} onRequestClose={closeModal} />
