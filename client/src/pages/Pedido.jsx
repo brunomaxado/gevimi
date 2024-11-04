@@ -241,7 +241,7 @@ const  handleAdicionarItem = async (e) => {
                 handleChange(e);
               }}
             >
-              <option value="">Selecione um tipo de entrega</option>
+              <option value="" disabled selected>Selecione um tipo de entrega</option>
               <option value="1">1. Entrega</option>
               <option value="2">2. Entrega Ifood</option>
               <option value="3">3. Retirada</option>
@@ -283,19 +283,21 @@ const  handleAdicionarItem = async (e) => {
             
           
             
-            <select
-              name="fk_id_cliente"
-              value={pedido.fk_id_cliente || ""}
-              onChange={handleChange}
-            >
-              <option value="">Selecione o cliente</option>
-              {cliente.map((cliente) => (
-                <option key={cliente.id_cliente} value={cliente.id_cliente}>
-                  {cliente.nome}
-                </option>
-              ))}
-              
-            </select>
+              <select
+  name="fk_id_cliente"
+  value={pedido.fk_id_cliente || ""}
+  onChange={handleChange}
+  required
+>
+  <option value="" disabled>Selecione o cliente</option>
+  {cliente.map((cliente) => (
+    <option key={cliente.id_cliente} value={cliente.id_cliente}>
+      {cliente.nome}
+    </option>
+  ))}
+</select>
+
+
          
           </div>
         
@@ -414,3 +416,11 @@ const  handleAdicionarItem = async (e) => {
 };
 
 export default Pedido;
+
+
+
+
+
+
+
+

@@ -350,12 +350,12 @@ useEffect(() => {
               <td>
   {pedido.itensPedido.map((item) => (
     <div key={item.id_item_pedido}>
-      {getProdutoNome(item.fk_id_produto)} x{item.quantidade};
+      {getProdutoNome(item.fk_id_produto)} - x{item.quantidade};
     </div>
   ))}
   {pedido.frete>0 && (
     <div>
-      Frete
+      Frete - x1;
     </div>
   )}
 </td>

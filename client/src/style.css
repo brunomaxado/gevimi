@@ -762,6 +762,7 @@ div.auth button {
 
   .order-items-header {
     font-weight: bold;
+    margin-top: 4%;
     margin-bottom: 1rem; /* Margem inferior para espaçamento */
   }
   
@@ -1366,6 +1367,18 @@ textarea {
   border-radius:  6px;
   padding: 0 15px;
 }
+select {
+  color: #000; /* Cor preta para todas as opções */
+}
+select:invalid {
+  color: #919191; /* Cor cinza claro */
+  border: 1px solid #000000; /* Borda sempre presente */
+}
+
+select:valid {
+  color: #000; /* Cor preta */
+}
+
 .form-container .form-group textarea {
   position: relative;
   height: 50px; /* Essa altura pode ser ajustada para textarea, se necessário */
@@ -1411,7 +1424,7 @@ textarea {
 
   background-color: #f0f8ff;
   color: #000;
-
+  
   border: 1px solid var(--pretofundo);
 }
 
