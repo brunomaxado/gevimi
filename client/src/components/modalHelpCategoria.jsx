@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 const modalHelpCategoria = ({ isOpen, onRequestClose }) => {
   return (
     <Modal show={isOpen} onHide={onRequestClose} centered>
