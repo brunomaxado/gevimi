@@ -317,8 +317,8 @@ useEffect(() => {
     </button>
 </div>
 
-      
-{/*
+      {/*}
+
       <div className="sort-buttons">
         <button onClick={() => sortData("cliente")}>Ordenar por Cliente</button>
         <button onClick={() => sortData("data_para_entregar")}>Ordenar por Data de Entrega</button>

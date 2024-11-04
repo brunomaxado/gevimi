@@ -6,17 +6,15 @@ import { useNavigate } from "react-router-dom";
 import HelpPedido from "../components/modalHelpPedido";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import More from '@mui/icons-material/Add';
-const calcularPrecoTotal = (itens) => {
-  return itens.reduce((total, item) => {
-    return total + item.preco_unitario * item.quantidade;
-  }, 0);
-};
+
+
 
 const Pedido = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const [produto, setProduto] = useState([]);
   const [cliente, setCliente] = useState([]);
   const [precoTotal, setPrecoTotal] = useState(0);
+  const [precoTotalFrete, setPrecoTotalFrete] = useState(0);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [pedido, setPedido] = useState({
@@ -24,7 +22,7 @@ const Pedido = () => {
     forma_pagamento: "",
     observacao: "",
     data_para_entregar: "",
-    frete: 0,
+    frete: null,
     fk_id_usuario: currentUser?.id_usuario,
     fk_id_cliente: null,
   });
@@ -43,7 +41,43 @@ const Pedido = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isHelpPedidoOpen, setIsHelpPedidoOpen] = useState(false); // Estado para o modal de ajuda
 
-  
+  const calcularPrecoTotal = (itens) => {
+    return itens.reduce((total, item) => {
+      return total + (item.preco_unitario * item.quantidade) ;
+    }, 0);
+  };
+  const calcularPrecoTotalComFrete = (itens, frete) => {
+    const totalItens = itens.reduce((total, item) => {
+        return total + (item.preco_unitario * item.quantidade);
+    }, 0);
+    
+    // Ensure frete is treated as a number, using parseFloat or Number
+    const freteNumerico = parseFloat(frete) || 0; // Use 0 if frete is not a valid number
+    return totalItens + freteNumerico; // Add the numeric freight cost
+};
+
+// Assuming pedido is available in your component
+useEffect(() => {
+    if (pedido) { // Ensure pedido is defined before accessing frete
+        setPrecoTotalFrete(calcularPrecoTotalComFrete(itensPedido, pedido.frete));
+    }
+}, [itensPedido, pedido]); // Added pedido as a dependency
+
+
+  useEffect(() => {
+    setPrecoTotal(calcularPrecoTotal(itensPedido));
+  }, [itensPedido]); // Dependência: quando itensPedido mudar, recalcula o preço total
+
+
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     const fetchProduto = async () => {
       try {
@@ -72,10 +106,6 @@ const Pedido = () => {
     const { name, value } = e.target;
     setPedido((prev) => ({ ...prev, [name]: value }));
   };
-
-  useEffect(() => {
-    setPrecoTotal(calcularPrecoTotal(itensPedido));
-  }, [itensPedido]); // Dependência: quando itensPedido mudar, recalcula o preço total
 
   const handleItemChange = (e) => {
     setNovoItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -256,7 +286,7 @@ const  handleAdicionarItem = async (e) => {
               <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
               <input
                 type="datetime-local"
-                placeholder="Data da Entrega"
+                
                 name="data_para_entregar"
                 value={pedido.data_para_entregar}
                 onChange={handleChange}
@@ -362,42 +392,42 @@ const  handleAdicionarItem = async (e) => {
 
 {/* Itens do Pedido */}
 <h2 className="order-items-header">Itens do Pedido</h2>
-<ul className="order-items-list">
-  {itensPedido.map((item, index) => (
-    <li key={index} className="order-item">
-      <span className="order-item-name">
-        {item.nome} - R${item.preco_unitario}
-      </span>
-      
-      <div className="order-item-controls">
-        <input
-          type="number"
-          className="order-item-quantity"
-          value={item.quantidade}
-          min="1"
-          onChange={(e) => {
-            const updatedItens = [...itensPedido];
-            updatedItens[index].quantidade = e.target.value;
-            setItensPedido(updatedItens);
-          }}
-        />
-        <p
-          className="order-item-remove"
-          onClick={() => handleRemoverItem(index)}
-        >
-          x
-        </p>
-      </div>
-    </li>
-  ))}
-</ul>
+{itensPedido.length === 0 ? (
+  <p>Selecione um produto para inserir.</p>
+) : (
+  <ul className="order-items-list">
+    {itensPedido.map((item, index) => (
+      <li key={index} className="order-item">
+        <span className="order-item-name">
+          {item.nome} - R${item.preco_unitario * item.quantidade}
+        </span>
+        
+        <div className="order-item-controls">
+          <input
+            type="number"
+            className="order-item-quantity"
+            value={item.quantidade}
+            min="1"
+            onChange={(e) => {
+              const updatedItens = [...itensPedido];
+              updatedItens[index].quantidade = e.target.value;
+              setItensPedido(updatedItens);
+            }}
+          />
+          <p
+            className="order-item-remove"
+            onClick={() => handleRemoverItem(index)}
+          >
+            x
+          </p>
+        </div>
+      </li>
+    ))}
+  </ul>
+)}
 
 
-{/* Preço Total */}
-<div className="d-flex justify-content-between mt-4">
-  <h5 className="fw-bold">Preço Total:</h5>
-  <h5>R${precoTotal}</h5>
-</div>
+
 
 
 
@@ -409,7 +439,23 @@ const  handleAdicionarItem = async (e) => {
 
 
       </form>
-      <button onClick={handleClick}>Enviar Pedido</button>
+      <div class="pricing-container">
+  <div class="pricing-row">
+    <h5 class="price">Preço Frete:</h5>
+    <h5 class="price">R${pedido.frete}</h5>
+  </div>
+  <div class="pricing-row">
+    <h5 class="price">Preço Parcial:</h5>
+    <h5 class="price">R${precoTotal}</h5>
+  </div>
+  <div class="pricing-row total-pricing-row">
+    <h5 class="label price-strong total-price">Preço Total:</h5>
+    <h5 class="label price-strong total-price">R${precoTotalFrete}</h5> 
+  </div>
+</div>
+
+
+      <button class="enviar-pedido" onClick={handleClick}>Salvar</button>
     </div>
   );
   

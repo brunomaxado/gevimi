@@ -36,9 +36,11 @@ const EditarUsuario = () => {
     const { name, value } = e.target;
     setUsuario((prev) => ({ ...prev, [name]: value }));
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -80,98 +82,100 @@ const EditarUsuario = () => {
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
-    setTimeout(() => {
-      setShowSuccessModal(false);
-      navigate("/readUsuario");
-    }, 1500);
+  };
+
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+    setSuccessMessage(""); // Limpa a mensagem ao fechar o modal
   };
 
   return (
-    <div>  <h1>EDITAR USUÁRIO</h1>
-    <div className="form-container-usuario">
-     
-      <form onSubmit={handleSubmit}>
-        {error && <p className="error-message">{error}</p>}
+    <div>
+      <h1>EDITAR USUÁRIO</h1>
+      <div className="form-container-usuario">
+        <form onSubmit={handleSubmit}>
+          {error && <p className="error-message">{error}</p>}
 
-        <div className="form-group">
-          <label>Nome:</label>
-          <input
-            type="text"
-            name="nome"
-            value={usuario.nome}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Login:</label>
-          <input
-            type="text"
-            name="login"
-            value={usuario.login}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Administrador:</label>
-          <div className="radio-group">
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="administrador"
-                value="1"
-                checked={usuario.administrador === "1"}
-                onChange={handleChange}
-              />
-              Sim
-            </label>
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="administrador"
-                value="0"
-                checked={usuario.administrador === "0"}
-                onChange={handleChange}
-              />
-              Não
-            </label>
-          </div>
-        </div>
-
-        <button type="submit">Salvar Alterações</button>
-        <button type="button" onClick={() => setShowPasswordModal(true)}>
-          Nova Senha
-        </button>
-      </form>
-
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <span>{successMessage}</span>
-          </div>
-        </div>
-      )}
-
-      {showPasswordModal && (
-        <div className="password-modal">
-          <div className="password-modal-content">
-            <h2>Atualizar Senha</h2>
+          <div className="form-group">
+            <label>Nome:</label>
             <input
-              type="password"
-              placeholder="Nova Senha"
-              value={novaSenha}
-              onChange={(e) => setNovaSenha(e.target.value)}
+              type="text"
+              name="nome"
+              value={usuario.nome}
+              onChange={handleChange}
               required
             />
-            <button onClick={handlePasswordChange}>Atualizar Senha</button>
-            <button onClick={() => setShowPasswordModal(false)}>Cancelar</button>
           </div>
-        </div>
-      )}
-    </div>
+
+          <div className="form-group">
+            <label>Login:</label>
+            <input
+              type="text"
+              name="login"
+              value={usuario.login}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Administrador:</label>
+            <div className="radio-group">
+              <label className="radio-option">
+                <input
+                  type="radio"
+                  name="administrador"
+                  value="1"
+                  checked={usuario.administrador === "1"}
+                  onChange={handleChange}
+                />
+                Sim
+              </label>
+              <label className="radio-option">
+                <input
+                  type="radio"
+                  name="administrador"
+                  value="0"
+                  checked={usuario.administrador === "0"}
+                  onChange={handleChange}
+                />
+                Não
+              </label>
+            </div>
+          </div>
+
+          <button type="submit">Salvar Alterações</button>
+          <button type="button" onClick={() => setShowPasswordModal(true)}>
+            Nova Senha
+          </button>
+        </form>
+
+        {showSuccessModal && (
+          <div className="success-modal">
+            <div className="success-modal-content">
+              <span>{successMessage}</span>
+              <button onClick={closeSuccessModal}>Fechar</button>
+            </div>
+          </div>
+        )}
+
+        {showPasswordModal && (
+          <div className="password-modal">
+            <div className="password-modal-content">
+              <h2>Atualizar Senha</h2>
+              <input
+                type="password"
+                placeholder="Nova Senha"
+                value={novaSenha}
+                onChange={(e) => setNovaSenha(e.target.value)}
+                required
+              />
+              <button onClick={handlePasswordChange}>Atualizar Senha</button>
+              <button onClick={() => setShowPasswordModal(false)}>Cancelar</button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

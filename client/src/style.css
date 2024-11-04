@@ -288,6 +288,19 @@ div.tabela-categoria  {
   overflow-x: hidden;
   
 }
+.enviar-pedido{
+  width: 8%;
+  height: 10%;
+  border: none;
+  padding: 12px;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-bottom: 2%;
+
+}
 .filters-container-categoria button.adicionar-categoria {
  /* Ajuste este valor conforme necessário */
   margin-left: 25%;
@@ -521,28 +534,79 @@ img {
 .novoCLiente {
   size-adjust: inherit;
 }
-
+body.modal-open {
+  overflow: hidden; /* Impede o scroll da página */
+}
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  align-items: center; /* Centraliza verticalmente o conteúdo */
+  justify-content: center; /* Centraliza horizontalmente o conteúdo */
+  z-index: 1000; /* Garante que o modal esteja acima do conteúdo */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com opacidade de 50% */
+  position: fixed; /* Fixa o modal na tela, não na página */
+  top: 0; /* Define o início da posição para o topo */
+  left: 0; /* Define o início da posição para a esquerda */
+  width: 100%; /* Cobre toda a largura da tela */
+  height: 100%; /* Cobre toda a altura da tela */
 }
 
 .modal-content {
-  position: relative;
-  background-color: var(--fundobranco);
+  background-color: var(--fundobranco); /* Cor de fundo do conteúdo do modal */
   padding: 50px;
   border-radius: 5px;
-  box-shadow: 0 2px 10px var(--pretofundo);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  max-width: 90%; /* Define uma largura máxima */
+  width: 50%; /* Define uma largura padrão */
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+
+  display: flex; /* Ativa o layout flex */
+  flex-direction: column; /* Organiza os itens em coluna */
+  align-items: center; /* Alinha os itens horizontalmente ao centro */
+  justify-content: center; /* Alinha os itens verticalmente ao centro (opcional, se houver espaço) */
 }
 
+
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Modal Body */
+.modal-body {padding: 2px 16px;}
+
+/* Modal Footer */
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 40%;
+  height: 30%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+ 
+}
+.-modal-open .fixed,
+.-modal-open .content {
+  overflow-y:scroll;
+}
+/* Add Animation */
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
 
 .close-modal {
   background-color: var(--vermelhointenso);
@@ -556,16 +620,21 @@ img {
   right: 10px;
 }
 
-
+.modal-div {
+  display: flex; /* Altera para flex para permitir layout flexível */
+  justify-content: center; /* Centraliza os botões horizontalmente, opcional */
+  flex-wrap: wrap; /* Permite que os botões se ajustem em várias linhas, se necessário */
+}
 
 .modal-button {
-  margin: 10px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--amarelologo);
-  color: var(--pretoletra);
-  cursor: pointer;
+  margin: 10px; /* Espaço entre os botões */
+  padding: 10px; /* Espaço interno do botão */
+  border: none; /* Remove borda padrão */
+  border-radius: 5px; /* Arredonda os cantos */
+  background-color: var(--amarelologo); /* Cor de fundo do botão */
+  color: var(--pretoletra); /* Cor do texto do botão */
+  cursor: pointer; /* Muda o cursor ao passar o mouse */
+  width: 60%; /* Largura do botão */
 }
 
 .nav-item {
@@ -925,6 +994,7 @@ div.auth button {
   width: 300px;
   text-align: center;
   z-index: 1000;
+  
 }
 
 .success-modal-content {
@@ -1340,6 +1410,24 @@ button.adicionar-produto-pedido {
   border-radius:  6px;
   padding: 0 15px;
 }
+input[type="datetime-local"] {
+  background-color: white; /* Default background */
+  border: 1px solid #ccc; /* Light border color */
+  padding: 0.5rem; /* Add some padding for better appearance */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Apply light gray background when the input is empty and placeholder is shown */
+input[type="datetime-local"]:placeholder-shown {
+  background-color: lightgray; /* Light gray when there's no selection */
+}
+input[type="datetime-local"] {
+  color: #a00303; /* Cor cinza claro */
+}
+
+input[type="datetime-local"]:focus {
+  color: #000; /* Muda a cor para preto ao focar */
+}
 
 input[type="text"],
 input[type="number"],
@@ -1367,14 +1455,67 @@ textarea {
   border-radius:  6px;
   padding: 0 15px;
 }
+.scrollable-container {
+  max-height: 200px; /* Adjust as needed */
+  overflow-y: auto;
+}
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the content horizontally */
+  margin-top: 1.5rem; /* Sets top margin for the container */
+  background-color: #cfcccc;
+  border-radius: 12px;
+  margin-left: 14%;
+  margin-right: 14%;
+  padding-top: 1%;
+}
+
+.pricing-row {
+  display: flex;
+  justify-content: space-between; /* Space between items */
+  width: 90%; /* Ensures the row occupies half of the container width */
+  margin-bottom: 0.5rem; /* Margin between the rows */
+}
+
+.total-pricing-row {
+  margin-bottom: 0.25rem; /* Reduces bottom margin for the total row */
+}
+
+.price {
+  font-size: 0.999rem; /* Diminui a fonte dos preços de frete e parcial */
+}
+
+.total-price {
+  font-size: 1.5rem; /* Increases font size for total price */
+  font-weight: bold; /* Makes total price bold */
+}
+
+.label {
+  font-weight: normal; /* Rótulos em peso normal */
+}
+
+.price-strong {
+  font-weight: bold; /* Estilo para texto em negrito, agora com nome mais descritivo */
+}
+
+
+.label-bold {
+  font-weight: bold; /* Makes labels bold */
+}
+
 select {
   color: #000; /* Cor preta para todas as opções */
+  width: 100%; /* Make sure it has enough width */
+  z-index: 1; /* Ensure it's above other elements */
 }
 select:invalid {
   color: #919191; /* Cor cinza claro */
   border: 1px solid #000000; /* Borda sempre presente */
 }
-
+option:not(:first-of-type) {
+  color: black;
+}
 select:valid {
   color: #000; /* Cor preta */
 }

@@ -207,16 +207,8 @@ const ReadCliente = () => {
           </button>
         </div>
 
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Confirmar Exclusão</h2>
-              <p>Tem certeza que deseja excluir o cliente?</p>
-              <button className="modal-button" onClick={handleDelete}>Sim</button>
-              <button className="modal-button" onClick={handleCancel}>Não</button>
-            </div>
-          </div>
-        )}
+
+      
 
         {showSuccessModal && (
           <div className="success-modal">
@@ -226,6 +218,18 @@ const ReadCliente = () => {
           </div>
         )}
       </div>
+      {showModal && (
+          <div className="modal" >
+            <div className="modal-content">
+              <h2>Confirmar Exclusão</h2>
+              <p>Tem certeza que deseja excluir o cliente?</p>
+              <div className="modal-div"> 
+              <button className="modal-button" onClick={handleDelete}>Sim</button>
+              <button className="modal-button" onClick={handleCancel}>Não</button>
+              </div> 
+            </div>
+          </div>
+        )}
     </div>
   );
 };
