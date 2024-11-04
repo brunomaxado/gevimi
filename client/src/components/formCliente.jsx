@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios"; // Certifique-se de que o axios está importado
+import Tooltip from './tooltip';
 
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
@@ -132,9 +133,12 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
   };
 
   return (
+    
     <form onSubmit={handleSubmit} className="form-container">
       <div className="cliente">
-
+      <Tooltip text="Elementos com asterisco vermelho são obrigatórios">
+        <button type="button">?</button>
+      </Tooltip>
         {/* Nome */}
         <div className="form-row">
           <div className="form-group">
