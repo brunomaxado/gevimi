@@ -76,12 +76,12 @@ const Produto = () => {
 
   return (
     <div>
-      {/* Botão para abrir o modal de ajuda */}
-      <div className=" d-flex flex-row-reverse">
-        <button className="btn" onClick={() => setIsHelpProdutoOpen(true)}>
+       <div>
+        <button onClick={() => setIsHelpProdutoOpen(true)}>
           <HelpOutlineIcon />
         </button>
       </div>
+
       {/* Modal de ajuda */}
       <HelpProduto
         isOpen={isHelpProdutoOpen}

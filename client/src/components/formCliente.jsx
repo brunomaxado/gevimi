@@ -133,16 +133,19 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
   };
 
   return (
-    
+
     <form onSubmit={handleSubmit} className="form-container">
       <div className="cliente">
-      <Tooltip text="Elementos com asterisco vermelho são obrigatórios">
-        <button type="button">?</button>
-      </Tooltip>
         {/* Nome */}
+
+        <Tooltip text="Elementos com asterisco vermelho são obrigatórios">
+        <ion-icon name="help-circle-outline"></ion-icon></Tooltip>
+
         <div className="form-row">
           <div className="form-group">
-            <label> Nome: <span className="asterisco">*</span> </label>
+            <label> Nome:
+              <span className="asterisco">*</span>
+            </label>
             <input
               type="text"
               placeholder="Nome"
@@ -158,7 +161,9 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
         {/* CPF e Celular */}
         <div className="form-row">
           <div className="form-group">
-            <label> CPF: <span className="asterisco">*</span> </label>
+            <label> CPF:
+              <span className="asterisco">*</span>
+            </label>
             <input
               type="text"
               placeholder="CPF"
@@ -169,7 +174,9 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
             />
           </div>
           <div className="form-group">
-            <label> Celular: <span className="asterisco">*</span> </label>
+            <label> Celular:
+              <span className="asterisco">*</span>
+            </label>
             <input
               type="text"
               placeholder="Celular"
@@ -184,7 +191,9 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
         {/* Cidade e CEP */}
         <div className="form-row">
           <div className="form-group">
-            <label> Cidade: <span className="asterisco">*</span> </label>
+            <label> Cidade:
+              <span className="asterisco">*</span>
+            </label>
             <input
               type="text"
               placeholder="Cidade"
@@ -195,7 +204,10 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
             />
           </div>
           <div className="form-group">
-            <label> CEP: </label>
+            <label> CEP:
+              <span className="asterisco">*</span>
+
+            </label>
             <input
               type="text"
               placeholder="CEP"

@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom";
 import { Button, Modal, Alert } from 'react-bootstrap';
-import HelpCategoria from "../components/modalHelpCategoria"; // Importando o HelpCategoria
+import ModalHelpCategoria from "../components/modalHelpCategoria"; // Importando o HelpCategoria
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const Categoria = () => {
@@ -141,14 +141,13 @@ const Categoria = () => {
 
   return (
     <div>
-      {/* Botão para abrir o modal de ajuda */}
-      <div className="d-flex flex-row-reverse">
-        <button className="btn" onClick={() => setIsHelpCategoriaOpen(true)}>
+          <div className="d-flex flex-row-reverse">
+        <Button variant="link" onClick={() => setIsHelpCategoriaOpen(true)}>
           <HelpOutlineIcon />
-        </button>
+        </Button>
       </div>
-      {/* Modal de ajuda */}
-      <HelpCategoria
+      
+      <ModalHelpCategoria
         isOpen={isHelpCategoriaOpen}
         onRequestClose={() => setIsHelpCategoriaOpen(false)}
       />

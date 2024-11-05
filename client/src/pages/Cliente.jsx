@@ -32,15 +32,11 @@ const CreateCliente = () => {
     window.scrollTo(0, 0);
   }, []);
   return (
-    
+
     <div>
-      {/* Botão para abrir o modal de ajuda */}
-      <div className=" d-flex flex-row-reverse">
-        <button className="btn" onClick={() => setIsHelpClienteOpen(true)}>
-          <HelpOutlineIcon />
-        </button>
+      <div>
+
       </div>
-      {/* Modal de ajuda */}
       <HelpCliente
         isOpen={isHelpClienteOpen}
         onRequestClose={() => setIsHelpClienteOpen(false)}
