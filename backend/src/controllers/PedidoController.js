@@ -5,8 +5,8 @@ import db from "../config/db.js";
     const { pedido, itensPedido } = req.body;
   
     const queryPedido = `
-      INSERT INTO pedido (tipo, forma_pagamento, observacao, data_para_entregar, data_realizado, fk_id_usuario, fk_id_cliente) 
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO pedido (tipo, forma_pagamento, observacao, data_para_entregar, data_realizado, frete, fk_id_usuario, fk_id_cliente) 
+      VALUES (?, ?, ?, ?, ?,?, ?, ?)
     `;
   
     const pedidoValues = [
@@ -15,6 +15,7 @@ import db from "../config/db.js";
       pedido.observacao,
       pedido.data_para_entregar,
       pedido.data_realizado,
+      pedido.frete,
       pedido.fk_id_usuario,
       pedido.fk_id_cliente
     ];
