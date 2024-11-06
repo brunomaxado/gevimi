@@ -188,13 +188,18 @@ li#nome {
 }
 
 li#pedido a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 7vh;
   background-color: var(--amarelologo);
   color: var(--pretoletra);
   border-radius: 10px;
   margin: 0px;
   padding: 10px;
+  text-align: center;
 }
+
 
 li#pedido a:hover {
   background-color: var(--amarelotoque);
@@ -1032,9 +1037,8 @@ div.auth button {
 
 .success-modal {
   position: fixed;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 80px; /* Ajuste a distância do topo conforme necessário */
+  right: 20px; /* Define a distância do lado direito */
   background-color: var(--sombramodal);
   color: var(--verdemodal);
   padding: 15px;
@@ -1043,25 +1047,15 @@ div.auth button {
   width: 300px;
   text-align: center;
   z-index: 1000;
-  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra para destaque */
 }
 
 .success-modal-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
-  #pedidos {
-    p {
-      color: var(--pretoletra);
-    }
-
-    span {
-      color: var(--amarelotoque);
-      cursor: pointer;
-    }
-  }
 }
+
 
 button {
   width: auto;

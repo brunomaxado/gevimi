@@ -35,7 +35,9 @@ const ReadUsuario = () => {
     setSelectedUsuarioId(id);
     setShowModal(true);
     setErrorMessage(" ");
-  };const handleDelete = async () => {
+  };
+  
+  const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8800/usuario/${selectedUsuarioId}`);
       setUsuarios(usuarios.filter(usuario => usuario.id_usuario !== selectedUsuarioId));
@@ -199,15 +201,15 @@ const ReadUsuario = () => {
           )}
         </div>
 
-        
-        {showSuccessModal && (
+      
+      </div>
+      {showSuccessModal && (
           <div className="success-modal">
             <div className="success-modal-content">
-              <h2>{successMessage}</h2>
+              <span>{successMessage}</span>
             </div>
           </div>
         )}
-      </div>
       {showModal && (
   <div className="modal">
     <div className="modal-content">

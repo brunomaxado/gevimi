@@ -55,7 +55,7 @@ const EditarUsuario = () => {
 
     try {
       await axios.put(`http://localhost:8800/editarusuario/${usuarioId}`, payload);
-      showSuccess("Usuário atualizado com sucesso.");
+      showSuccess("Usuário atualizado com sucesso!");
     } catch (err) {
       console.error("Erro ao atualizar o usuário:", err);
       setError("Erro ao atualizar o usuário.");
@@ -82,7 +82,12 @@ const EditarUsuario = () => {
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/readUsuario");
+    }, 1500);
   };
+
 
   const closeSuccessModal = () => {
     setShowSuccessModal(false);
@@ -150,14 +155,7 @@ const EditarUsuario = () => {
           </button>
         </form>
 
-        {showSuccessModal && (
-          <div className="success-modal">
-            <div className="success-modal-content">
-              <span>{successMessage}</span>
-              <button onClick={closeSuccessModal}>Fechar</button>
-            </div>
-          </div>
-        )}
+       
 
         {showPasswordModal && (
           <div className="password-modal">
@@ -176,6 +174,14 @@ const EditarUsuario = () => {
           </div>
         )}
       </div>
+      
+      {showSuccessModal && (
+          <div className="success-modal">
+            <div className="success-modal-content">
+              <span>{successMessage}</span>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

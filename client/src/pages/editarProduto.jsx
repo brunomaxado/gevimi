@@ -76,7 +76,7 @@ const GerenciarProduto = () => {
     try {
       await axios.put(`http://localhost:8800/readProduto/${produtoId}`, produto);
       console.log("Produto atualizado com sucesso");
-      showSuccess("Produto atualizado com sucesso");
+      showSuccess("Produto atualizado com sucesso!");
     } catch (err) {
       console.error("Erro ao atualizar o produto:", err);
       setError("Erro ao atualizar o produto.");

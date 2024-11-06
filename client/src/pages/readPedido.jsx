@@ -186,7 +186,7 @@ const ReadPedido = () => {
           : pedido
       ));
   
-      showSuccess("Pedido finalizado com sucesso."); // Chama só uma vez
+      showSuccess("Pedido finalizado com sucesso!"); // Chama só uma vez
       setShowModalFinalizar(false); // Fecha o modal de finalizar pedido
   
     } catch (err) {
@@ -204,7 +204,7 @@ const ReadPedido = () => {
     try {
       await axios.delete(`http://localhost:8800/pedido/${selectedPedidoId}`);
       setPedidos(pedidos.filter(pedido => pedido.id_pedido !== selectedPedidoId));
-      showSuccess("Produto deletado com sucesso");
+      showSuccess("Pedido deletado com sucesso!");
       setShowModal(false);
     } catch (err) {
       console.log(err);
@@ -459,16 +459,16 @@ useEffect(() => {
 </div>
 
 
-   
-      {/* Modal de sucesso */}
-      {showSuccessModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>{successMessage}</h2>
-          </div>
-        </div>
-      )}
+  
     </div>
+
+    {showSuccessModal && (
+          <div className="success-modal">
+            <div className="success-modal-content">
+            <span>{successMessage}</span>
+            </div>
+          </div>
+        )}
     {showModal && (
   <div className="modal">
     <div className="modal-content">

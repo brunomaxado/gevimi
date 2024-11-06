@@ -58,9 +58,10 @@ const ReadProduto = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/viewProduto");
-    }, 1200);
+   
+    }, 2500);
   };
+
 
   const handleDelete = async () => {
     try {
@@ -261,22 +262,25 @@ const ReadProduto = () => {
           )}
         </div>
 
-
+        
+      </div>
+          
         {showSuccessModal && (
           <div className="success-modal">
             <div className="success-modal-content">
-              <h2>{successMessage}</h2>
+            <span>{successMessage}</span>
             </div>
           </div>
         )}
-        
-      </div>
+
+
+
       {showModal && (
   <div className="modal">
     <div className="modal-content">
       <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
       <h2>Confirmar Exclusão</h2>
-      <p>Tem certeza que deseja excluir o cliente?</p>
+      <p>Tem certeza que deseja excluir o produto?</p>
       
       {/* Mensagem de erro, que aparecerá caso haja algum erro */}
       {errorMessage && (

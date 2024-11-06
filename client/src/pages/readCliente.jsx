@@ -219,15 +219,15 @@ const ReadCliente = () => {
 
       
 
-        {showSuccessModal && (
+      
+      </div>
+      {showSuccessModal && (
           <div className="success-modal">
             <div className="success-modal-content">
-              <h2>{successMessage}</h2>
+              <span>{successMessage}</span>
             </div>
           </div>
         )}
-      </div>
-
       {showModal && (
   <div className="modal">
     <div className="modal-content">
