@@ -1,0 +1,97 @@
+h3{
+    text-align: left;
+}
+
+.body-Pedido{
+    margin-right: 15vh;
+    margin-left: 15vh;
+   
+}
+
+.infos{
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.id-pedido input{
+    text-align: left;
+    display: flex;
+}
+
+.id-pedido{
+    width: 10vw;
+    margin-right: 1.5%;
+}
+
+.status-pedido{
+    width: 15vw;
+    margin-right: 1.5%;
+}
+
+.data{
+    width: 15vw;
+    margin-right: 1.5%;
+}
+
+.endereco-entrega{
+    display: flex;
+    text-align: left;
+}
+
+.total{
+    margin-top: 10px;
+    width: 40%;
+    margin-left: 30%;
+}
+
+.forma-pag{
+    width: 25%;
+}
+
+.cep{
+    width: 23%;
+    margin-right: 1.5%;
+}
+
+.cidade{
+    margin-right: 1.5%;
+}
+
+.bairro{
+    margin-right: 1.5%;
+}
+
+.logradouro{
+    margin-right: 1.5%;
+}
+
+.numero{
+    width: 10%;
+}
+
+.tipo{
+    width: 15vw;
+    text-align: left;
+}
+
+.infos-tec{
+    text-align: left;
+    display: flex;
+    flex-direction:row;
+}
+
+.usuario{
+    width: 15vw;
+}
+
+.texto-infos{
+    margin: 20px;
+}
+
+.obs input{
+    text-align: left;
+    align-content:flex-start;
+    height: 30vh;
+}

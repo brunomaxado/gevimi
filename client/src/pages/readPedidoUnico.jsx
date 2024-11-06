@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import '../pedidounico.css';
 
 const ReadPedidoUnico = () => {
   const [pedido, setPedido] = useState(null);
@@ -120,34 +121,20 @@ const ReadPedidoUnico = () => {
   if (!pedido) return <p>Carregando...</p>;
 
   return (
-    <div>
-      <h1>Detalhes do Pedido</h1>
+    <div className="body-Pedido">
+      <h1>Detalhes do Pedido:</h1>
       <form>
-        <div>
-          <div>
+        <div className="infos">
+          <div className="id-pedido">
             <label>ID Pedido:</label>
             <input type="text" value={pedidoId} readOnly />
           </div>
-          <div>
+          <div className="status-pedido">
             <label>Status:</label>
             <input type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
           </div>
-        </div>
-  
-        <div>
-          <div>
-            <label>Forma de Pagamento:</label>
-            <input type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
-          </div>
-          <div>
-            <label>Tipo:</label>
-            <input type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
-          </div>
-        </div>
-  
-        <div>
-          <div>
-            <label>Data de Entrega:</label>
+          <div className="data">
+            <label>Data prevista de Entrega:</label>
             <input
               type="text"
               value={
@@ -159,6 +146,41 @@ const ReadPedidoUnico = () => {
             />
           </div>
           <div>
+            <label>Cliente:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).nome || "N/A"} readOnly />
+          </div>
+        </div>
+        <div className="tipo">
+          <label>Tipo:</label>
+          <input type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
+        </div>
+        <div className="endereco-entrega">
+          <div className="cep">
+            <label>CEP:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).cep || "N/A"} readOnly />
+          </div>
+          <div className="cidade">
+            <label>Cidade:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).cidade || "N/A"} readOnly />
+          </div>
+          <div className="bairro">
+            <label>Bairro:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).bairro || "N/A"} readOnly />
+          </div>
+          <div className="logradouro">
+            <label>Logradouro:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).logradouro || "N/A"} readOnly />
+          </div>
+          <div className="numero">
+            <label>Número:</label>
+            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).numero || "N/A"} readOnly />
+          </div>
+
+
+        </div>
+
+        <div className="infos-tec">
+          <div className="data">
             <label>Data de Realização:</label>
             <input
               type="text"
@@ -166,46 +188,14 @@ const ReadPedidoUnico = () => {
               readOnly
             />
           </div>
-        </div>
-  
-        <div>
-          <div>
-            <label>Cliente:</label>
-            <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).nome || "N/A"} readOnly />
-          </div>
-  
-          <div>
+          <div className="usuario">
             <label>Usuário:</label>
             <input type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
           </div>
         </div>
-  
-        <div>
-          <label>Cidade:</label>
-          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).cidade || "N/A"} readOnly />
-        </div>
-  
-        <div>
-          <label>Endereço:</label>
-          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).endereco || "N/A"} readOnly />
-        </div>
-  
-        <div>
-          <label>Bairro:</label>
-          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).bairro || "N/A"} readOnly />
-        </div>
-  
-        <div>
-          <label>Rua:</label>
-          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).rua || "N/A"} readOnly />
-        </div>
-  
-        <div>
-          <label>Número:</label>
-          <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).numero || "N/A"} readOnly />
-        </div>
-  
-        <div>
+
+
+        <div className="obs">
           <label>Observação:</label>
           <input
             type="text"
@@ -213,27 +203,17 @@ const ReadPedidoUnico = () => {
             readOnly
           />
         </div>
-  
-        <div>
-          <label>Finalizado em:</label>
-          <input
-            type="text"
-            value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
-                ? new Date(pedido.pedido.data_finalizado).toLocaleString()
-                : "Sem data"
-            }
-            readOnly
-          />
-        </div>
-  
-        <div>
+
+
+
+        <div className="texto-infos">
           <label>Produtos:</label>
           <div>
             {pedido.itensPedido && pedido.itensPedido.length > 0 ? (
               pedido.itensPedido.map((item) => (
                 <div key={item.id_item_pedido}>
                   <span>
-                    {getProdutoNome(item.fk_id_produto)} x{item.quantidade} - 
+                    {getProdutoNome(item.fk_id_produto)} x{item.quantidade} -
                     Uni: R$ {(item.preco_unitario_atual ? item.preco_unitario_atual.toFixed(2) : "N/A")}
                   </span>
                 </div>
@@ -243,15 +223,33 @@ const ReadPedidoUnico = () => {
             )}
           </div>
         </div>
-  
-        <div>
-          <label>Total:</label>
+        <div className="infos-tec">
+        <div className="data">
+          <label>Finalizado em:</label>
+          <input
+            type="text"
+            value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
+              ? new Date(pedido.pedido.data_finalizado).toLocaleString()
+              : "Sem data"
+            }
+            readOnly
+          />
+        </div>
+        <div className="forma-pag">
+            <label>Forma de Pagamento:</label>
+            <input type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
+          </div>
+          </div>
+        <div className="total">
+          <label><b>Total:</b></label>
           <input
             type="text"
             value={`R$ ${calcularTotalItens(pedido.itensPedido) ? calcularTotalItens(pedido.itensPedido).toFixed(2) : "0.00"}`}
             readOnly
           />
         </div>
+       
+
       </form>
       <Link to={`/readPedido`}>
         <button>Voltar</button>
