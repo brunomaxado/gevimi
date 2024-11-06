@@ -134,7 +134,7 @@ const ReadPedidoUnico = () => {
             <input type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
           </div>
           <div className="data">
-            <label>Data prevista de Entrega:</label>
+            <label>Data prevista:</label>
             <input
               type="text"
               value={
