@@ -250,7 +250,7 @@ const Categoria = () => {
         <div className="modal">
           <div className="modal-content">
             <button className="close-modal" onClick={() => setShowAddModal(false)}>X</button>
-            <h2>Adicionar Categoria</h2>
+            <h2>Nova Categoria</h2>
             <label>Nome: </label>
             <input
               type="text"
@@ -258,11 +258,12 @@ const Categoria = () => {
               value={newCategoria}
               onChange={(e) => setNewCategoria(e.target.value)}
               className="form-control"
+              required
             />
             {errorMessage && <div className="error-message show">{errorMessage}</div>}
             <div className="modal-actions">
               <button className="modal-button" onClick={() => setShowAddModal(false)}>Cancelar</button>
-              <button className="modal-button" onClick={handleAdd}>Adicionar</button>
+              <button className="modal-button" onClick={handleAdd}>Salvar</button>
             </div>
           </div>
         </div>

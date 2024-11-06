@@ -199,6 +199,18 @@ li#pedido a {
   padding: 10px;
   text-align: center;
 }
+/* Estilos de cores para diferentes condições */
+.row-overdue {
+  background-color: #f8d7da; /* Vermelho claro */
+}
+
+.row-soon {
+  background-color: #fff3cd; /* Amarelo claro */
+}
+
+.row-today {
+  background-color: #d4edda; /* Verde claro */
+}
 
 
 li#pedido a:hover {
@@ -589,7 +601,7 @@ body.modal-open {
   animation-duration: 0.4s;
  
   flex-direction: column;
-  max-width: 90vw; /* Limita a largura máxima */
+  max-width:200%; /* Limita a largura máxima */
 }
 .-modal-open .fixed,
 .-modal-open .content {

@@ -8,7 +8,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import More from '@mui/icons-material/Add';
 
 
-
 const Pedido = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const [produto, setProduto] = useState([]);
@@ -326,11 +325,8 @@ const  handleAdicionarItem = async (e) => {
   ))}
 </select>
 
+</div>
 
-         
-          </div>
-        
-        
        
           <div className="form-group-pedido">
             <label> Forma Pagamento: <span className="asterisco">*</span> </label>
@@ -348,6 +344,7 @@ const  handleAdicionarItem = async (e) => {
               <option value="4">Crédito</option>
             </select>
           </div>
+          
         </div>
         <label> Observação: </label>
             <input
@@ -455,6 +452,13 @@ const  handleAdicionarItem = async (e) => {
 
 
       <button class="enviar-pedido" onClick={handleClick}>Salvar</button>
+
+      <ModalCliente
+  isOpen={showModal}  // Controla se o modal deve ser exibido
+  onRequestClose={() => setShowModal(false)}  // Função para fechar o modal
+  adicionarCliente={adicionarCliente}  // Função para adicionar um cliente após cadastro
+/>
+
     </div>
   );
   
