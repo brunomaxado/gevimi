@@ -10,9 +10,10 @@ import {
   Legend,
   BarController,
   ArcElement,
-  PieController // Importando o controlador do gráfico de pizza
+  PieController
 } from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Importando o plugin de rótulos
+import { useNavigate } from 'react-router-dom'; // Hook de navegação para React Router v6
 
 // Registra as escalas, controladores, elementos e o plugin para os rótulos
 ChartJS.register(
@@ -27,7 +28,6 @@ ChartJS.register(
   PieController, // Registra o controlador de pizza
   ChartDataLabels // Registra o plugin de rótulos
 );
-
 
 const styles = {
   container: {
@@ -55,12 +55,15 @@ const styles = {
 };
 
 const Dashboard = () => {
+  
+  const [clientes, setClientes] = useState([]);
   const [dashboard, setDashboard] = useState({});
   const [loading, setLoading] = useState(true);
   const chartRef = useRef(null); // Ref para o canvas do gráfico de barras
   const chartInstanceRef = useRef(null); // Ref para o gráfico ChartJS
   const pieChartRef = useRef(null); // Ref para o gráfico de pizza
   const pieChartInstanceRef = useRef(null); // Ref para o gráfico de pizza
+  const navigate = useNavigate(); // Hook para navegação
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -77,7 +80,18 @@ const Dashboard = () => {
 
     fetchDashboard();
   }, []);
+  useEffect(() => {
+    const fetchAllClientes = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/cliente");
+        setClientes(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
+    fetchAllClientes();
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -89,64 +103,66 @@ const Dashboard = () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
-
+  
       console.log("Canvas encontrado, criando gráfico...");
-
-      // Dados do gráfico (cliente e número de pedidos)
+  
+      // Dados do gráfico com o id_cliente incluído
       const chartData = dashboard.clientePorPedido.map(item => ({
         cliente: item.nome,
-        numPedidos: item.num_pedido
+        numPedidos: item.num_pedido,
+        idCliente: item.id_cliente // Adiciona o id_cliente diretamente aqui
       }));
-
-      // Criando o gráfico de barras
+  
       const newChart = new ChartJS(chartRef.current, {
-        type: 'bar', // Gráfico de barras
+        type: 'bar',
         data: {
-          labels: chartData.map(row => row.cliente), // Clientes no eixo X
+          labels: chartData.map(row => row.cliente),
           datasets: [
             {
               label: 'Número de Pedidos por Cliente',
-              data: chartData.map(row => row.numPedidos), // Número de pedidos no eixo Y
-              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Cor de fundo das barras
-              borderColor: 'rgba(75, 192, 192, 1)', // Cor da borda das barras
+              data: chartData.map(row => row.numPedidos),
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1,
             }
           ]
         },
         options: {
-          responsive: true, // Gráfico responsivo
+          responsive: true,
           plugins: {
-            legend: {
-              position: 'top',
-            },
-            tooltip: {
-              enabled: true,
-            },
+            legend: { position: 'top' },
+            tooltip: { enabled: true },
             datalabels: {
-              color: '#000', // Cor do texto
-              anchor: 'end', // Posicionamento do rótulo
-              align: 'top', // Alinhamento do rótulo
-              font: {
-                weight: 'bold',
-                size: 14,
-              },
+              color: '#000',
+              anchor: 'end',
+              align: 'top',
+              font: { weight: 'bold', size: 14 },
             },
           },
           scales: {
-            y: {
-              type: 'linear', // Definir explicitamente a escala como 'linear'
-              beginAtZero: true,
+            y: { type: 'linear', beginAtZero: true },
+          },
+          onClick: (event, chartElements) => {
+            if (chartElements.length > 0) {
+              const index = chartElements[0].index;
+              const clienteId = chartData[index].idCliente; // Obtém o id_cliente diretamente
+  
+              if (clienteId) {
+                navigate(`/editarCliente/${clienteId}`); // Redireciona com o id_cliente
+              } else {
+                console.log('Cliente não encontrado');
+              }
             }
           }
         }
       });
-
-      // Armazenar a instância do gráfico para destruição futura
+  
       chartInstanceRef.current = newChart;
     } else {
       console.log("Canvas não encontrado ou dados de clientes ausentes.");
     }
-  }, [dashboard]); // Esse useEffect depende de `dashboard` para garantir que os dados sejam carregados
+  }, [dashboard, navigate]); // Não precisa mais de 'clientes' como dependência
+  
 
   // Inicializando o gráfico de pizza após o carregamento
   useEffect(() => {
@@ -228,14 +244,12 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Gráfico de Pedidos por Cliente */}
       <div style={{ width: '100%', maxWidth: '800px', margin: '50px auto' }}>
         <canvas ref={chartRef} id="acquisitions" style={{ height: '200px', width: '100%' }} />
       </div>
 
-      {/* Gráfico de Pizza para Total Aberto e Finalizado */}
-      <div style={{ width: '100%', maxWidth: '500px', margin: '50px auto' }}>
-        <canvas ref={pieChartRef} id="pieChart" style={{ height: '300px', width: '100%' }} />
+      <div style={{ width: '100%', maxWidth: '600px', margin: '50px auto' }}>
+        <canvas ref={pieChartRef} id="totals" style={{ height: '200px', width: '100%' }} />
       </div>
     </div>
   );
