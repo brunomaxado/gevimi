@@ -103,35 +103,35 @@ export const register = (req, res) => {
     
   
   };
-
   export const deleteUsuario = (req, res) => {
     const { id_usuario } = req.params; // Obtém o ID do usuário dos parâmetros da rota
   
     // Primeiro, verifique se o usuário está associado a algum pedido
     const checkOrdersQuery = "SELECT * FROM pedido WHERE fk_id_usuario = ?";
-  
+    
     db.query(checkOrdersQuery, [id_usuario], (err, results) => {
       if (err) return res.status(500).json({ message: "Erro ao verificar pedidos", error: err });
-  
+      
       if (results.length > 0) {
-        return res.status(400).json("Não é possível deletar o usuário porque ele está associado a um ou mais pedidos.");
+        return res.status(400).json({ message: "Não é possível deletar o usuário porque ele está associado a um ou mais pedidos." });
       }
-  
+      
       // Se não houver pedidos, proceda com a exclusão do usuário
       const deleteQuery = "DELETE FROM usuario WHERE id_usuario = ?";
-  
+      
       db.query(deleteQuery, [id_usuario], (err, result) => {
         if (err) return res.status(500).json({ message: "Erro ao deletar usuário", error: err });
-  
+        
         // Verifica se alguma linha foi afetada (se o usuário foi encontrado e deletado)
         if (result.affectedRows === 0) {
-          return res.status(404).json("Usuário não encontrado.");
+          return res.status(404).json({ message: "Usuário não encontrado." });
         }
-  
-        return res.status(200).json("Usuário deletado com sucesso.");
+        
+        return res.status(200).json({ message: "Usuário deletado com sucesso." });
       });
     });
   };
+  
 
   export const alterarSenha = (req, res) => {
     const { id_usuario, senhaAntiga, senhaNova } = req.body;

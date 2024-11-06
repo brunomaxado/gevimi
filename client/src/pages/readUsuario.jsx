@@ -34,23 +34,31 @@ const ReadUsuario = () => {
   const handleDeleteClick = (id) => {
     setSelectedUsuarioId(id);
     setShowModal(true);
-  };
-
-  const handleDelete = async () => {
+    setErrorMessage(" ");
+  };const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8800/usuario/${selectedUsuarioId}`);
       setUsuarios(usuarios.filter(usuario => usuario.id_usuario !== selectedUsuarioId));
       setShowModal(false);
       setSuccessMessage("Usuário deletado com sucesso!");
       setShowSuccessModal(true);
+  
+      // Fecha o modal de sucesso automaticamente após 3 segundos
       setTimeout(() => {
         setShowSuccessModal(false);
       }, 3000);
     } catch (err) {
       console.log(err);
-      setShowModal(false);
+      
+      // Captura a mensagem de erro enviada pelo backend ou define uma mensagem genérica
+      const errorMessage = err.response?.data?.message || "Erro ao deletar o usuário.";
+      setErrorMessage(errorMessage);
+  
+      // Mantém o modal aberto para exibir a mensagem de erro
+      setShowModal(true);
     }
   };
+  
 
   const handleCancel = () => {
     setShowModal(false);
@@ -105,7 +113,9 @@ const ReadUsuario = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para a mensagem de erro
+  
+  const handleClose = () => setShowModal(false);
   return (
     <div>
       <h1>Usuários</h1> 
@@ -189,17 +199,7 @@ const ReadUsuario = () => {
           )}
         </div>
 
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Confirmar Exclusão</h2>
-              <p>Tem certeza que deseja excluir o usuário?</p>
-              <button className="modal-button" onClick={handleDelete}>Sim</button>
-              <button className="modal-button" onClick={handleCancel}>Não</button>
-            </div>
-          </div>
-        )}
-
+        
         {showSuccessModal && (
           <div className="success-modal">
             <div className="success-modal-content">
@@ -208,6 +208,28 @@ const ReadUsuario = () => {
           </div>
         )}
       </div>
+      {showModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o usuário</p>
+      
+      {/* Mensagem de erro, que aparecerá caso haja algum erro */}
+      {errorMessage && (
+  <div className="error-message show">
+    {errorMessage}
+  </div>
+)}
+
+
+      <div className="modal-div">
+        <button className="modal-button" onClick={handleDelete}>Sim</button>
+        <button className="modal-button" onClick={handleCancel}>Não</button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

@@ -18,6 +18,7 @@ const ReadPedido = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showModalFinalizar, setShowModalFinalizar] = useState(false);
   const [modalType, setModalType] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); // Barra de pesquisa
   const [sortConfig, setSortConfig] = useState(null); // Configuração de ordenação
@@ -55,7 +56,12 @@ const ReadPedido = () => {
         console.log(err);
       }
     };
-
+    const handleDeleteClick = (id) => {
+      setSelectedPedidoId(id);
+      setShowModal(true);
+      setErrorMessage(" ");
+    };
+    
     const fetchProdutos = async () => { 
       try {
         const response = await axios.get("http://localhost:8800/allprodutos");
@@ -80,6 +86,15 @@ const ReadPedido = () => {
       setSuccessMessage(""); 
     }, 2000); 
   };
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para a mensagem de erro
+  
+  const handleClose = () => {
+    setShowModal(false);
+    setShowModalFinalizar(false);
+    setErrorMessage(" ");
+
+  };
+  
 
   const getClienteNome = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
@@ -143,10 +158,9 @@ const ReadPedido = () => {
 
   const handleClickFinalizar = (id) => {
     setSelectedPedidoId(id);
-    setModalType("finalizar");
-    setShowModal(true);
-  };
-
+    setShowModalFinalizar(true);
+    setErrorMessage(" ");
+  };   
   const handleClickCancelar = (id) => {
     setSelectedPedidoId(id);
     setModalType("cancelar");
@@ -156,50 +170,55 @@ const ReadPedido = () => {
   const handleFinalizar = async () => {
     try {
       const currentDate = new Date().toISOString();
-
+  
       await axios.put(`http://localhost:8800/pedido/${selectedPedidoId}`, { 
         status: 1,
         data_finalizado: currentDate
       });
-
+  
+      // Atualiza o pedido na lista de pedidos
       setPedidos(pedidos.map(pedido =>
         pedido.id_pedido === selectedPedidoId
           ? { ...pedido, status: 1, data_finalizado: currentDate }
           : pedido
       ));
-
-      showSuccess("Pedido finalizado com sucesso.");
-      setShowModal(false);
+  
+      showSuccess("Pedido finalizado com sucesso."); // Chama só uma vez
+      setShowModalFinalizar(false); // Fecha o modal de finalizar pedido
+  
     } catch (err) {
       console.error("Erro ao finalizar o pedido:", err);
-      setError("Erro ao finalizar o pedido.");
-      setShowModal(false);
+      const errorMessage = err.response?.data?.message || "Erro ao finalizar o pedido.";
+      setErrorMessage(errorMessage);
+      setShowModalFinalizar(true); // Mantém o modal de erro aberto
     }
   };
+  
+  
 
-  const handleCancelar = async () => {
+
+  const handleDelete= async () => {
     try {
       await axios.delete(`http://localhost:8800/pedido/${selectedPedidoId}`);
       setPedidos(pedidos.filter(pedido => pedido.id_pedido !== selectedPedidoId));
-      showSuccess("Pedido cancelado com sucesso.");
+      showSuccess("Produto deletado com sucesso");
       setShowModal(false);
     } catch (err) {
-      console.error("Erro ao cancelar o pedido:", err);
-      setError(err);
-      setShowModal(false);
+      console.log(err);
+      
+      // Captura a mensagem de erro enviada pelo backend, caso exista
+      const errorMessage = err.response?.data?.message || "Erro ao deletar o pedido";
+      setErrorMessage(errorMessage);
+      
+      // Exibe o modal com a mensagem de erro
+      setShowModal(true);
     }
   };
 
-  const handleConfirm = () => {
-    if (modalType === "finalizar") {
-      handleFinalizar();
-    } else if (modalType === "cancelar") {
-      handleCancelar();
-    }
-  };
 
   const handleCancel = () => {
     setShowModal(false);
+    setShowModalFinalizar(false);
   };
 
   // Função para organizar os dados com base na coluna
@@ -443,24 +462,7 @@ useEffect(() => {
 </div>
 
 
-      {/* Modal de confirmação */}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Confirmar Ação</h2>
-            <h1>
-              {modalType === "finalizar"
-                ? "Tem certeza que deseja finalizar o pedido?"
-                : "Tem certeza que deseja cancelar o pedido?"}
-            </h1>
-            <div className="modal-buttons">
-              <button className="confirm" onClick={handleConfirm}>Sim</button>
-              <button className="cancel" onClick={handleCancel}>Não</button>
-            </div>
-          </div>
-        </div>
-      )}
-
+   
       {/* Modal de sucesso */}
       {showSuccessModal && (
         <div className="modal">
@@ -470,6 +472,50 @@ useEffect(() => {
         </div>
       )}
     </div>
+    {showModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o pedido?</p>
+      
+      {/* Mensagem de erro, que aparecerá caso haja algum erro */}
+      {errorMessage && (
+  <div className="error-message show">
+    {errorMessage}
+  </div>
+)}
+
+
+      <div className="modal-div">
+        <button className="modal-button" onClick={handleDelete}>Sim</button>
+        <button className="modal-button" onClick={handleCancel}>Não</button>
+      </div>
+    </div>
+  </div>
+)}
+
+{showModalFinalizar && (
+  <div className="modal">
+    <div className="modal-content">
+      <button className="close-modal" onClick={handleClose}>X</button>
+      <h2>Confirmar Finalização</h2>
+      <p>Tem certeza que deseja finalizar o pedido?</p>
+      
+      {errorMessage && (
+        <div className="error-message show">
+          {errorMessage}
+        </div>
+      )}
+
+      <div className="modal-div">
+        <button className="modal-button" onClick={handleFinalizar}>Sim</button> {/* Corrigido */}
+        <button className="modal-button" onClick={handleCancel}>Não</button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

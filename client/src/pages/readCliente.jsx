@@ -46,24 +46,32 @@ const ReadCliente = () => {
   const handleDeleteClick = (id) => {
     setSelectedClienteId(id);
     setShowModal(true);
+    setErrorMessage(""); // Limpa a mensagem de erro quando o modal é fechado
   };
-
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para a mensagem de erro
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8800/cliente/${selectedClienteId}`);
+      const response = await axios.delete(`http://localhost:8800/cliente/${selectedClienteId}`);
       setClientes(clientes.filter(cliente => cliente.id_cliente !== selectedClienteId));
       setShowModal(false);
       setSuccessMessage("Cliente deletado com sucesso!");
       setShowSuccessModal(true);
+      setErrorMessage(""); // Limpa a mensagem de erro em caso de sucesso
       setTimeout(() => {
         setShowSuccessModal(false);
       }, 3000);
     } catch (err) {
-      console.log(err);
-      setShowModal(false);
+      if (err.response && err.response.status === 400) {
+        // Erro específico de referência em pedido
+        setErrorMessage(err.response.data.message); // Define a mensagem retornada pela API
+      } else {
+        // Outro erro
+        setErrorMessage("Erro ao deletar cliente. Tente novamente.");
+      }
+    
     }
   };
-
+  
   const handleCancel = () => {
     setShowModal(false);
   };
@@ -120,6 +128,7 @@ const ReadCliente = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const handleClose = () => setShowModal(false);
 
   return (
     <div>
@@ -218,18 +227,31 @@ const ReadCliente = () => {
           </div>
         )}
       </div>
+
       {showModal && (
-          <div className="modal" >
-            <div className="modal-content">
-              <h2>Confirmar Exclusão</h2>
-              <p>Tem certeza que deseja excluir o cliente?</p>
-              <div className="modal-div"> 
-              <button className="modal-button" onClick={handleDelete}>Sim</button>
-              <button className="modal-button" onClick={handleCancel}>Não</button>
-              </div> 
-            </div>
-          </div>
-        )}
+  <div className="modal">
+    <div className="modal-content">
+      <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o cliente?</p>
+      
+      {/* Mensagem de erro, que aparecerá caso haja algum erro */}
+      {errorMessage && (
+  <div className="error-message show">
+    {errorMessage}
+  </div>
+)}
+
+
+      <div className="modal-div">
+        <button className="modal-button" onClick={handleDelete}>Sim</button>
+        <button className="modal-button" onClick={handleCancel}>Não</button>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 };

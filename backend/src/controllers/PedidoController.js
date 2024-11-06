@@ -206,7 +206,7 @@ import db from "../config/db.js";
       SELECT * 
       FROM pedido 
       WHERE id_pedido = ? 
-        AND tipo <> 3 
+        AND tipo <> 4 
         AND status <> 1
     `;
   

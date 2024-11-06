@@ -50,6 +50,7 @@ const ReadProduto = () => {
   const handleDeleteClick = (id) => {
     setSelectedProdutoId(id);
     setShowModal(true);
+    setErrorMessage(" ");
   };
 
   const showSuccess = (message) => {
@@ -69,10 +70,16 @@ const ReadProduto = () => {
       setShowModal(false);
     } catch (err) {
       console.log(err);
-      setShowModal(false);
+      
+      // Captura a mensagem de erro enviada pelo backend, caso exista
+      const errorMessage = err.response?.data?.message || "Erro ao deletar o produto";
+      setErrorMessage(errorMessage);
+      
+      // Exibe o modal com a mensagem de erro
+      setShowModal(true);
     }
   };
-
+  
   const handleCancel = () => {
     setShowModal(false);
   };
@@ -145,6 +152,10 @@ const ReadProduto = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para a mensagem de erro
+  
+  const handleClose = () => setShowModal(false);
 
   return (
     <div>
@@ -250,16 +261,6 @@ const ReadProduto = () => {
           )}
         </div>
 
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Confirmar Exclusão</h2>
-              <p>Tem certeza que deseja excluir o item?</p>
-              <button className="modal-button" onClick={handleDelete}>Sim</button>
-              <button className="modal-button" onClick={handleCancel}>Não</button>
-            </div>
-          </div>
-        )}
 
         {showSuccessModal && (
           <div className="success-modal">
@@ -268,7 +269,30 @@ const ReadProduto = () => {
             </div>
           </div>
         )}
+        
       </div>
+      {showModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o cliente?</p>
+      
+      {/* Mensagem de erro, que aparecerá caso haja algum erro */}
+      {errorMessage && (
+  <div className="error-message show">
+    {errorMessage}
+  </div>
+)}
+
+
+      <div className="modal-div">
+        <button className="modal-button" onClick={handleDelete}>Sim</button>
+        <button className="modal-button" onClick={handleCancel}>Não</button>
+      </div>
+    </div>
+  </div>
+)}
     </div>   
   );
 };

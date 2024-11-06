@@ -26,6 +26,12 @@ const Categoria = () => {
   const itemsPerPage = 20;
   const [isHelpCategoriaOpen, setIsHelpCategoriaOpen] = useState(false); // Estado para o modal de ajuda
 
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+
+  const handleClose = () => setShowModal(false);
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     const fetchAllCategorias = async () => {
       try {
@@ -44,9 +50,9 @@ const Categoria = () => {
 
   const handleDelete = async () => {
     try {
-      if (categoriaIdToDelete !== null) {
-        await axios.delete(`http://localhost:8800/categoria/${categoriaIdToDelete}`);
-        setCategoria(categoria.filter(c => c.id_categoria !== categoriaIdToDelete));
+      if (selectedCategoriaId !== null) {
+        await axios.delete(`http://localhost:8800/categoria/${selectedCategoriaId}`);
+        setCategoria(categoria.filter(c => c.id_categoria !== selectedCategoriaId));
         setShowDeleteModal(false);
         setCategoriaIdToDelete(null);
         showSuccess("Categoria excluída com sucesso!");
@@ -54,9 +60,9 @@ const Categoria = () => {
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        setDeleteErrorMessage(err.response.data.message);
+        setErrorMessage(err.response.data.message);
       } else {
-        setDeleteErrorMessage("Erro ao tentar deletar a categoria.");
+        setErrorMessage("Erro ao tentar deletar a categoria.");
       }
     }
   };
@@ -109,7 +115,12 @@ const Categoria = () => {
       setShowSuccessModal(false);
     }, 1200);
   };
-
+  const [selectedCategoriaId, setSelectedCategoriaId] = useState(null);
+  const handleDeleteClick = (id) => {
+    setSelectedCategoriaId(id);
+    setShowModal(true);
+    setErrorMessage(" ");
+  };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Resete para a página 1 ao fazer uma nova busca
@@ -191,7 +202,7 @@ const Categoria = () => {
                     <div className="action-icons">
                       <span
                         className="action-icon delete"
-                        onClick={() => openDeleteModal(categoria.id_categoria)}
+                        onClick={() => handleDeleteClick(categoria.id_categoria)}
                         title="Deletar"
                       >
                         <DeleteIcon />
@@ -225,19 +236,6 @@ const Categoria = () => {
           )}
         </div>
 
-        {/* Modal de confirmação de exclusão */}
-        {showDeleteModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Confirmar Exclusão</h2>
-              <p>Tem certeza que deseja excluir a categoria?</p>
-              <button className="modal-button" onClick={handleDelete}>Sim</button>
-              <button className="modal-button" onClick={() => setShowDeleteModal(false)}>Não</button>
-              {deleteErrorMessage && <p className="error-message">{deleteErrorMessage}</p>}
-            </div>
-          </div>
-        )}
-
         {/* Modal de sucesso */}
         {showSuccessModal && (
           <div className="success-modal">
@@ -249,6 +247,29 @@ const Categoria = () => {
           </div>
         )}
       </div>
+
+      {showModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir o usuário</p>
+      
+      {/* Mensagem de erro, que aparecerá caso haja algum erro */}
+      {errorMessage && (
+  <div className="error-message show">
+    {errorMessage}
+  </div>
+)}
+
+
+      <div className="modal-div">
+        <button className="modal-button" onClick={handleDelete}>Sim</button>
+        <button className="modal-button" onClick={handleCancel}>Não</button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

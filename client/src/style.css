@@ -537,34 +537,7 @@ img {
 body.modal-open {
   overflow: hidden; /* Impede o scroll da página */
 }
-.modal {
-  display: flex;
-  align-items: center; /* Centraliza verticalmente o conteúdo */
-  justify-content: center; /* Centraliza horizontalmente o conteúdo */
-  z-index: 1000; /* Garante que o modal esteja acima do conteúdo */
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com opacidade de 50% */
-  position: fixed; /* Fixa o modal na tela, não na página */
-  top: 0; /* Define o início da posição para o topo */
-  left: 0; /* Define o início da posição para a esquerda */
-  width: 100%; /* Cobre toda a largura da tela */
-  height: 100%; /* Cobre toda a altura da tela */
-}
 
-.modal-content {
-  background-color: var(--fundobranco); /* Cor de fundo do conteúdo do modal */
-  padding: 50px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  max-width: 90%; /* Define uma largura máxima */
-  width: 50%; /* Define uma largura padrão */
-  animation-name: animatetop;
-  animation-duration: 0.4s;
-
-  display: flex; /* Ativa o layout flex */
-  flex-direction: column; /* Organiza os itens em coluna */
-  align-items: center; /* Alinha os itens horizontalmente ao centro */
-  justify-content: center; /* Alinha os itens verticalmente ao centro (opcional, se houver espaço) */
-}
 
 
 
@@ -583,58 +556,133 @@ body.modal-open {
   background-color: #5cb85c;
   color: white;
 }
+.modal {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente o conteúdo */
+  justify-content: center; /* Centraliza horizontalmente o conteúdo */
+  z-index: 1000; /* Garante que o modal esteja acima do conteúdo */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com opacidade de 50% */
+  position: fixed; /* Fixa o modal na tela, não na página */
+  top: 0; /* Define o início da posição para o topo */
+  left: 0; /* Define o início da posição para a esquerda */
+  width: 100%; /* Cobre toda a largura da tela */
+  height: 100%; /* Cobre toda a altura da tela */
+}
 
 /* Modal Content */
 .modal-content {
   position: relative;
   background-color: #fefefe;
   margin: auto;
-  padding: 0;
+  padding: 20px;
+  padding-top: 20px;
   border: 1px solid #888;
-  width: 40%;
-  height: 30%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 30%;
+
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: animatetop;
   animation-duration: 0.4s;
  
+  flex-direction: column;
+  max-width: 90vw; /* Limita a largura máxima */
 }
 .-modal-open .fixed,
 .-modal-open .content {
   overflow-y:scroll;
 }
+
+@media (max-width: 600px) {
+  .modal-content {
+    width: 80%; /* Reduz a largura do modal em telas menores */
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-content {
+    width: 90%; /* Ajusta ainda mais para telas muito pequenas */
+    padding: 15px; /* Reduz o preenchimento para economizar espaço */
+  }
+}
+.modal-div {
+  display: flex;
+  justify-content: center; /* Centraliza os botões horizontalmente */
+  align-items: center; /* Centraliza os botões verticalmente */
+  gap: 1rem; /* Espaçamento entre os botões */
+  flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha, se necessário */
+  max-width: 100%; /* Evita que o contêiner ultrapasse a largura da tela */
+}
+
+.modal-button {
+  border: none;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  cursor: pointer;
+  margin-top: 2rem;
+  min-width: 6.25rem; /* Tamanho mínimo para os botões (100px equivalente a 6.25rem) */
+}
+
+/* Estilos adicionais para telas menores */
+@media (max-width: 37.5rem) { /* 600px equivalente a 37.5rem */
+  .modal-div {
+    flex-direction: column; /* Coloca os botões em uma coluna em telas menores */
+    gap: 1.5rem; /* Aumenta o espaço entre os botões em telas menores */
+  }
+  
+  .modal-button {
+    width: 100%; /* Faz com que os botões ocupem a largura total do contêiner */
+  }
+}
+
+
+.error-message {
+  font-style: italic;
+  font-size: 0.8125rem; /* 13px equivalente a 0.8125rem (assumindo 16px como base) */
+  color: red;
+  height: 1.25rem; /* Altura proporcional ao tamanho da fonte */
+  visibility: hidden; /* Oculta a mensagem por padrão */
+  max-width: 100%; /* Garante que a largura seja responsiva */
+}
+
+.error-message.show {
+  visibility: visible; /* Torna visível apenas quando houver erro */
+}
+
+@media (max-width: 48rem) { /* 768px equivalente a 48rem */
+  .error-message {
+    font-size: 0.75rem; /* Tamanho de fonte um pouco menor em telas pequenas */
+    height: 1rem; /* Ajusta a altura para telas menores */
+  }
+}
+
+@media (max-width: 37.5rem) { /* 600px equivalente a 37.5rem */
+  .error-message {
+    font-size: 0.6875rem; /* Reduz ainda mais o tamanho da fonte para telas pequenas */
+    height: 0.875rem; /* Reduz a altura da área da mensagem */
+  }
+}
+
+
 /* Add Animation */
 @keyframes animatetop {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
 }
-
 .close-modal {
   background-color: var(--vermelhointenso);
   color: var(--branco);
   border: none;
-  padding: 10px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 50%; /* Deixa o botão circular */
   position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.modal-div {
-  display: flex; /* Altera para flex para permitir layout flexível */
-  justify-content: center; /* Centraliza os botões horizontalmente, opcional */
-  flex-wrap: wrap; /* Permite que os botões se ajustem em várias linhas, se necessário */
-}
-
-.modal-button {
-  margin: 10px; /* Espaço entre os botões */
-  padding: 10px; /* Espaço interno do botão */
-  border: none; /* Remove borda padrão */
-  border-radius: 5px; /* Arredonda os cantos */
-  background-color: var(--amarelologo); /* Cor de fundo do botão */
-  color: var(--pretoletra); /* Cor do texto do botão */
-  cursor: pointer; /* Muda o cursor ao passar o mouse */
-  width: 60%; /* Largura do botão */
+  top: -0.8rem; /* Ajusta a posição vertical */
+  right: 0.5rem; /* Ajusta a posição horizontal */
+  width: 24px; /* Define uma largura menor */
+  height: 24px; /* Define uma altura menor */
+  display: flex; /* Centraliza o conteúdo */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  font-size: 14px; /* Ajusta o tamanho da fonte */
+  padding: 0; /* Remove o padding para evitar aumentar o tamanho */
 }
 
 .nav-item {
@@ -1274,11 +1322,7 @@ p#erro {
   font-size: 18px;
   color:#e01f1f;
 }
-.error-message {
-  font-style:italic;
-  font-size: 16;
-  color: red; /* Define a cor do texto como vermelho */
-}
+
 .form-container {
   margin-top: 50px;
   transform: scale(0.9); /* Ajuste o valor conforme o necessário */

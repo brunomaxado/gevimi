@@ -59,7 +59,7 @@ export const addCliente = (req, res) => {
 
 export const deleteCliente = (req, res) => {
   // Verifica se o cliente está sendo referenciado em pedidos
-  const checkQuery = "SELECT * FROM pedido WHERE id_cliente = ?";
+  const checkQuery = "SELECT * FROM pedido WHERE fk_id_cliente = ?";
 
   db.query(checkQuery, [req.params.id_cliente], (err, data) => {
     if (err) return res.status(500).json(err);
