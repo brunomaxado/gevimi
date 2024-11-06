@@ -902,10 +902,11 @@ div.auth button {
   }
   
   .order-item-name {
-    max-width: 200px; /* Limita a largura do nome do item */
+    max-width: 100%; /* Limita a largura do nome do item */
     overflow: hidden; /* Oculta o texto que ultrapassa a largura */
     white-space: nowrap; /* Evita que o texto quebre para a linha seguinte */
     text-overflow: ellipsis; /* Adiciona reticências (...) para texto truncado */
+   
   }
   
   .order-item-controls {

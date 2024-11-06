@@ -33,7 +33,10 @@ const ReadPedido = () => {
     const fetchAllPedidos = async () => {
       try {
         const res = await axios.get("http://localhost:8800/pedido");
-        setPedidos(res.data);
+        const sortedPedidos = res.data.sort((a, b) => new Date(b.data_realizado) - new Date(a.data_realizado));
+      
+        setPedidos(sortedPedidos);
+       
       } catch (err) {
         console.log(err);
       }
@@ -224,22 +227,16 @@ const ReadPedido = () => {
   // Função para organizar os dados com base na coluna
   const sortData = (key) => {
     let sortedPedidos = [...pedidos];
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
-      sortedPedidos.reverse();
-      setSortConfig({ key, direction: "desc" });
-    } else {
-      sortedPedidos.sort((a, b) => {
-        if (key === "cliente") {
-          return getClienteNome(a.fk_id_cliente).localeCompare(getClienteNome(b.fk_id_cliente));
-        } else if (key === "data_para_entregar" || key === "data_finalizado") {
-          return new Date(a[key]) - new Date(b[key]);
-        }
-        return 0;
-      });
-      setSortConfig({ key, direction: "asc" });
+    if (key === "data_realizado" || !key) {
+      sortedPedidos.sort((a, b) => new Date(b.data_realizado) - new Date(a.data_realizado));
+    } else if (key === "cliente") {
+      sortedPedidos.sort((a, b) => getClienteNome(a.fk_id_cliente).localeCompare(getClienteNome(b.fk_id_cliente)));
+    } else if (key === "data_para_entregar" || key === "data_finalizado") {
+      sortedPedidos.sort((a, b) => new Date(a[key]) - new Date(b[key]));
     }
     setPedidos(sortedPedidos);
   };
+  
 
   // Função de mudança de página
   const paginate = (pageNumber) => {
