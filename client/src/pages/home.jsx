@@ -254,10 +254,11 @@ const handleRowClass = (data_para_entregar) => {
 
   if (entregaDate < now) {
     return "row-overdue";
-  } else if (entregaDate.getDate() === now.getDate() && entregaDate.getMonth() === now.getMonth() && entregaDate.getFullYear() === now.getFullYear()) {
+  } else if (entregaDate - now <= 3600000) {return "row-soon";
+  } 
+    else if (entregaDate.getDate() === now.getDate() && entregaDate.getMonth() === now.getMonth() && entregaDate.getFullYear() === now.getFullYear()) {
+    
     return "row-today";
-  } else if (entregaDate - now <= 3600000) {
-    return "row-soon";
   }
   return "";
 };
@@ -289,7 +290,7 @@ useEffect(() => {
 
   return (
     <div>
-  <div> <h1>Pedidos</h1> 
+  <div> <h1>Painel Entregas</h1> 
 
 <div className="tabela">
   
