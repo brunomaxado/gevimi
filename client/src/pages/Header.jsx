@@ -32,8 +32,8 @@ const Header = () => {
   
   {/* Conteúdo do dropdown */}
   <div className="dropdown-content-user">
-    <p>Alterar senha</p>
-    <p>Sair</p>
+    <p>  <Link to="/alterarsenha">Alterar Senha</Link></p>
+    <p onClick={handleLogout}>Sair</p>
   </div>
 </div>
 
@@ -43,7 +43,7 @@ const Header = () => {
                   <spam onClick={handleLogout} className="submenu-spam" style={spamStyles}>Sair</spam>
                 </li>
                 <li className="submenu-item">
-                  <Link to="/alterar-senha" className="submenu-link" style={linkStyles}>Alterar Senha</Link>
+                  <Link to="/alterar-senha" className="submenu-link" style={linkStyles}>Alterar Senhssa</Link>
                 </li>
               </ul>
             )}
