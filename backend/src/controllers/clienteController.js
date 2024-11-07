@@ -36,24 +36,76 @@ export const getCliente = (req, res) => {
 };
 
 export const addCliente = (req, res) => {
-  const q =
-    "INSERT INTO cliente(`nome`, `cpf`, `celular`, `cep`, `logradouro`, `numero`, `cidade`, `bairro`, `observacao`) VALUES (?)";
+  const qCheckCpf = "SELECT * FROM cliente WHERE cpf = ?"; // Consulta para verificar se o CPF já existe
 
-  const values = [
-    req.body.nome,
-    req.body.cpf,
-    req.body.celular,
-    req.body.cep,
-    req.body.logradouro,
-    req.body.numero,
-    req.body.cidade,
-    req.body.bairro,
-    req.body.observacao, // Novo campo
-  ];
-
-  db.query(q, [values], (err, data) => {
+  db.query(qCheckCpf, [req.body.cpf], (err, data) => {
     if (err) return res.status(500).json(err);
-    return res.status(201).json({ message: "Cliente foi criado." });
+
+    if (data.length > 0) {
+      // Caso o CPF já esteja cadastrado
+      return res.status(400).json({ message: "Este CPF já está cadastrado." });
+    }
+
+    // Se o CPF não estiver cadastrado, realiza a inserção
+    const q =
+      "INSERT INTO cliente(`nome`, `cpf`, `celular`, `cep`, `logradouro`, `numero`, `cidade`, `bairro`, `observacao`) VALUES (?)";
+
+    const values = [
+      req.body.nome,
+      req.body.cpf,
+      req.body.celular,
+      req.body.cep,
+      req.body.logradouro,
+      req.body.numero,
+      req.body.cidade,
+      req.body.bairro,
+      req.body.observacao, // Novo campo
+    ];
+
+    db.query(q, [values], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(201).json({ message: "Cliente foi criado." });
+    });
+  });
+};
+
+export const updateCliente = (req, res) => {
+  const clienteId = req.params.id_cliente;
+  const qCheckCpf = "SELECT * FROM cliente WHERE cpf = ? AND id_cliente != ?"; // Verifica se o CPF já está cadastrado, excluindo o próprio cliente sendo editado
+
+  db.query(qCheckCpf, [req.body.cpf, clienteId], (err, data) => {
+    if (err) return res.status(500).json(err);
+
+    if (data.length > 0) {
+      // Caso o CPF já esteja cadastrado e não seja o mesmo cliente
+      return res.status(400).json({ message: "Este CPF já está cadastrado." });
+    }
+
+    // Se o CPF não estiver cadastrado ou for o mesmo do cliente sendo editado, realiza a atualização
+    const q =
+      "UPDATE cliente SET `nome`=?, `cpf`=?, `celular`=?, `cep`=?, `logradouro`=?, `numero`=?, `cidade`=?, `bairro`=?, `observacao`=? WHERE `id_cliente` = ?";
+
+    const values = [
+      req.body.nome,
+      req.body.cpf,
+      req.body.celular,
+      req.body.cep,
+      req.body.logradouro,
+      req.body.numero,
+      req.body.cidade,
+      req.body.bairro,
+      req.body.observacao, // Novo campo
+    ];
+
+    db.query(q, [...values, clienteId], (err, data) => {
+      if (err) return res.status(500).json(err);
+
+      if (data.affectedRows === 0) {
+        return res.status(404).json({ message: "Cliente não encontrado" });
+      }
+
+      return res.status(200).json({ message: "Cliente foi atualizado." });
+    });
   });
 };
 
@@ -87,30 +139,3 @@ export const deleteCliente = (req, res) => {
   });
 };
 
-export const updateCliente = (req, res) => {
-  const clienteId = req.params.id_cliente;
-  const q =
-    "UPDATE cliente SET `nome`=?, `cpf`=?, `celular`=?, `cep`=?, `logradouro`=?, `numero`=?, `cidade`=?, `bairro`=?, `observacao`=? WHERE `id_cliente` = ?";
-
-  const values = [
-    req.body.nome,
-    req.body.cpf,
-    req.body.celular,
-    req.body.cep,
-    req.body.logradouro,
-    req.body.numero,
-    req.body.cidade,
-    req.body.bairro,
-    req.body.observacao, // Novo campo
-  ];
-
-  db.query(q, [...values, clienteId], (err, data) => {
-    if (err) return res.status(500).json(err);
-
-    if (data.affectedRows === 0) {
-      return res.status(404).json({ message: "Cliente não encontrado" });
-    }
-
-    return res.status(200).json({ message: "Cliente foi atualizado." });
-  });
-};

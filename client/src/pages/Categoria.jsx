@@ -249,7 +249,16 @@ const Categoria = () => {
       {showAddModal && (
         <div className="modal">
           <div className="modal-content">
-            <button className="close-modal" onClick={() => setShowAddModal(false)}>X</button>
+          <button 
+  className="close-modal" 
+  onClick={() => {
+    setErrorMessage(''); // Reseta o erro
+    setShowAddModal(false); // Fecha o modal
+  }}
+>
+  X
+</button>
+
             <h2>Nova Categoria</h2>
             <label>Nome: </label>
             <input
@@ -273,7 +282,14 @@ const Categoria = () => {
       {showEditModal && (
         <div className="modal">
           <div className="modal-content">
-            <button className="close-modal" onClick={() => setShowEditModal(false)}>X</button>
+          
+            <button className="close-modal" onClick={() => {
+  setShowEditModal(false);
+  setErrorMessage(null); // Zera o erro diretamente ao fechar o modal
+}}>
+  X
+</button>
+
             <h2>Editar Categoria</h2>
             <label>Nome: </label>
             <input

@@ -1724,6 +1724,7 @@ option:not(:first-of-type) {
 .navigation ul li a {
   position: relative;
   display: flex;
+  height: 2.7rem;
   width: 100%;
   text-decoration: none;
   color: var(--branco);
@@ -1983,5 +1984,23 @@ option:not(:first-of-type) {
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Efeito ao focar */
   }
   
-
+  .dropdown-user {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content-user {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+  
+  .dropdown-user:hover .dropdown-content-user {
+    display: block;
+  }
+  
   

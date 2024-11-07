@@ -8,7 +8,7 @@ const EditarUsuario = () => {
     login: "",
     administrador: "0",
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -70,6 +70,7 @@ const EditarUsuario = () => {
   const handlePasswordChange = async () => {
     if (!novaSenha) {
       setError("A senha não pode estar vazia.");
+      console.log("senha vazia");
       return;
     }
   
@@ -116,9 +117,17 @@ const EditarUsuario = () => {
       <div className="form-container-usuario">
         <form onSubmit={handleSubmit}>
          
-        <button className="editar-senha" type="button" onClick={() => setShowPasswordModal(true)}>
-            Nova Senha
-          </button>
+        <button
+  className="editar-senha"
+  type="button"
+  onClick={() => {
+    setError(""); // Limpa qualquer erro anterior ao abrir o modal
+    setShowPasswordModal(true);
+  }}
+>
+  Nova Senha
+</button>
+
           <div className="form-group">
             <label>Nome:</label>
             <input
@@ -180,6 +189,7 @@ const EditarUsuario = () => {
         <div className="modal">
           <div className="modal-content">
             <button className="close-modal" onClick={() => setShowPasswordModal(false)}>X</button>
+        
             <h2>Atualizar Senha</h2>
             <label>Senha: </label>
             <input
@@ -189,12 +199,21 @@ const EditarUsuario = () => {
                 onChange={(e) => setNovaSenha(e.target.value)}
                 required
               />
-          
+           {error && <p style={{ color: "red" }}>{error}</p>}
             <div className="modal-actions">
               <button className="modal-button" onClick={() => setShowPasswordModal(false)}>Cancelar</button>
-              <button className="modal-button" onClick={handlePasswordChange}>Salvar</button>
+              <button
+  className="modal-button"
+  onClick={() => {
+    setError(""); // Limpa qualquer erro anterior para exibir apenas o atual
+    handlePasswordChange(); // Chama a função que verifica e atualiza a senha
+  }}
+>
+  Salvar
+</button>
+
             </div>
-          </div>
+                     </div>
         </div>
       )}
   {showSuccessModal && (

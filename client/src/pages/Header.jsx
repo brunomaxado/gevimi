@@ -23,14 +23,19 @@ const Header = () => {
             </Link>
           </li>
 
-          <li 
-            className="nav-item"
-            onClick={() => setIsMenuOpen(!isMenuOpen)} // Toggle submenu
-          >
-            <span className="icon">
-              <ion-icon name="people-circle-outline"></ion-icon>
-            </span>
-            <span className="title">Usuário: |{currentUser?.nome}|</span>
+
+
+          <li className="nav-item">
+          <div className='dropdown-user'> 
+  <span className="icon"><ion-icon name="people-circle-outline"></ion-icon></span>
+  <span className="title">{currentUser?.nome}</span>
+  
+  {/* Conteúdo do dropdown */}
+  <div className="dropdown-content-user">
+    <p>  <Link to="/alterarsenha">Alterar Senha</Link></p>
+    <p onClick={handleLogout}>Sair</p>
+  </div>
+</div>
 
             {isMenuOpen && (
               <ul className="submenu" style={submenuStyles}>
@@ -38,7 +43,7 @@ const Header = () => {
                   <spam onClick={handleLogout} className="submenu-spam" style={spamStyles}>Sair</spam>
                 </li>
                 <li className="submenu-item">
-                  <Link to="/alterar-senha" className="submenu-link" style={linkStyles}>Alterar Senha</Link>
+                  <Link to="/alterar-senha" className="submenu-link" style={linkStyles}>Alterar Senhssa</Link>
                 </li>
               </ul>
             )}

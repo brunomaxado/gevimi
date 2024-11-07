@@ -37,21 +37,28 @@ export const getCategoria = (req, res) => {
 };
 
 export const addCategoria = (req, res) => {
-  const q = "INSERT INTO categoria(`nome`) VALUES (?)";
-  
+  const qCheck = "SELECT * FROM categoria WHERE nome = ?";
   const values = [req.body.nome];
 
-  db.query(q, [values], (err, data) => {
+  // Verifica se o nome da categoria já está sendo usado
+  db.query(qCheck, values, (err, data) => {
     if (err) return res.status(500).json(err);
-    return res.status(201).json("Categoria foi criada.");
+
+    if (data.length > 0) {
+      return res.status(400).json({ message: "O nome da categoria já está em uso." });
+    }
+
+    const q = "INSERT INTO categoria(`nome`) VALUES (?)";
+
+    db.query(q, [values], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(201).json("Categoria foi criada.");
+    });
   });
 };
-
 export const deleteCategoria = (req, res) => {
-  // Verifica se a categoria está sendo usada em produtos
   const { id_categoria } = req.params;
 
-  // Verifica se o ID da categoria está presente
   if (!id_categoria) {
     return res.status(400).json({ message: "ID da categoria não fornecido." });
   }
@@ -67,7 +74,6 @@ export const deleteCategoria = (req, res) => {
       return res.status(500).json(err);
     }
 
-    // Se a categoria estiver sendo referenciada em produtos, retorna erro
     if (data.length > 0) {
       console.log("Categoria referenciada em produtos, não pode ser deletada.");
       return res.status(400).json({ message: "Não é possível deletar a categoria, pois ela está sendo referenciada em um ou mais produtos." });
@@ -82,7 +88,6 @@ export const deleteCategoria = (req, res) => {
         return res.status(500).json(err);
       }
 
-      // Verifica se alguma linha foi afetada (ou seja, se a categoria foi deletada)
       if (result.affectedRows === 0) {
         console.log("Nenhuma categoria encontrada com esse ID:", id_categoria);
         return res.status(404).json({ message: "Categoria não encontrada." });
@@ -93,18 +98,44 @@ export const deleteCategoria = (req, res) => {
     });
   });
 };
-
-
-
 export const updateCategoria = (req, res) => {
   const categoriaId = req.params.id_categoria;
-  const q = "UPDATE categoria SET `nome`=? WHERE `id_categoria` = ?";
+  const newNome = req.body.nome;
 
-  const values = [req.body.nome];
-
-  db.query(q, [...values, categoriaId], (err, data) => {
+  // Verifica se o novo nome é o mesmo do nome atual da categoria
+  const qCurrentName = "SELECT nome FROM categoria WHERE id_categoria = ?";
+  db.query(qCurrentName, [categoriaId], (err, result) => {
     if (err) return res.status(500).json(err);
-    return res.status(200).json("Categoria foi atualizada.");
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Categoria não encontrada." });
+    }
+
+    const currentName = result[0].nome;
+
+    // Se o nome não mudou, retorna um erro
+    if (currentName === newNome) {
+      return res.status(400).json({ message: "O nome da categoria já é o mesmo." });
+    }
+
+    // Verifica se o nome da categoria editada já está em uso por outra categoria
+    const qCheck = "SELECT * FROM categoria WHERE nome = ? AND id_categoria != ?";
+    const values = [newNome, categoriaId];
+
+    db.query(qCheck, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+
+      if (data.length > 0) {
+        return res.status(400).json({ message: "O nome da categoria já está em uso." });
+      }
+
+      // Atualiza o nome da categoria
+      const qUpdate = "UPDATE categoria SET `nome`=? WHERE `id_categoria` = ?";
+      db.query(qUpdate, [newNome, categoriaId], (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Categoria foi atualizada.");
+      });
+    });
   });
 };
 

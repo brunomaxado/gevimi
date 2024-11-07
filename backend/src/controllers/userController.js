@@ -1,24 +1,22 @@
 import  db  from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
 export const register = (req, res) => {
   const q = "SELECT * FROM usuario WHERE login = ?";
 
   db.query(q, [req.body.login], (err, data) => {
-    if (err) return res.status(500).json(err);
-    if (data.length) return res.status(409).json("User already exists!");
+    if (err) return res.status(500).json({ message: "Erro interno do servidor." });
+    if (data.length) return res.status(409).json({ message: "Login já cadastrado!" });
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.senha, salt);
 
-    // Inclui o campo 'administrador' no insert
     const q = "INSERT INTO usuario(`nome`, `login`, `senha`, `administrador`) VALUES (?)";
-    const values = [req.body.nome, req.body.login, hash, req.body.administrador]; // Incluindo o valor para administrador
+    const values = [req.body.nome, req.body.login, hash, req.body.administrador];
 
     db.query(q, [values], (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.status(200).json("Usuário Criado.");
+      if (err) return res.status(500).json({ message: "Erro ao criar o usuário." });
+      return res.status(200).json({ message: "Usuário Criado." });
     });
   });
 };
@@ -196,6 +194,32 @@ export const register = (req, res) => {
       }
   
       return res.status(200).json("Usuário atualizado com sucesso.");
+    });
+  };
+  
+  export const updateSenha = (req, res) => {
+    const { id_usuario, senhaNova } = req.body; // Obtém o id do usuário e a nova senha
+  
+    if (!senhaNova) {
+      return res.status(400).json("A nova senha é obrigatória.");
+    }
+  
+    // Gera o hash da nova senha
+    const salt = bcrypt.genSaltSync(10);
+    const hashSenhaNova = bcrypt.hashSync(senhaNova, salt);
+  
+    // Consulta SQL para atualizar a senha do usuário
+    const updateQuery = "UPDATE usuario SET senha = ? WHERE id_usuario = ?";
+  
+    db.query(updateQuery, [hashSenhaNova, id_usuario], (err, result) => {
+      if (err) return res.status(500).json({ message: "Erro ao atualizar senha", error: err });
+  
+      // Verifica se alguma linha foi afetada (se o usuário foi encontrado e a senha foi atualizada)
+      if (result.affectedRows === 0) {
+        return res.status(404).json("Usuário não encontrado.");
+      }
+  
+      return res.status(200).json("Senha atualizada com sucesso.");
     });
   };
   

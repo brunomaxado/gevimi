@@ -472,10 +472,10 @@ const handleFreteChange = (e) => {
   </div>
 </div>
 
+{error && <p style={{ color: "red" }}>{error}</p>}
 
       <button class="enviar-pedido" onClick={handleClick}>Salvar</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
+  
        
       <ModalCliente
   isOpen={showModal}  // Controla se o modal deve ser exibido
