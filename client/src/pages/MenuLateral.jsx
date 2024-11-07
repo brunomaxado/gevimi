@@ -111,12 +111,6 @@ const Menu = () => {
                     </Link>
                 </li>
                 <li className="list">
-                    <Link to="#">
-                        <span className="icon"><ion-icon name="help-circle-outline"></ion-icon></span>
-                        <span className="title">Ajuda</span>
-                    </Link>
-                </li>
-                <li className="list">
                     <Link to="/" onClick={() => { logout(); handleLinkClick(); }}>
                         <span className="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                         <span className="title">Sair</span>
