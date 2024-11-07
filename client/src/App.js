@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import readProduto from "./pages/readProduto";
 import Header from "./pages/Header";
 import Menu from "./pages/MenuLateral";
-import Ajuda from ".pages/MenuAjuda";
+import Ajuda from "./pages/Ajuda";
 import Produto from "./pages/Produto";
 import "./style.css";
 import GerenciarProduto from "./pages/editarProduto";
