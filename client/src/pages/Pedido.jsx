@@ -3,8 +3,6 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import ModalCliente from "../components/modalCliente";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
-import HelpPedido from "../components/modalHelpPedido";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import More from '@mui/icons-material/Add';
 
 
@@ -40,7 +38,6 @@ const Pedido = () => {
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // Para a mensagem de sucesso
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [isHelpPedidoOpen, setIsHelpPedidoOpen] = useState(false); // Estado para o modal de ajuda
 
   const calcularPrecoTotal = (itens) => {
     return itens.reduce((total, item) => {
@@ -275,17 +272,7 @@ const handleFreteChange = (e) => {
   console.log(precoTotal);
   return (
     <div>
-      <div className="jogardivpdireita"> 
-      <div className="d-flex flex-row-reverse">
-        <button className="btn" onClick={() => setIsHelpPedidoOpen(true)}>
-          <HelpOutlineIcon />
-        </button>
-      </div>
-      </div>
-      <HelpPedido
-        isOpen={isHelpPedidoOpen}
-        onRequestClose={() => setIsHelpPedidoOpen(false)}
-      />  
+      
       <h1>NOVO PEDIDO</h1>
       
       <form className="form-container-pedido">
