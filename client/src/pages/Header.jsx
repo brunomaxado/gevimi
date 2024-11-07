@@ -24,9 +24,16 @@ const Header = () => {
 
 
           <li className="nav-item">
-
-          <span className="icon"><ion-icon name="people-circle-outline"></ion-icon></span>
-          <span className="title">Usuário: |{currentUser?.nome}|</span>
+          <div className='dropdown-user'> 
+  <span className="icon"><ion-icon name="people-circle-outline"></ion-icon></span>
+  <span className="title">{currentUser?.nome}</span>
+  
+  {/* Conteúdo do dropdown */}
+  <div className="dropdown-content-user">
+    <p>Alterar senha</p>
+    <p>Sair</p>
+  </div>
+</div>
 
           </li>
 

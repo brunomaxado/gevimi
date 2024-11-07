@@ -41,19 +41,31 @@ export const getProduto = (req, res) => {
 };
 
 export const addProduto = (req, res) => {
-  const q =
-    "INSERT INTO produto(`nome`, `descricao`,  `preco_unitario`,  `fk_id_categoria`) VALUES (?)";
-
-  const values = [
-    req.body.nome,
-    req.body.descricao,
-    req.body.preco_unitario,
-    req.body.fk_id_categoria,
-  ];
-
-  db.query(q, [values], (err, data) => {
+  // Primeiro, verifica se o nome já existe
+  const checkQuery = "SELECT * FROM produto WHERE nome = ?";
+  
+  db.query(checkQuery, [req.body.nome], (err, result) => {
     if (err) return res.status(500).json(err);
-    return res.json("Produto foi criado.");
+    if (result.length > 0) {
+      // Se encontrar um produto com o mesmo nome, retorna uma mensagem de erro específica
+      return res.status(400).json({ message: "Esse nome já está sendo usado." });
+    }
+    
+    // Caso o nome não exista, prossegue para inserir o novo produto
+    const insertQuery =
+      "INSERT INTO produto(`nome`, `descricao`, `preco_unitario`, `fk_id_categoria`) VALUES (?)";
+      
+    const values = [
+      req.body.nome,
+      req.body.descricao,
+      req.body.preco_unitario,
+      req.body.fk_id_categoria,
+    ];
+
+    db.query(insertQuery, [values], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json("Produto foi criado.");
+    });
   });
 };
 
@@ -88,18 +100,31 @@ export const deleteProduto = (req, res) => {
 
 export const updateProduto = (req, res) => {
   const produtoId = req.params.id_produto;
-  const q =
-    "UPDATE produto SET `nome`=?, `descricao`=?, `preco_unitario`=?, `fk_id_categoria`=? WHERE `id_produto` = ?";
+  const { nome, descricao, preco_unitario, fk_id_categoria } = req.body;
 
-  const values = [
-    req.body.nome,
-    req.body.descricao,
-    req.body.preco_unitario,
-    req.body.fk_id_categoria,
-  ];
+  // Passo 1: Verificar se já existe um produto com o mesmo nome, excluindo o produto atual
+  const checkNomeQuery =
+    "SELECT * FROM produto WHERE nome = ? AND id_produto != ?";
 
-  db.query(q, [...values, produtoId], (err, data) => {
-    if (err) return res.status(500).json(err);
-    return res.json("Produto foi atualizado.");
+  db.query(checkNomeQuery, [nome, produtoId], (err, result) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    // Passo 2: Se o nome já estiver em uso
+    if (result.length > 0) {
+      return res.status(400).json({ message: "Nome de produto já está em uso." });
+    }
+
+    // Passo 3: Caso o nome não esteja em uso, executar a atualização
+    const updateQuery =
+      "UPDATE produto SET `nome`=?, `descricao`=?, `preco_unitario`=?, `fk_id_categoria`=? WHERE `id_produto` = ?";
+
+    const values = [nome, descricao, preco_unitario, fk_id_categoria];
+
+    db.query(updateQuery, [...values, produtoId], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json("Produto foi atualizado.");
+    });
   });
 };

@@ -16,6 +16,6 @@ router.get("/pedido/:id_pedido", getPedido);
 router.post("/pedido", addPedido);
 router.delete("/pedido/:id_pedido", deletePedido);
 router.put("/pedido/:id_pedido", finalizaPedido);
-router.get("/pedidoentrega/", getPedidoEntrega);
+router.get("/pedidoentrega", getPedidoEntrega);
 
 export default router;
