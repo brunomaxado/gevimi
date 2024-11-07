@@ -9,7 +9,6 @@ const ReadPedidoUnico = () => {
   const [clientes, setClientes] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
-  const navigate = useNavigate();
   const location = useLocation();
   const pedidoId = location.pathname.split("/")[2];
 

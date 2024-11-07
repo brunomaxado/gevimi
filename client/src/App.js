@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import readProduto from "./pages/readProduto";
 import Header from "./pages/Header";
 import Menu from "./pages/MenuLateral";
+import Ajuda from ".pages/MenuAjuda";
 import Produto from "./pages/Produto";
 import "./style.css";
 import GerenciarProduto from "./pages/editarProduto";
@@ -57,9 +58,10 @@ function App() {
       <BrowserRouter>
         {currentUser && <Header />}
         {currentUser && <Menu />}
+        {currentUser && <Ajuda />}
 
         <Routes>
-         
+        
           <Route path="/register" element={<AdminPrivate Component={Register} />} /> {/* Apenas admins podem registrar novos usuários */}
           <Route path="/login" element={<LoginPrivate Component={Login} />} />
           <Route path="/pedido" element={<Pedido />} />

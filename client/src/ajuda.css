@@ -1,0 +1,138 @@
+
+:root {
+    --pretoletra: #000000;
+    --pretofundo: #121212;
+    --meiotom: #bcbcbc;
+    --branco: #fff;
+    --fundobranco: #E4E1DD;
+    --amarelologo: #EAC452;
+    --amarelotoque: #FFA500;
+    --vermelho: #5c0000;
+    --verde: #003300;
+    --cinza: #495057;
+    --vermelhointenso: #ff0000;
+    --verdemodal: #155724;
+    --verdeclaro: #c3e6cb;
+    --sombramodal: #d4edda;
+    --fundoclaro: #00000080;
+    --fontepadrao: "Noto Serif", serif;
+  }
+
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: var(--pretofundo);
+    width: 70px; /* Largura inicial */
+    box-shadow: 10px 0 0 var(--amarelotoque);
+    border-left: 10px solid var(--pretofundo);
+    overflow-x: hidden;
+    transition: width 0.5s;
+    z-index: 1000;
+  }
+  
+  .navigation.open {
+    width: 300px; /* Largura quando aberto */
+  }
+  
+  .menu-button {
+    position: absolute;
+    top: 10px; /* Distância do topo */
+    left: 10px; /* Distância da esquerda */
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 1.5rem;
+    color: var(--branco);
+    z-index: 1001; /* Garante que o botão fique acima dos ícones */
+  }
+  
+  .navigation ul {
+    position: relative;
+    top: 50px; /* Ajuste para deixar espaço para o botão do menu */
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 20px;
+  }
+  
+  .navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+  
+  .navigation ul li a {
+    position: relative;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: var(--branco);
+  }
+  
+  .navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 70px;
+  }
+  
+  .navigation ul li a .icon ion-icon {
+    position: relative;
+    font-size: 1.5rem;
+    z-index: 2000;
+  }
+  
+  .nav-item .icon-menor{
+    position: relative;
+    display: block;
+    text-align: center;
+    line-height: 5px;
+  }
+  
+  .nav-item .icon-menor ion-icon{
+    position: relative;
+    font-size: 1.0rem;
+  }
+  
+  .navigation ul li a .icon-menor {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 70px;
+  }
+  
+  .navigation ul li a .icon-menor ion-icon {
+    position: relative;
+    font-size: 1.0rem;
+    z-index: 2000;
+  }
+  
+  .navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+  }
+  
+  .navigation ul li a:hover {
+    color: var(--amarelotoque);
+  }
+  
+  .navigation ul li.active {
+    background: var(--amarelotoque);
+    color: var(--pretoletra);
+  }
+  
+  .navigation ul li.active a {
+    color: var(--pretoletra);
+  }
