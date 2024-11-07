@@ -56,6 +56,11 @@ const EditarUsuario = () => {
     try {
       await axios.put(`http://localhost:8800/editarusuario/${usuarioId}`, payload);
       showSuccess("Usuário atualizado com sucesso!");
+      console.log("Usuario atualizado com sucesso")
+      setTimeout(() => {
+        navigate("/readUsuario");
+      }, 1500);  
+     
     } catch (err) {
       console.error("Erro ao atualizar o usuário:", err);
       setError("Erro ao atualizar o usuário.");
@@ -67,10 +72,15 @@ const EditarUsuario = () => {
       setError("A senha não pode estar vazia.");
       return;
     }
-
+  
     try {
-      await axios.put(`http://localhost:8800/novosenha/${usuarioId}`, { senha: novaSenha });
-      showSuccess("Senha atualizada com sucesso.");
+      // Envia o id_usuario junto com a nova senha
+      await axios.put(`http://localhost:8800/updatesenha`, {
+        id_usuario: usuarioId, // Passando o id do usuário
+        senhaNova: novaSenha, // Nova senha
+      });
+      
+      showSuccess("Senha atualizada com sucesso!");
       setShowPasswordModal(false);
       setNovaSenha("");
     } catch (err) {
@@ -78,15 +88,21 @@ const EditarUsuario = () => {
       setError("Erro ao atualizar a senha.");
     }
   };
+  
 
-  const showSuccess = (message) => {
-    setSuccessMessage(message);
-    setShowSuccessModal(true);
-    setTimeout(() => {
-      setShowSuccessModal(false);
-      navigate("/readUsuario");
-    }, 1500);
-  };
+ const showSuccess = (message) => {
+  console.log("Exibindo mensagem de sucesso:", message); // Verifica se a função está sendo chamada
+  setSuccessMessage(message);
+  setShowSuccessModal(true);
+
+  setTimeout(() => {
+    setShowSuccessModal(false);
+    setSuccessMessage(""); // Limpa a mensagem ao fechar o modal
+    console.log("Modal de sucesso fechado.");
+ 
+    
+  }, 2500);
+};
 
 
   const closeSuccessModal = () => {
@@ -99,8 +115,10 @@ const EditarUsuario = () => {
       <h1>EDITAR USUÁRIO</h1>
       <div className="form-container-usuario">
         <form onSubmit={handleSubmit}>
-          {error && <p className="error-message">{error}</p>}
-
+         
+        <button className="editar-senha" type="button" onClick={() => setShowPasswordModal(true)}>
+            Nova Senha
+          </button>
           <div className="form-group">
             <label>Nome:</label>
             <input
@@ -148,34 +166,38 @@ const EditarUsuario = () => {
               </label>
             </div>
           </div>
-
-          <button type="submit">Salvar Alterações</button>
-          <button type="button" onClick={() => setShowPasswordModal(true)}>
-            Nova Senha
-          </button>
+        
+          <button className="editar-usuario">SALVAR</button>
+         
         </form>
 
        
-
+      </div>
+      {error && <p className="error-message">{error}</p>}
+    
+        
         {showPasswordModal && (
-          <div className="password-modal">
-            <div className="password-modal-content">
-              <h2>Atualizar Senha</h2>
-              <input
+        <div className="modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={() => setShowPasswordModal(false)}>X</button>
+            <h2>Atualizar Senha</h2>
+            <label>Senha: </label>
+            <input
                 type="password"
                 placeholder="Nova Senha"
                 value={novaSenha}
                 onChange={(e) => setNovaSenha(e.target.value)}
                 required
               />
-              <button onClick={handlePasswordChange}>Atualizar Senha</button>
-              <button onClick={() => setShowPasswordModal(false)}>Cancelar</button>
+          
+            <div className="modal-actions">
+              <button className="modal-button" onClick={() => setShowPasswordModal(false)}>Cancelar</button>
+              <button className="modal-button" onClick={handlePasswordChange}>Salvar</button>
             </div>
           </div>
-        )}
-      </div>
-      
-      {showSuccessModal && (
+        </div>
+      )}
+  {showSuccessModal && (
           <div className="success-modal">
             <div className="success-modal-content">
               <span>{successMessage}</span>

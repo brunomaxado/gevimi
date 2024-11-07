@@ -67,7 +67,7 @@ const ReadProduto = () => {
     try {
       await axios.delete(`http://localhost:8800/readProduto/${selectedProdutoId}`);
       setProduto(produto.filter(produto => produto.id_produto !== selectedProdutoId));
-      showSuccess("Produto deletado com sucesso");
+      showSuccess("Produto deletado com sucesso!");
       setShowModal(false);
     } catch (err) {
       console.log(err);

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios"; // Certifique-se de que o axios está importado
+import axios from "axios";
 import Tooltip from './tooltip';
+import InputMask from 'react-input-mask'; // Importe o InputMask
 
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
@@ -55,8 +56,16 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCliente((prev) => ({ ...prev, [name]: value }));
+  
+    // Para CPF, CEP e Celular, remove os caracteres não numéricos
+    let cleanedValue = value;
+    if (name === "cpf" || name === "celular" || name === "cep") {
+      cleanedValue = value.replace(/\D/g, ''); // Remove tudo que não for número
+    }
+  
+    setCliente((prev) => ({ ...prev, [name]: cleanedValue }));
   };
+  
 
   const buscarEndereco = async (cep) => {
     if (validateCEP(cep)) {
@@ -109,37 +118,50 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
       (c) => c.cpf === cpf && c.id_cliente !== cliente.id_cliente
     );
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+  
+    // Remover as máscaras antes de enviar
     const { nome, cpf, celular, cep, cidade, bairro, logradouro } = cliente;
-
-    if (!nome || !cpf || !celular || !cidade || !bairro || !logradouro || !cep) {
+  
+    // Certifique-se de que os valores de CPF, celular e CEP estão limpos
+    const cpfLimpo = cpf.replace(/\D/g, '');
+    const celularLimpo = celular.replace(/\D/g, '');
+    const cepLimpo = cep.replace(/\D/g, '');
+  
+    if (!nome || !cpfLimpo || !celularLimpo || !cidade || !bairro || !logradouro || !cepLimpo) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-
-    if (!validateCPF(cpf)) {
+  
+    if (!validateCPF(cpfLimpo)) {
       setError("CPF inválido.");
       return;
     }
-
-    if (isCpfCadastrado(cpf)) {
+  
+    if (validateCelular(celularLimpo) === false) {
+      setError("Celular inválido.");
+      return;
+    }
+  
+    if (isCpfCadastrado(cpfLimpo)) {
       setError("Este CPF já está cadastrado.");
       return;
     }
-
-    onSubmit(cliente); // Submete o formulário se todas as validações passarem
+  
+    // Submete os dados limpos
+    onSubmit({ ...cliente, cpf: cpfLimpo, celular: celularLimpo, cep: cepLimpo });
   };
+  
+  
 
   return (
-
     <form onSubmit={handleSubmit} className="form-container">
       <div className="cliente">
         {/* Nome */}
-
         <Tooltip text="Elementos com asterisco vermelho são obrigatórios">
-        <ion-icon name="help-circle-outline"></ion-icon></Tooltip>
+          <ion-icon name="help-circle-outline"></ion-icon>
+        </Tooltip>
 
         <div className="form-row">
           <div className="form-group">
@@ -158,27 +180,47 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
 
-        {/* CPF e Celular */}
+        {/* CEP, CPF e Celular */}
         <div className="form-row">
+          <div className="form-group">
+            <label> CEP:
+              <span className="asterisco">*</span>
+            </label>
+            <InputMask
+              type="text"
+              mask="99999-999"
+              placeholder="CEP"
+              name="cep"
+              value={cliente.cep}
+              onChange={(e) => {
+                handleChange(e);
+                buscarEndereco(e.target.value); // Chama a função ao alterar o CEP
+              }}
+              required
+            />
+          </div>
           <div className="form-group">
             <label> CPF:
               <span className="asterisco">*</span>
             </label>
-            <input
-              type="text"
-              placeholder="CPF"
-              name="cpf"
-              value={cliente.cpf}
-              onChange={handleChange}
-              required
-            />
+            <InputMask
+  type="text"
+  mask="999.999.999-99"
+  placeholder="CPF"
+  name="cpf"
+  value={cliente.cpf}
+  onChange={(e) => handleChange(e)} // handleChange limpa o valor
+  required
+/>
+
           </div>
           <div className="form-group">
             <label> Celular:
               <span className="asterisco">*</span>
             </label>
-            <input
+            <InputMask
               type="text"
+              mask="(99) 99999-9999"
               placeholder="Celular"
               name="celular"
               value={cliente.celular}
@@ -188,7 +230,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
 
-        {/* Cidade e CEP */}
+        {/* Cidade e Logradouro */}
         <div className="form-row">
           <div className="form-group">
             <label> Cidade:
@@ -204,25 +246,19 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
             />
           </div>
           <div className="form-group">
-            <label> CEP:
-              <span className="asterisco">*</span>
-
-            </label>
+            <label> Logradouro: <span className="asterisco">*</span> </label>
             <input
               type="text"
-              placeholder="CEP"
-              name="cep"
-              value={cliente.cep}
-              onChange={(e) => {
-                handleChange(e);
-                buscarEndereco(e.target.value); // Chama a função ao alterar o CEP
-              }}
+              placeholder="Logradouro"
+              name="logradouro"
+              value={cliente.logradouro}
+              onChange={handleChange}
               required
             />
           </div>
         </div>
 
-        {/* Bairro, Logradouro e Número */}
+        {/* Bairro e Número */}
         <div className="form-row">
           <div className="form-group">
             <label> Bairro: <span className="asterisco">*</span> </label>
@@ -235,17 +271,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
               required
             />
           </div>
-          <div className="form-group">
-            <label> Logradouro: <span className="asterisco">*</span> </label>
-            <input
-              type="text"
-              placeholder="Logradouro"
-              name="logradouro"
-              value={cliente.logradouro}
-              onChange={handleChange}
-              required
-            />
-          </div>
+
           <div className="form-group">
             <label> Número: <span className="asterisco">*</span> </label>
             <input
@@ -273,10 +299,10 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
 
-        {error && <p id="erro">{error}</p>}
         <button type="submit">
-          {initialData.nome ? "ATUALIZAR" : "ADICIONAR"}
+          SALVAR
         </button>
+        {error && <p id="erro">{error}</p>}
       </div>
     </form>
   );

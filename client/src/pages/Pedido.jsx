@@ -15,6 +15,7 @@ const Pedido = () => {
   const [precoTotal, setPrecoTotal] = useState(0);
   const [precoTotalFrete, setPrecoTotalFrete] = useState(0);
   const navigate = useNavigate();
+  
   const [error, setError] = useState(null);
   const [pedido, setPedido] = useState({
     tipo: "", // Inicialize com uma string vazia, não null
@@ -34,6 +35,7 @@ const Pedido = () => {
   });
 
   const [itensPedido, setItensPedido] = useState([]);
+
 
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // Para a mensagem de sucesso
@@ -117,7 +119,7 @@ const handleClick = async (e) => {
   // Verifica se todos os campos obrigatórios estão preenchidos
   const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
 //
-  if (!tipo || !forma_pagamento || ((tipo === "1" || tipo === "3") && !fk_id_cliente) || (tipo !== "4" && !data_para_entregar)) {
+  if (!tipo || !forma_pagamento ||  !fk_id_cliente || (tipo !== "4" && !data_para_entregar)) {
     setError("Todos os campos obrigatórios devem ser preenchidos.");
     return;
   }
@@ -223,6 +225,37 @@ const  handleAdicionarItem = async (e) => {
       navigate("/readPedido");
     }, 1500);
   };
+// Função para formatar valores em formato de moeda
+const formatarPreco = (valor) => {
+  if (!valor) return "";
+  return Number(valor).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+};
+
+// Função para lidar com a máscara de frete
+const formatarPrecoVisual = (valor) => {
+  if (!valor) return "";
+  return "R$ " + Number(valor).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
+// Função para lidar com o valor do frete como número
+const handleFreteChange = (e) => {
+  let valorDigitado = e.target.value;
+
+  // Remover todos os caracteres não numéricos
+  valorDigitado = valorDigitado.replace(/\D/g, "");
+
+  // Atualizar o estado `pedido` com o valor numérico do frete
+  setPedido((prev) => ({
+    ...prev,
+    frete: parseFloat(valorDigitado) / 100, // Armazena como número para cálculos
+  }));
+};
 
   const primeiroCampoRef = useRef(null);
 
@@ -242,12 +275,13 @@ const  handleAdicionarItem = async (e) => {
   console.log(precoTotal);
   return (
     <div>
+      <div className="jogardivpdireita"> 
       <div className="d-flex flex-row-reverse">
         <button className="btn" onClick={() => setIsHelpPedidoOpen(true)}>
           <HelpOutlineIcon />
         </button>
       </div>
-     
+      </div>
       <HelpPedido
         isOpen={isHelpPedidoOpen}
         onRequestClose={() => setIsHelpPedidoOpen(false)}
@@ -255,9 +289,7 @@ const  handleAdicionarItem = async (e) => {
       <h1>NOVO PEDIDO</h1>
       
       <form className="form-container-pedido">
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <div className="form-esquerda-pedido">
+     <div className="form-esquerda-pedido">
         <div className="form-row-pedido">
           <div className="form-group-pedido">
             <label> Tipo: <span className="asterisco">*</span> </label>
@@ -278,7 +310,7 @@ const  handleAdicionarItem = async (e) => {
           </div>
         </div>
         
-        {(pedido.tipo === "1" || pedido.tipo === "2" || pedido.tipo === "3") && (
+        {(pedido.tipo === "1" || pedido.tipo === "2") && (
           <div className="form-row-pedido">
             <div className="form-group-pedido">
               <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
@@ -294,16 +326,30 @@ const  handleAdicionarItem = async (e) => {
             <div className="form-group-pedido">
               <label> Frete: <span className="asterisco">*</span> </label>
               <input
-                type="number"
-                placeholder="Frete"
-                name="frete"
-                value={pedido.frete}
-                onChange={handleChange}
-              />
+  type="text"
+  placeholder="Frete"
+  name="frete"
+  value={formatarPrecoVisual(pedido.frete)} // Exibe o valor formatado com "R$"
+  onChange={handleFreteChange}
+/>
             </div>
           </div>
         )}
+              {(pedido.tipo === "3") && (
+          <div className="form-row-pedido">
+            <div className="form-group-pedido">
+              <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
+              <input
+                type="datetime-local"
+                
+                name="data_para_entregar"
+                value={pedido.data_para_entregar}
+                onChange={handleChange}
+              />
+            </div>
         
+          </div>
+        )}
         <div className="form-row-pedido">
           <div className="form-group-pedido">
             
@@ -357,78 +403,67 @@ const  handleAdicionarItem = async (e) => {
 
         </div>
         <div className="form-direita-pedido">
-       
-        <div className="form-row-pedido">
-  <div className="form-group-pedido">
-
-
-
-    <label> Produto: <span className="asterisco">*</span> </label>
-
-    <select
-      name="fk_id_produto"
-      ref={primeiroCampoRef}
-      value={novoItem.fk_id_produto}
-      onChange={handleItemChange}
-    >
-      <option value="">Selecione um produto</option>
-      {produto.map((produto) => (
-        <option key={produto.id_produto} value={produto.id_produto}>
-          {produto.nome}
-        </option>
-      ))}
-    </select>
+  <div className="form-row-pedido">
+    <div className="form-group-pedido">
+      <label> Produto: <span className="asterisco">*</span> </label>
+      <select
+        name="fk_id_produto"
+        ref={primeiroCampoRef}
+        value={novoItem.fk_id_produto}
+        onChange={handleItemChange}
+        required
+      >
+        <option value="" disabled selected>Selecione um produto</option>
+        {produto.map((produto) => (
+          <option key={produto.id_produto} value={produto.id_produto}>
+            {produto.nome}
+          </option>
+        ))}
+      </select>
+    </div>
+    <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
+      <More /> {/* Adicionando o ícone More */}
+    </button>
   </div>
-  
-  <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
-  <More /> {/* Adicionando o ícone More */}
-</button>
 
+  {/* Itens do Pedido com área de rolagem */}
+  <h2 className="order-items-header">Itens do Pedido</h2>
+  <div className="order-items-scrollable-container">
+    {itensPedido.length === 0 ? (
+      <p>Selecione um produto para inserir.</p>
+    ) : (
+      <ul className="order-items-list">
+        {itensPedido.map((item, index) => (
+          <li key={index} className="order-item">
+            <span className="order-item-name">
+              {item.nome} - R${item.preco_unitario * item.quantidade}
+            </span>
+            <div className="order-item-controls">
+              <input
+                type="number"
+                className="order-item-quantity"
+                value={item.quantidade}
+                min="1"
+                onChange={(e) => {
+                  const updatedItens = [...itensPedido];
+                  updatedItens[index].quantidade = e.target.value;
+                  setItensPedido(updatedItens);
+                }}
+              />
+              <p
+                className="order-item-remove"
+                onClick={() => handleRemoverItem(index)}
+              >
+                x
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
 </div>
 
-{/* Itens do Pedido */}
-<h2 className="order-items-header">Itens do Pedido</h2>
-{itensPedido.length === 0 ? (
-  <p>Selecione um produto para inserir.</p>
-) : (
-  <ul className="order-items-list">
-    {itensPedido.map((item, index) => (
-      <li key={index} className="order-item">
-        <span className="order-item-name">
-          {item.nome} - R${item.preco_unitario * item.quantidade}
-        </span>
-        
-        <div className="order-item-controls">
-          <input
-            type="number"
-            className="order-item-quantity"
-            value={item.quantidade}
-            min="1"
-            onChange={(e) => {
-              const updatedItens = [...itensPedido];
-              updatedItens[index].quantidade = e.target.value;
-              setItensPedido(updatedItens);
-            }}
-          />
-          <p
-            className="order-item-remove"
-            onClick={() => handleRemoverItem(index)}
-          >
-            x
-          </p>
-        </div>
-      </li>
-    ))}
-  </ul>
-)}
-
-
-
-
-
-
-
-        </div>
 
 
 
@@ -452,13 +487,21 @@ const  handleAdicionarItem = async (e) => {
 
 
       <button class="enviar-pedido" onClick={handleClick}>Salvar</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
+       
       <ModalCliente
   isOpen={showModal}  // Controla se o modal deve ser exibido
   onRequestClose={() => setShowModal(false)}  // Função para fechar o modal
   adicionarCliente={adicionarCliente}  // Função para adicionar um cliente após cadastro
 />
-
+{showSuccessModal && (
+      <div className="success-modal">
+        <div className="success-modal-content">
+          <span>{successMessage}</span>
+        </div>
+      </div>
+    )}
     </div>
   );
   

@@ -29,14 +29,23 @@ const EditarCliente = () => {
 
   const handleSubmit = async (updatedCliente) => {
     try {
+      // Envia os dados para o backend para atualizar o cliente
       await axios.put(`http://localhost:8800/cliente/${clienteId}`, updatedCliente);
-      showSuccess("Cliente atualizado com sucesso");
+      showSuccess("Cliente atualizado com sucesso!");
     } catch (err) {
       console.error("Erro ao atualizar o cliente:", err);
-      setError("Erro ao atualizar o cliente.");
+  
+      // Verifica se há uma resposta de erro do servidor
+      if (err.response && err.response.data && err.response.data.message) {
+        // Exibe a mensagem de erro retornada pelo backend
+        setError(err.response.data.message);
+      } else {
+        // Caso não haja mensagem de erro específica, exibe uma mensagem genérica
+        setError("Erro ao atualizar o cliente. Tente novamente mais tarde.");
+      }
     }
   };
-
+  
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);

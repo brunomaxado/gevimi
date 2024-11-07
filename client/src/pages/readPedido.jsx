@@ -114,11 +114,15 @@ const ReadPedido = () => {
     return produto ? produto.nome : "N/A";
   };
 
-  const calcularTotalItens = (itensPedido) => {
-    return itensPedido.reduce((total, item) => {
+  const calcularTotalItens = (itensPedido, frete = 0) => {
+    const totalItens = itensPedido.reduce((total, item) => {
       return total + (item.preco_unitario_atual * item.quantidade);
     }, 0);
+    
+    return totalItens + frete;
   };
+  
+  
 
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
@@ -394,7 +398,8 @@ useEffect(() => {
                <td class = "coluna-center">{getStatus(pedido.status)}</td>
 
               <td class = "coluna-center"> {pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleDateString() : ""}</td>
-              <td class ="coluna-preco">R$ {calcularTotalItens(pedido.itensPedido).toFixed(2)}</td>
+              <td className="coluna-preco">R$ {calcularTotalItens(pedido.itensPedido, pedido.frete || 0).toFixed(2)}</td>
+
 
               <td class = "coluna-center">
 

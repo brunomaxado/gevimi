@@ -36,29 +36,65 @@ const Produto = () => {
   };
 
   // Manipula mudanças nos campos do formulário
-  const handleChange = (e) => {
-    setProduto((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const applyPriceMask = (value) => {
+    // Remove qualquer caractere que não seja número
+    let numericValue = value.replace(/\D/g, "");
+  
+    // Converte o valor para uma string formatada como moeda
+    numericValue = (numericValue / 100).toFixed(2) // Divide por 100 para ter duas casas decimais
+      .replace(".", ",") // Substitui ponto por vírgula
+      .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Adiciona pontos a cada grupo de mil
+  
+    
+  return `R$ ${numericValue}`;
   };
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+  
+    setProduto((prev) => {
+      if (name === "preco_unitario") {
+        // Aplica a máscara de preço para exibição
+        return { ...prev, [name]: applyPriceMask(value) };
+      }
+      return { ...prev, [name]: value };
+    });
+  };
+  
+  
 
-  // Manipula o envio do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { nome, preco_unitario } = produto;
-
+  
     if (!nome || !preco_unitario) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-
+  
+    // Remove "R$" e a formatação para converter em número
+    const formattedProduto = {
+      ...produto,
+      preco_unitario: parseFloat(
+        preco_unitario.replace("R$ ", "").replace(/\./g, "").replace(",", ".")
+      ),
+    };
+  
     try {
-      await axios.post("http://localhost:8800/readProduto", produto);
-      console.log("Produto adicionado com sucesso");
-      showSuccess("Produto adicionado com sucesso");
+      await axios.post("http://localhost:8800/readProduto", formattedProduto);
+      console.log("Produto adicionado com sucesso!");
+      showSuccess("Produto adicionado com sucesso!");
     } catch (err) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message); 
+      } else {
+        setError("Erro ao adicionar o produto.");
+      }
       console.log(err);
-      setError("Erro ao adicionar o produto.");
     }
   };
+  
+  
 
   // Carrega as categorias ao montar o componente
   useEffect(() => {

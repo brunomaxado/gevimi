@@ -21,14 +21,31 @@ const GerenciarProduto = () => {
 
   const fetchProduto = async () => {
     try {
-      console.log("Fetching product with ID:", produtoId);
       const response = await axios.get(`http://localhost:8800/readProduto/${produtoId}`);
-      setProduto(response.data);
+      const produtoData = response.data;
+  
+      produtoData.preco_unitario = applyPriceMask(String(produtoData.preco_unitario)); // Formata o preço com máscara
+  
+      setProduto(produtoData);
     } catch (err) {
       console.error("Erro ao buscar o produto:", err);
       setError("Produto não encontrado.");
     }
   };
+  
+  
+  const applyPriceMask = (value) => {
+    let numericValue = value.replace(/\D/g, ""); // Remove caracteres não numéricos
+  
+    numericValue = (numericValue / 100).toFixed(2) // Converte para decimal
+      .replace(".", ",") // Usa vírgula como separador de decimais
+      .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Adiciona pontos para milhares
+  
+    return `R$ ${numericValue}`;
+  };
+  
+  
+  
   useEffect(() => {
     window.scrollTo(0, 0); // Move a página para o topo
     fetchProduto();
@@ -51,38 +68,63 @@ const GerenciarProduto = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduto((prev) => ({ ...prev, [name]: value }));
+  
+    setProduto((prev) => {
+      if (name === "preco_unitario") {
+        return { ...prev, [name]: applyPriceMask(value) };
+      }
+      return { ...prev, [name]: value };
+    });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { nome, preco_unitario } = produto;
-
+  
+    const { nome, preco_unitario, fk_id_categoria } = produto;
+  
     if (!nome || !preco_unitario) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-
+  
     const categoriaExiste = categorias.some(
-      (categoria) => Number(categoria.id_categoria) === Number(produto.fk_id_categoria)
+      (categoria) => Number(categoria.id_categoria) === Number(fk_id_categoria)
     );
-
+  
     if (!categoriaExiste) {
       setError("A categoria selecionada não é válida.");
       return;
     }
-
+  
+    // Remove o "R$" e converte para número antes de enviar
+    const produtoFormatado = {
+      ...produto,
+      preco_unitario: parseFloat(
+        preco_unitario.replace("R$ ", "").replace(/\./g, "").replace(",", ".")
+      ),
+    };
+  
     try {
-      await axios.put(`http://localhost:8800/readProduto/${produtoId}`, produto);
+      await axios.put(`http://localhost:8800/readProduto/${produtoId}`, produtoFormatado);
       console.log("Produto atualizado com sucesso");
       showSuccess("Produto atualizado com sucesso!");
     } catch (err) {
+      const errorMessage = err.response?.data?.message || "Erro ao atualizar o produto.";
+      setError(errorMessage);
       console.error("Erro ao atualizar o produto:", err);
-      setError("Erro ao atualizar o produto.");
     }
   };
+  
+  
+ const formatarPreco = (valor) => {
+  if (!valor) return "";
+  return Number(valor).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+};
 
+  
+  
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);

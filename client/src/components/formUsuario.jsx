@@ -1,11 +1,10 @@
 import React from "react";
 
-const FormUsuario = ({ handleChange, handleSubmit, inputs, err }) => {
+const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
   return (
     <form onSubmit={handleSubmit} className="form-container">
       {/* Exibe erro se houver */}
-      {err && <p className="error-message">{err}</p>}
-
+    
       <div className="form-row">
         <div className="form-group">
           <label> Nome: <span className="asterisco">*</span> </label>
@@ -51,7 +50,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, err }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label>Administrador:</label>
+          <label> Administrador: <span className="asterisco">*</span> </label>
           <div className="radio-group" style={{ display: "flex", gap: "10px" }}>
             <label>
               <input
@@ -78,8 +77,10 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, err }) => {
       </div>
 
       <button type="submit">SALVAR</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 };
 
 export default FormUsuario;
+
