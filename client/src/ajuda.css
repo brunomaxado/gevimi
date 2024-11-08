@@ -20,18 +20,15 @@
 
 /* Menu de Navegação */
 .navegacao {
-  position: fixed;
+  position: absolute;
+  margin-top: 5vh;
   top: 0;
   right: 0; /* Garante que o menu fique na direita */
   height: 30vh;
-  width: 70px; /* Largura inicial */
+  width: 70px; 
   overflow-x: hidden;
   transition: width 0.5s;
   z-index: 1000;
-}
-
-.navegacao.aberta {
-  width: 300px; /* Largura quando aberto */
 }
 
 .navegacao ul {

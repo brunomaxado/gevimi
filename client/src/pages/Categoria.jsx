@@ -4,9 +4,7 @@ import '../style.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from "react-router-dom";
-import ModalHelpCategoria from "../components/modalHelpCategoria";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 
 const Categoria = () => {
   const [categoria, setCategoria] = useState([]);
@@ -21,7 +19,6 @@ const Categoria = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-  const [isHelpCategoriaOpen, setIsHelpCategoriaOpen] = useState(false);
   const [categoriaIdToDelete, setCategoriaIdToDelete] = useState(null);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -149,16 +146,7 @@ const Categoria = () => {
 
   return (
     <div>
-      <div className="d-flex flex-row-reverse">
-        <button onClick={() => setIsHelpCategoriaOpen(true)}>
-          <HelpOutlineIcon />
-        </button>
-      </div>
-      
-      <ModalHelpCategoria
-        isOpen={isHelpCategoriaOpen}
-        onRequestClose={() => setIsHelpCategoriaOpen(false)}
-      />
+
       <h1>Categorias:</h1>
       <div className="tabela">
         <div className="filters-container-categoria">

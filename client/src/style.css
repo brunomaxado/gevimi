@@ -82,7 +82,8 @@ header {
 
 main {
   /* Adiciona um padding-top igual à altura do header */
-  padding-top: 10vh; /* Isso faz o main começar logo abaixo do header */
+  padding-top: 10vh;
+  /* Isso faz o main começar logo abaixo do header */
   flex-grow: 1;
 }
 
@@ -197,17 +198,21 @@ li#pedido a {
   padding: 10px;
   text-align: center;
 }
+
 /* Estilos de cores para diferentes condições */
 .row-overdue {
-  background-color: #f8d7da; /* Vermelho claro */
+  background-color: #f8d7da;
+  /* Vermelho claro */
 }
 
 .row-soon {
-  background-color: #fff3cd; /* Amarelo claro */
+  background-color: #fff3cd;
+  /* Amarelo claro */
 }
 
 .row-today {
-  background-color: #d4edda; /* Verde claro */
+  background-color: #d4edda;
+  /* Verde claro */
 }
 
 
@@ -218,77 +223,110 @@ li#pedido a:hover {
 }
 
 .col-status {
-  width: 15%; /* Ajuste o valor conforme necessário */
+  width: 15%;
+  /* Ajuste o valor conforme necessário */
 }
 
 .action-icons {
 
-  gap: 8px; /* Espaçamento horizontal entre os ícones */
-  align-items: center; /* Alinha os ícones verticalmente no centro */
+  gap: 8px;
+  /* Espaçamento horizontal entre os ícones */
+  align-items: center;
+  /* Alinha os ícones verticalmente no centro */
   text-align: center;
 }
 
 .action-icon {
-  display: inline-flex; /* Garante que o conteúdo interno fique alinhado */
+  display: inline-flex;
+  /* Garante que o conteúdo interno fique alinhado */
   cursor: pointer;
   transition: transform 0.2s;
 }
 
 .action-icon:hover {
-  transform: scale(1.2); /* Efeito de zoom ao passar o mouse */
+  transform: scale(1.2);
+  /* Efeito de zoom ao passar o mouse */
 }
+
 .coluna-descricao {
-  max-width: 250px; /* Ajuste conforme necessário */
-  overflow: hidden; /* Evita que o texto transborde */
-  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
-  white-space: normal; /* Permite que o texto quebre */
+  max-width: 250px;
+  /* Ajuste conforme necessário */
+  overflow: hidden;
+  /* Evita que o texto transborde */
+  text-overflow: ellipsis;
+  /* Adiciona "..." se o texto for muito longo */
+  white-space: normal;
+  /* Permite que o texto quebre */
 }
+
 .coluna-cep {
-  width: 9%; 
-  text-align: center;/* ou um valor maior que as outras colunas */
+  width: 9%;
+  text-align: center;
+  /* ou um valor maior que as outras colunas */
 }
+
 .coluna-cpf {
 
-  text-align: center;/* ou um valor maior que as outras colunas */
+  text-align: center;
+  /* ou um valor maior que as outras colunas */
 }
+
 .coluna-cliente {
-  width: 15%; /* ou um valor maior que as outras colunas */
+  width: 15%;
+  /* ou um valor maior que as outras colunas */
 }
+
 .coluna-nome {
-  width: 20%; /* ou um valor maior que as outras colunas */
+  width: 20%;
+  /* ou um valor maior que as outras colunas */
 }
-.coluna-endereco{
-  width: 20%; /* ou um valor maior que as outras colunas */
+
+.coluna-endereco {
+  width: 20%;
+  /* ou um valor maior que as outras colunas */
 }
+
 .coluna-center {
-  text-align: center; /* Alinha o texto ao centro */
+  text-align: center;
+  /* Alinha o texto ao centro */
 
 }
+
 .coluna-center-finalizado {
-  text-align: center; /* Alinha o texto ao centro */
+  text-align: center;
+  /* Alinha o texto ao centro */
   width: 10%;
 }
+
 .coluna-status {
-  width: 8%; /* Alinha o texto ao centro */
+  width: 8%;
+  /* Alinha o texto ao centro */
   text-align: center;
 }
-.coluna-preco{
-  text-align: right; /* Alinha o texto à direita */
+
+.coluna-preco {
+  text-align: right;
+  /* Alinha o texto à direita */
   width: 8%;
 }
 
 .carrinho {
-  width: 15%; /* ou um valor maior que as outras colunas */
-}
-.coluna-data {
-  width: 12%; /* ou um valor maior que as outras colunas */
+  width: 15%;
+  /* ou um valor maior que as outras colunas */
 }
 
-div.tabela-categoria  {
+.coluna-data {
+  width: 12%;
+  /* ou um valor maior que as outras colunas */
+}
+
+div.tabela-categoria {
   width: 70%;
-  table-layout: fixed; /* Define uma largura fixa para cada coluna */
+  table-layout: fixed;
+  /* Define uma largura fixa para cada coluna */
   align-items: center;
-  margin: 0 auto; /* Centraliza a tabela */
+  margin: 0 auto;
+  /* Centraliza a tabela */
 }
 
 .filters-container-categoria {
@@ -297,13 +335,16 @@ div.tabela-categoria  {
   gap: 50px;
   margin-bottom: 20px;
 }
-.filters-container-categoria  button.limpar-filtro {
-  margin-left: 1%; /* Ajuste este valor conforme necessário */
-  transform: scale(0.8); 
+
+.filters-container-categoria button.limpar-filtro {
+  margin-left: 1%;
+  /* Ajuste este valor conforme necessário */
+  transform: scale(0.8);
   overflow-x: hidden;
-  
+
 }
-.enviar-pedido{
+
+.enviar-pedido {
   width: 8%;
   height: 10%;
   border: none;
@@ -316,22 +357,29 @@ div.tabela-categoria  {
   margin-bottom: 2%;
 
 }
+
 .filters-container-categoria button.adicionar-categoria {
- /* Ajuste este valor conforme necessário */
+  /* Ajuste este valor conforme necessário */
   margin-left: 25%;
 }
-.filters-container-produto button.adicionar-usuario{
+
+.filters-container-produto button.adicionar-usuario {
   /* Ajuste este valor conforme necessário */
-   margin-left: 42%;
- }
- .filters-container-produto button.adicionar-produto{
+  margin-left: 42%;
+}
+
+.filters-container-produto button.adicionar-produto {
   /* Ajuste este valor conforme necessário */
-   margin-left: 20%;
- }
+  margin-left: 20%;
+}
+
 .filters-container-categoria label {
-  display: block; /* Ou use inline-block */
-  text-align: left; /* Garante que o texto esteja alinhado à esquerda */
-  margin-bottom: 0px; /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
+  display: block;
+  /* Ou use inline-block */
+  text-align: left;
+  /* Garante que o texto esteja alinhado à esquerda */
+  margin-bottom: 0px;
+  /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
   padding-left: 10px;
 }
 
@@ -349,22 +397,28 @@ div.tabela-categoria  {
   gap: 50px;
   margin-bottom: 20px;
 }
-.filters-container-produto  button.limpar-filtro {
-  margin-left: 1%; /* Ajuste este valor conforme necessário */
-  transform: scale(0.8); 
+
+.filters-container-produto button.limpar-filtro {
+  margin-left: 1%;
+  /* Ajuste este valor conforme necessário */
+  transform: scale(0.8);
   overflow-x: hidden;
-  
+
 }
-.filters-container-produto  button.adicionar {
- /* Ajuste este valor conforme necessário */
+
+.filters-container-produto button.adicionar {
+  /* Ajuste este valor conforme necessário */
   margin-left: 28%;
-  
+
 }
 
 .filters-container-produto label {
-  display: block; /* Ou use inline-block */
-  text-align: left; /* Garante que o texto esteja alinhado à esquerda */
-  margin-bottom: 0px; /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
+  display: block;
+  /* Ou use inline-block */
+  text-align: left;
+  /* Garante que o texto esteja alinhado à esquerda */
+  margin-bottom: 0px;
+  /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
   padding-left: 10px;
 }
 
@@ -378,22 +432,28 @@ div.tabela-categoria  {
   gap: 50px;
   margin-bottom: 20px;
 }
+
 .filters-container button.limpar-filtro {
-  margin-left: 1%; /* Ajuste este valor conforme necessário */
-  transform: scale(0.8); 
+  margin-left: 1%;
+  /* Ajuste este valor conforme necessário */
+  transform: scale(0.8);
   overflow-x: hidden;
-  
+
 }
+
 .filters-container button.adicionar {
- /* Ajuste este valor conforme necessário */
+  /* Ajuste este valor conforme necessário */
   margin-left: auto;
-  
+
 }
 
 .filters-container label {
-  display: block; /* Ou use inline-block */
-  text-align: left; /* Garante que o texto esteja alinhado à esquerda */
-  margin-bottom: 0px; /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
+  display: block;
+  /* Ou use inline-block */
+  text-align: left;
+  /* Garante que o texto esteja alinhado à esquerda */
+  margin-bottom: 0px;
+  /* Adiciona um pequeno espaçamento abaixo das labels, se necessário */
   padding-left: 10px;
 }
 
@@ -408,32 +468,36 @@ div.tabela-categoria  {
   font-weight: bold;
 }
 
-table
-table {
+table table {
   border-collapse: collapse;
   width: 90%;
   height: 70%;
   color: #000;
 
 }
+
 div.tabela table {
   width: 100%;
-  table-layout: fixed; /* Define uma largura fixa para cada coluna */
+  table-layout: fixed;
+  /* Define uma largura fixa para cada coluna */
 }
+
 div.tabela-produto table {
   width: 88%;
-  table-layout: fixed; /* Define uma largura fixa para cada coluna */
+  table-layout: fixed;
+  /* Define uma largura fixa para cada coluna */
   align-items: center;
-  margin: 0 auto; /* Centraliza a tabela */
+  margin: 0 auto;
+  /* Centraliza a tabela */
 }
 
 
 div.tabela {
   width: 100%;
-  transform: scale(0.9); 
+  transform: scale(0.9);
   overflow-x: hidden;
-  
-    table-layout: fixed;
+
+  table-layout: fixed;
 }
 
 th,
@@ -495,19 +559,19 @@ div.tabela {
   height: auto;
   font-size: 18px;
   padding: 1vh;
-  margin-top: 0px;  
+  margin-top: 0px;
   margin-left: 5vw;
   margin-right: 5vw;
 }
 
-.nav-item .icon{
+.nav-item .icon {
   position: relative;
   display: block;
   text-align: center;
   line-height: 5px;
 }
 
-.nav-item .icon ion-icon{
+.nav-item .icon ion-icon {
   position: relative;
   font-size: 1.5rem;
 }
@@ -549,8 +613,10 @@ img {
 .novoCLiente {
   size-adjust: inherit;
 }
+
 body.modal-open {
-  overflow: hidden; /* Impede o scroll da página */
+  overflow: hidden;
+  /* Impede o scroll da página */
 }
 
 
@@ -563,7 +629,9 @@ body.modal-open {
 }
 
 /* Modal Body */
-.modal-body {padding: 2px 16px;}
+.modal-body {
+  padding: 2px 16px;
+}
 
 /* Modal Footer */
 .modal-footer {
@@ -571,17 +639,27 @@ body.modal-open {
   background-color: #5cb85c;
   color: white;
 }
+
 .modal {
   display: flex;
-  align-items: center; /* Centraliza verticalmente o conteúdo */
-  justify-content: center; /* Centraliza horizontalmente o conteúdo */
-  z-index: 1000; /* Garante que o modal esteja acima do conteúdo */
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com opacidade de 50% */
-  position: fixed; /* Fixa o modal na tela, não na página */
-  top: 0; /* Define o início da posição para o topo */
-  left: 0; /* Define o início da posição para a esquerda */
-  width: 100%; /* Cobre toda a largura da tela */
-  height: 100%; /* Cobre toda a altura da tela */
+  align-items: center;
+  /* Centraliza verticalmente o conteúdo */
+  justify-content: center;
+  /* Centraliza horizontalmente o conteúdo */
+  z-index: 1000;
+  /* Garante que o modal esteja acima do conteúdo */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Fundo preto com opacidade de 50% */
+  position: fixed;
+  /* Fixa o modal na tela, não na página */
+  top: 0;
+  /* Define o início da posição para o topo */
+  left: 0;
+  /* Define o início da posição para a esquerda */
+  width: 100%;
+  /* Cobre toda a largura da tela */
+  height: 100%;
+  /* Cobre toda a altura da tela */
 }
 
 /* Modal Content */
@@ -594,37 +672,48 @@ body.modal-open {
   border: 1px solid #888;
   width: 30%;
 
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   animation-name: animatetop;
   animation-duration: 0.4s;
- 
+
   flex-direction: column;
-  max-width: 90vw; /* Limita a largura máxima */
+  max-width: 90vw;
+  /* Limita a largura máxima */
 }
+
 .-modal-open .fixed,
 .-modal-open .content {
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 
 @media (max-width: 600px) {
   .modal-content {
-    width: 80%; /* Reduz a largura do modal em telas menores */
+    width: 80%;
+    /* Reduz a largura do modal em telas menores */
   }
 }
 
 @media (max-width: 400px) {
   .modal-content {
-    width: 90%; /* Ajusta ainda mais para telas muito pequenas */
-    padding: 15px; /* Reduz o preenchimento para economizar espaço */
+    width: 90%;
+    /* Ajusta ainda mais para telas muito pequenas */
+    padding: 15px;
+    /* Reduz o preenchimento para economizar espaço */
   }
 }
+
 .modal-div {
   display: flex;
-  justify-content: center; /* Centraliza os botões horizontalmente */
-  align-items: center; /* Centraliza os botões verticalmente */
-  gap: 1rem; /* Espaçamento entre os botões */
-  flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha, se necessário */
-  max-width: 100%; /* Evita que o contêiner ultrapasse a largura da tela */
+  justify-content: center;
+  /* Centraliza os botões horizontalmente */
+  align-items: center;
+  /* Centraliza os botões verticalmente */
+  gap: 1rem;
+  /* Espaçamento entre os botões */
+  flex-wrap: wrap;
+  /* Permite que os botões quebrem para a próxima linha, se necessário */
+  max-width: 100%;
+  /* Evita que o contêiner ultrapasse a largura da tela */
 }
 
 .modal-button {
@@ -633,71 +722,108 @@ body.modal-open {
   color: var(--pretoletra);
   cursor: pointer;
   margin-top: 2rem;
-  min-width: 6.25rem; /* Tamanho mínimo para os botões (100px equivalente a 6.25rem) */
+  min-width: 6.25rem;
+  /* Tamanho mínimo para os botões (100px equivalente a 6.25rem) */
 }
 
 /* Estilos adicionais para telas menores */
-@media (max-width: 37.5rem) { /* 600px equivalente a 37.5rem */
+@media (max-width: 37.5rem) {
+
+  /* 600px equivalente a 37.5rem */
   .modal-div {
-    flex-direction: column; /* Coloca os botões em uma coluna em telas menores */
-    gap: 1.5rem; /* Aumenta o espaço entre os botões em telas menores */
+    flex-direction: column;
+    /* Coloca os botões em uma coluna em telas menores */
+    gap: 1.5rem;
+    /* Aumenta o espaço entre os botões em telas menores */
   }
-  
+
   .modal-button {
-    width: 100%; /* Faz com que os botões ocupem a largura total do contêiner */
+    width: 100%;
+    /* Faz com que os botões ocupem a largura total do contêiner */
   }
 }
 
 
 .error-message {
   font-style: italic;
-  font-size: 0.8125rem; /* 13px equivalente a 0.8125rem (assumindo 16px como base) */
+  font-size: 0.8125rem;
+  /* 13px equivalente a 0.8125rem (assumindo 16px como base) */
   color: red;
-  height: 1.25rem; /* Altura proporcional ao tamanho da fonte */
-  visibility: hidden; /* Oculta a mensagem por padrão */
-  max-width: 100%; /* Garante que a largura seja responsiva */
+  height: 1.25rem;
+  /* Altura proporcional ao tamanho da fonte */
+  visibility: hidden;
+  /* Oculta a mensagem por padrão */
+  max-width: 100%;
+  /* Garante que a largura seja responsiva */
 }
 
 .error-message.show {
-  visibility: visible; /* Torna visível apenas quando houver erro */
+  visibility: visible;
+  /* Torna visível apenas quando houver erro */
 }
 
-@media (max-width: 48rem) { /* 768px equivalente a 48rem */
+@media (max-width: 48rem) {
+
+  /* 768px equivalente a 48rem */
   .error-message {
-    font-size: 0.75rem; /* Tamanho de fonte um pouco menor em telas pequenas */
-    height: 1rem; /* Ajusta a altura para telas menores */
+    font-size: 0.75rem;
+    /* Tamanho de fonte um pouco menor em telas pequenas */
+    height: 1rem;
+    /* Ajusta a altura para telas menores */
   }
 }
 
-@media (max-width: 37.5rem) { /* 600px equivalente a 37.5rem */
+@media (max-width: 37.5rem) {
+
+  /* 600px equivalente a 37.5rem */
   .error-message {
-    font-size: 0.6875rem; /* Reduz ainda mais o tamanho da fonte para telas pequenas */
-    height: 0.875rem; /* Reduz a altura da área da mensagem */
+    font-size: 0.6875rem;
+    /* Reduz ainda mais o tamanho da fonte para telas pequenas */
+    height: 0.875rem;
+    /* Reduz a altura da área da mensagem */
   }
 }
 
 
 /* Add Animation */
 @keyframes animatetop {
-  from {top: -300px; opacity: 0}
-  to {top: 0; opacity: 1}
+  from {
+    top: -300px;
+    opacity: 0
+  }
+
+  to {
+    top: 0;
+    opacity: 1
+  }
 }
+
 .close-modal {
   background-color: var(--vermelhointenso);
   color: var(--branco);
   border: none;
   cursor: pointer;
-  border-radius: 50%; /* Deixa o botão circular */
+  border-radius: 50%;
+  /* Deixa o botão circular */
   position: absolute;
-  top: -0.8rem; /* Ajusta a posição vertical */
-  right: 0.5rem; /* Ajusta a posição horizontal */
-  width: 24px; /* Define uma largura menor */
-  height: 24px; /* Define uma altura menor */
-  display: flex; /* Centraliza o conteúdo */
-  align-items: center; /* Centraliza verticalmente */
-  justify-content: center; /* Centraliza horizontalmente */
-  font-size: 14px; /* Ajusta o tamanho da fonte */
-  padding: 0; /* Remove o padding para evitar aumentar o tamanho */
+  top: -0.8rem;
+  /* Ajusta a posição vertical */
+  right: 0.5rem;
+  /* Ajusta a posição horizontal */
+  width: 24px;
+  /* Define uma largura menor */
+  height: 24px;
+  /* Define uma altura menor */
+  display: flex;
+  /* Centraliza o conteúdo */
+  align-items: center;
+  /* Centraliza verticalmente */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  font-size: 14px;
+  /* Ajusta o tamanho da fonte */
+  padding: 0;
+  /* Remove o padding para evitar aumentar o tamanho */
 }
 
 .nav-item {
@@ -863,9 +989,10 @@ div.auth button {
 
     /* Adicionando regra para <p> */
     p {
-      color: black; /* Define a cor do texto como preto */
+      color: black;
+      /* Define a cor do texto como preto */
     }
-}
+  }
 
 
   button.categoriaAdd {
@@ -878,7 +1005,8 @@ div.auth button {
     cursor: pointer;
     border-radius: 10px;
   }
-  button.adicionar{
+
+  button.adicionar {
     width: 12%;
     height: 20%;
     border: none;
@@ -895,54 +1023,74 @@ div.auth button {
   .order-items-header {
     font-weight: bold;
     margin-top: 4%;
-    margin-bottom: 1rem; /* Margem inferior para espaçamento */
+    margin-bottom: 1rem;
+    /* Margem inferior para espaçamento */
   }
-  
+
   .order-items-list {
-    list-style-type: none; /* Remove os marcadores da lista */
-    padding: 0; /* Remove o preenchimento padrão */
+    list-style-type: none;
+    /* Remove os marcadores da lista */
+    padding: 0;
+    /* Remove o preenchimento padrão */
   }
-  
+
   /* AQUI COMEÇA O ITEM PEDIDO  */
   .order-item {
     display: flex;
-    justify-content: space-between; /* Espaçamento entre os elementos */
-    align-items: center; /* Alinha verticalmente ao centro */
-    background-color: #d6d6d2; /* Cinza claro */
-    padding: 0.5rem; /* Adiciona preenchimento interno */
-    margin-bottom: 0.5rem; /* Espaçamento entre os itens */
-    border-radius: 4px; /* Arredonda os cantos do item */
+    justify-content: space-between;
+    /* Espaçamento entre os elementos */
+    align-items: center;
+    /* Alinha verticalmente ao centro */
+    background-color: #d6d6d2;
+    /* Cinza claro */
+    padding: 0.5rem;
+    /* Adiciona preenchimento interno */
+    margin-bottom: 0.5rem;
+    /* Espaçamento entre os itens */
+    border-radius: 4px;
+    /* Arredonda os cantos do item */
     padding-left: 6%;
     height: 60px;
   }
-  
+
   .order-item-name {
-    max-width: 100%; /* Limita a largura do nome do item */
-    overflow: hidden; /* Oculta o texto que ultrapassa a largura */
-    white-space: nowrap; /* Evita que o texto quebre para a linha seguinte */
-    text-overflow: ellipsis; /* Adiciona reticências (...) para texto truncado */
-   
+    max-width: 100%;
+    /* Limita a largura do nome do item */
+    overflow: hidden;
+    /* Oculta o texto que ultrapassa a largura */
+    white-space: nowrap;
+    /* Evita que o texto quebre para a linha seguinte */
+    text-overflow: ellipsis;
+    /* Adiciona reticências (...) para texto truncado */
+
   }
-  
+
   .order-item-controls {
     display: flex;
-    align-items: center; /* Alinha verticalmente os controles */
+    align-items: center;
+    /* Alinha verticalmente os controles */
   }
-  
+
   .order-item-quantity {
     background-color: #ebebeb;
-    width: 70px; /* Define a largura do campo de quantidade */
-    margin-right: 10px; /* Espaço entre o campo de quantidade e o ícone de remoção */
+    width: 70px;
+    /* Define a largura do campo de quantidade */
+    margin-right: 10px;
+    /* Espaço entre o campo de quantidade e o ícone de remoção */
   }
-  
+
   .order-item-remove {
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    margin: 0; /* Remove a margem padrão */
-    color: #dc3545; /* Cor do texto para o botão de remoção (vermelho) */
-    font-weight: bold; /* Deixa o texto mais destacado */
+    cursor: pointer;
+    /* Muda o cursor para indicar que é clicável */
+    margin: 0;
+    /* Remove a margem padrão */
+    color: #dc3545;
+    /* Cor do texto para o botão de remoção (vermelho) */
+    font-weight: bold;
+    /* Deixa o texto mais destacado */
   }
-  
-  button.adicionar-categoria{
+
+  button.adicionar-categoria {
     width: 15%;
     height: 10%;
     border: none;
@@ -954,7 +1102,8 @@ div.auth button {
     border-radius: 10px;
 
   }
-  button.adicionar-produto{
+
+  button.adicionar-produto {
     width: 15%;
     height: 10%;
     border: none;
@@ -966,7 +1115,8 @@ div.auth button {
     border-radius: 10px;
 
   }
-  button.editar-usuario{
+
+  button.editar-usuario {
     width: 8rem;
     height: 10%;
     border: none;
@@ -978,7 +1128,8 @@ div.auth button {
     border-radius: 10px;
 
   }
-  button.adicionar-usuario{
+
+  button.adicionar-usuario {
     width: 12%;
     height: 10%;
     border: none;
@@ -990,6 +1141,7 @@ div.auth button {
     border-radius: 10px;
 
   }
+
   button.editar-senha {
     width: 10rem;
     height: 20%;
@@ -1000,10 +1152,11 @@ div.auth button {
     font-weight: bold;
     cursor: pointer;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
-}
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra leve */
+  }
 
-  button.limpar-filtro{
+  button.limpar-filtro {
     width: 10rem;
     height: 3.3rem;
     border: none;
@@ -1015,9 +1168,11 @@ div.auth button {
     border-radius: 10px;
 
   }
+
   button.limpar-filtro:hover {
     background-color: var(--amarelotoque);
   }
+
   button.categoriaAdd:hover {
     background-color: var(--amarelotoque);
   }
@@ -1065,15 +1220,17 @@ div.auth button {
   }
 }
 
-.categoria-select{
+.categoria-select {
   background-color: var(--fundobranco);
   border-radius: 10px;
 }
 
 .success-modal {
   position: fixed;
-  top: 80px; /* Ajuste a distância do topo conforme necessário */
-  right: 20px; /* Define a distância do lado direito */
+  top: 80px;
+  /* Ajuste a distância do topo conforme necessário */
+  right: 20px;
+  /* Define a distância do lado direito */
   background-color: var(--sombramodal);
   color: var(--verdemodal);
   padding: 15px;
@@ -1082,7 +1239,8 @@ div.auth button {
   width: 300px;
   text-align: center;
   z-index: 1000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra para destaque */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Adiciona uma sombra para destaque */
 }
 
 .success-modal-content {
@@ -1212,7 +1370,7 @@ li {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1244,7 +1402,7 @@ button.close-cliente {
   color: var(--vermelhointenso) !important;
 }
 
-.atualizar-cliente{
+.atualizar-cliente {
   border: 1px solid var(--pretofundo) !important;
   padding: 10px 20px;
   cursor: pointer;
@@ -1282,7 +1440,8 @@ button.close-cliente {
 }
 
 /* Add a red background color to navigation links on hover */
-.navbar a:hover, .subnav:hover .subnavbtn {
+.navbar a:hover,
+.subnav:hover .subnavbtn {
   background-color: red;
 }
 
@@ -1321,21 +1480,25 @@ button.close-cliente {
 .subnav:hover .subnav-content {
   display: block;
 }
-.asterisco-branco{
+
+.asterisco-branco {
   color: var(--fundobranco);
 }
-.asterisco{
+
+.asterisco {
   color: var(--vermelhointenso);
 }
 
-input{
+input {
   background-color: var(--fundobranco);
 }
 
 .navbar {
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente */
 }
 
 .nav-item {
@@ -1343,49 +1506,64 @@ input{
 }
 
 .direita {
-  margin-left: auto; /* Se quiser alinhar à direita */
+  margin-left: auto;
+  /* Se quiser alinhar à direita */
 }
 
 
 p#erro {
-  font-style:italic;
+  font-style: italic;
   font-size: 18px;
-  color:#e01f1f;
+  color: #e01f1f;
 }
 
 .form-container {
   margin-top: 50px;
-  transform: scale(0.9); /* Ajuste o valor conforme o necessário */
-  transform-origin: center center; /* Mantém a escala a partir do canto superior esquerdo */
+  transform: scale(0.9);
+  /* Ajuste o valor conforme o necessário */
+  transform-origin: center center;
+  /* Mantém a escala a partir do canto superior esquerdo */
   position: relative;
-  max-width: 800px; /* Define uma largura máxima */
-  margin: 0 auto; /* Centraliza o formulário na página */
+  max-width: 800px;
+  /* Define uma largura máxima */
+  margin: 0 auto;
+  /* Centraliza o formulário na página */
   justify-content: flex-start;
   padding-bottom: 300px;
 }
+
 .form-container-usuario {
   margin-top: 50px;
-  transform: scale(0.9); /* Ajuste o valor conforme o necessário */
-  transform-origin: center center; /* Mantém a escala a partir do canto superior esquerdo */
+  transform: scale(0.9);
+  /* Ajuste o valor conforme o necessário */
+  transform-origin: center center;
+  /* Mantém a escala a partir do canto superior esquerdo */
   position: relative;
-  width:20%; /* Define uma largura máxima */
-  margin: 0 auto; /* Centraliza o formulário na página */
+  width: 20%;
+  /* Define uma largura máxima */
+  margin: 0 auto;
+  /* Centraliza o formulário na página */
   justify-content: flex-start;
-  
+
 }
 
 .form-row {
-  display: flex; 
-  gap: 50px; /* Espaçamento entre os campos */
+  display: flex;
+  gap: 50px;
+  /* Espaçamento entre os campos */
   margin-bottom: 1px;
-  flex-wrap: wrap; /* Permite que os itens quebrem a linha */
-  min-width: 500; /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */ 
+  flex-wrap: wrap;
+  /* Permite que os itens quebrem a linha */
+  min-width: 500;
+  /* BOTAR AQUI 500 Garante que a linha ocupe a largura total  ou 100% */
 }
+
 .form-container-pedido label {
   display: block;
   margin-bottom: 5px;
   text-align: left;
 }
+
 .form-container-pedido .form-group input {
   position: relative;
   height: 50px;
@@ -1394,35 +1572,46 @@ p#erro {
   font-size: 1rem;
   margin-top: 8px;
   border: 1px solid;
-  border-radius:  6px;
+  border-radius: 6px;
   padding: 0 15px;
 }
+
 .form-container-pedido {
-  
-  transform: scale(0.9); /* Ajuste o valor conforme o necessário */
-  display: flex; /* Usa flexbox para o contêiner do formulário */
-  justify-content: space-between; /* Cria espaço entre os elementos filhos */
-  width: 80%; /* Define a largura do contêiner */
-  margin: 0 auto; /* Centraliza o contêiner no eixo horizontal */
+
+  transform: scale(0.9);
+  /* Ajuste o valor conforme o necessário */
+  display: flex;
+  /* Usa flexbox para o contêiner do formulário */
+  justify-content: space-between;
+  /* Cria espaço entre os elementos filhos */
+  width: 80%;
+  /* Define a largura do contêiner */
+  margin: 0 auto;
+  /* Centraliza o contêiner no eixo horizontal */
 
 }
 
 .form-esquerda-pedido {
-  flex: 0 0 45%; /* Define a largura da parte esquerda */
-  margin-right: 20px; /* Aumenta o espaçamento entre esquerda e direita */
+  flex: 0 0 45%;
+  /* Define a largura da parte esquerda */
+  margin-right: 20px;
+  /* Aumenta o espaçamento entre esquerda e direita */
 }
 
 .form-direita-pedido {
-  flex: 0 0 45%; /* Define a largura da parte direita */
+  flex: 0 0 45%;
+  /* Define a largura da parte direita */
 }
 
 button.adicionar-produto-pedido {
-  
+
   width: 15%;
   height: 100%;
   border: none;
-  align-self: flex-end; /* Alinha o botão à parte de baixo do select */
-  margin-bottom: 2%; /* Ajuste para dar espaço, se necessário */
+  align-self: flex-end;
+  /* Alinha o botão à parte de baixo do select */
+  margin-bottom: 2%;
+  /* Ajuste para dar espaço, se necessário */
   background-color: var(--amarelologo);
   color: var(--pretoletra);
   font-weight: bold;
@@ -1437,7 +1626,8 @@ button.adicionar-produto-pedido {
   margin: 0 auto 1px auto;
   width: 100%;
   justify-content: flex-start;
-  align-items: center; /* Garante que os itens fiquem alinhados verticalmente */
+  align-items: center;
+  /* Garante que os itens fiquem alinhados verticalmente */
 }
 
 .form-group-pedido {
@@ -1447,8 +1637,10 @@ button.adicionar-produto-pedido {
 
 .form-group {
 
-  flex: 1; /* Os campos ocuparão o mesmo espaço */
-  min-width: 200px; /* Define um tamanho mínimo para cada campo */
+  flex: 1;
+  /* Os campos ocuparão o mesmo espaço */
+  min-width: 200px;
+  /* Define um tamanho mínimo para cada campo */
 }
 
 
@@ -1457,6 +1649,7 @@ button.adicionar-produto-pedido {
   margin-bottom: 5px;
   text-align: left;
 }
+
 .form-container .form-group input {
   position: relative;
   height: 50px;
@@ -1465,14 +1658,16 @@ button.adicionar-produto-pedido {
   font-size: 1rem;
   margin-top: 8px;
   border: 1px solid;
-  border-radius:  6px;
+  border-radius: 6px;
   padding: 0 15px;
 }
+
 .form-container-usuario label {
   display: block;
   margin-bottom: 5px;
   text-align: left;
 }
+
 .form-container-usuario .form-group input {
   position: relative;
   height: 50px;
@@ -1481,32 +1676,40 @@ button.adicionar-produto-pedido {
   font-size: 1rem;
   margin-top: 8px;
   border: 1px solid;
-  border-radius:  6px;
+  border-radius: 6px;
   padding: 0 15px;
 }
+
 input[type="datetime-local"] {
-  background-color: white; /* Default background */
-  border: 1px solid #ccc; /* Light border color */
-  padding: 0.5rem; /* Add some padding for better appearance */
-  transition: background-color 0.3s; /* Smooth transition */
+  background-color: white;
+  /* Default background */
+  border: 1px solid #ccc;
+  /* Light border color */
+  padding: 0.5rem;
+  /* Add some padding for better appearance */
+  transition: background-color 0.3s;
+  /* Smooth transition */
 }
 
 /* Apply light gray background when the input is empty and placeholder is shown */
 input[type="datetime-local"]:placeholder-shown {
-  background-color: lightgray; /* Light gray when there's no selection */
+  background-color: lightgray;
+  /* Light gray when there's no selection */
 }
+
 input[type="datetime-local"] {
-  color: #a00303; /* Cor cinza claro */
+  color: #a00303;
+  /* Cor cinza claro */
 }
 
 input[type="datetime-local"]:focus {
-  color: #000; /* Muda a cor para preto ao focar */
+  color: #000;
+  /* Muda a cor para preto ao focar */
 }
 
 input[type="text"],
 input[type="number"],
-input[type="password"]
-input[type="tel"],
+input[type="password"] input[type="tel"],
 input[type="datetime-local"],
 select,
 textarea {
@@ -1515,7 +1718,8 @@ textarea {
   border: 1px solid #ccc;
   padding: 8px;
   border-radius: 4px;
-  width: 100%; /* Garante que o input ocupe toda a largura do grupo */
+  width: 100%;
+  /* Garante que o input ocupe toda a largura do grupo */
   box-sizing: border-box;
   font-size: 16px;
   position: relative;
@@ -1526,18 +1730,23 @@ textarea {
   margin-top: 8px;
   margin-bottom: 8px;
   border: 1px solid;
-  border-radius:  6px;
+  border-radius: 6px;
   padding: 0 15px;
 }
+
 .scrollable-container {
-  max-height: 200px; /* Adjust as needed */
+  max-height: 200px;
+  /* Adjust as needed */
   overflow-y: auto;
 }
+
 .pricing-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers the content horizontally */
-  margin-top: 1.5rem; /* Sets top margin for the container */
+  align-items: center;
+  /* Centers the content horizontally */
+  margin-top: 1.5rem;
+  /* Sets top margin for the container */
   background-color: #cfcccc;
   border-radius: 12px;
   margin-left: 14%;
@@ -1547,60 +1756,99 @@ textarea {
 
 .pricing-row {
   display: flex;
-  justify-content: space-between; /* Space between items */
-  width: 90%; /* Ensures the row occupies half of the container width */
-  margin-bottom: 0.5rem; /* Margin between the rows */
+  justify-content: space-between;
+  /* Space between items */
+  width: 90%;
+  /* Ensures the row occupies half of the container width */
+  margin-bottom: 0.5rem;
+  /* Margin between the rows */
 }
 
 .total-pricing-row {
-  margin-bottom: 0.25rem; /* Reduces bottom margin for the total row */
+  margin-bottom: 0.25rem;
+  /* Reduces bottom margin for the total row */
 }
 
 .price {
-  font-size: 0.999rem; /* Diminui a fonte dos preços de frete e parcial */
+  font-size: 0.999rem;
+  /* Diminui a fonte dos preços de frete e parcial */
 }
 
 .total-price {
-  font-size: 1.5rem; /* Increases font size for total price */
-  font-weight: bold; /* Makes total price bold */
+  font-size: 1.5rem;
+  /* Increases font size for total price */
+  font-weight: bold;
+  /* Makes total price bold */
 }
 
 .label {
-  font-weight: normal; /* Rótulos em peso normal */
+  font-weight: normal;
+  /* Rótulos em peso normal */
 }
 
 .price-strong {
-  font-weight: bold; /* Estilo para texto em negrito, agora com nome mais descritivo */
+  font-weight: bold;
+  /* Estilo para texto em negrito, agora com nome mais descritivo */
 }
 
 
 .label-bold {
-  font-weight: bold; /* Makes labels bold */
+  font-weight: bold;
+  /* Makes labels bold */
 }
 
 select {
-  color: #000; /* Cor preta para todas as opções */
-  width: 100%; /* Make sure it has enough width */
-  z-index: 1; /* Ensure it's above other elements */
+  color: #000;
+  /* Cor preta para todas as opções */
+  width: 100%;
+  /* Make sure it has enough width */
+  z-index: 1;
+  /* Ensure it's above other elements */
 }
+
 select:invalid {
-  color: #919191; /* Cor cinza claro */
-  border: 1px solid #000000; /* Borda sempre presente */
+  color: #919191;
+  /* Cor cinza claro */
+  border: 1px solid #000000;
+  /* Borda sempre presente */
 }
+
 option:not(:first-of-type) {
   color: black;
 }
+
 .order-items-scrollable-container {
-  max-height: 200px; /* Define a altura máxima para a área de rolagem */
-  overflow-y: auto;  /* Habilita o scroll vertical */
-  padding: 10px; /* Opcional: adiciona padding */
-  margin-top: 10px; /* Espaço entre o título e a lista */
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-top: 10px;
 }
 
+.order-items-scrollable-container{
+  scrollbar-width: thin; /* Para Firefox */
+  scrollbar-color: var(--meiotom) var(--fundobranco);
+  ::-webkit-scrollbar {
+    width: 12px; /* Largura da barra de rolagem */
+  } 
+  ::-webkit-scrollbar-track {
+    background: var(--fundobranco); /* Cor do fundo da barra de rolagem */
+    border-radius: 10px; /* Bordas arredondadas */
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--meiotom); /* Cor da barra de rolagem */
+    border-radius: 10px; /* Bordas arredondadas da barra de rolagem */
+    border: 2px solid var(--sombramodal); /* Espaçamento ao redor da barra */
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--cinza); /* Cor da barra de rolagem quando o mouse está sobre ela */
+  }
+
+}
 
 .form-container .form-group textarea {
   position: relative;
-  height: 50px; /* Essa altura pode ser ajustada para textarea, se necessário */
+  height: 50px;
+  /* Essa altura pode ser ajustada para textarea, se necessário */
   width: 100%;
   outline: none;
   font-size: 1rem;
@@ -1608,42 +1856,51 @@ option:not(:first-of-type) {
   border: 1px solid;
   border-radius: 6px;
   padding: 0 15px;
-  box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
+  box-sizing: border-box;
+  /* Garante que padding e borda não aumentem a largura total */
 }
 
 .page-container {
   margin-top: 50px;
   max-width: 800px;
   margin: 0 auto;
-  position: sticky; /* Mantém o formulário fixo */
-  top: 20px; /* Define a distância do topo da página */
+  position: sticky;
+  /* Mantém o formulário fixo */
+  top: 20px;
+  /* Define a distância do topo da página */
   padding: 20px;
-  z-index: 100; /* Para garantir que o formulário esteja acima de outros elementos */
+  z-index: 100;
+  /* Para garantir que o formulário esteja acima de outros elementos */
 }
 
 .form-title {
-  margin: 0; /* Remove margens para que o título não afete o layout */
-  padding: 20px 0; /* Ajuste o padding se necessário */
-  text-align: center; /* Centraliza o título, se desejado */
-  font-size: 24px; /* Ajusta o tamanho da fonte conforme necessário */
-  color: #333; /* Defina a cor do texto, se desejado */
+  margin: 0;
+  /* Remove margens para que o título não afete o layout */
+  padding: 20px 0;
+  /* Ajuste o padding se necessário */
+  text-align: center;
+  /* Centraliza o título, se desejado */
+  font-size: 24px;
+  /* Ajusta o tamanho da fonte conforme necessário */
+  color: #333;
+  /* Defina a cor do texto, se desejado */
 }
 
 .form-container .form-group select {
   position: relative;
   height: 50px;
-  width:100%;
+  width: 100%;
   outline: none;
   font-size: 1rem;
   margin-top: 8px;
   margin-bottom: 18px;
-   border: 1px solid;
-  border-radius:  6px;
+  border: 1px solid;
+  border-radius: 6px;
   padding: 0 15px;
 
   background-color: #f0f8ff;
   color: #000;
-  
+
   border: 1px solid var(--pretofundo);
 }
 
@@ -1651,20 +1908,28 @@ option:not(:first-of-type) {
 
 /* Estilo para o campo de senha */
 .senha-input {
-  background-color: #f0f8ff !important; /* Força a cor de fundo */
-  color: #000 !important; /* Força a cor do texto */
-  border: 1px solid var(--pretofundo) !important; /* Força a borda */
+  background-color: #f0f8ff !important;
+  /* Força a cor de fundo */
+  color: #000 !important;
+  /* Força a cor do texto */
+  border: 1px solid var(--pretofundo) !important;
+  /* Força a borda */
 }
+
 /* Estilo para os radio buttons */
 .radio-group {
-  display: flex; /* Exibe os radio buttons lado a lado */
-  gap: 10px; /* Espaço entre os radio buttons */
-  align-items: center; /* Alinha verticalmente com os textos */
+  display: flex;
+  /* Exibe os radio buttons lado a lado */
+  gap: 10px;
+  /* Espaço entre os radio buttons */
+  align-items: center;
+  /* Alinha verticalmente com os textos */
 }
 
 /* Mantém o estilo para o input dentro do form-group */
 .form-container .form-group input[type="radio"] {
-  margin-right: 5px; /* Espaço entre o radio e o texto */
+  margin-right: 5px;
+  /* Espaço entre o radio e o texto */
 }
 
 .radio-group label {
@@ -1672,6 +1937,7 @@ option:not(:first-of-type) {
   align-items: center;
   padding-right: 52px;
 }
+
 /* menu lateral */
 
 .navigation {
@@ -1680,7 +1946,8 @@ option:not(:first-of-type) {
   left: 0;
   height: 100vh;
   background: var(--pretofundo);
-  width: 70px; /* Largura inicial */
+  width: 70px;
+  /* Largura inicial */
   box-shadow: 10px 0 0 var(--amarelotoque);
   border-left: 10px solid var(--pretofundo);
   overflow-x: hidden;
@@ -1689,25 +1956,30 @@ option:not(:first-of-type) {
 }
 
 .navigation.open {
-  width: 300px; /* Largura quando aberto */
+  width: 300px;
+  /* Largura quando aberto */
 }
 
 .menu-button {
   position: absolute;
-  top: 10px; /* Distância do topo */
-  left: 10px; /* Distância da esquerda */
+  top: 10px;
+  /* Distância do topo */
+  left: 10px;
+  /* Distância da esquerda */
   background: none;
   border: none;
   cursor: pointer;
   margin: 5px;
   font-size: 1.5rem;
   color: var(--branco);
-  z-index: 1001; /* Garante que o botão fique acima dos ícones */
+  z-index: 1001;
+  /* Garante que o botão fique acima dos ícones */
 }
 
 .navigation ul {
   position: relative;
-  top: 50px; /* Ajuste para deixar espaço para o botão do menu */
+  top: 50px;
+  /* Ajuste para deixar espaço para o botão do menu */
   width: 100%;
   padding-left: 5px;
   padding-top: 20px;
@@ -1745,14 +2017,14 @@ option:not(:first-of-type) {
   z-index: 2000;
 }
 
-.nav-item .icon-menor{
+.nav-item .icon-menor {
   position: relative;
   display: block;
   text-align: center;
   line-height: 5px;
 }
 
-.nav-item .icon-menor ion-icon{
+.nav-item .icon-menor ion-icon {
   position: relative;
   font-size: 1.0rem;
 }
@@ -1803,14 +2075,15 @@ option:not(:first-of-type) {
 }
 
 .dropdown-content.show {
-  max-height: 500px; /* Um valor alto para garantir que o conteúdo apareça */
+  max-height: 500px;
+  /* Um valor alto para garantir que o conteúdo apareça */
   opacity: 1;
 }
 
 /* Estilo para os links dentro do dropdown */
 .dropdown-content a {
   display: block;
- padding-left: 40px;
+  padding-left: 40px;
   text-decoration: none;
   color: var(--branco);
 }
@@ -1826,20 +2099,28 @@ option:not(:first-of-type) {
 /*fim menu*/
 .pagination {
   display: flex;
-  justify-content: center; /* Centraliza o conteúdo */
-  align-items: center; /* Centraliza verticalmente */
-  gap: 10px; /* Espaçamento entre os botões */
-  margin-top: 20px; /* Espaçamento acima da paginação */
+  justify-content: center;
+  /* Centraliza o conteúdo */
+  align-items: center;
+  /* Centraliza verticalmente */
+  gap: 10px;
+  /* Espaçamento entre os botões */
+  margin-top: 20px;
+  /* Espaçamento acima da paginação */
 }
+
 .search-box {
   position: relative;
-  float: left; /* Muda de right para left */
+  float: left;
+  /* Muda de right para left */
   margin-bottom: 10px;
 }
+
 .filter-box select {
   height: 34px;
   border-radius: 20px;
-  padding-left: 20px; /* Aumente o padding se necessário */
+  padding-left: 20px;
+  /* Aumente o padding se necessário */
   border-color: #ddd;
   box-shadow: none;
   outline: none;
@@ -1848,7 +2129,8 @@ option:not(:first-of-type) {
 .search-box input {
   height: 34px;
   border-radius: 20px;
-  padding-left: 20px; /* Aumente o padding se necessário */
+  padding-left: 20px;
+  /* Aumente o padding se necessário */
   border-color: #ddd;
   box-shadow: none;
   outline: none;
@@ -1861,33 +2143,41 @@ option:not(:first-of-type) {
 .search-box .search-icon {
   color: #a0a5b1;
   font-size: 19px;
- 
+
 }
 
 
 
 .action-icon {
-  color: #03A9F4; /* Cor do ícone */
-  font-size: 24px; /* Tamanho do ícone */
-  margin: 0 8px; /* Espaçamento entre os ícones */
+  color: #03A9F4;
+  /* Cor do ícone */
+  font-size: 24px;
+  /* Tamanho do ícone */
+  margin: 0 8px;
+  /* Espaçamento entre os ícones */
   transition: color 0.3s;
 }
 
 .action-icon:hover {
-  color: #0397d6; /* Cor ao passar o mouse */
+  color: #0397d6;
+  /* Cor ao passar o mouse */
 }
 
 .action-icon.delete {
-  color: #f44336; /* Cor personalizada para deletar */
+  color: #f44336;
+  /* Cor personalizada para deletar */
 }
 
 .action-icon.finalizar {
-  color: #4CAF50; /* Cor personalizada para finalizar */
+  color: #4CAF50;
+  /* Cor personalizada para finalizar */
 }
 
 .action-icon.button-disabled {
-  color: #ccc; /* Cor quando desativado */
-  cursor: not-allowed; /* Indicação de desabilitado */
+  color: #ccc;
+  /* Cor quando desativado */
+  cursor: not-allowed;
+  /* Indicação de desabilitado */
 }
 
 .tipo-entrega {
@@ -1898,7 +2188,8 @@ option:not(:first-of-type) {
   font-weight: bold;
   display: inline-block;
 }
-.status{
+
+.status {
   width: 8rem;
   padding: 4px 8px;
   border-radius: 12px;
@@ -1909,98 +2200,133 @@ option:not(:first-of-type) {
 
 /* Status Colors */
 .status-finalizado {
-  background-color: #4CAF50; /* Verde */
+  background-color: #4CAF50;
+  /* Verde */
 }
 
 .status-em-andamento {
-  background-color: #FFC107; /* Amarelo */
+  background-color: #FFC107;
+  /* Amarelo */
 }
 
 .status-nao-finalizado {
-  background-color: #F44336; /* Vermelho */
+  background-color: #F44336;
+  /* Vermelho */
 }
 
 .status-desconhecido {
-  background-color: #9E9E9E; /* Cinza */
+  background-color: #9E9E9E;
+  /* Cinza */
 }
 
 /* Tipo de Entrega Colors */
 .tipo-entrega-entrega {
-  background-color: #2196F3; /* Azul */
+  background-color: #2196F3;
+  /* Azul */
 }
 
 .tipo-entrega-ifood {
-  background-color: #c126f0; /* Vermelho Claro */
+  background-color: #c126f0;
+  /* Vermelho Claro */
 }
 
 .tipo-entrega-retirada {
-  background-color: #824caf; /* Verde */
+  background-color: #824caf;
+  /* Verde */
 }
+
 .tipo-entrega-comum {
-  background-color: #919191; /* Verde */
+  background-color: #919191;
+  /* Verde */
 }
 
 .tipo-entrega-desconhecido {
-  background-color: #9E9E9E; /* Cinza */
+  background-color: #9E9E9E;
+  /* Cinza */
 }
+
 @media (min-width: 1025px) {
   .h-custom {
-  height: 100vh !important;
+    height: 100vh !important;
   }
-  }
-  
-  .card-registration .select-input.form-control[readonly]:not([disabled]) {
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
   font-size: 1rem;
   line-height: 2.15;
   padding-left: .75em;
   padding-right: .75em;
-  }
-  
-  .card-registration .select-arrow {
-  top: 13px;
-  }
+}
 
-  .help-button {
-    float: right; /* Faz o botão flutuar à direita */
-    background-color: #002752; /* Azul padrão */
-    color: white; /* Cor do texto (ou ícone) */
-    border: none; /* Remove a borda padrão */
-    border-radius: 50%; /* Faz o botão ser redondo */
-    width: 40px; /* Largura do botão */
-    height: 40px; /* Altura do botão */
-    display: flex; /* Flexbox para centralizar o ícone */
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    cursor: pointer; /* Muda o cursor para pointer */
-    transition: background-color 0.3s; /* Animação de transição suave */
-    outline: none; /* Remove o contorno quando clicado */
-  }
-  
-  .help-button:hover {
-    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
-  }
-  
-  .help-button:focus {
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Efeito ao focar */
-  }
-  
-  .dropdown-user {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-content-user {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-  }
-  
-  .dropdown-user:hover .dropdown-content-user {
-    display: block;
-  }
-  
-  
+.card-registration .select-arrow {
+  top: 13px;
+}
+
+.help-button {
+  float: right;
+  /* Faz o botão flutuar à direita */
+  background-color: #002752;
+  /* Azul padrão */
+  color: white;
+  /* Cor do texto (ou ícone) */
+  border: none;
+  /* Remove a borda padrão */
+  border-radius: 50%;
+  /* Faz o botão ser redondo */
+  width: 40px;
+  /* Largura do botão */
+  height: 40px;
+  /* Altura do botão */
+  display: flex;
+  /* Flexbox para centralizar o ícone */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente */
+  cursor: pointer;
+  /* Muda o cursor para pointer */
+  transition: background-color 0.3s;
+  /* Animação de transição suave */
+  outline: none;
+  /* Remove o contorno quando clicado */
+}
+
+.help-button:hover {
+  background-color: #0056b3;
+  /* Azul mais escuro ao passar o mouse */
+}
+
+.help-button:focus {
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+  /* Efeito ao focar */
+}
+
+.dropdown-user {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content-user {
+  color: var(--amarelotoque);
+  display:none;
+  position:absolute;
+  right: 0;
+  background-color: var(--pretofundo);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown-content-user p {
+  color: var(--amarelotoque);
+}
+
+.dropdown-content-user a{
+  color: var(--amarelotoque);
+}
+
+.dropdown-user:hover .dropdown-content-user {
+  display: block;
+  color: var(--amarelotoque);
+}

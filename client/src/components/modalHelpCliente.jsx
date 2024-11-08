@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../modal.css'; // Importa o arquivo de estilo para o modal
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import Tooltip from './tooltip';
 
 const ModalHelpCliente = ({ isOpen, onRequestClose }) => {
   if (!isOpen) return null;
@@ -38,6 +36,16 @@ const ModalHelpCliente = ({ isOpen, onRequestClose }) => {
             <dd>- Campo destinado a qualquer informação sobre a pessoa.</dd>
           </dl>
           <p>*Os campos marcados com asterisco vermelho são obrigatórios.</p>
+          <dl>
+            <dt>Botão Confirmar:</dt>
+            <dd>
+              Ao conferir e atestar que todos os dados estão corretos e os obrigatórios foram preenchidos,
+              clique no botão "Confirmar". Se o cadastro for bem-sucedido, um pop-up verde aparecerá na parte
+              superior da tela, indicando o sucesso. Caso contrário, o pop-up será vermelho, avisando sobre o erro.
+              Após sucesso, você será redirecionado para a lista de clientes.
+            </dd>
+          </dl>
+
         </div>
         <div className="custom-modal-footer">
           <button className="custom-button-danger" onClick={onRequestClose}>
@@ -49,32 +57,5 @@ const ModalHelpCliente = ({ isOpen, onRequestClose }) => {
   );
 };
 
-const CreateCliente = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
-
-  return (
-    <div>
-      {/* Botão para abrir o modal de ajuda */}
-      <div>
-      <Tooltip text="Clique para ajuda">
-        <button
-          onClick={openModal}
-          className="help-button"
-          aria-label="Ajuda" // Para acessibilidade
-        >
-          <HelpOutlineIcon />
-        </button>
-        </Tooltip>
-      </div>
-
-
-      {/* Modal de ajuda */}
-      <ModalHelpCliente isOpen={modalIsOpen} onRequestClose={closeModal} />
-    </div>
-  );
-};
-
-export default CreateCliente;
+export default ModalHelpCliente;
