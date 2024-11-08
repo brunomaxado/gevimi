@@ -15,6 +15,7 @@
   --verde-claro: #c3e6cb;
   --sombra-modal: #d4edda;
   --fundo-claro: #00000080;
+  --azul-dúvida:  #0073e6;
   --fonte-padrao: "Noto Serif", serif;
 }
 
@@ -42,6 +43,7 @@
 .navegacao ul li {
   position: relative;
   list-style: none;
+  height: 70%;
   width: 100%;
   border-top-right-radius: 20px; /* Bordas arredondadas no canto superior direito */
   border-top-left-radius: 20px;
@@ -85,7 +87,7 @@
 }
 
 .navegacao ul li.ativa {
-  background: var(--amarelo-toque);
+  background: var(--azul-dúvida);
   color: var(--preto-letra);
 }
 
