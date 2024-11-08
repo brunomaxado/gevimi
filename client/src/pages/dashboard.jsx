@@ -1,4 +1,6 @@
 import axios from "axios";
+import '../dash.css';
+import PaidIcon from '@mui/icons-material/Paid';
 import React, { useState, useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
@@ -220,39 +222,100 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <div style={styles.container}>
-        <div style={{ ...styles.card, ...styles.totalRetirada }}>
-          <div>Total Entrega</div>
-          <div>{dashboard.totals?.total_retirada || 0}</div>
-        </div>
-        <div style={{ ...styles.card, ...styles.totalEntregas }}>
-          <div>Total Retirada</div>
-          <div>{dashboard.totals?.total_entrega || 0}</div>
-        </div>
-        <div style={{ ...styles.card, ...styles.totalAbertos }}>
-          <div>Total Finalizados</div>
-          <div>{dashboard.totals?.total_aberto || 0}</div>
-        </div>
-        <div style={{ ...styles.card, ...styles.faturamento }}>
-          <div>Faturamento</div>
-          <div>R${dashboard.totalPrice?.toFixed(2) || "0.00"}</div>
-        </div>
-        <div style={{ ...styles.card, ...styles.totalFinalizados }}>
-          <div>Total Abertos</div>
-          <div>{dashboard.totals?.total_finalizado || 0}</div>
-        </div>
-      </div>
+    <div className="background-yellow">
+     <div class="container-dash-pai">
+  <div class="row">
+    <div class="item-1">Item 1 - Esticado na linha inteira</div>
+  </div>
 
+  <div class="row">
+    <div class="column">
+
+    <div class="kpi-card grey-dark">
+    <span class="card-value">          <div>{dashboard.totals?.total_finalizado || 0}</div> </span>
+    <span class="card-text">Total Finalizados</span>
+             <i class="fas fa-shopping-cart icon"> <PaidIcon> </PaidIcon></i>
+  </div>
+  
+
+
+  <div class="kpi-card red">
+    <span class="card-value">            <div>{dashboard.totals?.total_aberto|| 0}</div> </span>
+    <span class="card-text">Total Abertos</span>
+      <i class="fas fa-shopping-cart icon"></i>
+  </div>
+
+
+    </div>
+    
+
+    <div style={{ width: '100%', maxWidth: '21%', backgroundColor: 'white', padding: '20px' }}>
+  <canvas ref={pieChartRef} id="totals" style={{ height: '200px', width: '100%' }} />
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+    <div className="container-dash"> 
+
+    <div class="kpi-card-fat">
+    <span class="card-value">   <div>R${dashboard.totalPrice?.toFixed(2) || "0.00"}</div> </span>
+    <span class="card-text">Faturamento</span>
+      <i class="fas fa-shopping-cart icon"></i>
+  </div>
+
+    </div>
+    <div className="container-dash"> 
+
+
+  <div class="kpi-card orange">
+    <span class="card-value">  <div>{dashboard.totals?.total_retirada || 0}</div></span>
+    
+    <span class="card-text">Nº Comum</span>
+     <i class="fas fa-shopping-cart icon"> <PaidIcon> </PaidIcon></i>
+  </div>
+ 
+ 
+    <div class="kpi-card purple">
+    <span class="card-value">             <div>{dashboard.totals?.total_entrega || 0}</div> </span>
+    <span class="card-text">Nº Entregas</span>
+       <i class="fas fa-shopping-cart icon"></i>
+  </div>
+  
+  </div>
+
+    <div className="container-dash"> 
+    <div class="kpi-card grey-dark">
+    <span class="card-value">          <div>{dashboard.totals?.total_finalizado || 0}</div> </span>
+    <span class="card-text">Total Finalizados</span>
+             <i class="fas fa-shopping-cart icon"> <PaidIcon> </PaidIcon></i>
+  </div>
+  
+
+
+  <div class="kpi-card red">
+    <span class="card-value">            <div>{dashboard.totals?.total_aberto|| 0}</div> </span>
+    <span class="card-text">Total Abertos</span>
+      <i class="fas fa-shopping-cart icon"></i>
+  </div>
+</div>
+ 
+      
+      
       <div style={{ width: '100%', maxWidth: '800px', margin: '50px auto' }}>
         <canvas ref={chartRef} id="acquisitions" style={{ height: '200px', width: '100%' }} />
       </div>
 
-      <div style={{ width: '100%', maxWidth: '600px', margin: '50px auto' }}>
-        <canvas ref={pieChartRef} id="totals" style={{ height: '200px', width: '100%' }} />
-      </div>
+      
+
+
     </div>
   );
 };
 
 export default Dashboard;
+

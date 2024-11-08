@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AuthContext } from "../context/authContext";
 import React, { useContext, useEffect, useState } from "react";
-
+import '../style.css';
 const Menu = () => {
     const { currentUser, logout } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);

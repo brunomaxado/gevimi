@@ -1,0 +1,151 @@
+
+.icon-dash {  
+    color: orange; /* Define a cor laranja */
+    font-size: 2.5rem; /* Ajuste o tamanho conforme necessário */
+    position: absolute;
+    top:-0.9rem;
+    right: 11.5rem;
+    opacity: 0.8; /* Deixa o ícone levemente transparente */
+}
+
+  
+  #container
+  {
+    width: 1200px;
+    display: flex;
+  }
+  
+
+  
+  .kpi-card
+  {
+    overflow: hidden;
+    position: relative;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.75);;
+    display: inline-block;
+    float: left;
+    padding: 1em;
+    border-radius: 0.3em;
+    font-family: sans-serif;  
+    width: 240px;
+    min-width: 180px;
+    margin-left: 0.5em;
+    color: #efefef;
+    margin-top: 0.5em;
+    margin-right: 1rem;
+    background-color: #ffffff;
+    height: 7rem;
+  }
+ 
+  .kpi-card-fat
+  {
+    overflow: hidden;
+    position: relative;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.75);;
+    display: inline-block;
+    float: left;
+    padding: 1em;
+    border-radius: 0.3em;
+    font-family: sans-serif;  
+    width: 100%;
+    min-width: 180px;
+    margin-left: 0.5em;
+    color: #efefef;
+    margin-top: 0.5em;
+    margin-right: 1rem;
+    background-color:  #ffffff;
+  }
+.purple{
+    background-color: rgb(205, 255, 255);
+}
+
+
+  .card-value {
+    display: block;
+    font-size: 200%;  
+    font-weight: bolder;
+    color: black;
+  }
+  
+  .card-text {
+    display:block;
+    font-size: 70%;
+    padding-left: 0.2em;
+    color: black;
+  }
+
+  .background-yellow{
+    background-color: rgb(182, 188, 190);
+    margin-top: 2rem;
+    padding-top: 1rem;
+    margin-left: 3rem;
+  }
+
+  /* Contêiner principal do dashboard */
+.container-dash {
+    display: flex;          /* Alinha os KPIs horizontalmente */
+    gap: 1rem;              /* Espaçamento entre cada card */
+    padding-top: 1rem;          /* Padding ao redor do contêiner */
+    justify-content: start; /* Alinha os KPIs à esquerda, ou use center para centralizar */
+    flex-wrap: wrap;        /* Permite que os KPIs "quebrem linha" em telas menores */
+  }
+  
+
+  /* Contêiner principal */
+.container-dash-pai {
+    display: flex;
+    flex-direction: column; /* Organiza as linhas verticalmente */
+    gap: 1rem; /* Espaçamento entre as linhas */
+  }
+  
+  /* Primeira linha - item esticado na linha inteira */
+  .row {
+    display: flex;
+    width: 100%; /* Faz com que o item ocupe toda a largura */
+  }
+  
+  .item-1 {
+    width: 100%; /* Faz com que o item ocupe toda a linha */
+    background-color: lightblue; /* Apenas para destaque */
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  /* Segunda linha - item 2 e 3 ao lado de item 4 */
+  .row {
+    display: flex;
+    width: 100%;
+    gap: 4REM;
+  }
+  
+  /* Coluna com item 2 e item 3 em cima um do outro */
+  .column {
+    display: flex;
+    flex-direction: column; /* Alinha os itens verticalmente */
+    gap: 1rem; /* Espaçamento entre item 2 e item 3 */
+    width: 18rem; /* Largura da coluna */
+  }
+  
+  /* Itens 2 e 3 */
+  .item-2, .item-3 {
+    background-color: lightgreen; /* Apenas para destaque */
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  /* Item 4 ocupa a mesma altura dos dois itens acima */
+  .item-4 {
+    background-color: lightcoral; /* Apenas para destaque */
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+    width: 50%; /* Largura de item 4, ocupando o restante da linha */
+    display: flex;
+    align-items: stretch; /* Faz com que o item 4 ocupe toda a altura da coluna */
+  }
+  
+  .pizza{
+    background-color: white;
+  }

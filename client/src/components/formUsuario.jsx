@@ -75,9 +75,9 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
           </div>
         </div>
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <button type="submit">SALVAR</button>
-    
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 };
