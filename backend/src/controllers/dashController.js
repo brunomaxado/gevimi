@@ -14,10 +14,10 @@ export const getDashboardData = (req, res) => {
   const queryTotals = `
     SELECT
       COUNT(*) AS total_pedidos,
-      COUNT(CASE WHEN tipo = 1 THEN 1 END) AS total_retirada,
-      COUNT(CASE WHEN tipo <> 1 THEN 1 END) AS total_entrega,
-      COUNT(CASE WHEN data_finalizado IS NULL THEN 1 END) AS total_finalizado,
-      COUNT(CASE WHEN data_finalizado IS NOT NULL THEN 1 END) AS total_aberto
+      COUNT(CASE WHEN tipo = 4 THEN 1 END) AS total_retirada,
+      COUNT(CASE WHEN tipo <> 4 THEN 1 END) AS total_entrega,
+      COUNT(CASE WHEN data_finalizado IS NULL THEN 1 END) AS total_aberto,
+      COUNT(CASE WHEN data_finalizado IS NOT NULL THEN 1 END) AS total_finalizado
     FROM pedido
   `;
 
