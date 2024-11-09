@@ -1730,6 +1730,56 @@ textarea {
     margin-bottom: 8px;
     padding: 0 15px;
 }
+.dropdown-button{
+  background-color: #f0f8ff;
+  color: #000;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 114%;
+  box-sizing: border-box;
+  font-size: 16px;
+  position: relative;
+  height: 50px;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 0 15px;
+
+
+}
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espaçamento entre os itens */
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  font-size: 14px; /* Tamanho da fonte um pouco menor para um visual mais compacto */
+  padding: 5px 0;
+}
+
+.checkbox-group input {
+  width: 16px; /* Tamanho pequeno do checkbox */
+  height: 16px;
+  margin-right: 8px; /* Espaçamento entre o checkbox e o texto */
+  background-color: #f0f8ff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.checkbox-group input:checked {
+  background-color: #5c9ded; /* Cor de fundo quando o checkbox estiver selecionado */
+  border-color: #4a8ccc; /* Cor da borda quando selecionado */
+}
+
+.checkbox-group label:hover input {
+  border-color: #4a8ccc; /* Muda a borda ao passar o mouse */
+}
+
 
 /* Estilo especial para o input de datetime-local */
 input[type="datetime-local"] {
