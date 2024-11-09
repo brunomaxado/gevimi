@@ -15,41 +15,36 @@ const ModalHelpReadCliente = ({ isOpen, onRequestClose }) => {
         </div>
         <div className="custom-modal-body">
           <div>
-            <h5><b>:</b></h5>
+          <div>
+            <h5><b>Cadastrar cliente:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- </dd>
-              <dt>Botão Confirmar:</dt>
-              <dd>
-
-              </dd>
+              <dt>Botão "novo cliente":</dt>
+              <dd>- Clique no botão para ser redirecionado para a página de cadastrar novos clientes.</dd>
             </dl>
           </div>
 
           <div>
-            <h5><b>:</b></h5>
+            <h5><b>Pesquisar:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
-              <dt>:</dt>
-              <dd>- .</dd>
+              <dt>Barra de pesquisa:</dt>
+              <dd>-  Na caixa de pesquisa, é possível pesquisar o nome, cpf, cep, celular e endereço do cliente.</dd>
+              <dt>Limpar filtro:</dt>
+              <dd>- Limpa a caixa de pesquisa.</dd>
             </dl>
           </div>
 
           <div>
-            <h5><b>:</b></h5>
+            <h5><b>Gerenciar pedidos:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
+              <dt>Finalizar:</dt>
+              <dd>- Clique no ícone para finalizar o pedido.</dd>
+              <dt>Visualizar:</dt>
+              <dd>- Clique no ícone para visualizar todas as informações do pedido.</dd>
+              <dt>Ícone de deletar (lixeira):</dt>
+              <dd>- Clique no ícone para deletar o pedido,
+                 só é possível deletar pedido se ele não estiver finalizado.</dd>
             </dl>
           </div>
-
-          <div>
-            <h5><b>:</b></h5>
-            <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
-            </dl>
           </div>
         </div>
         <div className="custom-modal-footer">
