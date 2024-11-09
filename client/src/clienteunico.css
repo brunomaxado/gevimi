@@ -1,0 +1,68 @@
+.body-Cliente {
+    margin-right: 15vh;
+    margin-left: 15vh;
+    min-width: 200px;
+}
+
+h1 {
+    text-align: left;
+    color: #080000;
+}
+
+input {
+    background-color: rgba(49, 49, 49, 0.562);
+    border: none;
+    padding: 8px;
+    color: #fff;
+    width: 100%;
+}
+
+.infos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.infos > div {
+    flex: 1 1 20%;
+}
+
+.id-cliente, .nome, .email, .telefone {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.endereco {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #ff3b3b;
+}
+
+label {
+    color: #0c0000;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[readonly] {
+    cursor:text;
+}

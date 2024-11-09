@@ -179,7 +179,7 @@ const ReadPedidoUnico = () => {
         </div>
 
         <div className="infos-tec">
-          <div className="data">
+          <div className="data-realizacao">
             <label>Data de Realização:</label>
             <input
               type="text"

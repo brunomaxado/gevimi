@@ -29,6 +29,8 @@ import RelatorioQtdPedidoUser from "./pages/relatorioQtdPedidoUser";
 import RelatorioVendaProd from "./pages/relatorioQtdVendaProd";
 import RelatorioFat from "./pages/relatorioFat";
 import RelatorioPedido from "./pages/relatorioPedido";
+import ReadClienteUnico from "./pages/readClienteUnico";
+
 const Private = ({ Component }) => {
   const { currentUser } = useAuth();
 
@@ -79,6 +81,7 @@ function App() {
           <Route path="/readPedido" element={<Private Component={ReadPedido} />} />
           <Route path="/readUsuario" element={<Private Component={ReadUsuario} />} />
           <Route path="/readPedido/:id_pedido" element={<Private Component={ReadPedidoUnico} />} />
+          <Route path="/readCliente/:id_cliente" element={<Private Component={ReadClienteUnico} />} />
           <Route path="/editarCliente/:id_cliente" element={<Private Component={EditarCliente} />} />
           <Route path="/editarUsuario/:id_usuario" element={<Private Component={EditarUsuario} />} />
           <Route path="/estatistica" element={<Private Component={Dashboard} />} />

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../style.css';
-import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 
 const ReadCliente = () => {
@@ -68,10 +68,10 @@ const ReadCliente = () => {
         // Outro erro
         setErrorMessage("Erro ao deletar cliente. Tente novamente.");
       }
-    
+
     }
   };
-  
+
   const handleCancel = () => {
     setShowModal(false);
   };
@@ -114,7 +114,7 @@ const ReadCliente = () => {
       }, 100); // Pequeno atraso para garantir que o DOM seja atualizado
     }
   };
-  
+
   const paginatePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -123,7 +123,7 @@ const ReadCliente = () => {
       }, 100);
     }
   };
-  
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -145,8 +145,8 @@ const ReadCliente = () => {
               className="search-input"
             />
           </div>
-          <button 
-            className="limpar-filtro" 
+          <button
+            className="limpar-filtro"
             onClick={() => {
               setSearchTerm("");
               setCurrentPage(1); // Reseta a página para 1 ao limpar
@@ -195,8 +195,16 @@ const ReadCliente = () => {
                         onClick={() => handleUpdateClick(cliente.id_cliente)}
                         title="Editar"
                       >
-                        <VisibilityIcon />
-                      </span>
+                        <EditIcon />
+                        </span>   
+                        <Link
+                          to={`/readCliente/${cliente.id_cliente}`}
+                          title="Visualizar"
+                          className="action-icon visualizar"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          <VisibilityIcon />
+                        </Link>
                     </div>
                   </td>
                 </tr>
@@ -217,39 +225,39 @@ const ReadCliente = () => {
         </div>
 
 
-      
 
-      
+
+
       </div>
       {showSuccessModal && (
-          <div className="success-modal">
-            <div className="success-modal-content">
-              <span>{successMessage}</span>
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
+            <h2>Confirmar Exclusão</h2>
+            <p>Tem certeza que deseja excluir o cliente?</p>
+
+            {/* Mensagem de erro, que aparecerá caso haja algum erro */}
+            {errorMessage && (
+              <div className="error-message show">
+                {errorMessage}
+              </div>
+            )}
+
+
+            <div className="modal-div">
+              <button className="modal-button" onClick={handleDelete}>Sim</button>
+              <button className="modal-button" onClick={handleCancel}>Não</button>
             </div>
           </div>
-        )}
-      {showModal && (
-  <div className="modal">
-    <div className="modal-content">
-      <button className="close-modal" onClick={handleClose}>X</button> {/* Botão de fechar */}
-      <h2>Confirmar Exclusão</h2>
-      <p>Tem certeza que deseja excluir o cliente?</p>
-      
-      {/* Mensagem de erro, que aparecerá caso haja algum erro */}
-      {errorMessage && (
-  <div className="error-message show">
-    {errorMessage}
-  </div>
-)}
-
-
-      <div className="modal-div">
-        <button className="modal-button" onClick={handleDelete}>Sim</button>
-        <button className="modal-button" onClick={handleCancel}>Não</button>
-      </div>
-    </div>
-  </div>
-)}
+        </div>
+      )}
 
 
     </div>
