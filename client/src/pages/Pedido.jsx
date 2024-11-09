@@ -66,16 +66,6 @@ useEffect(() => {
     setPrecoTotal(calcularPrecoTotal(itensPedido));
   }, [itensPedido]); // Dependência: quando itensPedido mudar, recalcula o preço total
 
-
-
-
-
-
-
-
-
-
-
   useEffect(() => {
     const fetchProduto = async () => {
       try {

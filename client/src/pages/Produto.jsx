@@ -112,17 +112,7 @@ const Produto = () => {
 
   return (
     <div>
-       <div>
-        <button onClick={() => setIsHelpProdutoOpen(true)}>
-          <HelpOutlineIcon />
-        </button>
-      </div>
 
-      {/* Modal de ajuda */}
-      <HelpProduto
-        isOpen={isHelpProdutoOpen}
-        onRequestClose={() => setIsHelpProdutoOpen(false)}
-      />
 
       <div className="form"> 
   <h1>NOVO PRODUTO</h1>

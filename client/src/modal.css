@@ -81,14 +81,21 @@
 
 .custom-modal-body h5 {
   margin-top: 20px;
+  justify-content: left;
 }
 
 .custom-modal-body dt {
   font-weight: bold;
+  justify-content: left;
+  display: flex;
+  padding-bottom: 1.5rem;
 }
 
 .custom-modal-body dd {
   margin-left: 20px;
+  justify-content: left;
+  text-align: left;
+  display: flex;
 }
 
 /* Rodapé do modal */
@@ -127,7 +134,8 @@
   max-height: 400px;
   overflow-y: auto;
   margin-bottom: 10px;
-  
+  justify-content: left;
+
   /* Estilização para navegadores WebKit (Chrome, Safari) */
   scrollbar-width: thin; /* Para Firefox */
   scrollbar-color: var(--meiotom) var(--fundobranco); /* Cor da barra de rolagem e fundo da barra (Firefox) */

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Tooltip from './tooltip';
-import InputMask from 'react-input-mask'; // Importe o InputMask
+import InputMask from 'react-input-mask';
 
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
@@ -47,27 +47,23 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
     cidade: "",
     bairro: "",
     observacao: "",
-    ...initialData // Preenche os dados iniciais, se houver
+    ...initialData
   });
 
   const [error, setError] = useState(null);
   const primeiroCampoRef = useRef(null);
-  const [clientes, setClientes] = useState([]); // State para armazenar os clientes
+  const [clientes, setClientes] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
-    // Para CPF, CEP e Celular, remove os caracteres não numéricos
     let cleanedValue = value;
     if (name === "cpf" || name === "celular" || name === "cep") {
-      cleanedValue = value.replace(/\D/g, ''); // Remove tudo que não for número
+      cleanedValue = value.replace(/\D/g, '');
     }
-  
     setCliente((prev) => ({ ...prev, [name]: cleanedValue }));
   };
-  
 
-  const buscarEndereco = async (cep) => {
+  const buscarEnderecoPorCEP = async (cep) => {
     if (validateCEP(cep)) {
       try {
         const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
@@ -79,7 +75,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
             logradouro: data.logradouro,
             bairro: data.bairro,
             cidade: data.localidade,
-            estado: data.uf // Adiciona o estado, se necessário
+            estado: data.uf
           }));
           setError(null);
         } else {
@@ -91,6 +87,30 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
       }
     } else {
       setError("CEP inválido.");
+    }
+  };
+
+  const buscarCEPPorCidadeLogradouro = async () => {
+    const { cidade, logradouro } = cliente;
+    if (cidade && logradouro) {
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/PR/${cidade}/${logradouro}/json/`);
+        const data = response.data;
+
+        if (data && data.length > 0) {
+          setCliente((prev) => ({
+            ...prev,
+            cep: data[0].cep,
+            logradouro: data[0].bairro
+          }));
+          setError(null);
+        } else {
+          setError("Não foi possível encontrar um CEP para esta cidade e logradouro.");
+        }
+      } catch (err) {
+        console.error("Erro ao buscar CEP:", err);
+        setError("Erro ao buscar CEP.");
+      }
     }
   };
 
@@ -110,7 +130,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
   };
 
   useEffect(() => {
-    fetchAllClientes(); // Carrega os clientes quando o componente é montado
+    fetchAllClientes();
   }, []);
 
   const isCpfCadastrado = (cpf) => {
@@ -118,51 +138,43 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
       (c) => c.cpf === cpf && c.id_cliente !== cliente.id_cliente
     );
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Remover as máscaras antes de enviar
+
     const { nome, cpf, celular, cep, cidade, bairro, logradouro } = cliente;
-  
-    // Certifique-se de que os valores de CPF, celular e CEP estão limpos
+
     const cpfLimpo = cpf.replace(/\D/g, '');
     const celularLimpo = celular.replace(/\D/g, '');
     const cepLimpo = cep.replace(/\D/g, '');
-  
+
     if (!nome || !cpfLimpo || !celularLimpo || !cidade || !bairro || !logradouro || !cepLimpo) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-  
+
     if (!validateCPF(cpfLimpo)) {
       setError("CPF inválido.");
       return;
     }
-  
-    if (validateCelular(celularLimpo) === false) {
+
+    if (!validateCelular(celularLimpo)) {
       setError("Celular inválido.");
       return;
     }
-  
+
     if (isCpfCadastrado(cpfLimpo)) {
       setError("Este CPF já está cadastrado.");
       return;
     }
-  
-    // Submete os dados limpos
+
     onSubmit({ ...cliente, cpf: cpfLimpo, celular: celularLimpo, cep: cepLimpo });
   };
-  
-  
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="cliente">
-        {/* Nome */}
-        <Tooltip text="Elementos com asterisco vermelho são obrigatórios">
-          <ion-icon name="help-circle-outline"></ion-icon>
-        </Tooltip>
-
+      
         <div className="form-row">
           <div className="form-group">
             <label> Nome:
@@ -180,7 +192,6 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
 
-        {/* CEP, CPF e Celular */}
         <div className="form-row">
           <div className="form-group">
             <label> CEP:
@@ -194,7 +205,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
               value={cliente.cep}
               onChange={(e) => {
                 handleChange(e);
-                buscarEndereco(e.target.value); // Chama a função ao alterar o CEP
+                buscarEnderecoPorCEP(e.target.value);
               }}
               required
             />
@@ -204,15 +215,14 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
               <span className="asterisco">*</span>
             </label>
             <InputMask
-  type="text"
-  mask="999.999.999-99"
-  placeholder="CPF"
-  name="cpf"
-  value={cliente.cpf}
-  onChange={(e) => handleChange(e)} // handleChange limpa o valor
-  required
-/>
-
+              type="text"
+              mask="999.999.999-99"
+              placeholder="CPF"
+              name="cpf"
+              value={cliente.cpf}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-group">
             <label> Celular:
@@ -230,7 +240,6 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
 
-        {/* Cidade e Logradouro */}
         <div className="form-row">
           <div className="form-group">
             <label> Cidade:
@@ -242,6 +251,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
               name="cidade"
               value={cliente.cidade}
               onChange={handleChange}
+              onBlur={buscarCEPPorCidadeLogradouro}
               required
             />
           </div>
@@ -253,12 +263,12 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
               name="logradouro"
               value={cliente.logradouro}
               onChange={handleChange}
+              onBlur={buscarCEPPorCidadeLogradouro}
               required
             />
           </div>
         </div>
 
-        {/* Bairro e Número */}
         <div className="form-row">
           <div className="form-group">
             <label> Bairro: <span className="asterisco">*</span> </label>
@@ -285,7 +295,6 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
 
-        {/* Observação */}
         <div className="form-row">
           <div className="form-group">
             <label> Observação: </label>
@@ -298,9 +307,9 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
             />
           </div>
         </div>
-
+        <p><span className="asterisco">*</span> Elementos com asterisco vermelho são obrigatórios</p>
         <button type="submit">
-          SALVAR
+          CONFIRMAR
         </button>
         {error && <p id="erro">{error}</p>}
       </div>
