@@ -17,19 +17,19 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
       currency: "BRL",
     });
   };
-  
+
   const handlePrecoChange = (e) => {
     let valorDigitado = e.target.value;
-  
+
     // Garantir que valorDigitado seja uma string
     valorDigitado = String(valorDigitado);
-  
+
     // Remover todos os caracteres não numéricos
     valorDigitado = valorDigitado.replace(/\D/g, "");
-  
+
     // Formatar o valor para moeda
     const precoFormatado = formatarPreco(valorDigitado / 100); // Divide por 100 para tratar como valor em reais
-  
+
     // Atualizar estado com o valor formatado
     handleChange({
       ...e,
@@ -40,11 +40,11 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
       },
     });
   };
-  
+
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-  
+
 
       <div className="form-row">
         <div className="form-group">
@@ -66,17 +66,14 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
         <div className="form-group">
           <label> Preço Unitário: <span className="asterisco">*</span> </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-          <input
-  type="text"
-  placeholder="Preço Unitário"
-  name="preco_unitario"
-  value={produto.preco_unitario || ""} // Garantir que o valor esteja vazio se não houver
-  onChange={handlePrecoChange}
-  required
-/>
-
-
-
+            <input
+              type="text"
+              placeholder="Preço Unitário"
+              name="preco_unitario"
+              value={produto.preco_unitario || ""} // Garantir que o valor esteja vazio se não houver
+              onChange={handlePrecoChange}
+              required
+            />
 
           </div>
         </div>
@@ -98,7 +95,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
               </option>
             ))}
           </select>
-          
+
         </div>
       </div>
 
@@ -114,12 +111,16 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
           />
         </div>
       </div>
+
+      <p>
+        <span className="asterisco">*</span>
+        Os campos marcados com asterisco vermelho são obrigatórios (Nome, preço unitário e categoria).</p>
       <button type="submit">
-        SALVAR
+        Confirmar
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
-    
+
   );
 };
 
