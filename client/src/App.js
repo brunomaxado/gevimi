@@ -23,7 +23,12 @@ import Dashboard from "./pages/dashboard";
 import React from "react";
 import useAuth from "./context/useAuth";
 import AlterarSenha from "./pages/alterarSenha";
-
+import Relatorio from "./pages/Relatorio";
+import RelatorioQtdPedidoCliente from "./pages/relatorioQtdPedidoCliente";
+import RelatorioQtdPedidoUser from "./pages/relatorioQtdPedidoUser";
+import RelatorioVendaProd from "./pages/relatorioQtdVendaProd";
+import RelatorioFat from "./pages/relatorioFat";
+import RelatorioPedido from "./pages/relatorioPedido";
 const Private = ({ Component }) => {
   const { currentUser } = useAuth();
 
@@ -80,6 +85,13 @@ function App() {
           <Route path="/alterarsenha" element={<Private Component={AlterarSenha} />} />
           <Route path="/home" element={<Private Component={Home} />} />
           <Route path="/" element={<LoginPrivate Component={Login} />} />
+          <Route path="/relatorio" element={<Private Component={Relatorio} />} />
+          <Route path="/relatorio/faturamento" element={<Private Component={RelatorioFat} />} />
+          <Route path="/relatorio/pedido" element={<Private Component={RelatorioPedido} />} />
+          <Route path="/relatorio/pedido/user" element={<Private Component={RelatorioQtdPedidoUser} />} />
+          <Route path="/relatorio/pedido/cliente" element={<Private Component={    RelatorioQtdPedidoCliente} />} />
+          <Route path="/relatorio/pedido/venda" element={<Private Component={RelatorioVendaProd} />} />
+
         </Routes>
       </BrowserRouter>
 

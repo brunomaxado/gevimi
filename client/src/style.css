@@ -1694,6 +1694,7 @@ input[type="datetime-local"] {
 /* Apply light gray background when the input is empty and placeholder is shown */
 input[type="datetime-local"]:placeholder-shown {
   background-color: lightgray;
+  border: none;
   /* Light gray when there's no selection */
 }
 
@@ -1706,33 +1707,36 @@ input[type="datetime-local"]:focus {
   color: #000;
   /* Muda a cor para preto ao focar */
 }
-
-input[type="text"],
-input[type="number"],
-input[type="password"] input[type="tel"],
-input[type="datetime-local"],
-select,
+input[type="text"], 
+input[type="number"], 
+input[type="password"], 
+input[type="tel"], 
+input[type="datetime-local"], 
+select, 
 textarea {
-  background-color: #f0f8ff;
-  color: #000;
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 4px;
-  width: 100%;
-  /* Garante que o input ocupe toda a largura do grupo */
-  box-sizing: border-box;
-  font-size: 16px;
-  position: relative;
-  height: 50px;
-  width: 100%;
-  outline: none;
-  font-size: 1rem;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border: 1px solid;
-  border-radius: 6px;
-  padding: 0 15px;
+    background-color: #f0f8ff;
+    color: #000;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    position: relative;
+    height: 50px;
+    outline: none;
+    font-size: 1rem;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 0 15px;
 }
+
+/* Estilo especial para o input de datetime-local */
+input[type="datetime-local"] {
+    border: none; /* Remove a borda */
+    background-color: white; /* Para manter o fundo igual aos outros campos */
+}
+
 
 .scrollable-container {
   max-height: 200px;
