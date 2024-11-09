@@ -23,10 +23,11 @@
 .navegacao {
   position: absolute;
   margin-top: 5vh;
+  margin-right: 1vw;
   top: 0;
   right: 0; /* Garante que o menu fique na direita */
   height: 30vh;
-  width: 70px; 
+  width: 60px; 
   overflow-x: hidden;
   transition: width 0.5s;
   z-index: 1000;
@@ -43,28 +44,24 @@
 .navegacao ul li {
   position: relative;
   list-style: none;
-  height: 70%;
   width: 100%;
-  border-top-right-radius: 20px; /* Bordas arredondadas no canto superior direito */
-  border-top-left-radius: 20px;
-  border-bottom-right-radius: 20px; /* Bordas arredondadas no canto inferior direito */
+  border-radius: 50%; 
 }
 
 .navegacao ul li a {
   position: relative;
   display: flex;
-  width: 100%;
   text-decoration: none;
-  color: var(--branco);
 }
 
 .navegacao ul li a .icone {
-  position: relative;
-  display: block;
-  min-width: 60px;
-  height: 60px;
-  text-align: center;
-  line-height: 70px;
+  display: flex;
+  align-items: center;    /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  width: 100%;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--azul-dúvida); /* Cor de fundo */
 }
 
 .navegacao ul li a .icone ion-icon {

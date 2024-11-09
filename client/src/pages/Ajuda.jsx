@@ -101,7 +101,6 @@ const Ajuda = () => {
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
                 <span className="icone"><ion-icon name="help-circle-outline"></ion-icon></span>
-                <span className="titulo">Ajuda</span>
               </Link>
             </li>
           )}
