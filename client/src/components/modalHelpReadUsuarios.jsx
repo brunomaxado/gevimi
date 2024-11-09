@@ -15,40 +15,38 @@ const ModalHelpReadUsuarios = ({ isOpen, onRequestClose }) => {
         </div>
         <div className="custom-modal-body">
           <div>
-            <h5><b>:</b></h5>
+            <h5><b>Pesquisar:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- </dd>
-              <dt>Botão Confirmar:</dt>
+              <dt>Barra de pesquisa:</dt>
+              <dd>- Na caixa de pesquisa, é possível pesquisar o nome da categoria.</dd>
+              <dt>Limpar filtros:</dt>
               <dd>
-
+                - Clique para apagar a caixa de pesquisa.
               </dd>
             </dl>
           </div>
-
           <div>
-            <h5><b>:</b></h5>
+            <h5><b>Cadastrar usuário:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
-              <dt>:</dt>
-              <dd>- .</dd>
+              <dt>Novo usuário:</dt>
+              <dd>- Para cadastrar um novo usuário, clique no botão "novo usuário"
+                e será redirecionado para a página de cadastrar usuário.</dd>
             </dl>
           </div>
-
           <div>
-            <h5><b>:</b></h5>
+            <h5><b>Editar Usuário:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
+              <dt>Ícone de edição (lápis):</dt>
+              <dd>- Clique no ícone para editar nome, login, permissões de administrador
+                e/ou senha.</dd>
             </dl>
           </div>
-
           <div>
-            <h5><b>:</b></h5>
+            <h5><b>Deletar Usuário:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
+              <dt>Ícone de deletar (lixeira):</dt>
+              <dd>- Clique no ícone para deletar usuário, desde que ele não esteja associado
+                à pedidos.</dd>
             </dl>
           </div>
         </div>

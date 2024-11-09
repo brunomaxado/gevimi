@@ -35,7 +35,7 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
               <dt>Barra de pesquisa:</dt>
               <dd>- Na caixa de pesquisa, é possível pesquisar o nome da categoria.</dd>
               <dt>Limpar filtros:</dt>
-              <dd>- Clique para apagar mais rápido a pesquisa.</dd>
+              <dd>- Clique para apagar a caixa de pesquisa.</dd>
             </dl>
           </div>
 
