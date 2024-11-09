@@ -56,9 +56,6 @@ const Ajuda = () => {
       case '/readPedido':
         setIsHelpReadPedidoOpen(true);
         break;
-      case '/':
-        setIsHelpHomeOpen(true);
-        break;
       case '/home':
         setIsHelpHomeOpen(true);
         break;
@@ -91,7 +88,6 @@ const Ajuda = () => {
           || location.pathname === '/pedido'
           || location.pathname === '/viewProduto'
           || location.pathname === '/readPedido'
-          || location.pathname === '/'
           || location.pathname === '/home'
           || location.pathname === '/readCliente'
           || location.pathname === '/estatistica'
