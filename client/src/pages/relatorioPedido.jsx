@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../style.css'; // Certifique-se de importar o arquivo CSS
@@ -12,11 +12,38 @@ import 'jspdf-autotable';
 
 export const RelatorioPedido = (props) => {
   const navigate = useNavigate();
-  
+
   // Estados para os filtros
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [tipoFilter, setTipoFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState([]);
+  const [tipoFilter, setTipoFilter] = useState([]);
+  const [pagamentoFilter, setPagamentoFilter] = useState([]);
+  const [filters, setFilters] = useState({
+    searchTerm: "",
+    statusFilter: [],
+    tipoFilter: [],
+    pagamentoFilter: [],
+    inicioPeriodo: "",
+    fimPeriodo: "",
+    inicioDataEntrega: "",
+    fimDataEntrega: "",
+    inicioFinalizado: "",
+    fimFinalizado: "",
+  });
+
+  // Estado para modais
+  const [showClienteModal, setShowClienteModal] = useState(false);
+  const [showUsuarioModal, setShowUsuarioModal] = useState(false);
+  const [showTipoModal, setShowTipoModal] = useState(false);
+  const [showPagamentoModal, setShowPagamentoModal] = useState(false);
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [clientes, setClientes] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [selectedCliente, setSelectedCliente] = useState([]);
+  const [selectedUsuario, setSelectedUsuario] = useState([]);
+  const [selectedTipo, setSelectedTipo] = useState([]);
+  const [selectedPagamento, setSelectedPagamento] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   // Filtros de data
   const [inicioPeriodo, setInicioPeriodo] = useState("");
@@ -25,13 +52,27 @@ export const RelatorioPedido = (props) => {
   const [fimDataEntrega, setFimDataEntrega] = useState("");
   const [inicioFinalizado, setInicioFinalizado] = useState("");
   const [fimFinalizado, setFimFinalizado] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    // Fetch clientes
+    axios.get("http://localhost:8800//cliente")
+      .then(response => setClientes(response.data))
+      .catch(error => console.error("Erro ao buscar clientes:", error));
+
+    // Fetch usuários
+    axios.get("http://localhost:8800//usuario")
+      .then(response => setUsuarios(response.data))
+      .catch(error => console.error("Erro ao buscar usuários:", error));
+  }, []);
 
   // Função para gerar o JSON dos filtros
   const generateFilters = () => {
     return {
-      cliente: searchTerm,
-      status: statusFilter,
-      tipo: tipoFilter,
+      cliente: selectedCliente,
+      status: selectedStatus,
+      tipo: selectedTipo,
+      pagamento: selectedPagamento,
       inicioPeriodo,
       fimPeriodo,
       inicioDataEntrega,
@@ -41,7 +82,7 @@ export const RelatorioPedido = (props) => {
     };
   };
 
-  // Função para enviar os filtros para o backend
+  // Função para aplicar filtros
   const applyFilters = async () => {
     const filters = generateFilters();
     try {
@@ -57,8 +98,9 @@ export const RelatorioPedido = (props) => {
   // Função para limpar os filtros
   const clearFilters = () => {
     setSearchTerm("");
-    setStatusFilter("");
-    setTipoFilter("");
+    setStatusFilter([]);
+    setTipoFilter([]);
+    setPagamentoFilter([]);
     setInicioPeriodo("");
     setFimPeriodo("");
     setInicioDataEntrega("");
@@ -67,121 +109,272 @@ export const RelatorioPedido = (props) => {
     setFimFinalizado("");
   };
 
+  // Função para fechar os modais
+  const closeClienteModal = () => setShowClienteModal(false);
+  const closeUsuarioModal = () => setShowUsuarioModal(false);
+  const closeTipoModal = () => setShowTipoModal(false);
+  const closePagamentoModal = () => setShowPagamentoModal(false);
+  const closeStatusModal = () => setShowStatusModal(false);
+console.log(filters);
+  // Função de handleChange para o gerenciamento do estado dos filtros
+
+  // Função de handleChange para o gerenciamento do estado dos filtros
+const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+  
   return (
     <div>
       <h1>Relatório de Pedidos</h1>
-
+  
       <div className="filters-container">
-        {/* Filtro de Periodo Realizado */}
+        {/* Filtros de Período e Data */}
         <div>
           <label> Início Período Realizado: <span className="asterisco">*</span> </label>
-          <input
-            type="datetime-local"
-            value={inicioPeriodo}
-            onChange={(e) => setInicioPeriodo(e.target.value)}
-            name="inicioPeriodo"
+          <input 
+            type="datetime-local" 
+            value={filters.inicioPeriodo} 
+            onChange={handleChange} 
+            name="inicioPeriodo" 
           />
         </div>
         <div>
           <label> Fim Período Realizado: <span className="asterisco">*</span> </label>
-          <input
-            type="datetime-local"
-            value={fimPeriodo}
-            onChange={(e) => setFimPeriodo(e.target.value)}
-            name="fimPeriodo"
+          <input 
+            type="datetime-local" 
+            value={filters.fimPeriodo} 
+            onChange={handleChange} 
+            name="fimPeriodo" 
           />
         </div>
-
-        {/* Filtro de Data de Entrega */}
+  
+        {/* Filtros de Data de Entrega */}
         <div>
-          <label> Início Data de Entrega: <span className="asterisco">*</span> </label>
-          <input
-            type="datetime-local"
-            value={inicioDataEntrega}
-            onChange={(e) => setInicioDataEntrega(e.target.value)}
-            name="inicioDataEntrega"
+          <label> Início Data Entrega: </label>
+          <input 
+            type="datetime-local" 
+            value={filters.inicioDataEntrega} 
+            onChange={handleChange} 
+            name="inicioDataEntrega" 
           />
         </div>
         <div>
-          <label> Fim Data de Entrega: <span className="asterisco">*</span> </label>
-          <input
-            type="datetime-local"
-            value={fimDataEntrega}
-            onChange={(e) => setFimDataEntrega(e.target.value)}
-            name="fimDataEntrega"
+          <label> Fim Data Entrega: </label>
+          <input 
+            type="datetime-local" 
+            value={filters.fimDataEntrega} 
+            onChange={handleChange} 
+            name="fimDataEntrega" 
+          />
+        </div>
+  
+        {/* Filtros de Data de Finalização */}
+        <div>
+          <label> Início Data Finalizado: </label>
+          <input 
+            type="datetime-local" 
+            value={filters.inicioFinalizado} 
+            onChange={handleChange} 
+            name="inicioFinalizado" 
+          />
+        </div>
+        <div>
+          <label> Fim Data Finalizado: </label>
+          <input 
+            type="datetime-local" 
+            value={filters.fimFinalizado} 
+            onChange={handleChange} 
+            name="fimFinalizado" 
           />
         </div>
       </div>
-
-      <div className="filters-container">
-        {/* Filtro de Finalização */}
-        <div>
-          <label> Início Finalizado: <span className="asterisco">*</span> </label>
-          <input
-            type="datetime-local"
-            value={inicioFinalizado}
-            onChange={(e) => setInicioFinalizado(e.target.value)}
-            name="inicioFinalizado"
-          />
+  
+      {/* Seletor de Status */}
+      <div>
+        <button onClick={() => setShowStatusModal(true)}>Selecionar Status</button>
+      </div>
+  
+      {/* Seletor de Tipo de Pedido */}
+      <div>
+        <button onClick={() => setShowTipoModal(true)}>Selecionar Tipo de Pedido</button>
+      </div>
+  
+      {/* Seletor de Forma de Pagamento */}
+      <div>
+        <button onClick={() => setShowPagamentoModal(true)}>Selecionar Forma de Pagamento</button>
+      </div>
+  
+      {/* Seletor de Cliente */}
+      <div>
+        <button onClick={() => setShowClienteModal(true)}>Selecionar Cliente</button>
+      </div>
+  
+      {/* Seletor de Usuário */}
+      <div>
+        <button onClick={() => setShowUsuarioModal(true)}>Selecionar Usuário</button>
+      </div>
+  
+      {/* Modal Seleção de Status */}
+      {showStatusModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={closeStatusModal}>X</button>
+            <h2>Selecionar Status</h2>
+            <div>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="status" 
+                  value="Pendente" 
+                  onChange={() => setSelectedStatus(prev => prev.includes('Pendente') ? prev.filter(status => status !== 'Pendente') : [...prev, 'Pendente'])} 
+                />
+                Pendente
+              </label>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="status" 
+                  value="Finalizado" 
+                  onChange={() => setSelectedStatus(prev => prev.includes('Finalizado') ? prev.filter(status => status !== 'Finalizado') : [...prev, 'Finalizado'])} 
+                />
+                Finalizado
+              </label>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="status" 
+                  value="Cancelado" 
+                  onChange={() => setSelectedStatus(prev => prev.includes('Cancelado') ? prev.filter(status => status !== 'Cancelado') : [...prev, 'Cancelado'])} 
+                />
+                Cancelado
+              </label>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-button" onClick={closeStatusModal}>Confirmar</button>
+            </div>
+          </div>
         </div>
-        <div>
-          <label> Fim Finalizado: <span className="asterisco">*</span> </label>
-          <input
-            type="datetime-local"
-            value={fimFinalizado}
-            onChange={(e) => setFimFinalizado(e.target.value)}
-            name="fimFinalizado"
-          />
+      )}
+  
+      {/* Modal Seleção de Tipo de Pedido */}
+      {showTipoModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={closeTipoModal}>X</button>
+            <h2>Selecionar Tipo de Pedido</h2>
+            <div>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="tipo" 
+                  value="Retirada" 
+                  onChange={() => setSelectedTipo(prev => prev.includes('Retirada') ? prev.filter(tipo => tipo !== 'Retirada') : [...prev, 'Retirada'])} 
+                />
+                Retirada
+              </label>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="tipo" 
+                  value="Local" 
+                  onChange={() => setSelectedTipo(prev => prev.includes('Local') ? prev.filter(tipo => tipo !== 'Local') : [...prev, 'Local'])} 
+                />
+                Local
+              </label>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-button" onClick={closeTipoModal}>Confirmar</button>
+            </div>
+          </div>
         </div>
-
-        {/* Filtro por Status */}
-        <div className="filter-box">
-          <label>Status:</label>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="status-filter"
-          >
-            <option value="">Todos os Status</option>
-            <option value="1">Finalizado</option>
-            <option value="2">Em andamento</option>
-            <option value="3">Pendente</option>
-          </select>
+      )}
+  
+      {/* Modal Seleção de Forma de Pagamento */}
+      {showPagamentoModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={closePagamentoModal}>X</button>
+            <h2>Selecionar Forma de Pagamento</h2>
+            <div>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="pagamento" 
+                  value="Cartão" 
+                  onChange={() => setSelectedPagamento(prev => prev.includes('Cartão') ? prev.filter(pag => pag !== 'Cartão') : [...prev, 'Cartão'])} 
+                />
+                Cartão
+              </label>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="pagamento" 
+                  value="Dinheiro" 
+                  onChange={() => setSelectedPagamento(prev => prev.includes('Dinheiro') ? prev.filter(pag => pag !== 'Dinheiro') : [...prev, 'Dinheiro'])} 
+                />
+                Dinheiro
+              </label>
+              <label>
+                <input 
+                  type="checkbox" 
+                  name="pagamento" 
+                  value="Pix" 
+                  onChange={() => setSelectedPagamento(prev => prev.includes('Pix') ? prev.filter(pag => pag !== 'Pix') : [...prev, 'Pix'])} 
+                />
+                Pix
+              </label>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-button" onClick={closePagamentoModal}>Confirmar</button>
+            </div>
+          </div>
         </div>
-
-        {/* Filtro por Tipo */}
-        <div className="filter-box">
-          <label>Tipo:</label>
-          <select
-            value={tipoFilter}
-            onChange={(e) => setTipoFilter(e.target.value)}
-          >
-            <option value="">Todos os tipos</option>
-            <option value="1">Entrega</option>
-            <option value="2">iFood</option>
-            <option value="3">Retirada</option>
-            <option value="4">Comum</option>
-          </select>
+      )}
+  
+      {/* Modal Seleção de Cliente */}
+      {showClienteModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={closeClienteModal}>X</button>
+            <h2>Selecionar Cliente</h2>
+            <div>
+              {clientes.map(cliente => (
+                <label key={cliente.id}>
+                  <input 
+                    type="checkbox" 
+                    name="cliente" 
+                    value={cliente.id} 
+                    onChange={() => {
+                      setSelectedCliente(prev => prev.includes(cliente.id)
+                        ? prev.filter(id => id !== cliente.id)
+                        : [...prev, cliente.id]);
+                    }} 
+                  />
+                  {cliente.nome}
+                </label>
+              ))}
+            </div>
+            <div className="modal-actions">
+              <button className="modal-button" onClick={closeClienteModal}>Confirmar</button>
+            </div>
+          </div>
         </div>
-
-        {/* Botões de Ação */}
-        <div className="filter-actions">
-          <button 
-            className="limpar-filtro" 
-            onClick={clearFilters} // Limpa os filtros
-          >
-            Limpar Filtros
-          </button>
-          <button 
-            className="aplicar-filtro" 
-            onClick={applyFilters} // Aplica os filtros
-          >
-            Aplicar Filtros
-          </button>
-        </div>
+      )}
+  
+      {/* Modais para outros campos seguem a mesma lógica */}
+  
+      <div className="actions">
+        <button onClick={applyFilters}>Aplicar Filtros</button>
+        <button onClick={clearFilters}>Limpar Filtros</button>
       </div>
     </div>
   );
+  
+  
 };
 
 export default RelatorioPedido;
