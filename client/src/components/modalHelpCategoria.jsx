@@ -21,7 +21,10 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
               <dd>- Nome da categoria.</dd>
               <dt>Botão Confirmar:</dt>
               <dd>
-                - Ao conferir o nome correto à categoria, deve-se clicar no botão "Confirmar". Assim, se o cadastro foi bem-sucedido, um pop-up verde claro aparecerá na parte superior da tela avisando que foi bem-sucedido; caso contrário, o pop-up será vermelho, indicando que não foi possível. Se bem-sucedido, será redirecionado para a lista de todas as categorias cadastradas.
+                - Ao conferir o nome correto à categoria, deve-se clicar no botão "Confirmar".
+                 Assim, se o cadastro foi bem-sucedido, um pop-up verde claro aparecerá na parte superior
+                  da tela avisando que foi bem-sucedido, caso contrário, um aviso indicando que não foi possível
+                  aparecerá. Se bem-sucedido, será redirecionado para a lista de todas as categorias cadastradas.
               </dd>
             </dl>
           </div>
@@ -29,7 +32,7 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
           <div>
             <h5><b>Pesquisar categoria:</b></h5>
             <dl>
-              <dt>Barra de pesquisa localizada à direita:</dt>
+              <dt>Barra de pesquisa:</dt>
               <dd>- Na caixa de pesquisa, é possível pesquisar o nome da categoria.</dd>
               <dt>Limpar filtros:</dt>
               <dd>- Clique para apagar mais rápido a pesquisa.</dd>

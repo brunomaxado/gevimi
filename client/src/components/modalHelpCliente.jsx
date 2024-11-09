@@ -41,7 +41,7 @@ const ModalHelpCliente = ({ isOpen, onRequestClose }) => {
             <dd>
               Ao conferir e atestar que todos os dados estão corretos e os obrigatórios foram preenchidos,
               clique no botão "Confirmar". Se o cadastro for bem-sucedido, um pop-up verde aparecerá na parte
-              superior da tela, indicando o sucesso. Caso contrário, o pop-up será vermelho, avisando sobre o erro.
+              superior da tela, indicando o sucesso. Caso contrário um aviso de erro irá aparecer.
               Após sucesso, você será redirecionado para a lista de clientes.
             </dd>
           </dl>
