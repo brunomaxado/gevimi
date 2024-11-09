@@ -17,40 +17,18 @@ const ModalHelpAlterarSenha = ({ isOpen, onRequestClose }) => {
           <div>
             <h5><b>Efetuar alteração de senha de usuário:</b></h5>
             <dl>
-              <dt>:</dt>
-              <dd>- </dd>
+              <dt>Senha Antiga:</dt>
+              <dd>- Digite a senha atual.</dd>
+              <dt>Senha Nova:</dt>
+              <dd>- Digite a nova senha.</dd>
               <dt>Botão Confirmar:</dt>
               <dd>
-
+                - Assim que tiver certeza, aperte no botão confirmar e se for bem sucedido um pop-up 
+                de sucesso será mostrado.
               </dd>
             </dl>
           </div>
 
-          <div>
-            <h5><b>:</b></h5>
-            <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
-              <dt>:</dt>
-              <dd>- .</dd>
-            </dl>
-          </div>
-
-          <div>
-            <h5><b>:</b></h5>
-            <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
-            </dl>
-          </div>
-
-          <div>
-            <h5><b>:</b></h5>
-            <dl>
-              <dt>:</dt>
-              <dd>- .</dd>
-            </dl>
-          </div>
         </div>
         <div className="custom-modal-footer">
           <button className="custom-button-danger" onClick={onRequestClose}>

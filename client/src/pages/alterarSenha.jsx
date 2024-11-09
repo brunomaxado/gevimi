@@ -109,7 +109,7 @@ const AlterarSenha = () => {
           />
         </div>
         {error && <p className="error-message">{error}</p>}
-        <button type="submit">Alterar Senha</button>
+        <button type="submit">Confirmar</button>
       </form>
 
       {showSuccessModal && (
