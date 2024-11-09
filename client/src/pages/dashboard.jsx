@@ -134,6 +134,10 @@ const Dashboard = () => {
           plugins: {
             legend: { position: 'top' },
             tooltip: { enabled: true },
+            title: {                 // Adicione esta seção
+              display: true,
+              text: 'Gráfico de Pedidos por Cliente'
+            },
             datalabels: {
               color: '#000',
               anchor: 'end',
@@ -195,6 +199,10 @@ const Dashboard = () => {
           plugins: {
             legend: {
               position: 'top',
+            },
+            title: {                 // Adicione esta seção
+              display: true,
+              text: 'Situação Ticket'
             },
             tooltip: {
               enabled: true,

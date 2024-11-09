@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search'; // Importando o ícone de pesquisa
 
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const ReadPedido = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -145,6 +147,13 @@ const ReadPedido = () => {
       default:
         return <span className="status status-desconhecido">Desconhecido</span>;
     }
+  };
+  const generatePDF = () => {
+    const doc = new jsPDF('p', 'pt');
+    const elem = document.getElementById("basic-table");
+    const res = doc.autoTableHtmlToJson(elem);
+    doc.autoTable(res.columns, res.data);
+    doc.save("table.pdf");
   };
   
   const getTipoEntrega = (tipoEntrega) => {
@@ -443,7 +452,7 @@ useEffect(() => {
           ))}
         </tbody>
       </table>
-
+      <button onClick={generatePDF}>Gerar PDF</button>
       {/* Paginação */}
       <div className="pagination">
   {/* Botão "Anterior" - Renderizado apenas se não for a primeira página */}
