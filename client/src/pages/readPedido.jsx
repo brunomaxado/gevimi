@@ -148,13 +148,53 @@ const ReadPedido = () => {
         return <span className="status status-desconhecido">Desconhecido</span>;
     }
   };
-  const generatePDF = () => {
-    const doc = new jsPDF('p', 'pt');
-    const elem = document.getElementById("basic-table");
-    const res = doc.autoTableHtmlToJson(elem);
-    doc.autoTable(res.columns, res.data);
-    doc.save("table.pdf");
-  };
+ // Função para gerar o PDF com cabeçalho e imagem
+// Função para gerar o PDF com espaço reservado para o cabeçalho e imagem
+const generatePDF = () => {
+  const doc = new jsPDF();
+
+  // Reservando espaço para a imagem no cabeçalho
+  // Espaço vazio: doc.rect(x, y, width, height) cria um retângulo invisível onde a imagem deve estar
+  doc.rect(14, 10, 30, 10); // Defina x, y, largura, altura
+
+  // Adicionando o texto do cabeçalho
+  doc.setFontSize(18);
+  doc.text("Relatório de Pedidos", 50, 15);
+  
+  // Adicionando a data de geração do relatório
+  doc.setFontSize(11);
+  const date = new Date().toLocaleString();
+  doc.text(`Data: ${date}`, 50, 23);
+
+  // Configurando as colunas e linhas da tabela
+  const tableColumn = ["Cliente", "Tipo", "Produto", "Data de Entrega", "Status", "Finalizado em", "Total"];
+  const tableRows = [];
+
+  // Mapeando dados da tabela para adicionar no PDF
+  pedidos.forEach((pedido) => {
+    const pedidoData = [
+      pedido.cliente,
+      pedido.tipo,
+      pedido.produto,
+      pedido.data_para_entregar || "Sem data",
+      pedido.status,
+      pedido.data_finalizado || "Não finalizado",
+     
+    ];
+    tableRows.push(pedidoData);
+  });
+
+  // Adicionando a tabela no PDF com espaçamento do cabeçalho
+  doc.autoTable({
+    head: [tableColumn],
+    body: tableRows,
+    startY: 30, // Define o ponto de partida da tabela
+  });
+
+  // Baixando o PDF
+  doc.save("pedidos.pdf");
+};
+
   
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {

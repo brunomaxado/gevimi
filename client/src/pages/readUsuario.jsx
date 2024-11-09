@@ -163,7 +163,7 @@ const ReadUsuario = () => {
                 <tr key={usuario.id_usuario}>
                   <td>{usuario.nome}</td>
                   <td>{usuario.login}</td>
-                  <td className="coluna-center">{usuario.is_administrador ? 'Sim' : 'Não'}</td>
+                  <td className="coluna-center">{usuario.administrador ? 'Sim' : 'Não'}</td>
                   <td className="coluna-center">
                     <div className="action-icons">
                       <span
