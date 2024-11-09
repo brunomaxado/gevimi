@@ -30,9 +30,9 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
             <h5><b>Pesquisar categoria:</b></h5>
             <dl>
               <dt>Barra de pesquisa localizada à direita:</dt>
-              <dd>- .</dd>
+              <dd>- Na caixa de pesquisa, é possível pesquisar o nome da categoria.</dd>
               <dt>Limpar filtros:</dt>
-              <dd>- .</dd>
+              <dd>- Clique para apagar mais rápido a pesquisa.</dd>
             </dl>
           </div>
 
@@ -40,7 +40,7 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
             <h5><b>Editar categoria:</b></h5>
             <dl>
               <dt>Ícone de edição (lápis):</dt>
-              <dd>- .</dd>
+              <dd>- Clique no ícone para editar o nome da categoria.</dd>
             </dl>
           </div>
 
@@ -48,7 +48,9 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
             <h5><b>Deletar categoria:</b></h5>
             <dl>
               <dt>Ícone de deletar (lixeira):</dt>
-              <dd>- .</dd>
+              <dd>- Clique no ícone para deletar a categoria,
+                 só é possível deletar categoria se ela não estiver associada
+                  à algum produto.</dd>
             </dl>
           </div>
         </div>
