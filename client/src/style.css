@@ -1903,7 +1903,7 @@ textarea {
 /* Estilo especial para o input de datetime-local */
 input[type="datetime-local"] {
     border: none; /* Remove a borda */
-    background-color: white; /* Para manter o fundo igual aos outros campos */
+    background-color: transparent; /* Para manter o fundo igual aos outros campos */
 }
 
 

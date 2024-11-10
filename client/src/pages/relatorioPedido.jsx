@@ -1,30 +1,112 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Autocomplete, TextField } from "@mui/material";
+import { Select, MenuItem, FormControl, TextField } from "@mui/material";
 import '../style.css';
+
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export const RelatorioPedido = () => {
   const navigate = useNavigate();
 
+  // Funções para obter as datas padrão
+  const getFirstDayOfMonth = () => {
+    const date = new Date();
+    date.setDate(1); // Define o primeiro dia do mês
+    date.setHours(0, 0, 0, 0); // Define a hora para o início do dia (00:00:00)
+    return date.toISOString().slice(0, 16); // Retorna a data no formato 'YYYY-MM-DDTHH:mm'
+  };
+
+  const getLastDayOfMonth = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1); // Vai para o próximo mês
+    date.setDate(0); // Define o último dia do mês anterior
+    date.setHours(23, 59, 59, 999); // Define a hora para o final do dia (23:59:59.999)
+    return date.toISOString().slice(0, 16); // Retorna a data no formato 'YYYY-MM-DDTHH:mm'
+  };
+
   // Estado para armazenar os filtros
   const [filters, setFilters] = useState({
-    inicioPeriodo: "",
-    fimPeriodo: "",
-    inicioDataEntrega: "",
-    fimDataEntrega: "",
-    inicioFinalizado: "",
-    fimFinalizado: "",
-    clientes: [],  // Armazenar { id, nome }
-    usuarios: [],  // Armazenar { id, nome }
-    formaPagamento: [],
+    inicioPeriodo: getFirstDayOfMonth(), // Data de início do mês
+    fimPeriodo: getLastDayOfMonth(), // Data de fim do mês
     tipoPedido: [],
-    status: [],
+    status: "",
   });
 
   const [clientes, setClientes] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [produtos, setProdutos] = useState([]);
+
+  const generatePDF = async () => {
+    try {
+      console.log(filters);
+  
+      const response = await axios.post("http://localhost:8800/relatorio-pedido", { filters });
+      const pedidos = response.data;
+  
+      const doc = new jsPDF();
+  
+      // Adicionando o título
+      doc.setFontSize(18);
+      doc.text("Relatório de Pedidos", 14, 15);
+  
+      // Data de Emissão
+      const date = new Date().toLocaleString();
+      doc.setFontSize(11);
+      doc.text(`Data de Emissão: ${date}`, 14, 23);
+  
+      // Exibindo os filtros utilizados
+      doc.text(`Período: ${filters.inicioPeriodo} até ${filters.fimPeriodo}`, 14, 30);
+      doc.text(`Status: ${filters.status || 'Todos'}`, 14, 36);
+      doc.text(`Tipo de Pedido: ${filters.tipoPedido.join(', ') || 'Todos'}`, 14, 42);
+  
+      // Linha separando o cabeçalho da tabela
+      doc.line(14, 48, 200, 48); 
+  
+      let startY = 55; // Posição inicial para os pedidos
+  
+      pedidos.forEach((pedido, index) => {
+        // Formatação da data para exibir apenas a data (sem horas)
+        const dataEntrega = pedido.data_para_entregar
+          ? new Date(pedido.data_para_entregar).toLocaleDateString("pt-BR")
+          : "Sem data";
+        const dataFinalizado = pedido.data_finalizado
+          ? new Date(pedido.data_finalizado).toLocaleDateString("pt-BR")
+          : "Não finalizado";
+  
+        // Formatação do total para exibir com vírgula e símbolo R$
+        const totalFormatado = new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(pedido.total || 0);
+  
+        // Exibe cada campo do pedido com rótulos
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0); // Cor do texto preta
+        doc.text(`Cliente: ${pedido.cliente}`, 16, startY);
+        doc.text(`Tipo: ${pedido.tipo}`, 16, startY + 6);
+        doc.text(`Produto: ${pedido.produto}`, 16, startY + 12);
+        doc.text(`Data de Entrega: ${dataEntrega}`, 16, startY + 18);
+        doc.text(`Status: ${pedido.status}`, 16, startY + 24);
+        doc.text(`Finalizado em: ${dataFinalizado}`, 16, startY + 30);
+        doc.text(`Total: ${totalFormatado}`, 16, startY + 36);
+  
+        // Linha de separação abaixo de cada pedido
+        doc.setDrawColor(0, 0, 0); // Cor da linha
+        doc.line(14, startY + 42, 200, startY + 42); // Linha horizontal abaixo do bloco do pedido
+  
+        // Atualiza a posição Y para o próximo pedido
+        startY += 50; // Adiciona espaço entre os blocos de pedidos
+      });
+  
+      // Finaliza o PDF
+      doc.save("pedidos.pdf");
+    } catch (error) {
+      console.error("Erro ao gerar o relatório:", error);
+    }
+  };
+
 
   useEffect(() => {
     axios.get("http://localhost:8800/cliente")
@@ -34,9 +116,10 @@ export const RelatorioPedido = () => {
     axios.get("http://localhost:8800/usuario")
       .then(response => setUsuarios(response.data))
       .catch(error => console.error("Erro ao buscar usuários:", error));
-      axios.get("http://localhost:8800/readProduto")
+
+    axios.get("http://localhost:8800/readProduto")
       .then(response => setProdutos(response.data))
-      .catch(error => console.error("Erro ao buscarproduto:", error));
+      .catch(error => console.error("Erro ao buscar produto:", error));
   }, []);
 
   const handleChange = (e) => {
@@ -47,8 +130,22 @@ export const RelatorioPedido = () => {
     }));
   };
 
-  const getPlaceholder = (selected) => (selected.length === 0 ? "Todos" : "");
+  const handleStatusChange = (event) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      status: event.target.value,
+    }));
+  };
+
+  const handleTipoPedidoChange = (event) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      tipoPedido: event.target.value,
+    }));
+  };
+
   console.log(filters);
+
   return (
     <div>
       <h1>Relatório de Pedidos</h1>
@@ -56,187 +153,73 @@ export const RelatorioPedido = () => {
         <div className="filters-container">
           {/* Filtros de Período e Data */}
           <div>
-            <label> Início Período Realizado: <span className="asterisco">*</span> </label>
-            <input
+            <label>Data de início: <span className="asterisco">*</span></label>
+            <TextField
               type="datetime-local"
               value={filters.inicioPeriodo}
               onChange={handleChange}
               name="inicioPeriodo"
+              variant="standard"  // Aplica a variante "standard"
+              style={{ marginBottom: '20px', width: '300px' }}
             />
           </div>
+
           <div>
-            <label> Fim Período Realizado: <span className="asterisco">*</span> </label>
-            <input
+            <label>Data de fim: <span className="asterisco">*</span></label>
+            <TextField
               type="datetime-local"
               value={filters.fimPeriodo}
               onChange={handleChange}
               name="fimPeriodo"
+              variant="standard"  // Aplica a variante "standard"
+              style={{ marginBottom: '20px', width: '300px' }}
             />
           </div>
 
-          {/* Filtros de Data de Entrega */}
-          <div>
-            <label> Início Data Entrega: </label>
-            <input
-              type="datetime-local"
-              value={filters.inicioDataEntrega}
-              onChange={handleChange}
-              name="inicioDataEntrega"
-            />
-          </div>
-          <div>
-            <label> Fim Data Entrega: </label>
-            <input
-              type="datetime-local"
-              value={filters.fimDataEntrega}
-              onChange={handleChange}
-              name="fimDataEntrega"
-            />
-          </div>
+          {/* Select para Status */}
+          <FormControl variant="standard" style={{ marginTop: '17px', marginBottom: '20px', width: '300px' }}>
+            <label>Status:</label>
+            <Select
+              value={filters.status}
+              onChange={handleStatusChange}
+              label="Status"
+            >
+              <MenuItem value={1}>Finalizado</MenuItem>
+              <MenuItem value={2}>Pendente</MenuItem>
+              <MenuItem value={3}>Andamento</MenuItem>
+            </Select>
+          </FormControl>
 
-          {/* Filtros de Data de Finalização */}
-          <div>
-            <label> Início Data Finalizado: </label>
-            <input
-              type="datetime-local"
-              value={filters.inicioFinalizado}
-              onChange={handleChange}
-              name="inicioFinalizado"
-            />
-          </div>
-          <div>
-            <label> Fim Data Finalizado: </label>
-            <input
-              type="datetime-local"
-              value={filters.fimFinalizado}
-              onChange={handleChange}
-              name="fimFinalizado"
-            />
+          <FormControl variant="standard" style={{ marginTop: '17px', marginBottom: '20px', width: '300px' }}>
+            <label>Situação do Pedido:</label>
+            <Select
+              value={filters.tipoPedido}
+              onChange={handleTipoPedidoChange}
+              label="Situação do Pedido"
+              multiple
+            >
+              <MenuItem value={1}>Entrega</MenuItem>
+              <MenuItem value={2}>Entrega Ifood</MenuItem>
+              <MenuItem value={3}>Retirada</MenuItem>
+              <MenuItem value={4}>Comum</MenuItem>
+            </Select>
+          </FormControl>
+          <div className="actions">
+            <button onClick={() => {
+              setFilters({
+                inicioPeriodo: getFirstDayOfMonth(),
+                fimPeriodo: getLastDayOfMonth(),
+                tipoPedido: [],
+                status: "",
+              });
+            }}>Limpar Filtros</button>
+            <div className="actions">
+              <button onClick={generatePDF}>
+                Gerar Relatório
+              </button>
+            </div>
           </div>
         </div>
-
-        {/* Autocomplete para Forma de Pagamento */}
-        <Autocomplete
-          multiple
-          options={[{ label: "Dinheiro", value: 1 }, { label: "Pix", value: 2 }, { label: "Débito", value: 3 }, { label: "Crédito", value: 4 }]}
-          getOptionLabel={(option) => option.label}
-          onChange={(event, newValue) => setFilters((prevFilters) => ({
-            ...prevFilters,
-            formaPagamento: newValue.map((item) => item.value),
-          }))}
-          value={filters.formaPagamento.map((value) => ({ label: ["Dinheiro", "Pix", "Débito", "Crédito"][value - 1], value }))}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              label="Forma de Pagamento"
-              placeholder={getPlaceholder(filters.formaPagamento)}
-            />
-          )}
-          style={{ marginBottom: '20px', width: '300px' }}
-        />
-
-        {/* Autocomplete para Tipo de Pedido */}
-        <Autocomplete
-          multiple
-          options={[{ label: "Entrega", value: 1 }, { label: "Entrega Ifood", value: 2 }, { label: "Retirada", value: 3 }, { label: "Comum", value: 4 }]}
-          getOptionLabel={(option) => option.label}
-          onChange={(event, newValue) => setFilters((prevFilters) => ({
-            ...prevFilters,
-            tipoPedido: newValue.map((item) => item.value),
-          }))}
-          value={filters.tipoPedido.map((value) => ({ label: ["Entrega", "Entrega Ifood", "Retirada", "Comum"][value - 1], value }))}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              label="Tipo de Pedido"
-              placeholder={getPlaceholder(filters.tipoPedido)}
-            />
-          )}
-          style={{ marginBottom: '20px', width: '300px' }}
-        />
-
-        {/* Autocomplete para Status */}
-        <Autocomplete
-          multiple
-          options={[{ label: "Finalizado", value: 1 }, { label: "Pendente", value: 2 }, { label: "Andamento", value: 3 }]}
-          getOptionLabel={(option) => option.label}
-          onChange={(event, newValue) => setFilters((prevFilters) => ({
-            ...prevFilters,
-            status: newValue.map((item) => item.value),
-          }))}
-          value={filters.status.map((value) => ({ label: ["Finalizado", "Pendente", "Andamento"][value - 1], value }))}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              label="Status"
-              placeholder={getPlaceholder(filters.status)}
-            />
-          )}
-          style={{ marginBottom: '20px', width: '300px' }}
-        />
-
-        {/* Autocomplete para Clientes */}
-        <Autocomplete
-          multiple
-          options={clientes}
-          getOptionLabel={(option) => option.nome}
-          onChange={(event, newValue) => setFilters((prevFilters) => ({
-            ...prevFilters,
-            clientes: newValue.map((item) => ({ id: item.id, nome: item.nome })),
-          }))}
-          value={filters.clientes}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              label="Clientes"
-              placeholder={getPlaceholder(filters.clientes)}
-            />
-          )}
-          style={{ marginBottom: '20px', width: '300px' }}
-        />
-
-        {/* Autocomplete para Usuários */}
-        <Autocomplete
-          multiple
-          options={usuarios}
-          getOptionLabel={(option) => option.nome}
-          onChange={(event, newValue) => setFilters((prevFilters) => ({
-            ...prevFilters,
-            usuarios: newValue.map((item) => ({ id: item.id, nome: item.nome })),
-          }))}
-          value={filters.usuarios}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              label="Usuários"
-              placeholder={getPlaceholder(filters.usuarios)}
-            />
-          )}
-          style={{ marginBottom: '20px', width: '300px' }}
-        />
-      </div>
-
-      <div className="actions">
-        <button onClick={() => {
-          setFilters({
-            inicioPeriodo: "",
-            fimPeriodo: "",
-            inicioDataEntrega: "",
-            fimDataEntrega: "",
-            inicioFinalizado: "",
-            fimFinalizado: "",
-            clientes: [],
-            usuarios: [],
-            formaPagamento: [],
-            tipoPedido: [],
-            status: [],
-          });
-        }}>Limpar Filtros</button>
       </div>
     </div>
   );
