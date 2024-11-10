@@ -4,11 +4,6 @@
     min-width: 200px;
 }
 
-h1 {
-    text-align: left;
-    color: #080000;
-}
-
 input {
     background-color: rgba(49, 49, 49, 0.562);
     border: none;
@@ -42,7 +37,7 @@ input {
     margin-top: 20px;
 }
 
-button {
+button .back-button{
     background-color: #ff6b6b;
     border: none;
     color: white;
@@ -53,7 +48,7 @@ button {
     margin-top: 20px;
 }
 
-button:hover {
+button .back-button:hover {
     background-color: #ff3b3b;
 }
 

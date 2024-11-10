@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import '../clienteunico.css';
 
 const ReadClienteUnico = () => {
@@ -74,10 +74,11 @@ const ReadClienteUnico = () => {
           <label>Observação:</label>
           <input type="text" value={cliente.observacao || "Sem observação"} readOnly />
         </div>
-
-        <button onClick={() => navigate(-1)} className="back-button">
-          Voltar
-        </button>
+        <Link to={"/readCliente"}>
+          <button className="back-button">
+            Voltar
+          </button>
+        </Link>
       </form>
     </div>
   );

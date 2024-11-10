@@ -4,12 +4,7 @@
     min-width: 200px;
   }
   
-  h1 {
-    text-align: left;
-    color: #080000;
-    margin-bottom: 20px;
-  }
-  
+ 
   input {
     background-color: rgba(49, 49, 49, 0.562);
     border: none;
@@ -85,7 +80,7 @@
     margin-bottom: 10px;
   }
   
-  button {
+  button .voltar {
     background-color: #ff6b6b;
     border: none;
     color: white;
@@ -96,7 +91,7 @@
     margin-top: 20px;
   }
   
-  button:hover {
+  button .voltar:hover {
     background-color: #ff3b3b;
   }
   

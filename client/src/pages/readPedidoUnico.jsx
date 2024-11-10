@@ -251,7 +251,7 @@ const ReadPedidoUnico = () => {
 
       </form>
       <Link to={`/readPedido`}>
-        <button>Voltar</button>
+        <button className="voltar">Voltar</button>
       </Link>
     </div>
   );
