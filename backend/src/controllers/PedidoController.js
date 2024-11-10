@@ -247,3 +247,106 @@ import db from "../config/db.js";
     });
   };
   
+
+  export const getPedidosRelatorio = (req, res) => {
+    const { inicioPeriodo, fimPeriodo, inicioDataEntrega, fimDataEntrega, inicioFinalizado, fimFinalizado, clientes, usuarios, formaPagamento, tipoPedido, status, produtos } = req.body.filters;
+  
+    let queryPedidos = `
+      SELECT * 
+      FROM pedido
+    `;
+  
+    // Condições de filtro
+    const conditions = [];
+    const params = [];
+  
+    if (inicioPeriodo) {
+      conditions.push("data_realizado >= ?");
+      params.push(inicioPeriodo);
+    }
+    if (fimPeriodo) {
+      conditions.push("data_realizado <= ?");
+      params.push(fimPeriodo);
+    }
+    if (inicioDataEntrega) {
+      conditions.push("data_para_entregar >= ?");
+      params.push(inicioDataEntrega);
+    }
+    if (fimDataEntrega) {
+      conditions.push("data_para_entregar  <= ?");
+      params.push(fimDataEntrega);
+    }
+    if (inicioFinalizado) {
+      conditions.push("data_finalizado >= ?");
+      params.push(inicioFinalizado);
+    }
+    if (fimFinalizado) {
+      conditions.push("data_finalizado <= ?");
+      params.push(fimFinalizado);
+    }
+    if (clientes && clientes.length > 0) {
+      conditions.push(`fk_id_cliente IN (${clientes.map(() => "?").join(", ")})`);
+      params.push(...clientes.map(cliente => cliente.id));
+    }
+    if (usuarios && usuarios.length > 0) {
+      conditions.push(`fk_id_usuario IN (${usuarios.map(() => "?").join(", ")})`);
+      params.push(...usuarios.map(usuario => usuario.id));
+    }
+    if (formaPagamento && formaPagamento.length > 0) {
+      conditions.push(`forma_pagamento IN (${formaPagamento.map(() => "?").join(", ")})`);
+      params.push(...formaPagamento);
+    }
+    if (tipoPedido && tipoPedido.length > 0) {
+      conditions.push(`tipo IN (${tipoPedido.map(() => "?").join(", ")})`);
+      params.push(...tipoPedido);
+    }
+    if (status && status.length > 0) {
+      conditions.push(`status IN (${status.map(() => "?").join(", ")})`);
+      params.push(...status);
+    }
+    if (produtos && produtos.length > 0) {
+      conditions.push(`id_pedido IN (
+        SELECT fk_id_pedido 
+        FROM item_pedido 
+        WHERE fk_id_produto IN (${produtos.map(() => "?").join(", ")})
+      )`);
+      params.push(...produtos.map(produto => produto.id));
+    }
+  
+    // Adiciona as condições à consulta, se houver filtros
+    if (conditions.length > 0) {
+      queryPedidos += ` WHERE ${conditions.join(" AND ")}`;
+    }
+  
+    db.query(queryPedidos, params, (err, pedidosData) => {
+      if (err) return res.status(500).json({ message: "Erro ao buscar os pedidos", err });
+  
+      if (pedidosData.length === 0) {
+        return res.status(404).json({ message: "Nenhum pedido encontrado" });
+      }
+  
+      const promises = pedidosData.map((pedido) => {
+        const queryItensPedido = `
+          SELECT * 
+          FROM item_pedido 
+          WHERE fk_id_pedido = ?
+        `;
+  
+        return new Promise((resolve, reject) => {
+          db.query(queryItensPedido, [pedido.id_pedido], (err, itensPedidoData) => {
+            if (err) return reject(err);
+            resolve({ ...pedido, itensPedido: itensPedidoData });
+          });
+        });
+      });
+  
+      Promise.all(promises)
+        .then((pedidosComItens) => {
+          return res.status(200).json(pedidosComItens);
+        })
+        .catch((err) => {
+          return res.status(500).json(err);
+        });
+    });
+  };
+  

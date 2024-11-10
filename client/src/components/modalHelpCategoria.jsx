@@ -17,14 +17,15 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
           <div>
             <h5><b>Efetuar cadastro de categoria:</b></h5>
             <dl>
+              <dt>Clique no botão "nova categoria":</dt>
               <dt>Nome:</dt>
               <dd>- Nome da categoria.</dd>
               <dt>Botão Confirmar:</dt>
               <dd>
                 - Ao conferir o nome correto à categoria, deve-se clicar no botão "Confirmar".
-                 Assim, se o cadastro foi bem-sucedido, um pop-up verde claro aparecerá na parte superior
-                  da tela avisando que foi bem-sucedido, caso contrário, um aviso indicando que não foi possível
-                  aparecerá. Se bem-sucedido, será redirecionado para a lista de todas as categorias cadastradas.
+                Assim, se o cadastro foi bem-sucedido, um pop-up verde claro aparecerá na parte superior
+                da tela avisando que foi bem-sucedido, caso contrário, um aviso indicando que não foi possível
+                aparecerá. Se bem-sucedido, será redirecionado para a lista de todas as categorias cadastradas.
               </dd>
             </dl>
           </div>
@@ -52,8 +53,8 @@ const ModalHelpCategoria = ({ isOpen, onRequestClose }) => {
             <dl>
               <dt>Ícone de deletar (lixeira):</dt>
               <dd>- Clique no ícone para deletar a categoria,
-                 só é possível deletar categoria se ela não estiver associada
-                  à algum produto.</dd>
+                só é possível deletar categoria se ela não estiver associada
+                à algum produto.</dd>
             </dl>
           </div>
         </div>
