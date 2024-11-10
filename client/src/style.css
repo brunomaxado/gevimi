@@ -343,7 +343,9 @@ div.tabela-categoria {
   overflow-x: hidden;
 
 }
-
+.filter-container-pai{
+  transform: scale(0.8);
+}
 .enviar-pedido {
   width: 8%;
   height: 10%;
@@ -1702,6 +1704,123 @@ input[type="datetime-local"] {
   color: #a00303;
   /* Cor cinza claro */
 }
+.autocomplete-select {
+  background-color: #f0f8ff;
+  color: #000;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 20rem;
+  box-sizing: border-box;
+  font-size: 16px;
+  height: 50px;
+  outline: none;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.btn-select {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-radius: 8px;
+  background-color: #f0f8ff;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-select .btn-text {
+  font-size: 17px;
+  font-weight: 400;
+  color: #333;
+}
+
+.btn-select .arrow-down {
+  display: flex;
+  height: 21px;
+  width: 21px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 50%;
+  background-color: #4070f4;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.btn-select .arrow-down i {
+  transition: transform 0.3s ease;
+}
+
+.list-items {
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  left: 0;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 10;
+}
+
+.container .btn-select.open + .list-items {
+  display: block;
+}
+
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.list-items .item:hover {
+  background-color: #e7edfe;
+}
+
+.item .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item.checked .checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.checkbox .check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: 0.3s ease-in-out;
+}
+
+.item.checked .check-icon {
+  transform: scale(1);
+}
+
+
+
+
+
+
+
+
 
 input[type="datetime-local"]:focus {
   color: #000;
