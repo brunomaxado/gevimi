@@ -116,13 +116,18 @@ const ReadPedido = () => {
     return produto ? produto.nome : "N/A";
   };
 
-  const calcularTotalItens = (itensPedido, frete = 0) => {
-    const totalItens = itensPedido.reduce((total, item) => {
-      return total + (item.preco_unitario_atual * item.quantidade);
-    }, 0);
+ const calcularTotalItens = (itensPedido, frete = 0) => {
+  // Garantir que o valor do frete seja numérico
+  const valorFrete = isNaN(frete) ? 0 : parseFloat(frete);
 
-    return totalItens + frete;
-  };
+  const totalItens = itensPedido.reduce((total, item) => {
+    return total + (item.preco_unitario_atual || 0) * (item.quantidade || 0);
+  }, 0);
+
+  const totalComFrete = totalItens + valorFrete;
+
+  return !isNaN(totalComFrete) ? totalComFrete.toFixed(2) : '0.00';
+};
 
 
 
@@ -447,7 +452,7 @@ const ReadPedido = () => {
                 <td class="coluna-center">{getStatus(pedido.status)}</td>
 
                 <td class="coluna-center"> {pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleDateString() : ""}</td>
-                <td className="coluna-preco">R$ {calcularTotalItens(pedido.itensPedido, pedido.frete || 0).toFixed(2)}</td>
+                <td className="coluna-preco">R${calcularTotalItens(pedido.itensPedido, parseFloat(pedido.frete) || 0)}</td>
 
 
                 <td class="coluna-center">
@@ -492,7 +497,6 @@ const ReadPedido = () => {
             ))}
           </tbody>
         </table>
-        <button onClick={generatePDF}>Gerar PDF</button>
         {/* Paginação */}
         <div className="pagination">
           {/* Botão "Anterior" - Renderizado apenas se não for a primeira página */}
