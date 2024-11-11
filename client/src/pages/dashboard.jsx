@@ -50,6 +50,7 @@ const Dashboard = () => {
 
   return (
     <div> 
+      <h1>Estatísticas por período de tempo</h1>
       <div className="background-yellow2">
         <div className="filters-container">
           {/* Filtros de Período e Data */}

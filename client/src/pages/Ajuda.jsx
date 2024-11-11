@@ -13,6 +13,7 @@ import ModalHelpEstatisticas from "../components/modalHelpEstatisticas";
 import ModalHelpAlterarSenha from "../components/modalHelpAlterarSenha";
 import ModalHelpReadUsuarios from "../components/modalHelpReadUsuarios";
 import ModalHelpNovoUsuario from "../components/modalHelpNovoUsuario";
+import ModalHelpFormulario from '../components/modalHelpFormulario';
 
 const Ajuda = () => {
   const [indiceAtivo, setIndiceAtivo] = useState(0); // Controla qual link está ativo
@@ -29,6 +30,7 @@ const Ajuda = () => {
   const [isHelpAlterarSenhaOpen, setIsHelpAlterarSenhaOpen] = useState(false);
   const [isHelpReadUsuariosOpen, setIsHelpReadUsuariosOpen] = useState(false);
   const [isHelpNovoUsuarioOpen, setIsHelpNovoUsuarioOpen] = useState(false);
+  const [isHelpFormularioOpen, setIsHelpFormularioOpen] = useState(false);
 
   const location = useLocation();
 
@@ -74,6 +76,9 @@ const Ajuda = () => {
       case '/register':
           setIsHelpNovoUsuarioOpen(true);
           break;
+      case '/relatorio/pedido':
+          setIsHelpFormularioOpen(true);
+          break;
       default:
         break;
     }
@@ -93,7 +98,8 @@ const Ajuda = () => {
           || location.pathname === '/estatistica'
           || location.pathname === '/alterarsenha'
           || location.pathname === '/readUsuario'
-          || location.pathname === '/register') && (
+          || location.pathname === '/register'
+          || location.pathname === '/relatorio/pedido') && (
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
                 <span className="icone"><ion-icon name="help-circle-outline"></ion-icon></span>
@@ -151,6 +157,10 @@ const Ajuda = () => {
         isOpen={isHelpNovoUsuarioOpen}
         onRequestClose={() => setIsHelpNovoUsuarioOpen(false)}
       />
+      <ModalHelpFormulario
+        isOpen={isHelpFormularioOpen}
+        onRequestClose={() => setIsHelpFormularioOpen(false)}
+        />
     </div>
   );
 };
