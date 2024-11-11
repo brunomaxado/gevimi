@@ -225,7 +225,7 @@ const ReadProduto = () => {
                       <span
                         className="action-icon delete"
                         onClick={() => handleDeleteClick(produto.id_produto)}
-                        title="Cancelar"
+                        title="Deletar"
                       >
                         <DeleteIcon />
                       </span>
