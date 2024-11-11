@@ -56,9 +56,11 @@
     background-color:  #ffffff;
   }
 .purple{
-    background-color: rgb(205, 255, 255);
+    background-color: rgb(255, 255, 255);
 }
-
+.orange{
+  
+}
 
   .card-value {
     display: block;
@@ -75,7 +77,14 @@
   }
 
   .background-yellow{
-    background-color: rgb(182, 188, 190);
+ 
+    background-color: rgb(204, 207, 207);
+    margin-top: 2rem;
+    padding-top: 1rem;
+    margin-left: 3rem;
+  }
+  .background-yellow2{
+    background-color: transparent;
     margin-top: 2rem;
     padding-top: 1rem;
     margin-left: 3rem;
@@ -84,9 +93,9 @@
   /* Contêiner principal do dashboard */
 .container-dash {
     display: flex;          /* Alinha os KPIs horizontalmente */
-    gap: 1rem;              /* Espaçamento entre cada card */
+    gap: 4rem;              /* Espaçamento entre cada card */
     padding-top: 1rem;          /* Padding ao redor do contêiner */
-    justify-content: start; /* Alinha os KPIs à esquerda, ou use center para centralizar */
+    justify-content: center; /* Alinha os KPIs à esquerda, ou use center para centralizar */
     flex-wrap: wrap;        /* Permite que os KPIs "quebrem linha" em telas menores */
   }
   
@@ -106,7 +115,7 @@
   
   .item-1 {
     width: 100%; /* Faz com que o item ocupe toda a linha */
-    background-color: lightblue; /* Apenas para destaque */
+    background-color: rgb(255, 255, 255); /* Apenas para destaque */
     padding: 1rem;
     text-align: center;
     font-size: 1.2rem;
@@ -149,3 +158,4 @@
   .pizza{
     background-color: white;
   }
+
