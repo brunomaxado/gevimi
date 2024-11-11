@@ -213,7 +213,12 @@ const ReadPedidoUnico = () => {
                 <div key={item.id_item_pedido}>
                   <span>
                     {getProdutoNome(item.fk_id_produto)} x{item.quantidade} -
-                    Uni: R$ {(item.preco_unitario_atual ? item.preco_unitario_atual.toFixed(2) : "N/A")}
+                    Uni: R$ {
+                      // Verificando se preco_unitario_atual é um número válido
+                      !isNaN(parseFloat(item.preco_unitario_atual))
+                        ? parseFloat(item.preco_unitario_atual).toFixed(2)
+                        : "N/A"
+                    }
                   </span>
                 </div>
               ))
@@ -222,23 +227,24 @@ const ReadPedidoUnico = () => {
             )}
           </div>
         </div>
+
         <div className="infos-tec">
-        <div className="data">
-          <label>Finalizado em:</label>
-          <input
-            type="text"
-            value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
-              ? new Date(pedido.pedido.data_finalizado).toLocaleString()
-              : "Sem data"
-            }
-            readOnly
-          />
-        </div>
-        <div className="forma-pag">
+          <div className="data">
+            <label>Finalizado em:</label>
+            <input
+              type="text"
+              value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
+                ? new Date(pedido.pedido.data_finalizado).toLocaleString()
+                : "Sem data"
+              }
+              readOnly
+            />
+          </div>
+          <div className="forma-pag">
             <label>Forma de Pagamento:</label>
             <input type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />
           </div>
-          </div>
+        </div>
         <div className="total">
           <label><b>Total:</b></label>
           <input
@@ -247,7 +253,7 @@ const ReadPedidoUnico = () => {
             readOnly
           />
         </div>
-       
+
 
       </form>
       <Link to={`/readPedido`}>
