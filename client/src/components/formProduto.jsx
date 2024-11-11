@@ -114,7 +114,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
 
       <p>
         <span className="asterisco">*</span>
-        Os campos marcados com asterisco vermelho são obrigatórios (Nome, preço unitário e categoria).</p>
+        Os campos marcados com asterisco vermelho são obrigatórios.</p>
       <button type="submit">
         Confirmar
       </button>

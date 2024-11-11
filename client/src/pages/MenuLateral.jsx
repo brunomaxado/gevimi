@@ -111,6 +111,13 @@ const Menu = () => {
                     </Link>
                 </li>
                 <li className="list">
+                    <Link to="/relatorio/pedido" onClick={handleLinkClick}>
+                    <span className="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+
+                        <span className="title">Relatório</span>
+                    </Link>
+                </li>
+                <li className="list">
                     <Link to="/" onClick={() => { logout(); handleLinkClick(); }}>
                         <span className="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                         <span className="title">Sair</span>

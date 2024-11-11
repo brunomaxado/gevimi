@@ -6,7 +6,7 @@ import { AuthContext } from "../context/authContext";
 const AlterarSenha = () => {
   const [senhaData, setSenhaData] = useState({
     id_usuario: null,
-    nome: "", // Adiciona o campo para o nome do usuário
+    nome: "",
     senhaAntiga: "",
     senhaNova: "",
   });
@@ -16,25 +16,20 @@ const AlterarSenha = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Obtendo o ID do usuário atual do contexto
+
   const usuarioId = currentUser?.id_usuario;
 
   useEffect(() => {
-    // Define o ID do usuário no estado
     setSenhaData((prev) => ({ ...prev, id_usuario: usuarioId }));
-
     const fetchUsuario = async () => {
       try {
         const response = await axios.get(`http://localhost:8800/usuario/${usuarioId}`);
-        // Atualiza o nome do usuário no estado
         setSenhaData((prev) => ({ ...prev, nome: response.data.nome }));
       } catch (err) {
         console.error("Erro ao buscar usuário:", err);
         setError("Usuário não encontrado.");
       }
     };
-
     if (usuarioId) {
       fetchUsuario();
     }
@@ -60,10 +55,10 @@ const AlterarSenha = () => {
     }
 
     try {
-      await axios.put(`http://localhost:8800/alterarsenha`, { 
-        id_usuario: senhaData.id_usuario, // Enviar o ID do usuário
-        senhaAntiga, 
-        senhaNova 
+      await axios.put(`http://localhost:8800/alterarsenha`, {
+        id_usuario: senhaData.id_usuario,
+        senhaAntiga,
+        senhaNova,
       });
       showSuccess("Senha alterada com sucesso!");
     } catch (err) {
@@ -77,7 +72,7 @@ const AlterarSenha = () => {
     setShowSuccessModal(true);
     setTimeout(() => {
       setShowSuccessModal(false);
-      navigate("/home"); // Redirecionar após sucesso
+      navigate("/home");
     }, 1500);
   };
 
@@ -85,30 +80,36 @@ const AlterarSenha = () => {
     <div>
       <h1>ALTERAR SENHA</h1>
       <div>
-        <p>Usuário Atual: {senhaData.nome}</p> {/* Exibindo o nome do usuário */}
+        <p>Usuário Atual: {senhaData.nome}</p>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Senha Antiga:</label>
-          <input
-            type="password"
-            name="senhaAntiga"
-            value={senhaData.senhaAntiga}
-            onChange={handleChange}
-            required
-          />
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="form-row">
+          <div className="form-group">
+            <label>Senha Antiga: <span className="asterisco">*</span></label>
+            <input
+              type="password"
+              name="senhaAntiga"
+              value={senhaData.senhaAntiga}
+              onChange={handleChange}
+              required
+              className="senha-input"
+            />
+          </div>
         </div>
-        <div>
-          <label>Nova Senha:</label>
-          <input
-            type="password"
-            name="senhaNova"
-            value={senhaData.senhaNova}
-            onChange={handleChange}
-            required
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label>Nova Senha: <span className="asterisco">*</span></label>
+            <input
+              type="password"
+              name="senhaNova"
+              value={senhaData.senhaNova}
+              onChange={handleChange}
+              required
+              className="senha-input"
+            />
+          </div>
         </div>
-        {error && <p className="error-message">{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="submit">Confirmar</button>
       </form>
 
