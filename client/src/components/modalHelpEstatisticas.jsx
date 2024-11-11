@@ -26,15 +26,8 @@ const ModalHelpEstatisticas = ({ isOpen, onRequestClose }) => {
               </dd>
               <dt>Filtrar por data:</dt>
               <dd>- Após selecionar o intervalo de tempo, clique no botão de filtar e
-                as estatísticas de vendas serão geradas.</dd>
-            </dl>
-          </div>
-
-          <div>
-            <h5><b>Criar relatório de pedidos:</b></h5>
-            <dl>
-              <dt>Criar relatório:</dt>
-              <dd>- Clique no botão para ser redirecionado para a página de criação de relatórios.</dd>
+                as estatísticas de vendas serão geradas. Caso mudar de ideia, o botão "limpar filtros"
+                pode remover as datas selecionadas.</dd>
             </dl>
           </div>
         </div>
