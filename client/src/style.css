@@ -89,7 +89,7 @@ main {
 
 
 div p {
-  color: #000;
+  color: #ff0000;
 }
 
 
@@ -902,13 +902,16 @@ td button.update a {
 }
 
 div.auth {
-  gap: 20px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
   flex-direction: row;
   background-color: var(--pretofundo);
   width: 70vw;
   height: 70vh;
   border-radius: 20px;
+  margin: auto; /* Centraliza horizontalmente */
 
   a {
     color: var(--pretoletra);
@@ -1343,16 +1346,22 @@ li {
     padding: 10px;
   }
 }
-
+.label-usuario, .label-senha {
+  font-size: 16px;
+  color: #FFD700; /* Cor amarela dourada */
+  margin-bottom: 5px;
+  text-align: left;
+  display: inline-block; /* Garantir que o texto fique à esquerda */
+}
 
 #login.auth {
   width: 70vw;
   height: 70vh;
-  margin: 0px;
+  margin: auto; /* Centraliza o container no centro da tela */
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center; /* Centraliza o conteúdo internamente */
 }
 
 #imagem {
