@@ -48,9 +48,11 @@ const Login = () => {
         <img src="../logo_login.png"></img>
       </div>
 
+
         <form className="container">
           <h1>Login</h1>
-          <p>Usuário:</p>
+
+          <label className="label-usuario">Usuário: <span className="asterisco">*</span></label>
           <input
             required
             type="text"
@@ -59,7 +61,7 @@ const Login = () => {
             name="login"
             onChange={handleChange}
           />
-          <p>Senha:</p>
+              <label className="label-usuario">Senha: <span className="asterisco">*</span></label>
           <input
             required
             type="password"

@@ -85,9 +85,7 @@ const Dashboard = () => {
             <Button variant="contained" color="secondary" onClick={handleClearFilter}>
               Limpar Filtro
             </Button>
-            <Button variant="contained" color="success" onClick={handleCreateReport}>
-              Criar Relatório
-            </Button>
+           
           </div>
         </div>
       </div>
