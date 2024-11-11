@@ -231,7 +231,7 @@ const ReadProduto = () => {
                       </span>
                       <Link
                         to={`/gerenciarProduto/${produto.id_produto}`}
-                        title="Visualizar"
+                        title="Editar"
                         className="action-icon visualizar"
                         style={{ textDecoration: 'none' }}
                       >

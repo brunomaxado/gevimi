@@ -8,7 +8,7 @@ const ModalHelpEditarCliente = ({ isOpen, onRequestClose }) => {
     <div className="custom-modal-overlay">
       <div className="custom-modal">
         <div className="custom-modal-header">
-          <h2>Ajuda no cadastro de cliente</h2>
+          <h2>Ajuda para editar dados do cliente</h2>
           <button className="custom-modal-close" onClick={onRequestClose}>
             &times;
           </button>

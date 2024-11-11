@@ -29,25 +29,25 @@ const Menu = () => {
     return (
         <div className={`navigation ${isOpen ? 'open' : ''}`}>
             <button onClick={toggleMenu} className="menu-button">
-                <ion-icon name="menu-outline"></ion-icon>
+                <ion-icon name="menu-outline" title="Menu"></ion-icon>
             </button>
             <ul>
                 <li className="list active">
                     <Link to="/home" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="home-outline" title="Página inicial"></ion-icon></span>
                         <span className="title">Início</span>
                     </Link>
                 </li>
                 <li className="list">
                     <Link to="/categoria" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="bookmarks-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="bookmarks-outline" title="Categorias"></ion-icon></span>
                         <span className="title">Categorias</span>
                     </Link>
                 </li>
                 {currentUser.administrador === 1 && (
                 <li className="list" >
                     <Link to="/readUsuario" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="person-outline" title="Usuários"></ion-icon></span>
                         <span className="title">Usuários</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
@@ -64,7 +64,7 @@ const Menu = () => {
                 </li>)}
                 <li className="list">
                     <Link to="/readCliente" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="people-outline" title="Clientes"></ion-icon></span>
                         <span className="title">Clientes</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
@@ -78,7 +78,7 @@ const Menu = () => {
                 </li>
                 <li className="list">
                     <Link to="/viewProduto" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="pricetags-outline" title="Produtos"></ion-icon></span>
                         <span className="title">Produtos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
@@ -92,7 +92,7 @@ const Menu = () => {
                 </li>
                 <li className="list">
                     <Link to="/readPedido" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="storefront-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="storefront-outline" title="Pedidos"></ion-icon></span>
                         <span className="title">Pedidos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
@@ -106,20 +106,20 @@ const Menu = () => {
                 </li>
                 <li className="list">
                     <Link to="/estatistica" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="stats-chart-outline" title="Estatísticas"></ion-icon></span>
                         <span className="title">Estatísticas</span>
                     </Link>
                 </li>
                 <li className="list">
                     <Link to="/relatorio/pedido" onClick={handleLinkClick}>
-                    <span className="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+                    <span className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
 
                         <span className="title">Relatório</span>
                     </Link>
                 </li>
                 <li className="list">
                     <Link to="/" onClick={() => { logout(); handleLinkClick(); }}>
-                        <span className="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span className="icon"><ion-icon name="log-out-outline" title="Sair da conta"></ion-icon></span>
                         <span className="title">Sair</span>
                     </Link>
                 </li>
