@@ -115,7 +115,7 @@ const Produto = () => {
 
 
       <div className="form"> 
-  <h1>NOVO PRODUTO</h1>
+  <h1>Cadastrar Produto:</h1>
 
   <FormProduto
           produto={produto}

@@ -14,6 +14,9 @@ import ModalHelpAlterarSenha from "../components/modalHelpAlterarSenha";
 import ModalHelpReadUsuarios from "../components/modalHelpReadUsuarios";
 import ModalHelpNovoUsuario from "../components/modalHelpNovoUsuario";
 import ModalHelpFormulario from '../components/modalHelpFormulario';
+import ModalHelpEditarProduto from '../components/modalHelpEditarProduto';
+import ModalHelpEditarCliente from '../components/modalHelpEditarCliente';
+
 
 const Ajuda = () => {
   const [indiceAtivo, setIndiceAtivo] = useState(0); // Controla qual link está ativo
@@ -31,6 +34,8 @@ const Ajuda = () => {
   const [isHelpReadUsuariosOpen, setIsHelpReadUsuariosOpen] = useState(false);
   const [isHelpNovoUsuarioOpen, setIsHelpNovoUsuarioOpen] = useState(false);
   const [isHelpFormularioOpen, setIsHelpFormularioOpen] = useState(false);
+  const [isHelpEditarClienteOpen, setIsHelpEditarClienteOpen] = useState(false);
+  const [isHelpEditarProdutoOpen, setIsHelpEditarProdutoOpen] = useState(false);
 
   const location = useLocation();
 
@@ -63,7 +68,7 @@ const Ajuda = () => {
         break;
       case '/readCliente':
         setIsHelpReadClienteOpen(true);
-        break; 
+        break;
       case '/estatistica':
         setIsHelpEstatisticasOpen(true);
         break;
@@ -74,11 +79,17 @@ const Ajuda = () => {
         setIsHelpReadUsuariosOpen(true);
         break;
       case '/register':
-          setIsHelpNovoUsuarioOpen(true);
-          break;
+        setIsHelpNovoUsuarioOpen(true);
+        break;
       case '/relatorio/pedido':
-          setIsHelpFormularioOpen(true);
-          break;
+        setIsHelpFormularioOpen(true);
+        break;
+      case '/editarCliente/1':
+        setIsHelpEditarClienteOpen(true);
+        break;
+      case '/gerenciarProduto/1':
+        setIsHelpEditarProdutoOpen(true);
+        break;
       default:
         break;
     }
@@ -99,7 +110,9 @@ const Ajuda = () => {
           || location.pathname === '/alterarsenha'
           || location.pathname === '/readUsuario'
           || location.pathname === '/register'
-          || location.pathname === '/relatorio/pedido') && (
+          || location.pathname === '/relatorio/pedido'
+          || location.pathname === '/gerenciarProduto/1'
+          || location.pathname === '/editarCliente/1') && (
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
                 <span className="icone"><ion-icon name="help-circle-outline"></ion-icon></span>
@@ -160,7 +173,15 @@ const Ajuda = () => {
       <ModalHelpFormulario
         isOpen={isHelpFormularioOpen}
         onRequestClose={() => setIsHelpFormularioOpen(false)}
-        />
+      />
+      <ModalHelpEditarProduto
+        isOpen={isHelpEditarProdutoOpen}
+        onRequestClose={() => setIsHelpEditarProdutoOpen(false)}
+      />
+      <ModalHelpEditarCliente
+        isOpen={isHelpEditarClienteOpen}
+        onRequestClose={() => setIsHelpEditarClienteOpen(false)}
+      />
     </div>
   );
 };
