@@ -101,7 +101,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
           setCliente((prev) => ({
             ...prev,
             cep: data[0].cep,
-            logradouro: data[0].bairro
+            bairro: data[0].bairro
           }));
           setError(null);
         } else {
