@@ -122,7 +122,7 @@ const Ajuda = () => {
           || location.pathname === '/editarUsuario/1') && (
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
-                <span className="icone"><ion-icon name="help-circle-outline"></ion-icon></span>
+                <span className="icone"><ion-icon name="help-circle-outline" title="Ajuda"></ion-icon></span>
               </Link>
             </li>
           )}
