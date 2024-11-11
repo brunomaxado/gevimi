@@ -198,7 +198,7 @@ const Pedido = () => {
   return (
     <div>
 
-      <h1>NOVO PEDIDO</h1>
+      <h1>Realizar um pedido:</h1>
 
       <form className="form-container-pedido">
         <div className="form-esquerda-pedido">
@@ -311,7 +311,7 @@ const Pedido = () => {
             value={pedido.observacao}
             onChange={handleChange}
           />
-
+           <p> <span className="asterisco">*</span> Os campos marcados com asterisco vermelho são obrigatórios. </p>
         </div>
         <div className="form-direita-pedido">
           <div className="form-row-pedido">

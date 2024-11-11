@@ -52,7 +52,7 @@ const showSuccess = (message) => {
   return (
     <div className="auth, login">
  
-      <h1>NOVO USUÁRIO</h1>
+      <h1>Cadastrar usuário:</h1>
 
       <div className="form"> 
       <FormUsuario

@@ -75,8 +75,9 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
           </div>
         </div>
       </div>
+      <p> <span className="asterisco">*</span>Os campos marcados com asterisco vermelho são obrigatórios.</p>
 
-      <button type="submit">SALVAR</button>
+      <button type="submit">Confirmar</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
