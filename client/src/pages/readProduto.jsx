@@ -160,7 +160,7 @@ const ReadProduto = () => {
 
   return (
     <div>
-      <h1>Produtos:</h1>
+      <h1>Produtos</h1>
       <div className="tabela">
         <div className="filters-container-produto">
           <div className="search-box">

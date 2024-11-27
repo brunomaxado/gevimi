@@ -147,7 +147,7 @@ const Categoria = () => {
   return (
     <div>
 
-      <h1>Categorias:</h1>
+      <h1>Categorias</h1>
       <div className="tabela">
         <div className="filters-container-categoria">
           <div className="search-box">

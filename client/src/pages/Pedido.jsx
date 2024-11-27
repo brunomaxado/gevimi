@@ -58,24 +58,31 @@ const Pedido = () => {
     const fetchProduto = async () => {
       try {
         const response = await axios.get("http://localhost:8800/readProduto");
-        setProduto(response.data);
+        const produtosOrdenados = response.data.sort((a, b) =>
+          a.nome.localeCompare(b.nome)
+        );
+        setProduto(produtosOrdenados);
       } catch (err) {
         console.log(err);
       }
     };
-
+  
     const fetchCliente = async () => {
       try {
         const response = await axios.get("http://localhost:8800/cliente");
-        setCliente(response.data);
+        const clientesOrdenados = response.data.sort((a, b) =>
+          a.nome.localeCompare(b.nome)
+        );
+        setCliente(clientesOrdenados);
       } catch (err) {
         console.log(err);
       }
     };
-
+  
     fetchProduto();
     fetchCliente();
   }, []);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -221,6 +228,27 @@ const Pedido = () => {
               </select>
             </div>
           </div>
+         < div className="form-group-pedido">
+
+<label> Cliente: <span className="asterisco">*</span> </label>
+
+
+
+<select
+  name="fk_id_cliente"
+  value={pedido.fk_id_cliente || ""}
+  onChange={handleChange}
+  required
+>
+  <option value="" disabled>Selecione o cliente</option>
+  {cliente.map((cliente) => (
+    <option key={cliente.id_cliente} value={cliente.id_cliente}>
+      {cliente.nome}
+    </option>
+  ))}
+</select>
+
+</div>
 
           {(pedido.tipo === "1" || pedido.tipo === "2") && (
             <div className="form-row-pedido">
@@ -262,28 +290,7 @@ const Pedido = () => {
             </div>
           )}
           <div className="form-row-pedido">
-            <div className="form-group-pedido">
-
-              <label> Cliente: <span className="asterisco">*</span> </label>
-
-
-
-              <select
-                name="fk_id_cliente"
-                value={pedido.fk_id_cliente || ""}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Selecione o cliente</option>
-                {cliente.map((cliente) => (
-                  <option key={cliente.id_cliente} value={cliente.id_cliente}>
-                    {cliente.nome}
-                  </option>
-                ))}
-              </select>
-
-            </div>
-
+            
 
             <div className="form-group-pedido">
               <label> Forma Pagamento: <span className="asterisco">*</span> </label>
@@ -387,7 +394,7 @@ const Pedido = () => {
           <h5 class="price">R${pedido.frete}</h5>
         </div>
         <div class="pricing-row">
-          <h5 class="price">Preço Parcial:</h5>
+          <h5 class="price">Preço Item Pedido:</h5>
           <h5 class="price">R${precoTotal}</h5>
         </div>
         <div class="pricing-row total-pricing-row">
@@ -398,7 +405,7 @@ const Pedido = () => {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button class="enviar-pedido" onClick={handleClick}>Salvar</button>
+      <button class="enviar-pedido" onClick={handleClick}>Confirmar</button>
 
 
       <ModalCliente
