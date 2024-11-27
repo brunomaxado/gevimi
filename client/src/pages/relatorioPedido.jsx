@@ -62,9 +62,11 @@ export const RelatorioPedido = () => {
       doc.text(`Tipo de Pedido: ${filters.tipoPedido.join(', ') || 'Todos'}`, 14, 42);
   
       // Linha separando o cabeçalho da tabela
-      doc.line(14, 48, 200, 48); 
+      doc.line(14, 48, 200, 48);
   
       let startY = 55; // Posição inicial para os pedidos
+      const maxItemsPerPage = 5; // Limite de itens por página
+      let itemsOnCurrentPage = 0; // Contador de itens na página atual
   
       pedidos.forEach((pedido, index) => {
         // Formatação da data para exibir apenas a data (sem horas)
@@ -98,6 +100,14 @@ export const RelatorioPedido = () => {
   
         // Atualiza a posição Y para o próximo pedido
         startY += 50; // Adiciona espaço entre os blocos de pedidos
+        itemsOnCurrentPage++;
+  
+        // Se o número de itens exceder o limite por página, cria uma nova página
+        if (itemsOnCurrentPage >= maxItemsPerPage) {
+          doc.addPage(); // Adiciona uma nova página
+          startY = 15; // Reseta a posição Y para o início da página
+          itemsOnCurrentPage = 0; // Reseta o contador de itens na página
+        }
       });
   
       // Finaliza o PDF
@@ -106,6 +116,7 @@ export const RelatorioPedido = () => {
       console.error("Erro ao gerar o relatório:", error);
     }
   };
+  
 
 
   useEffect(() => {

@@ -299,7 +299,7 @@ li#pedido a:hover {
 }
 
 .coluna-status {
-  width: 8%;
+  width: 10%;
   /* Alinha o texto ao centro */
   text-align: center;
 }
@@ -2278,8 +2278,9 @@ option:not(:first-of-type) {
   width: 50%;
   padding: 4px 8px;
   border-radius: 12px;
-  color: white;
-  font-weight: bold;
+  color: rgb(0, 0, 0);
+
+
   display: inline-block;
 }
 
@@ -2313,31 +2314,6 @@ option:not(:first-of-type) {
   /* Cinza */
 }
 
-/* Tipo de Entrega Colors */
-.tipo-entrega-entrega {
-  background-color: #2196F3;
-  /* Azul */
-}
-
-.tipo-entrega-ifood {
-  background-color: #c126f0;
-  /* Vermelho Claro */
-}
-
-.tipo-entrega-retirada {
-  background-color: #824caf;
-  /* Verde */
-}
-
-.tipo-entrega-comum {
-  background-color: #919191;
-  /* Verde */
-}
-
-.tipo-entrega-desconhecido {
-  background-color: #9E9E9E;
-  /* Cinza */
-}
 
 @media (min-width: 1025px) {
   .h-custom {
