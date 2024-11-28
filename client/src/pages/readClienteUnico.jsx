@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import '../clienteunico.css';
+import { useLocation, useNavigate } from "react-router-dom";
+import FormViewCliente from "../components/formViewCliente";
 
 const ReadClienteUnico = () => {
   const [cliente, setCliente] = useState(null);
   const [error, setError] = useState(null);
-  const location = useLocation();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const clienteId = location.pathname.split("/")[2];
 
   const fetchCliente = async () => {
@@ -21,65 +23,60 @@ const ReadClienteUnico = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Move a página para o topo
     fetchCliente();
   }, [clienteId]);
 
-  if (error) return <p>{error}</p>;
-  if (!cliente) return <p>Carregando os dados do cliente...</p>;
+  const handleSubmit = async (updatedCliente) => {
+    try {
+      // Envia os dados para o backend para atualizar o cliente
+      await axios.put(`http://localhost:8800/cliente/${clienteId}`, updatedCliente);
+      showSuccess("Cliente atualizado com sucesso!");
+    } catch (err) {
+      console.error("Erro ao atualizar o cliente:", err);
+  
+      // Verifica se há uma resposta de erro do servidor
+      if (err.response && err.response.data && err.response.data.message) {
+        // Exibe a mensagem de erro retornada pelo backend
+        setError(err.response.data.message);
+      } else {
+        // Caso não haja mensagem de erro específica, exibe uma mensagem genérica
+        setError("Erro ao atualizar o cliente. Tente novamente mais tarde.");
+      }
+    }
+  };
+  
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate("/readCliente");
+    }, 1200);
+  };
 
   return (
-    <div className="body-Cliente">
-      <h1>Visualizar Cliente</h1>
-      <form>
-        <div className="infos">
-          <div className="form-group nome">
-            <label>Nome:</label>
-            <input type="text" value={cliente.nome} readOnly />
-          </div>
-          <div className="form-group cep">
-            <label>CEP:</label>
-            <input type="text" value={cliente.cep} readOnly />
-          </div>
-          <div className="form-group cpf">
-            <label>CPF:</label>
-            <input type="text" value={cliente.cpf} readOnly />
-          </div>
-          <div className="form-group celular">
-            <label>Celular:</label>
-            <input type="text" value={cliente.celular} readOnly />
-          </div>
-        </div>
+    <div>
+      <h1>VISUALIZAR CLIENTE</h1>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <div className="endereco">
-          <div className="form-group cidade">
-            <label>Cidade:</label>
-            <input type="text" value={cliente.cidade} readOnly />
-          </div>
-          <div className="form-group logradouro">
-            <label>Logradouro:</label>
-            <input type="text" value={cliente.logradouro} readOnly />
-          </div>
-          <div className="form-group bairro">
-            <label>Bairro:</label>
-            <input type="text" value={cliente.bairro} readOnly />
-          </div>
-          <div className="form-group numero">
-            <label>Número:</label>
-            <input type="text" value={cliente.numero} readOnly />
+      {/* Modal de sucesso */}
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
           </div>
         </div>
+      )}
 
-        <div className="obs">
-          <label>Observação:</label>
-          <input type="text" value={cliente.observacao || "Sem observação"} readOnly />
-        </div>
-        <Link to={"/readCliente"}>
-          <button className="back-button">
-            Voltar
-          </button>
-        </Link>
-      </form>
+      <div>
+        {/* Renderiza o formulário somente se os dados do cliente já foram carregados */}
+        {cliente ? (
+          <FormViewCliente onSubmit={handleSubmit} initialData={cliente} />
+        ) : (
+          <p>Carregando os dados do cliente...</p>
+        )}
+      </div>
     </div>
   );
 };
