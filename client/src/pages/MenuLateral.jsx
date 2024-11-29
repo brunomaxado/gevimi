@@ -1,11 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from "../context/authContext";
 import React, { useContext, useEffect, useState } from "react";
 import '../style.css';
+import ReactDOM from "react-dom";
 const Menu = () => {
     const { currentUser, logout } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const [showDropdowns, setShowDropdowns] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [exitAction, setExitAction] = useState(""); // Define qual ação está sendo confirmada
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -26,6 +30,62 @@ const Menu = () => {
         list.forEach((item) => item.addEventListener('click', activeLink));
     }, []);
 
+    const handleButtonClick = (action) => {
+        // Ações que precisam de confirmação
+        const requiresConfirmation = [
+          '/editarCliente/',
+          '/gerenciarProduto/',
+          '/editarUsuario/',
+          '/alterarsenha', // Certifique-se de que o caminho esteja correto
+          '/cliente',
+          '/produto',
+          '/register',
+          '/pedido',
+          '/relatorio/'
+        ];
+    
+        // Verifica se o caminho atual exige confirmação
+        if (requiresConfirmation.some(path => window.location.pathname.includes(path))) {
+          setExitAction(action); // Define a ação
+          setShowDeleteModal(true); // Abre o modal
+        } else {
+          performAction(action); // Realiza a ação diretamente
+        }
+    };
+    
+    const performAction = (action) => {
+        if (action === "categoria") {
+            navigate('/categoria');
+            handleLinkClick(); // Fecha o menu após navegação
+        } else if (action === "usuario") {
+            navigate('/readUsuario');
+            handleLinkClick(); // Fecha o menu após navegação
+        } else if (action === "sair") {
+            // Implementação da ação de sair, se necessário
+        }
+    };
+    
+    
+      const handleConfirmExit = () => {
+        performAction(exitAction); // Executa a ação confirmada
+        setShowDeleteModal(false); // Fecha o modal
+      };
+    
+      const handleCancelExit = () => {
+        setShowDeleteModal(false); // Fecha o modal sem realizar a ação
+      };
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <div className={`navigation ${isOpen ? 'open' : ''}`}>
             <button onClick={toggleMenu} className="menu-button">
@@ -38,17 +98,26 @@ const Menu = () => {
                         <span className="title">Início</span>
                     </Link>
                 </li>
+
                 <li className="list">
-                    <Link to="/categoria" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="bookmarks-outline" title="Categorias"></ion-icon></span>
-                        <span className="title">Categorias</span>
-                    </Link>
+                     <Link to="#" onClick={(e) => e.preventDefault()}>
+                              <span onClick={() => handleButtonClick("categoria")} className="icon">
+                                       <ion-icon name="bookmarks-outline" title="Categorias"></ion-icon>
+                             </span>
+
+                             <span onClick={() => handleButtonClick("categoria")} className="title">
+                                           Categorias
+                             </span>
+                     </Link>
                 </li>
+
+
+                
                 {currentUser.administrador === 1 && (
                 <li className="list" >
-                    <Link to="/readUsuario" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="person-outline" title="Usuários"></ion-icon></span>
-                        <span className="title">Usuários</span>
+                    <Link  to="#" onClick={(e) => e.preventDefault()}>
+                        <span onClick={() => handleButtonClick("usuario")} className="icon"><ion-icon name="person-outline" title="Usuários"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("usuario")} className="title">Usuários</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
@@ -124,6 +193,22 @@ const Menu = () => {
                     </Link>
                 </li>
             </ul>
+            {showDeleteModal &&
+        ReactDOM.createPortal(
+          <div className="modal">
+            <div className="modal-content">
+              <button className="close-modal" onClick={handleCancelExit}>X</button>
+              <h2 style={{ textAlign: 'center' }}>Sair da página</h2>
+              <p style={{ textAlign: 'center' }}>Tem certeza que deseja sair da página? Seus dados não serão salvos se não confirmar o envio.</p>
+              <div className="modal-div">
+                <button className="modal-button" onClick={handleConfirmExit}>Sim</button>
+                <button className="modal-button" onClick={handleCancelExit}>Não</button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )
+      }
         </div>
     );
 };

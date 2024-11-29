@@ -554,6 +554,7 @@ div.tabela {
   flex-direction: row;
   margin-left: 5vw;
   margin-right: 5vw;
+
 }
 
 .nav-item {
@@ -985,7 +986,8 @@ div.auth button {
       font-weight: bold;
       cursor: pointer;
       border-radius: 10px;
-      margin-bottom: 15px
+      margin-bottom: 15px;
+      margin-left: 20px;
     }
 
     button:hover {
@@ -1038,7 +1040,12 @@ div.auth button {
     padding: 0;
     /* Remove o preenchimento padrão */
   }
-
+  .espaco-botoes {
+    display: flex;
+    justify-content: center; /* Centraliza os botões horizontalmente */
+    gap: 10px; /* Espaçamento entre os botões */
+  }
+  
   /* AQUI COMEÇA O ITEM PEDIDO  */
   .order-item {
     display: flex;
@@ -1210,6 +1217,7 @@ div.auth button {
       font-weight: bold;
       cursor: pointer;
       margin-bottom: 10px;
+  
     }
 
     button:hover {
@@ -1252,6 +1260,20 @@ div.auth button {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.titlebtn {
+  width: auto;
+  border: 1px solid var(--pretofundo);
+  margin: 2px;
+  padding: 10px;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-top: 10px;
+  height: 60%;
+  font-size: 16px;
 }
 
 
