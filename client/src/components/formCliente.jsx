@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Tooltip from './tooltip';
 import InputMask from 'react-input-mask';
-
+import { useModified } from "../context/ModifiedContext";
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
   if (cpf.length !== 11) return false;
@@ -49,12 +49,21 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
     observacao: "",
     ...initialData
   });
-  const [isModified, setIsModified] = useState(false);  
+ 
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const [error, setError] = useState(null);
   const primeiroCampoRef = useRef(null);
   const [clientes, setClientes] = useState([]);
-
+  console.log("isModified:", isModified);
+  useEffect(() => {
+  // Reseta isModified ao desmontar o componente
+  return () => {
+    setIsModified(false);
+  };
+}, [setIsModified]);
   const handleChange = (e) => {
+    
+    setIsModified(true); // Marca o formulário como modificado
     const { name, value } = e.target;
     let cleanedValue = value;
     if (name === "cpf" || name === "celular" || name === "cep") {
@@ -66,14 +75,10 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
       const newCliente = { ...prev, [name]: cleanedValue };
   
       // Verifica se houve modificação nos campos
-      const modified = Object.keys(newCliente).some((key) => newCliente[key] !== initialData[key]);
-      setIsModified(modified); // Atualiza o estado de modificação
-  
+   
       return newCliente;
     });
   
-    // Passa a informação de modificação para o componente pai
-    onModified(isModified); // Passa o valor de isModified para o Header
   };
   
   const buscarEnderecoPorCEP = async (cep) => {

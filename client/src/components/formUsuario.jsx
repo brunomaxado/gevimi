@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { useModified } from "../context/ModifiedContext";
 
 const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  console.log("isModified:", isModified);
+
+  useEffect(() => {
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
+
+  // Função personalizada para marcar o formulário como modificado e chamar handleChange
+  const handleCustomChange = (e) => {
+    setIsModified(true); // Marca o formulário como modificado
+    handleChange(e);
   };
 
   return (
@@ -23,7 +40,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
             placeholder="nome"
             name="nome"
             value={inputs.nome}
-            onChange={handleChange}
+            onChange={handleCustomChange} // Alterado para handleCustomChange
           />
         </div>
       </div>
@@ -39,7 +56,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
             placeholder="login"
             name="login"
             value={inputs.login}
-            onChange={handleChange}
+            onChange={handleCustomChange} // Alterado para handleCustomChange
           />
         </div>
       </div>
@@ -55,7 +72,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
             placeholder="senha"
             name="senha"
             value={inputs.senha}
-            onChange={handleChange}
+            onChange={handleCustomChange} // Alterado para handleCustomChange
             className="senha-input"
             style={{ width: "100%", paddingRight: "50px" }} // Espaço extra para o botão
           />
@@ -91,7 +108,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
                 name="administrador"
                 value="1"
                 checked={inputs.administrador === "1"}
-                onChange={handleChange}
+                onChange={handleCustomChange} // Alterado para handleCustomChange
               />
               Sim
             </label>
@@ -101,13 +118,14 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
                 name="administrador"
                 value="0"
                 checked={inputs.administrador === "0"}
-                onChange={handleChange}
+                onChange={handleCustomChange} // Alterado para handleCustomChange
               />
               Não
             </label>
           </div>
         </div>
       </div>
+
       <p>
         <span className="asterisco">*</span>Os campos marcados com asterisco
         vermelho são obrigatórios.

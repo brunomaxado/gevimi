@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useModified } from "../context/ModifiedContext";
 
 const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, initialData }) => {
   const primeiroCampoRef = useRef(null);
   const [preco, setPreco] = useState(produto.preco_unitario || "");
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
 
   useEffect(() => {
     if (primeiroCampoRef.current) {
@@ -18,7 +20,17 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
     });
   };
 
+  console.log("isModified:", isModified);
+
+  useEffect(() => {
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
+
   const handlePrecoChange = (e) => {
+    setIsModified(true); // Marca o formulário como modificado
     let valorDigitado = e.target.value;
 
     // Garantir que valorDigitado seja uma string
@@ -41,11 +53,14 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
     });
   };
 
+  // Modificar o handleChange para marcar o formulário como modificado em campos específicos
+  const handleCustomChange = (e) => {
+    setIsModified(true); // Marca o formulário como modificado
+    handleChange(e);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-
-
       <div className="form-row">
         <div className="form-group">
           <label> Nome: <span className="asterisco">*</span> </label>
@@ -55,12 +70,11 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
             placeholder="Nome"
             name="nome"
             value={produto.nome}
-            onChange={handleChange}
+            onChange={handleCustomChange} // Alterado para handleCustomChange
             required
           />
         </div>
       </div>
-
 
       <div className="form-row">
         <div className="form-group">
@@ -74,7 +88,6 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
               onChange={handlePrecoChange}
               required
             />
-
           </div>
         </div>
       </div>
@@ -85,7 +98,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
           <select
             name="fk_id_categoria"
             value={produto.fk_id_categoria || ""}
-            onChange={handleChange}
+            onChange={handleCustomChange} // Alterado para handleCustomChange
             required
           >
             <option value="" disabled>Selecione uma categoria</option>
@@ -95,7 +108,6 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
               </option>
             ))}
           </select>
-
         </div>
       </div>
 
@@ -107,20 +119,20 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
             placeholder="Descrição"
             name="descricao"
             value={produto.descricao}
-            onChange={handleChange}
+            onChange={handleCustomChange} // Alterado para handleCustomChange
           />
         </div>
       </div>
 
       <p>
         <span className="asterisco">*</span>
-        Os campos marcados com asterisco vermelho são obrigatórios.</p>
+        Os campos marcados com asterisco vermelho são obrigatórios.
+      </p>
       <button type="submit">
         Confirmar
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
-
   );
 };
 

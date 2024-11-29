@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
-
+import { useModified } from "../context/ModifiedContext";
 const AlterarSenha = () => {
   const [senhaData, setSenhaData] = useState({
     id_usuario: null,
@@ -17,8 +17,15 @@ const AlterarSenha = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const usuarioId = currentUser?.id_usuario;
-
+  console.log("isModified:", isModified);
+  useEffect(() => {
+  // Reseta isModified ao desmontar o componente
+  return () => {
+    setIsModified(false);
+  };
+}, [setIsModified]);
   useEffect(() => {
     setSenhaData((prev) => ({ ...prev, id_usuario: usuarioId }));
     const fetchUsuario = async () => {
@@ -38,6 +45,7 @@ const AlterarSenha = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSenhaData((prev) => ({ ...prev, [name]: value }));
+    setIsModified(true);
   };
 
   const handleSubmit = async (e) => {

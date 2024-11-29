@@ -101,8 +101,8 @@ const Header = () => {
           <div className="modal">
             <div className="modal-content">
               <button className="close-modal" onClick={handleCancelExit}>X</button>
-              <h2 style={{ textAlign: 'center' }}>Sair da página</h2>
-              <p style={{ textAlign: 'center' }}>Tem certeza que deseja sair da página? Seus dados não serão salvos se não confirmar o envio.</p>
+              <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+              <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
               <div className="modal-div">
                 <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
                 <button className="modal-button" onClick={handleCancelExit}>Ficar</button>

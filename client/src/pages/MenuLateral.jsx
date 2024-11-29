@@ -94,6 +94,9 @@ const Menu = () => {
                 }     else if (action === "home") {
                     navigate('/home');
                     handleLinkClick();        
+                }     else if (action === "relatorio") {
+                    navigate('/relatorio/pedido');
+                    handleLinkClick();        
 
         } else if (action === "sair") {
             // Implementação da ação de sair, se necessário
@@ -217,9 +220,9 @@ const Menu = () => {
            
                 <li className="list">
                 <Link  to="#" onClick={(e) => e.preventDefault()}>
-                    <span className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
+                    <span onClick={() => handleButtonClick("relatorio")} className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
 
-                        <span className="title">Relatório</span>
+                        <span onClick={() => handleButtonClick("relatorio")} className="title">Relatório</span>
                     </Link>
                 </li>
                 <li className="list">
@@ -234,7 +237,7 @@ const Menu = () => {
           <div className="modal">
             <div className="modal-content">
               <button className="close-modal" onClick={handleCancelExit}>X</button>
-              <h2 style={{ textAlign: 'center' }}>Sair da página</h2>
+              <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
               <p style={{ textAlign: 'center' }}>Tem certeza que deseja sair da página? Seus dados não serão salvos se não confirmar o envio.</p>
               <div className="modal-div">
                 <button className="modal-button" onClick={handleConfirmExit}>Sim</button>

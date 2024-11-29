@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { useModified } from "../context/ModifiedContext";
 const EditarUsuario = () => {
   const [usuario, setUsuario] = useState({
     nome: "",
@@ -17,6 +18,7 @@ const EditarUsuario = () => {
   const location = useLocation();
   const usuarioId = location.pathname.split("/")[2];
 
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const fetchUsuario = async () => {
     try {
       const response = await axios.get(`http://localhost:8800/usuario/${usuarioId}`);
@@ -27,12 +29,21 @@ const EditarUsuario = () => {
       setError("Usuário não encontrado.");
     }
   };
+  console.log("isModified:", isModified);
+    useEffect(() => {
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
+
 
   useEffect(() => {
     fetchUsuario();
   }, [usuarioId]);
 
   const handleChange = (e) => {
+    setIsModified(true); // Marca o formulário como modificado
     const { name, value } = e.target;
     setUsuario((prev) => ({ ...prev, [name]: value }));
   };
