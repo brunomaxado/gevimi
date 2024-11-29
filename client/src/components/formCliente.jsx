@@ -36,7 +36,7 @@ const validateCEP = (cep) => {
   return cep.length === 8;
 };
 
-const FormCliente = ({ onSubmit, initialData = {} }) => {
+const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
   const [cliente, setCliente] = useState({
     nome: "",
     cpf: "",
@@ -49,7 +49,7 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
     observacao: "",
     ...initialData
   });
-
+  const [isModified, setIsModified] = useState(false);  
   const [error, setError] = useState(null);
   const primeiroCampoRef = useRef(null);
   const [clientes, setClientes] = useState([]);
@@ -60,9 +60,22 @@ const FormCliente = ({ onSubmit, initialData = {} }) => {
     if (name === "cpf" || name === "celular" || name === "cep") {
       cleanedValue = value.replace(/\D/g, '');
     }
-    setCliente((prev) => ({ ...prev, [name]: cleanedValue }));
+    
+    // Atualiza o estado do cliente
+    setCliente((prev) => {
+      const newCliente = { ...prev, [name]: cleanedValue };
+  
+      // Verifica se houve modificação nos campos
+      const modified = Object.keys(newCliente).some((key) => newCliente[key] !== initialData[key]);
+      setIsModified(modified); // Atualiza o estado de modificação
+  
+      return newCliente;
+    });
+  
+    // Passa a informação de modificação para o componente pai
+    onModified(isModified); // Passa o valor de isModified para o Header
   };
-
+  
   const buscarEnderecoPorCEP = async (cep) => {
     if (validateCEP(cep)) {
       try {

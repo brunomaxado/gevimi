@@ -78,7 +78,7 @@ const AlterarSenha = () => {
 
   return (
     <div>
-      <h1>ALTERAR SENHA</h1>
+      <h1>Alterar senha</h1>
       <div>
         <p>Usuário Atual: {senhaData.nome}</p>
       </div>

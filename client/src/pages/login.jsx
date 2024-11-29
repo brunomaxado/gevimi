@@ -70,7 +70,7 @@ const Login = () => {
             onChange={handleChange}
           />
           <button className="btn" onClick={handleSubmit}>Entrar</button>
-          {err && <p>{err}</p>}
+          {err && <p style={{ color: 'red' }}>{err}</p>}
 
         </form>
       </div>

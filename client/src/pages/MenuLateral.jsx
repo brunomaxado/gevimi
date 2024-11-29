@@ -41,7 +41,8 @@ const Menu = () => {
           '/produto',
           '/register',
           '/pedido',
-          '/relatorio/'
+          '/relatorio/',
+          
         ];
     
         // Verifica se o caminho atual exige confirmação
@@ -59,7 +60,35 @@ const Menu = () => {
             handleLinkClick(); // Fecha o menu após navegação
         } else if (action === "usuario") {
             navigate('/readUsuario');
-            handleLinkClick(); // Fecha o menu após navegação
+            handleLinkClick(); 
+        }   else if (action === "register") {
+                navigate('/register');
+                handleLinkClick(); 
+         }     else if (action === "alterarsenha") {
+                    navigate('/alterarsenha');
+                    handleLinkClick(); 
+                }     else if (action === "cliente") {
+                    navigate('/readCliente');
+                    handleLinkClick(); 
+                }     else if (action === "novocliente") {
+                    navigate('/cliente');
+                    handleLinkClick(); 
+                }     else if (action === "produto") {
+                    navigate('/viewProduto');
+                    handleLinkClick(); 
+                }     else if (action === "novoproduto") {
+                    navigate('/produto');
+                    handleLinkClick(); 
+                }     else if (action === "pedido") {
+                    navigate('/readPedido');
+                    handleLinkClick(); 
+                }     else if (action === "novopedido") {
+                    navigate('/pedido');
+                    handleLinkClick();        
+                }     else if (action === "home") {
+                    navigate('/home');
+                    handleLinkClick();        
+
         } else if (action === "sair") {
             // Implementação da ação de sair, se necessário
         }
@@ -93,9 +122,9 @@ const Menu = () => {
             </button>
             <ul>
                 <li className="list active">
-                    <Link to="/home" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="home-outline" title="Página inicial"></ion-icon></span>
-                        <span className="title">Início</span>
+                <Link to="#" onClick={(e) => e.preventDefault()}>
+                        <span onClick={() => handleButtonClick("home")}className="icon"><ion-icon name="home-outline" title="Página inicial"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("home")}className="title">Início</span>
                     </Link>
                 </li>
 
@@ -120,67 +149,68 @@ const Menu = () => {
                         <span onClick={() => handleButtonClick("usuario")} className="title">Usuários</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
+
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
-                        <Link to="/register" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Registrar</span>
+
+                           <Link  to="#" onClick={(e) => e.preventDefault()}>
+                            <span onClick={() => handleButtonClick("register")} className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
+                            <span onClick={() => handleButtonClick("register")}className="title">Novo Usuário</span>
                         </Link>
-                        <Link to="/alterarSenha" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Nova Senha</span>
+
+
+
+                        <Link  to="#" onClick={(e) => e.preventDefault()}>
+                            <span onClick={() => handleButtonClick("alterarsenha")} className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
+                            <span onClick={() => handleButtonClick("alterarsenha")} className="title">Alterar Senha</span>
                         </Link>
                     </div>
                 </li>)}
                 <li className="list">
-                    <Link to="/readCliente" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="people-outline" title="Clientes"></ion-icon></span>
-                        <span className="title">Clientes</span>
+                     <Link  to="#" onClick={(e) => e.preventDefault()}>
+                        <span onClick={() => handleButtonClick("cliente")}className="icon"><ion-icon name="people-outline" title="Clientes"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("cliente")}className="title">Clientes</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
-                    </Link>
+                     </Link>
+
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
-                        <Link to="/cliente" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Novo cliente</span>
+                               <Link  to="#" onClick={(e) => e.preventDefault()}>
+                            <span onClick={() => handleButtonClick("novocliente")} className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
+                            <span onClick={() => handleButtonClick("novocliente")} className="title">Novo cliente</span>
                         </Link>
                   
                     </div>
                 </li>
                 <li className="list">
-                    <Link to="/viewProduto" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="pricetags-outline" title="Produtos"></ion-icon></span>
-                        <span className="title">Produtos</span>
+                <Link  to="#" onClick={(e) => e.preventDefault()}>
+                        <span onClick={() => handleButtonClick("produto")} className="icon"><ion-icon name="pricetags-outline" title="Produtos"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("produto")} className="title">Produtos</span>
                         <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
-                        <Link to="/produto" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Novo produto</span>
+                    <Link  to="#" onClick={(e) => e.preventDefault()}>
+                            <span  onClick={() => handleButtonClick("novoproduto")} className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
+                            <span  onClick={() => handleButtonClick("novoproduto")} className="title">Novo produto</span>
                         </Link>
                 
                     </div>
                 </li>
                 <li className="list">
-                    <Link to="/readPedido" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="storefront-outline" title="Pedidos"></ion-icon></span>
-                        <span className="title">Pedidos</span>
-                        <span className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
+                <Link  to="#" onClick={(e) => e.preventDefault()}>
+                        <span onClick={() => handleButtonClick("pedido")}className="icon"><ion-icon name="storefront-outline" title="Pedidos"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("pedido")} className="title">Pedidos</span>
+                        <span  className="icon flecha"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </Link>
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
-                        <Link to="/pedido" onClick={handleLinkClick}>
-                            <span className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
-                            <span className="title">Novo pedido</span>
+                    <Link  to="#" onClick={(e) => e.preventDefault()}>
+                            <span onClick={() => handleButtonClick("novopedido")} className="icon-menor"><ion-icon name="chevron-forward-outline"></ion-icon></span>
+                            <span onClick={() => handleButtonClick("novopedido")} className="title">Novo pedido</span>
                         </Link>
                   
                     </div>
                 </li>
+           
                 <li className="list">
-                    <Link to="/estatistica" onClick={handleLinkClick}>
-                        <span className="icon"><ion-icon name="stats-chart-outline" title="Estatísticas"></ion-icon></span>
-                        <span className="title">Estatísticas</span>
-                    </Link>
-                </li>
-                <li className="list">
-                    <Link to="/relatorio/pedido" onClick={handleLinkClick}>
+                <Link  to="#" onClick={(e) => e.preventDefault()}>
                     <span className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
 
                         <span className="title">Relatório</span>

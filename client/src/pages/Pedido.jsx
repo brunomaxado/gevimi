@@ -205,7 +205,7 @@ const Pedido = () => {
   return (
     <div>
 
-      <h1>Realizar um pedido:</h1>
+      <h1>Novo Pedido</h1>
 
       <form className="form-container-pedido">
         <div className="form-esquerda-pedido">
