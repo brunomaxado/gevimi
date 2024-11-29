@@ -3,10 +3,12 @@ import { AuthContext } from "../context/authContext";
 import React, { useContext, useEffect, useState } from "react";
 import '../style.css';
 import ReactDOM from "react-dom";
+import { useModified } from "../context/ModifiedContext";
 const Menu = () => {
     const { currentUser, logout } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
     const [showDropdowns, setShowDropdowns] = useState(false);
+    const { isModified } = useModified();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [exitAction, setExitAction] = useState(""); // Define qual ação está sendo confirmada
     const navigate = useNavigate();
@@ -32,6 +34,10 @@ const Menu = () => {
 
     const handleButtonClick = (action) => {
         // Ações que precisam de confirmação
+        if (!isModified) {
+            performAction(action); // Realiza a ação diretamente
+            return; // Impede a execução do restante do código
+          }
         const requiresConfirmation = [
           '/editarCliente/',
           '/gerenciarProduto/',

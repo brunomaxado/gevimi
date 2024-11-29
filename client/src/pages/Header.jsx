@@ -3,11 +3,12 @@ import '../style.css';
 import { AuthContext } from "../context/authContext";
 import React, { useContext, useState } from "react";
 import ReactDOM from "react-dom";
+import { useModified } from "../context/ModifiedContext";
 
 const Header = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const { isModified } = useModified();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [exitAction, setExitAction] = useState(""); // Define qual ação está sendo confirmada
 
@@ -15,29 +16,35 @@ const Header = () => {
     logout();
   };
 
-const handleButtonClick = (action) => {
-  // Ações que precisam de confirmação
-  const requiresConfirmation = [
-    '/editarCliente/',
-    '/gerenciarProduto/',
-    '/editarUsuario/',
-    '/alterarsenha', // Certifique-se de que o caminho esteja correto
-    '/cliente',
-    '/produto',
-    '/register',
-    '/pedido',
-    '/relatorio/'
-  ];
-
-  // Verifica se o caminho atual exige confirmação
-  if (requiresConfirmation.some(path => window.location.pathname.includes(path))) {
-    setExitAction(action); // Define a ação
-    setShowDeleteModal(true); // Abre o modal
-  } else {
-    performAction(action); // Realiza a ação diretamente
-  }
-};
-
+  const handleButtonClick = (action) => {
+    // Verifica se o isModified é falso para navegar sem confirmação
+    if (!isModified) {
+      performAction(action); // Realiza a ação diretamente
+      return; // Impede a execução do restante do código
+    }
+  
+    // Ações que precisam de confirmação
+    const requiresConfirmation = [
+      '/editarCliente/',
+      '/gerenciarProduto/',
+      '/editarUsuario/',
+      '/alterarsenha', // Certifique-se de que o caminho esteja correto
+      '/cliente',
+      '/produto',
+      '/register',
+      '/pedido',
+      '/relatorio/'
+    ];
+  
+    // Verifica se o caminho atual exige confirmação
+    if (requiresConfirmation.some(path => window.location.pathname.includes(path))) {
+      setExitAction(action); // Define a ação
+      setShowDeleteModal(true); // Abre o modal
+    } else {
+      performAction(action); // Realiza a ação diretamente
+    }
+  };
+  
 
   const performAction = (action) => {
     if (action === "novoPedido") {
@@ -64,6 +71,7 @@ const handleButtonClick = (action) => {
 
   return (
     <div>
+       {isModified && <p>Existem alterações não salvas!</p>}
       <header className="header">
         <div className="nav">
           <ul className="nav-list">
@@ -96,8 +104,8 @@ const handleButtonClick = (action) => {
               <h2 style={{ textAlign: 'center' }}>Sair da página</h2>
               <p style={{ textAlign: 'center' }}>Tem certeza que deseja sair da página? Seus dados não serão salvos se não confirmar o envio.</p>
               <div className="modal-div">
-                <button className="modal-button" onClick={handleConfirmExit}>Sim</button>
-                <button className="modal-button" onClick={handleCancelExit}>Não</button>
+                <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+                <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
               </div>
             </div>
           </div>,

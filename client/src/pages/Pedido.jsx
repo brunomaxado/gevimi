@@ -4,9 +4,11 @@ import ModalCliente from "../components/modalCliente";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import More from "@mui/icons-material/Add";
+import { useModified } from "../context/ModifiedContext";
 
 const Pedido = () => {
   const { currentUser, logout } = useContext(AuthContext);
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const [produto, setProduto] = useState([]);
   const [cliente, setCliente] = useState([]);
   const [precoTotal, setPrecoTotal] = useState(0);
@@ -23,7 +25,13 @@ const Pedido = () => {
     fk_id_usuario: currentUser?.id_usuario,
     fk_id_cliente: null,
   });
-
+  console.log("isModified:", isModified);
+    useEffect(() => {
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
   const [novoItem, setNovoItem] = useState({
     fk_id_produto: "",
     preco_unitario_atual: null,
@@ -66,7 +74,7 @@ const Pedido = () => {
         console.log(err);
       }
     };
-  
+
     const fetchCliente = async () => {
       try {
         const response = await axios.get("http://localhost:8800/cliente");
@@ -78,19 +86,20 @@ const Pedido = () => {
         console.log(err);
       }
     };
-  
+
     fetchProduto();
     fetchCliente();
   }, []);
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPedido((prev) => ({ ...prev, [name]: value }));
+    setIsModified(true); // Marca o formulário como modificado
   };
 
   const handleItemChange = (e) => {
     setNovoItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setIsModified(true); // Marca o formulário como modificado
   };
 
   const handleClick = async (e) => {
@@ -202,235 +211,232 @@ const Pedido = () => {
       primeiroCampoRef.current.focus();
     }
   }, []);
-  return (
-    <div>
 
-      <h1>Novo Pedido</h1>
+  
 
-      <form className="form-container-pedido">
-        <div className="form-esquerda-pedido">
-          <div className="form-row-pedido">
-            <div className="form-group-pedido">
-              <label> Tipo: <span className="asterisco">*</span> </label>
-              <select
-                name="tipo"
-                required
-                value={pedido.tipo}
-                onChange={(e) => {
-                  handleChange(e);
-                }}
-              >
-                <option value="" disabled selected>Selecione um tipo de entrega</option>
-                <option value="1">1. Entrega</option>
-                <option value="2">2. Entrega Ifood</option>
-                <option value="3">3. Retirada</option>
-                <option value="4">4. Comum</option>
-              </select>
-            </div>
+return (
+  <div>
+
+    <h1>Novo Pedido</h1>
+
+    <form className="form-container-pedido">
+      <div className="form-esquerda-pedido">
+        <div className="form-row-pedido">
+          <div className="form-group-pedido">
+            <label> Tipo: <span className="asterisco">*</span> </label>
+            <select
+              name="tipo"
+              required
+              value={pedido.tipo}
+              onChange={(e) => {
+                handleChange(e);
+              }}
+            >
+              <option value="" disabled selected>Selecione um tipo de entrega</option>
+              <option value="1">1. Entrega</option>
+              <option value="2">2. Entrega Ifood</option>
+              <option value="3">3. Retirada</option>
+              <option value="4">4. Comum</option>
+            </select>
           </div>
-         < div className="form-group-pedido">
+        </div>
+       < div className="form-group-pedido">
 
 <label> Cliente: <span className="asterisco">*</span> </label>
 
 
 
 <select
-  name="fk_id_cliente"
-  value={pedido.fk_id_cliente || ""}
-  onChange={handleChange}
-  required
+name="fk_id_cliente"
+value={pedido.fk_id_cliente || ""}
+onChange={handleChange}
+required
 >
-  <option value="" disabled>Selecione o cliente</option>
-  {cliente.map((cliente) => (
-    <option key={cliente.id_cliente} value={cliente.id_cliente}>
-      {cliente.nome}
-    </option>
-  ))}
+<option value="" disabled>Selecione o cliente</option>
+{cliente.map((cliente) => (
+  <option key={cliente.id_cliente} value={cliente.id_cliente}>
+    {cliente.nome}
+  </option>
+))}
 </select>
 
 </div>
 
-          {(pedido.tipo === "1" || pedido.tipo === "2") && (
-            <div className="form-row-pedido">
-              <div className="form-group-pedido">
-                <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
-                <input
-                  type="datetime-local"
-
-                  name="data_para_entregar"
-                  value={pedido.data_para_entregar}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="form-group-pedido">
-                <label> Frete: <span className="asterisco">*</span> </label>
-                <input
-                  type="text"
-                  placeholder="Frete"
-                  name="frete"
-                  value={formatarPrecoVisual(pedido.frete)} // Exibe o valor formatado com "R$"
-                  onChange={handleFreteChange}
-                />
-              </div>
-            </div>
-          )}
-          {(pedido.tipo === "3") && (
-            <div className="form-row-pedido">
-              <div className="form-group-pedido">
-                <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
-                <input
-                  type="datetime-local"
-                  name="data_para_entregar"
-                  value={pedido.data_para_entregar}
-                  onChange={handleChange}
-                />
-              </div>
-
-            </div>
-          )}
+        {(pedido.tipo === "1" || pedido.tipo === "2") && (
           <div className="form-row-pedido">
-            
-
             <div className="form-group-pedido">
-              <label> Forma Pagamento: <span className="asterisco">*</span> </label>
-              <select
-                name="forma_pagamento"
-                required
-                id="forma_pagamento"
-                value={pedido.forma_pagamento}
+              <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
+              <input
+                type="datetime-local"
+
+                name="data_para_entregar"
+                value={pedido.data_para_entregar}
                 onChange={handleChange}
-              >
-                <option value="">Forma de pagamento</option>
-                <option value="1">Dinheiro</option>
-                <option value="2">Pix</option>
-                <option value="3">Débito</option>
-                <option value="4">Crédito</option>
-              </select>
+              />
             </div>
 
+            <div className="form-group-pedido">
+              <label> Frete: <span className="asterisco">*</span> </label>
+              <input
+                type="text"
+                placeholder="Frete"
+                name="frete"
+                value={formatarPrecoVisual(pedido.frete)} // Exibe o valor formatado com "R$"
+                onChange={handleFreteChange}
+              />
+            </div>
           </div>
-          <label> Observação: </label>
-          <input
-            type="text"
-            placeholder="Observação"
-            name="observacao"
-            value={pedido.observacao}
-            onChange={handleChange}
-          />
-           <p> <span className="asterisco">*</span> Os campos marcados com asterisco vermelho são obrigatórios. </p>
-        </div>
-        <div className="form-direita-pedido">
+        )}
+        {(pedido.tipo === "3") && (
           <div className="form-row-pedido">
             <div className="form-group-pedido">
-              <label> Produto: <span className="asterisco">*</span> </label>
-              <select
-                name="fk_id_produto"
-                ref={primeiroCampoRef}
-                value={novoItem.fk_id_produto}
-                onChange={handleItemChange}
-                required
-              >
-                <option value="" disabled selected>Selecione um produto</option>
-                {produto.map((produto) => (
-                  <option key={produto.id_produto} value={produto.id_produto}>
-                    {produto.nome}
-                  </option>
-                ))}
-              </select>
+              <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
+              <input
+                type="datetime-local"
+                name="data_para_entregar"
+                value={pedido.data_para_entregar}
+                onChange={handleChange}
+              />
             </div>
-            <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
-              <More /> {/* Adicionando o ícone More */}
-            </button>
+
+          </div>
+        )}
+        <div className="form-row-pedido">
+          
+
+          <div className="form-group-pedido">
+            <label> Forma Pagamento: <span className="asterisco">*</span> </label>
+            <select
+              name="forma_pagamento"
+              required
+              id="forma_pagamento"
+              value={pedido.forma_pagamento}
+              onChange={handleChange}
+            >
+              <option value="">Forma de pagamento</option>
+              <option value="1">Dinheiro</option>
+              <option value="2">Pix</option>
+              <option value="3">Débito</option>
+              <option value="4">Crédito</option>
+            </select>
           </div>
 
-          {/* Itens do Pedido com área de rolagem */}
-          <h2 className="order-items-header">Itens do Pedido</h2>
-          <div className="order-items-scrollable-container">
-            {itensPedido.length === 0 ? (
-              <p>Selecione um produto para inserir.</p>
-            ) : (
-              <ul className="order-items-list">
-                {itensPedido.map((item, index) => (
-                  <li key={index} className="order-item">
-                    <span className="order-item-name">
-                      {item.nome} - R${item.preco_unitario * item.quantidade}
-                    </span>
-                    <div className="order-item-controls">
-                      <input
-                        type="number"
-                        className="order-item-quantity"
-                        value={item.quantidade}
-                        min="1"
-                        onChange={(e) => {
-                          const updatedItens = [...itensPedido];
-                          updatedItens[index].quantidade = e.target.value;
-                          setItensPedido(updatedItens);
-                        }}
-                      />
-                      <p
-                        className="order-item-remove"
-                        onClick={() => handleRemoverItem(index)}
-                      >
-                        x
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
+        </div>
+        <label> Observação: </label>
+        <input
+          type="text"
+          placeholder="Observação"
+          name="observacao"
+          value={pedido.observacao}
+          onChange={handleChange}
+        />
+         <p> <span className="asterisco">*</span> Os campos marcados com asterisco vermelho são obrigatórios. </p>
+      </div>
+      <div className="form-direita-pedido">
+        <div className="form-row-pedido">
+          <div className="form-group-pedido">
+            <label> Produto: <span className="asterisco">*</span> </label>
+            <select
+              name="fk_id_produto"
+              ref={primeiroCampoRef}
+              value={novoItem.fk_id_produto}
+              onChange={handleItemChange}
+              required
+            >
+              <option value="" disabled selected>Selecione um produto</option>
+              {produto.map((produto) => (
+                <option key={produto.id_produto} value={produto.id_produto}>
+                  {produto.nome}
+                </option>
+              ))}
+            </select>
           </div>
+          <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
+            <More /> {/* Adicionando o ícone More */}
+          </button>
         </div>
 
-
-
-
-
-
-      </form>
-      <div class="pricing-container">
-        <div class="pricing-row">
-          <h5 class="price">Preço Frete:</h5>
-          <h5 class="price">R${pedido.frete}</h5>
-        </div>
-        <div class="pricing-row">
-          <h5 class="price">Preço Item Pedido:</h5>
-          <h5 class="price">R${precoTotal}</h5>
-        </div>
-        <div class="pricing-row total-pricing-row">
-          <h5 class="label price-strong total-price">Preço Total:</h5>
-          <h5 class="label price-strong total-price">R${precoTotalFrete}</h5>
+        {/* Itens do Pedido com área de rolagem */}
+        <h2 className="order-items-header">Itens do Pedido</h2>
+        <div className="order-items-scrollable-container">
+          {itensPedido.length === 0 ? (
+            <p>Selecione um produto para inserir.</p>
+          ) : (
+            <ul className="order-items-list">
+              {itensPedido.map((item, index) => (
+                <li key={index} className="order-item">
+                  <span className="order-item-name">
+                    {item.nome} - R${item.preco_unitario * item.quantidade}
+                  </span>
+                  <div className="order-item-controls">
+                    <input
+                      type="number"
+                      className="order-item-quantity"
+                      value={item.quantidade}
+                      min="1"
+                      onChange={(e) => {
+                        const updatedItens = [...itensPedido];
+                        updatedItens[index].quantidade = e.target.value;
+                        setItensPedido(updatedItens);
+                      }}
+                    />
+                    <p
+                      className="order-item-remove"
+                      onClick={() => handleRemoverItem(index)}
+                    >
+                      x
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <button class="enviar-pedido" onClick={handleClick}>Confirmar</button>
 
 
-      <ModalCliente
-        isOpen={showModal}  // Controla se o modal deve ser exibido
-        onRequestClose={() => setShowModal(false)}  // Função para fechar o modal
-        adicionarCliente={adicionarCliente}  // Função para adicionar um cliente após cadastro
-      />
-      {showSuccessModal && (
-        <div className="success-modal">
-          <div className="success-modal-content">
-            <span>{successMessage}</span>
-          </div>
-        </div>
-      )}
+
+
+
+    </form>
+    <div class="pricing-container">
+      <div class="pricing-row">
+        <h5 class="price">Preço Frete:</h5>
+        <h5 class="price">R${pedido.frete}</h5>
+      </div>
+      <div class="pricing-row">
+        <h5 class="price">Preço Item Pedido:</h5>
+        <h5 class="price">R${precoTotal}</h5>
+      </div>
+      <div class="pricing-row total-pricing-row">
+        <h5 class="label price-strong total-price">Preço Total:</h5>
+        <h5 class="label price-strong total-price">R${precoTotalFrete}</h5>
+      </div>
     </div>
-  );
+
+    {error && <p style={{ color: "red" }}>{error}</p>}
+
+    <button class="enviar-pedido" onClick={handleClick}>Confirmar</button>
+
+
+    <ModalCliente
+      isOpen={showModal}  // Controla se o modal deve ser exibido
+      onRequestClose={() => setShowModal(false)}  // Função para fechar o modal
+      adicionarCliente={adicionarCliente}  // Função para adicionar um cliente após cadastro
+    />
+    {showSuccessModal && (
+      <div className="success-modal">
+        <div className="success-modal-content">
+          <span>{successMessage}</span>
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 
 };
 
 export default Pedido;
-
-
-
-
-
-
-
 
