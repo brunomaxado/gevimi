@@ -1,7 +1,19 @@
 import db from "../config/db.js";
 
 export const getPedidosRelatorio = (req, res) => {
-  const { inicioPeriodo, fimPeriodo, clientes, tipoPedido, status, produtos } = req.body.filters;
+  const {
+    inicioPeriodo,
+    fimPeriodo,
+    dataFinalizadoInicio,
+    dataFinalizadoFim,
+    dataEntregueInicio,
+    dataEntregueFim,
+    usuario,
+    cliente,
+    produto,
+    tipoPedido,
+    status,
+  } = req.body.filters;
 
   let queryPedidos = `
     SELECT * 
@@ -11,6 +23,7 @@ export const getPedidosRelatorio = (req, res) => {
   const conditions = [];
   const params = [];
 
+  // Adiciona condições de filtro de datas
   if (inicioPeriodo) {
     conditions.push("data_realizado >= ?");
     params.push(inicioPeriodo);
@@ -19,34 +32,55 @@ export const getPedidosRelatorio = (req, res) => {
     conditions.push("data_realizado <= ?");
     params.push(fimPeriodo);
   }
-  if (clientes && clientes.length > 0) {
-    conditions.push(`fk_id_cliente IN (${clientes.map(() => "?").join(", ")})`);
-    params.push(...clientes);
+  if (dataFinalizadoInicio) {
+    conditions.push("data_finalizado >= ?");
+    params.push(dataFinalizadoInicio);
+  }
+  if (dataFinalizadoFim) {
+    conditions.push("data_finalizado <= ?");
+    params.push(dataFinalizadoFim);
+  }
+  if (dataEntregueInicio) {
+    conditions.push("data_para_entregar >= ?");
+    params.push(dataEntregueInicio);
+  }
+  if (dataEntregueFim) {
+    conditions.push("data_para_entregar <= ?");
+    params.push(dataEntregueFim);
+  }
+  if (usuario && usuario.length > 0) {
+    conditions.push(`fk_id_usuario IN (${usuario.map(() => "?").join(", ")})`);
+    params.push(...usuario);
+  }
+  if (cliente && cliente.length > 0) {
+    conditions.push(`fk_id_cliente IN (${cliente.map(() => "?").join(", ")})`);
+    params.push(...cliente);
   }
   if (tipoPedido && tipoPedido.length > 0) {
     conditions.push(`tipo IN (${tipoPedido.map(() => "?").join(", ")})`);
     params.push(...tipoPedido);
   }
-  if (status) {
-    conditions.push(`status = ?`);
-    params.push(status);
+  if (status && status.length > 0) {
+    conditions.push(`status IN (${status.map(() => "?").join(", ")})`);
+    params.push(...status);
   }
-  if (produtos && produtos.length > 0) {
+  if (produto && produto.length > 0) {
     conditions.push(`id_pedido IN (
       SELECT fk_id_pedido 
       FROM item_pedido 
-      WHERE fk_id_produto IN (${produtos.map(() => "?").join(", ")})
+      WHERE fk_id_produto IN (${produto.map(() => "?").join(", ")})
     )`);
-    params.push(...produtos);
+    params.push(...produto);
   }
 
+  // Adiciona as condições à consulta, se houver filtros
   if (conditions.length > 0) {
     queryPedidos += ` WHERE ${conditions.join(" AND ")}`;
   }
 
   db.query(queryPedidos, params, (err, pedidosData) => {
     if (err) {
-      console.error("Erro no banco de dados:", err);
+      console.error("Erro ao buscar os pedidos:", err);
       return res.status(500).json({ message: "Erro ao buscar os pedidos", err });
     }
 
@@ -70,11 +104,9 @@ export const getPedidosRelatorio = (req, res) => {
           }
 
           // Calcular o total do pedido
-          const total = itensPedidoData.reduce((acc, item) => {
-            return acc + (item.preco_unitario * (item.quantidade || 1));
-          }, 0);
+          const total = itensPedidoData.reduce((acc, item) => acc + (item.preco_unitario * (item.quantidade || 1)), 0);
 
-          // Consultar as informações do cliente, produto e tipo
+          // Consultar o cliente
           const queryCliente = `SELECT nome FROM cliente WHERE id_cliente = ?`;
           db.query(queryCliente, [pedido.fk_id_cliente], (err, clienteData) => {
             if (err) {
@@ -82,17 +114,21 @@ export const getPedidosRelatorio = (req, res) => {
               return reject(err);
             }
 
-            // Consultar o produto
             const queryProduto = `SELECT nome FROM produto WHERE id_produto IN (
               SELECT fk_id_produto FROM item_pedido WHERE fk_id_pedido = ?
             )`;
             db.query(queryProduto, [pedido.id_pedido], (err, produtoData) => {
               if (err) {
-                console.error("Erro ao buscar produto:", err);
+                console.error("Erro ao buscar produtos:", err);
                 return reject(err);
               }
 
-              // Mapeando o tipo do pedido
+              // Verifica se algum produto foi encontrado
+              if (produtoData.length === 0) {
+                console.warn("Nenhum produto encontrado para o pedido:", pedido.id_pedido);
+              }
+
+              // Consultar o tipo de pedido e status
               const tipoMap = {
                 1: "Entrega",
                 2: "Entrega Ifood",
@@ -101,7 +137,6 @@ export const getPedidosRelatorio = (req, res) => {
               };
               const tipo = tipoMap[pedido.tipo] || "Desconhecido";
 
-              // Mapeando o status
               const statusMap = {
                 1: "Finalizado",
                 2: "Pendente",
@@ -112,10 +147,10 @@ export const getPedidosRelatorio = (req, res) => {
               resolve({
                 ...pedido,
                 cliente: clienteData[0]?.nome || "Cliente não encontrado",
-                produto: produtoData.map(prod => prod.nome).join(", ") || "Produto não encontrado",
+                produtos: produtoData.map(prod => prod.nome).join(", ") || "Produto não encontrado",
+                itensPedido: itensPedidoData,
                 tipo,
                 status,
-                itensPedido: itensPedidoData,
                 total: total.toFixed(2), // Formato de duas casas decimais
               });
             });
