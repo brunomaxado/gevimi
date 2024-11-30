@@ -169,7 +169,7 @@ const ReadCliente = () => {
                 <th className="coluna-cep">CEP</th>
                 <th className="coluna-endereco">Endereço</th>
                 <th className="coluna-descricao">Observação</th>
-                <th>Ações</th>
+                <th className="coluna-center">Ações</th>
               </tr>
             </thead>
             <tbody>

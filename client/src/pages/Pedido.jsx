@@ -25,6 +25,7 @@ const Pedido = () => {
     fk_id_usuario: currentUser?.id_usuario,
     fk_id_cliente: null,
   });
+  
   console.log("isModified:", isModified);
     useEffect(() => {
     // Reseta isModified ao desmontar o componente
@@ -32,6 +33,9 @@ const Pedido = () => {
       setIsModified(false);
     };
   }, [setIsModified]);
+
+
+
   const [novoItem, setNovoItem] = useState({
     fk_id_produto: "",
     preco_unitario_atual: null,
