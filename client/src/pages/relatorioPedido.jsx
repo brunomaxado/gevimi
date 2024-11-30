@@ -254,11 +254,11 @@ export const RelatorioPedido = () => {
       <h1>Relatório de Pedidos</h1>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
-        <label>Data de Realização inicial: <span className="asterisco">*</span>
+        <label>Data de Realização inicial:
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
             onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })} /></label>
 
-        <label>Data de Realização final: <span className="asterisco">*</span>
+        <label>Data de Realização final:
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
             onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })} /></label>
 
