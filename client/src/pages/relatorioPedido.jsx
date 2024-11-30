@@ -245,7 +245,7 @@ export const RelatorioPedido = () => {
     } catch (error) {
       console.error("Erro ao gerar o relatório:", error);
       setErrorMessage("Erro ao gerar o relatório. Verifique os dados e tente novamente.");
-      setError("Não existem dados nesse intervalo de tempo!");
+      setError("Nenhum registro foi encontrado com os filtros aplicados. Por favor, revise os critérios e tente novamente.");
     }
   };
 
@@ -269,11 +269,11 @@ export const RelatorioPedido = () => {
           <TextField type="datetime-local" name="dataFinalizadoFim" value={filters.dataFinalizadoFim} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataFinalizadoFim: e.target.value })} /></label>
 
-        <label>Data Entregue inicial:
+        <label>Data Entrega inicial:
           <TextField type="datetime-local" name="dataEntregueInicio" value={filters.dataEntregueInicio} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataEntregueInicio: e.target.value })} /></label>
 
-        <label>Data Entregue final:
+        <label>Data Entrega final:
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataEntregueFim: e.target.value })} /></label>
       </div>
