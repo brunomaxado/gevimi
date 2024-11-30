@@ -18,25 +18,10 @@ export const RelatorioPedido = () => {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
-  const getFirstDayOfMonth = () => {
-    const date = new Date();
-    date.setDate(1);
-    date.setHours(0, 0, 0, 0);
-    return formatDateTimeLocal(date);
-  };
-
-  const getLastDayOfMonth = () => {
-    const date = new Date();
-    date.setMonth(date.getMonth() + 1);
-    date.setDate(0);
-    date.setHours(23, 59, 59, 999);
-    return formatDateTimeLocal(date);
-  };
-
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
-    inicioPeriodo: getFirstDayOfMonth(),
-    fimPeriodo: getLastDayOfMonth(),
+    inicioPeriodo: "",
+    fimPeriodo:"",
     dataFinalizadoInicio: "",
     dataFinalizadoFim: "",
     dataEntregueInicio: "",
@@ -107,8 +92,8 @@ export const RelatorioPedido = () => {
 
   const handleResetFilters = () => {
     setFilters({
-      inicioPeriodo: getFirstDayOfMonth(),
-      fimPeriodo: getLastDayOfMonth(),
+      inicioPeriodo: "",
+      fimPeriodo:"",
       dataFinalizadoInicio: "",
       dataFinalizadoFim: "",
       dataEntregueInicio: "",
@@ -121,27 +106,37 @@ export const RelatorioPedido = () => {
     });
     setErrorMessage("");
   };
-
   const handleClick = async (e) => {
     e.preventDefault();
-    if (!filters.inicioPeriodo || !filters.fimPeriodo) {
-      setError("Todos os campos obrigatórios devem ser preenchidos.");
+  
+    const hasPeriodoPrincipal = filters.inicioPeriodo && filters.fimPeriodo;
+    const hasPeriodoFinalizado = filters.dataFinalizadoInicio && filters.dataFinalizadoFim;
+    const hasPeriodoEntregue = filters.dataEntregueInicio && filters.dataEntregueFim;
+  
+    // Verifica se pelo menos um conjunto de datas está completo
+    if (!hasPeriodoPrincipal && !hasPeriodoFinalizado && !hasPeriodoEntregue) {
+      setError("Pelo menos um período deve ser preenchido (Período de Realização, Finalização ou Entrega).");
       return;
     }
-    if ((filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) ||
-      (filters.dataFinalizadoFim && !filters.dataFinalizadoInicio)) {
-      setError("Se uma data de finalização inicial for escolhida, a data final também deve ser preenchida e vice-versa.");
+  
+    // Validação para pares de datas dentro de cada grupo
+    if ((filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) || 
+        (!filters.dataFinalizadoInicio && filters.dataFinalizadoFim)) {
+      setError("Se uma Data Finalizada Inicial for preenchida, a Final deve ser preenchida também e vice-versa.");
       return;
     }
-    if ((filters.dataEntregueInicio && !filters.dataEntregueFim) ||
-      (filters.dataEntregueFim && !filters.dataEntregueInicio)) {
-      setError("Se uma data de entrega inicial for escolhida, a data final também deve ser preenchida e vice-versa.");
+  
+    if ((filters.dataEntregueInicio && !filters.dataEntregueFim) || 
+        (!filters.dataEntregueInicio && filters.dataEntregueFim)) {
+      setError("Se uma Data Entregue Inicial for preenchida, a Final deve ser preenchida também e vice-versa.");
       return;
     }
+  
+    // Se todas as validações passarem
     setError(null);
-    generatePDF();
+    await generatePDF(); // Continua para a geração do relatório
   };
-
+  
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value || 0);
   };
@@ -192,7 +187,7 @@ export const RelatorioPedido = () => {
       // Adicionando os filtros aplicados no PDF
       doc.setFontSize(10);
       doc.text(
-        `Período: ${dataInicioFormatada && dataFimFormatada ? `${dataInicioFormatada} até ${dataFimFormatada}` : 'Sem data'}`,
+        `Data Realizado: ${dataInicioFormatada && dataFimFormatada ? `${dataInicioFormatada} até ${dataFimFormatada}` : 'Sem data'}`,
         14, 50
       );
       doc.text(
@@ -259,11 +254,11 @@ export const RelatorioPedido = () => {
       <h1>Relatório de Pedidos</h1>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
-        <label>Data de Início: <span className="asterisco">*</span>
+        <label>Data de Realização inicial: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
             onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })} /></label>
 
-        <label>Data de Fim: <span className="asterisco">*</span>
+        <label>Data de Realização final: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
             onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })} /></label>
 

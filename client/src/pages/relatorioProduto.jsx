@@ -44,14 +44,13 @@ const RelatorioProduto = () => {
       produto.produto,
       produto.unidade,
       produto.quantidade_vendida || 0,
-      produto.quantidade_cancelada || 0,
       produto.numero_vendas || 0,
       produto.valor_total ? `R$ ${produto.valor_total.toFixed(2)}` : "R$ 0,00",
       produto.ultima_venda || "Sem venda",
     ]);
 
     doc.autoTable({
-      head: [["Produto", "Unidade", "Qtd. Vendida", "Qtd. Cancelada", "Nº Vendas", "Valor Total (R$)", "Última Venda"]],
+      head: [["Produto", "Unidade", "Qtd. Vendida", "Nº Vendas", "Valor Total (R$)", "Última Venda"]],
       body: tableData,
       startY: 50,
     });
