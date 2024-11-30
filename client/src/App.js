@@ -29,6 +29,7 @@ import RelatorioQtdPedidoUser from "./pages/relatorioQtdPedidoUser";
 import RelatorioVendaProd from "./pages/relatorioQtdVendaProd";
 import RelatorioFat from "./pages/relatorioFat";
 import RelatorioPedido from "./pages/relatorioPedido";
+import RelatorioProduto from "./pages/relatorioProduto";
 import ReadClienteUnico from "./pages/readClienteUnico";
 
 const Private = ({ Component }) => {
@@ -91,6 +92,9 @@ function App() {
           <Route path="/relatorio" element={<Private Component={Relatorio} />} />
           <Route path="/relatorio/faturamento" element={<Private Component={RelatorioFat} />} />
           <Route path="/relatorio/pedido" element={<Private Component={RelatorioPedido} />} />
+
+          <Route path="/relatorio/produto" element={<Private Component={RelatorioProduto} />} />
+          
           <Route path="/relatorio/pedido/user" element={<Private Component={RelatorioQtdPedidoUser} />} />
           <Route path="/relatorio/pedido/cliente" element={<Private Component={    RelatorioQtdPedidoCliente} />} />
           <Route path="/relatorio/pedido/venda" element={<Private Component={RelatorioVendaProd} />} />

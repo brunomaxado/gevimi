@@ -23,7 +23,7 @@ export const getPedidosRelatorio = (req, res) => {
   const conditions = [];
   const params = [];
 
-  // Adiciona condições de filtro de datas
+  // Filtros de datas
   if (inicioPeriodo) {
     conditions.push("data_realizado >= ?");
     params.push(inicioPeriodo);
@@ -48,6 +48,8 @@ export const getPedidosRelatorio = (req, res) => {
     conditions.push("data_para_entregar <= ?");
     params.push(dataEntregueFim);
   }
+
+  // Filtros diversos
   if (usuario && usuario.length > 0) {
     conditions.push(`fk_id_usuario IN (${usuario.map(() => "?").join(", ")})`);
     params.push(...usuario);
@@ -60,10 +62,17 @@ export const getPedidosRelatorio = (req, res) => {
     conditions.push(`tipo IN (${tipoPedido.map(() => "?").join(", ")})`);
     params.push(...tipoPedido);
   }
-  if (status && status.length > 0) {
-    conditions.push(`status IN (${status.map(() => "?").join(", ")})`);
-    params.push(...status);
+
+  if (status) {
+    if (Array.isArray(status)) {
+      conditions.push(`status IN (${status.map(() => "?").join(", ")})`);
+      params.push(...status);
+    } else {
+      conditions.push("status = ?");
+      params.push(status);
+    }
   }
+
   if (produto && produto.length > 0) {
     conditions.push(`id_pedido IN (
       SELECT fk_id_pedido 
@@ -73,10 +82,13 @@ export const getPedidosRelatorio = (req, res) => {
     params.push(...produto);
   }
 
-  // Adiciona as condições à consulta, se houver filtros
+  // Adiciona as condições à consulta
   if (conditions.length > 0) {
     queryPedidos += ` WHERE ${conditions.join(" AND ")}`;
   }
+
+  // Adiciona a ordenação por cliente
+  queryPedidos += ` ORDER BY (SELECT nome FROM cliente WHERE cliente.id_cliente = pedido.fk_id_cliente) ASC`;
 
   db.query(queryPedidos, params, (err, pedidosData) => {
     if (err) {
@@ -90,7 +102,7 @@ export const getPedidosRelatorio = (req, res) => {
 
     const promises = pedidosData.map((pedido) => {
       const queryItensPedido = `
-        SELECT ip.*, p.preco_unitario
+        SELECT ip.*, p.nome AS produto_nome, p.preco_unitario
         FROM item_pedido ip
         JOIN produto p ON ip.fk_id_produto = p.id_produto
         WHERE ip.fk_id_pedido = ?
@@ -104,9 +116,25 @@ export const getPedidosRelatorio = (req, res) => {
           }
 
           // Calcular o total do pedido
-          const total = itensPedidoData.reduce((acc, item) => acc + (item.preco_unitario * (item.quantidade || 1)), 0);
+          let total = itensPedidoData.reduce(
+            (acc, item) => acc + (item.preco_unitario * (item.quantidade || 1)),
+            0
+          );
 
-          // Consultar o cliente
+          // Adicionar o frete ao total
+          const frete = parseFloat(pedido.frete || 0);
+          total += frete;
+
+          // Adicionar o frete como "produto"
+          if (frete > 0) {
+            itensPedidoData.push({
+              fk_id_produto: null,
+              produto_nome: "Frete",
+              preco_unitario: frete,
+              quantidade: 1,
+            });
+          }
+
           const queryCliente = `SELECT nome FROM cliente WHERE id_cliente = ?`;
           db.query(queryCliente, [pedido.fk_id_cliente], (err, clienteData) => {
             if (err) {
@@ -114,45 +142,29 @@ export const getPedidosRelatorio = (req, res) => {
               return reject(err);
             }
 
-            const queryProduto = `SELECT nome FROM produto WHERE id_produto IN (
-              SELECT fk_id_produto FROM item_pedido WHERE fk_id_pedido = ?
-            )`;
-            db.query(queryProduto, [pedido.id_pedido], (err, produtoData) => {
-              if (err) {
-                console.error("Erro ao buscar produtos:", err);
-                return reject(err);
-              }
+            const tipoMap = {
+              1: "Entrega",
+              2: "Entrega Ifood",
+              3: "Retirada",
+              4: "Comum",
+            };
+            const tipo = tipoMap[pedido.tipo] || "Desconhecido";
 
-              // Verifica se algum produto foi encontrado
-              if (produtoData.length === 0) {
-                console.warn("Nenhum produto encontrado para o pedido:", pedido.id_pedido);
-              }
+            const statusMap = {
+              1: "Finalizado",
+              2: "Pendente",
+              3: "Andamento",
+            };
+            const statusLabel = statusMap[pedido.status] || "Desconhecido";
 
-              // Consultar o tipo de pedido e status
-              const tipoMap = {
-                1: "Entrega",
-                2: "Entrega Ifood",
-                3: "Retirada",
-                4: "Comum"
-              };
-              const tipo = tipoMap[pedido.tipo] || "Desconhecido";
-
-              const statusMap = {
-                1: "Finalizado",
-                2: "Pendente",
-                3: "Andamento",
-              };
-              const status = statusMap[pedido.status] || "Desconhecido";
-
-              resolve({
-                ...pedido,
-                cliente: clienteData[0]?.nome || "Cliente não encontrado",
-                produtos: produtoData.map(prod => prod.nome).join(", ") || "Produto não encontrado",
-                itensPedido: itensPedidoData,
-                tipo,
-                status,
-                total: total.toFixed(2), // Formato de duas casas decimais
-              });
+            resolve({
+              ...pedido,
+              cliente: clienteData[0]?.nome || "Cliente não encontrado",
+              produtos: itensPedidoData.map((item) => `${item.produto_nome} (x${item.quantidade})`).join(", "),
+              itensPedido: itensPedidoData,
+              tipo,
+              status: statusLabel,
+              total: total.toFixed(2), // Total com duas casas decimais
             });
           });
         });

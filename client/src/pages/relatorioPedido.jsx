@@ -128,13 +128,13 @@ export const RelatorioPedido = () => {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-    if ((filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) || 
-        (filters.dataFinalizadoFim && !filters.dataFinalizadoInicio)) {
+    if ((filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) ||
+      (filters.dataFinalizadoFim && !filters.dataFinalizadoInicio)) {
       setError("Se uma data de finalização inicial for escolhida, a data final também deve ser preenchida e vice-versa.");
       return;
     }
-    if ((filters.dataEntregueInicio && !filters.dataEntregueFim) || 
-        (filters.dataEntregueFim && !filters.dataEntregueInicio)) {
+    if ((filters.dataEntregueInicio && !filters.dataEntregueFim) ||
+      (filters.dataEntregueFim && !filters.dataEntregueInicio)) {
       setError("Se uma data de entrega inicial for escolhida, a data final também deve ser preenchida e vice-versa.");
       return;
     }
@@ -192,25 +192,23 @@ export const RelatorioPedido = () => {
       // Adicionando os filtros aplicados no PDF
       doc.setFontSize(10);
       doc.text(
-      `Período: ${dataInicioFormatada && dataFimFormatada ? `${dataInicioFormatada} até ${dataFimFormatada}` : 'Sem data'}`,
-      14, 50
-    );
-    doc.text(
-      `Data Finalizado: ${
-        (dataFinalizadoInicioFormatada && dataFinalizadoFimFormatada)
+        `Período: ${dataInicioFormatada && dataFimFormatada ? `${dataInicioFormatada} até ${dataFimFormatada}` : 'Sem data'}`,
+        14, 50
+      );
+      doc.text(
+        `Data Finalizado: ${(dataFinalizadoInicioFormatada && dataFinalizadoFimFormatada)
           ? `${dataFinalizadoInicioFormatada} até ${dataFinalizadoFimFormatada}`
           : (dataFinalizadoInicioFormatada || dataFinalizadoFimFormatada ? 'Sem data' : 'Todos')
-      }`,
-      14, 55
-    );
-    doc.text(
-      `Data Entregue: ${
-        (dataEntregueInicioFormatada && dataEntregueFimFormatada)
+        }`,
+        14, 55
+      );
+      doc.text(
+        `Data Entregue: ${(dataEntregueInicioFormatada && dataEntregueFimFormatada)
           ? `${dataEntregueInicioFormatada} até ${dataEntregueFimFormatada}`
           : (dataEntregueInicioFormatada || dataEntregueFimFormatada ? 'Sem data' : 'Todos')
-      }`,
-      14, 60
-    );
+        }`,
+        14, 60
+      );
       doc.text(`Cliente: ${filters.cliente.length > 0 ? filters.cliente.map(id => clientes.find(c => c.id_cliente === id)?.nome).join(', ') : 'Todos'}`, 14, 65);
       doc.text(`Produto: ${filters.produto.length > 0 ? filters.produto.map(id => produtos.find(p => p.id_produto === id)?.nome).join(', ') : 'Todos'}`, 14, 70);
       doc.text(`Usuário: ${filters.usuario ? usuarios.find(u => u.id_usuario === filters.usuario)?.nome : 'Todos'}`, 14, 75);
@@ -224,11 +222,12 @@ export const RelatorioPedido = () => {
         pedido.status || "N/A",
         formatDate(pedido.data_para_entregar),
         formatDate(pedido.data_finalizado),
+        formatDate(pedido.data_realizado),
         formatCurrency(pedido.total),
       ]);
 
       const header = [
-        ["Cliente", "Tipo", "Produto", "Status", "Data de Entrega", "Finalizado em", "Total"],
+        ["Cliente", "Tipo", "Produto", "Status", "Data de Entrega", "Finalizado em", "Realizado em:", "Total"],
       ];
 
       doc.autoTable({
@@ -242,14 +241,16 @@ export const RelatorioPedido = () => {
         pageBreak: "auto",
         showHead: "everyPage",
         columnStyles: {
-          6: { halign: "right" },
+          7: { halign: "right" },
         },
       });
 
       doc.save("relatorio_pedidos.pdf");
+
     } catch (error) {
       console.error("Erro ao gerar o relatório:", error);
       setErrorMessage("Erro ao gerar o relatório. Verifique os dados e tente novamente.");
+      setError("Não existem dados nesse intervalo de tempo!");
     }
   };
 
@@ -257,37 +258,31 @@ export const RelatorioPedido = () => {
     <div>
       <h1>Relatório de Pedidos</h1>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
-        <div>
-          <label>Data de Início: <span className="asterisco">*</span></label>
+      <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
+        <label>Data de Início: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
-            onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })} />
-        </div>
-        <div>
-          <label>Data de Fim: <span className="asterisco">*</span></label>
+            onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })} /></label>
+
+        <label>Data de Fim: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
-            onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })} />
-        </div>
-        <div>
-          <label>Data Finalizado inicial:</label>
+            onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })} /></label>
+
+        <label>Data Finalizado inicial:
           <TextField type="datetime-local" name="dataFinalizadoInicio" value={filters.dataFinalizadoInicio} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataFinalizadoInicio: e.target.value })} />
-        </div>
-        <div>
-          <label>Data Finalizado final:</label>
+            onChange={(e) => setFilters({ ...filters, dataFinalizadoInicio: e.target.value })} /></label>
+        <label>Data Finalizado final:
           <TextField type="datetime-local" name="dataFinalizadoFim" value={filters.dataFinalizadoFim} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataFinalizadoFim: e.target.value })} />
-        </div>
-        <div>
-          <label>Data Entregue inicial:</label>
+            onChange={(e) => setFilters({ ...filters, dataFinalizadoFim: e.target.value })} /></label>
+
+        <label>Data Entregue inicial:
           <TextField type="datetime-local" name="dataEntregueInicio" value={filters.dataEntregueInicio} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataEntregueInicio: e.target.value })} />
-        </div>
-        <div>
-          <label>Data Entregue final:</label>
+            onChange={(e) => setFilters({ ...filters, dataEntregueInicio: e.target.value })} /></label>
+
+        <label>Data Entregue final:
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataEntregueFim: e.target.value })} />
-        </div>
+            onChange={(e) => setFilters({ ...filters, dataEntregueFim: e.target.value })} /></label>
+      </div>
+      <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
         <FormControl>
           <label>Cliente</label>
           <Select name="cliente" value={filters.cliente} onChange={(e) => setFilters({ ...filters, cliente: e.target.value })} multiple>
