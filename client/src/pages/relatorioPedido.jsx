@@ -31,6 +31,7 @@ export const RelatorioPedido = () => {
     return formatDateTimeLocal(date);
   };
 
+  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     inicioPeriodo: getFirstDayOfMonth(),
     fimPeriodo: getLastDayOfMonth(),
@@ -38,48 +39,45 @@ export const RelatorioPedido = () => {
     dataFinalizadoFim: "",
     dataEntregueInicio: "",
     dataEntregueFim: "",
-    categoria: "",
     usuario: "",
     cliente: [],
     produto: [],
     tipoPedido: [],
     status: "",
   });
-
   const [errorMessage, setErrorMessage] = useState("");
   const [clientes, setClientes] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [produtos, setProdutos] = useState([]);
-  const [statusOptions, setStatusOptions] = useState([
+
+  const statusOptions = [
     { id: 1, label: "Finalizado" },
     { id: 2, label: "Pendente" },
-    { id: 3, label: "Andamento" }
-  ]);
-  const [tipoPedidoOptions, setTipoPedidoOptions] = useState([
+    { id: 3, label: "Andamento" },
+  ];
+
+  const tipoPedidoOptions = [
     { id: 1, label: "Entrega" },
     { id: 2, label: "Entrega Ifood" },
     { id: 3, label: "Retirada" },
-    { id: 4, label: "Comum" }
-  ]);
+    { id: 4, label: "Comum" },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch clientes
         const clienteResponse = await axios.get("http://localhost:8800/cliente");
         const clientesOrdenados = clienteResponse.data.sort((a, b) =>
           a.nome.localeCompare(b.nome)
         );
         setClientes(clientesOrdenados);
 
-        // Fetch produtos
         const produtoResponse = await axios.get("http://localhost:8800/readProduto");
         const produtosOrdenados = produtoResponse.data.sort((a, b) =>
           a.nome.localeCompare(b.nome)
         );
         setProdutos(produtosOrdenados);
 
-        // Fetch usuários
         const usuarioResponse = await axios.get("http://localhost:8800/usuario");
         const usuariosOrdenados = usuarioResponse.data.sort((a, b) =>
           a.nome.localeCompare(b.nome)
@@ -113,7 +111,6 @@ export const RelatorioPedido = () => {
       dataFinalizadoFim: "",
       dataEntregueInicio: "",
       dataEntregueFim: "",
-      categoria: "",
       usuario: "",
       cliente: [],
       produto: [],
@@ -123,18 +120,39 @@ export const RelatorioPedido = () => {
     setErrorMessage("");
   };
 
+  const handleClick = async (e) => {
+    e.preventDefault();
+    if (!filters.inicioPeriodo || !filters.fimPeriodo) {
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
+    if ((filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) || 
+        (filters.dataFinalizadoFim && !filters.dataFinalizadoInicio)) {
+      setError("Se uma data de finalização inicial for escolhida, a data final também deve ser preenchida e vice-versa.");
+      return;
+    }
+    if ((filters.dataEntregueInicio && !filters.dataEntregueFim) || 
+        (filters.dataEntregueFim && !filters.dataEntregueInicio)) {
+      setError("Se uma data de entrega inicial for escolhida, a data final também deve ser preenchida e vice-versa.");
+      return;
+    }
+    setError(null);
+    generatePDF();
+  };
+
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value || 0);
   };
 
   const formatDate = (date) => {
-    if (!date) return "Sem data";
+    if (!date || isNaN(new Date(date).getTime())) {
+      return "Sem data";
+    }
     const d = new Date(date);
     return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
   };
 
   const generatePDF = async () => {
-    if (!validateDates()) return;
     try {
       setErrorMessage("");
       const response = await axios.post("http://localhost:8800/relatorio-pedido", { filters });
@@ -160,17 +178,43 @@ export const RelatorioPedido = () => {
 
       const dataInicioFormatada = formatDate(filters.inicioPeriodo);
       const dataFimFormatada = formatDate(filters.fimPeriodo);
-      doc.text(`Período: ${dataInicioFormatada} até ${dataFimFormatada}`, 14, 50);
+      const dataFinalizadoInicioFormatada = formatDate(filters.dataFinalizadoInicio);
+      const dataFinalizadoFimFormatada = formatDate(filters.dataFinalizadoFim);
+      const dataEntregueInicioFormatada = formatDate(filters.dataEntregueInicio);
+      const dataEntregueFimFormatada = formatDate(filters.dataEntregueFim);
 
-      doc.text(`Status: ${filters.status ? statusOptions.find(s => s.id === filters.status)?.label : 'Todos'}`, 14, 55);
-      doc.text(`Tipo de Pedido: ${filters.tipoPedido.map(id => tipoPedidoOptions.find(t => t.id === id)?.label).join(', ') || 'Todos'}`, 14, 60);
-      doc.text(`Data Finalizado: ${formatDate(filters.dataFinalizadoInicio)} a ${formatDate(filters.dataFinalizadoFim)}`, 14, 65);
-      doc.text(`Data Entregue: ${formatDate(filters.dataEntregueInicio)} a ${formatDate(filters.dataEntregueFim)}`, 14, 70);
+      // Adicionando os filtros aplicados no PDF
+      doc.setFontSize(10);
+      doc.text(
+      `Período: ${dataInicioFormatada && dataFimFormatada ? `${dataInicioFormatada} até ${dataFimFormatada}` : 'Sem data'}`,
+      14, 50
+    );
+    doc.text(
+      `Data Finalizado: ${
+        (dataFinalizadoInicioFormatada && dataFinalizadoFimFormatada)
+          ? `${dataFinalizadoInicioFormatada} até ${dataFinalizadoFimFormatada}`
+          : (dataFinalizadoInicioFormatada || dataFinalizadoFimFormatada ? 'Sem data' : 'Todos')
+      }`,
+      14, 55
+    );
+    doc.text(
+      `Data Entregue: ${
+        (dataEntregueInicioFormatada && dataEntregueFimFormatada)
+          ? `${dataEntregueInicioFormatada} até ${dataEntregueFimFormatada}`
+          : (dataEntregueInicioFormatada || dataEntregueFimFormatada ? 'Sem data' : 'Todos')
+      }`,
+      14, 60
+    );
+      doc.text(`Cliente: ${filters.cliente.length > 0 ? filters.cliente.map(id => clientes.find(c => c.id_cliente === id)?.nome).join(', ') : 'Todos'}`, 14, 65);
+      doc.text(`Produto: ${filters.produto.length > 0 ? filters.produto.map(id => produtos.find(p => p.id_produto === id)?.nome).join(', ') : 'Todos'}`, 14, 70);
+      doc.text(`Usuário: ${filters.usuario ? usuarios.find(u => u.id_usuario === filters.usuario)?.nome : 'Todos'}`, 14, 75);
+      doc.text(`Status: ${filters.status ? statusOptions.find(s => s.id === filters.status)?.label : 'Todos'}`, 14, 80);
+      doc.text(`Tipo de Pedido: ${filters.tipoPedido.length > 0 ? filters.tipoPedido.map(id => tipoPedidoOptions.find(t => t.id === id)?.label).join(', ') : 'Todos'}`, 14, 85);
 
       const tableData = pedidos.map((pedido) => [
         pedido.cliente || "N/A",
         pedido.tipo || "N/A",
-        pedido.produto || "N/A",
+        pedido.produtos || "N/A",
         pedido.status || "N/A",
         formatDate(pedido.data_para_entregar),
         formatDate(pedido.data_finalizado),
@@ -182,7 +226,7 @@ export const RelatorioPedido = () => {
       ];
 
       doc.autoTable({
-        startY: 80,
+        startY: 90,
         head: header,
         body: tableData,
         styles: { fontSize: 10, halign: "left", valign: "middle" },
@@ -191,6 +235,9 @@ export const RelatorioPedido = () => {
         theme: "striped",
         pageBreak: "auto",
         showHead: "everyPage",
+        columnStyles: {
+          6: { halign: "right" },
+        },
       });
 
       doc.save("relatorio_pedidos.pdf");
@@ -235,7 +282,6 @@ export const RelatorioPedido = () => {
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataEntregueFim: e.target.value })} />
         </div>
-
         <FormControl>
           <label>Cliente</label>
           <Select name="cliente" value={filters.cliente} onChange={(e) => setFilters({ ...filters, cliente: e.target.value })} multiple>
@@ -287,14 +333,14 @@ export const RelatorioPedido = () => {
           </Select>
         </FormControl>
       </div>
-
       <div className="actions" style={{ marginTop: "20px" }}>
-        <Button variant="outlined" color="secondary" onClick={handleResetFilters}>
+        <button onClick={handleResetFilters}>
           Limpar Filtros
-        </Button>
-        <Button variant="contained" color="primary" onClick={generatePDF} disabled={!filters.inicioPeriodo || !filters.fimPeriodo}>
+        </button>
+        <button onClick={handleClick}>
           Gerar Relatório
-        </Button>
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>
   );
