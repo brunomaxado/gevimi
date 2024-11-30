@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Select, MenuItem, FormControl, TextField, Button } from "@mui/material";
+import { Select, MenuItem, FormControl, TextField } from "@mui/material";
 import '../style.css';
 import LOGO_BASE64 from "./logo";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { AuthContext } from "../context/authContext"; // Importando contexto de autenticação
 
 export const RelatorioPedido = () => {
+  const { currentUser } = useContext(AuthContext); // Capturando o usuário logado
   const formatDateTimeLocal = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -175,6 +177,10 @@ export const RelatorioPedido = () => {
         timeStyle: "short",
       }).format(new Date());
       doc.text(`Data de Emissão: ${date}`, 50, 35);
+
+      if (currentUser) {
+        doc.text(`Gerado por: ${currentUser.nome || 'Usuário desconhecido'}`, 50, 40);
+      }
 
       const dataInicioFormatada = formatDate(filters.inicioPeriodo);
       const dataFimFormatada = formatDate(filters.fimPeriodo);
