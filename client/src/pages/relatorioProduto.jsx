@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { TextField} from "@mui/material";
+import { TextField } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import LOGO_BASE64 from "./logo";
@@ -105,28 +105,34 @@ const RelatorioProduto = () => {
         <div>
             <h1>Relatório de Produtos</h1>
             {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
-            <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: "30px" }}>
-                <label>
-                    Data Início: <span className="asterisco">*</span>
+            <div className="filter-container-pai" style={{ display: "flex", justifyContent: "center", gap: "30px" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "fit-content" }}>
+                    <label>
+                        Data Início: <span className="asterisco">*</span>
+                    </label>
                     <TextField
                         variant="standard"
                         type="datetime-local"
                         value={filters.inicioPeriodo}
                         onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })}
+                        sx={{ width: "200px" }} // Define largura padrão
                     />
-                </label>
+                </div>
 
-                <label>
-                    Data Fim: <span className="asterisco">*</span>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "fit-content" }}>
+                    <label>
+                        Data Fim: <span className="asterisco">*</span>
+                    </label>
                     <TextField
                         variant="standard"
                         type="datetime-local"
                         value={filters.fimPeriodo}
                         onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })}
+                        sx={{ width: "200px" }} // Define largura padrão
                     />
-                </label>
+                </div>
             </div>
-            <button onClick={handleGenerateReport} variant="contained" color="primary">
+            <button onClick={handleGenerateReport}>
                 Gerar Relatório
             </button>
         </div>
