@@ -52,15 +52,24 @@ const Pedido = () => {
   const [showFreteModal, setShowFreteModal] = useState(false);
   const primeiroCampoRef = useRef(null);
 
-  const calcularPrecoTotal = (itens) =>
-    itens.reduce((total, item) => total + item.preco_unitario * item.quantidade, 0);
-
-  const calcularPrecoTotalComFrete = (itens, frete) => {
-    const totalItens = calcularPrecoTotal(itens);
-    const freteNumerico = parseFloat(frete) || 0;
-    return totalItens + freteNumerico;
+  const calcularPrecoTotal = (itens) => {
+    const total = itens.reduce((total, item) => total + item.preco_unitario * item.quantidade, 0);
+    
+    // Formatar o total como moeda brasileira com 2 casas decimais
+    return total.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
-
+  
+  const calcularPrecoTotalComFrete = (itens, frete) => {
+    const totalItens = calcularPrecoTotal(itens); // Este valor já estará formatado como moeda
+    const freteNumerico = parseFloat(frete) || 0;
+    const totalComFrete = parseFloat(totalItens.replace("R$", "").replace(",", ".")) + freteNumerico;  // Converte o valor formatado para número
+    
+    // Formatar o total com frete como moeda brasileira
+    return totalComFrete.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+  
+  
+  
   useEffect(() => {
     if (pedido) setPrecoTotalFrete(calcularPrecoTotalComFrete(itensPedido, pedido.frete));
   }, [itensPedido, pedido]);
@@ -267,7 +276,11 @@ const Pedido = () => {
   };
   
 
-
+  const formatarFrete = (frete) => {
+    const freteNumerico = parseFloat(frete) || 0;  // Garantir que o valor seja numérico
+    return freteNumerico.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+  
 return (
   <div>
 
@@ -423,7 +436,7 @@ required
               {itensPedido.map((item, index) => (
                 <li key={index} className="order-item">
                   <span className="order-item-name">
-                    {item.nome} - R${item.preco_unitario * item.quantidade}
+                    {item.nome} -{formatarFrete(item.preco_unitario * item.quantidade)}
                   </span>
                   <div className="order-item-controls">
                     <input
@@ -462,16 +475,17 @@ required
    
       <div class="pricing-row">
         <h5 class="price">Preço Item Pedido:</h5>
-        <h5 class="price">R${precoTotal}</h5>
+        <h5 class="price">{precoTotal}</h5>
       </div>
       {(pedido.tipo == 1 || pedido.tipo == 2) &&
       <div class="pricing-row">
         <h5 class="price">Preço Frete:</h5>
-        <h5 class="price">R${pedido.frete}</h5>
+        <h5 class="price">{formatarFrete(pedido.frete)}</h5>
+
       </div>}
       <div class="pricing-row total-pricing-row">
         <h5 class="label price-strong total-price">Preço Total:</h5>
-        <h5 class="label price-strong total-price">R${precoTotalFrete}</h5>
+        <h5 class="label price-strong total-price">{precoTotalFrete}</h5>
       </div>
     </div>
 

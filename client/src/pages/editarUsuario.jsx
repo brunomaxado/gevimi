@@ -17,7 +17,7 @@ const EditarUsuario = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const usuarioId = location.pathname.split("/")[2];
-
+  const [showPassword, setShowPassword] = useState(false);
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const fetchUsuario = async () => {
     try {
@@ -51,7 +51,9 @@ const EditarUsuario = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,6 +66,7 @@ const EditarUsuario = () => {
 
     const payload = { nome, login, administrador: parseInt(administrador) };
 
+  
     try {
       await axios.put(`http://localhost:8800/editarusuario/${usuarioId}`, payload);
       showSuccess("Usuário atualizado com sucesso!");
@@ -84,6 +87,18 @@ const EditarUsuario = () => {
       console.log("senha vazia");
       return;
     }
+
+  if (novaSenha.length < 8) {
+    setError("A senha deve ter no mínimo 8 caracteres.");
+    console.log("Senha curta");
+    return;
+  }
+
+  if (!/\d/.test(novaSenha)) {
+    setError("A senha deve conter pelo menos um número.");
+    console.log("Senha sem número");
+    return;
+  }
   
     try {
       // Envia o id_usuario junto com a nova senha
@@ -198,19 +213,41 @@ const EditarUsuario = () => {
         
         {showPasswordModal && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content4">
             <button className="close-modal" onClick={() => setShowPasswordModal(false)}>X</button>
-        
+      
             <h2>Atualizar Senha</h2>
             <label>Senha: </label>
+
             <input
-                type="password"
-                placeholder="Nova Senha"
-                value={novaSenha}
-                onChange={(e) => setNovaSenha(e.target.value)}
-                required
-              />
-           {error && <p style={{ color: "red" }}>{error}</p>}
+            required
+            type={showPassword ? "text" : "password"}
+            placeholder="senha"
+            name="senha"
+            value={novaSenha}
+            onChange={(e) => setNovaSenha(e.target.value)}
+            className="senha-input"
+            style={{ width: "100%", paddingRight: "50px" }} // Espaço extra para o botão
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              top: "50%", // Centraliza verticalmente
+              right: "4%", // Cola o botão na borda direita
+              transform: "translateY(-150%)", // Alinha verticalmente ao centro do input
+              backgroundColor: "transparent",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "14px"
+            }}
+          >
+            {showPassword ? "🙈" : "👁"}
+          </button>
+
+
+         
             <div className="modal-actions">
               <button className="modal-button" onClick={() => setShowPasswordModal(false)}>Cancelar</button>
               <button
@@ -222,7 +259,7 @@ const EditarUsuario = () => {
 >
   Salvar
 </button>
-
+{error && <p style={{ color: "red" }}>{error}</p>}
             </div>
                      </div>
         </div>

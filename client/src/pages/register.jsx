@@ -19,12 +19,21 @@ const Register = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const handleChange = (e) => {
+    
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   };
  console.log(inputs);
  const handleSubmit = async (e) => {
   e.preventDefault();
+  const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/; // Pelo menos 8 caracteres e 1 número
+  if (!passwordRegex.test(inputs.senha)) {
+    setError("A senha está no formato inválido.");
+
+    return; // Interrompe o envio do formulário se a validação falhar
+  }
+
+
 
   try {
     await axios.post("http://localhost:8800/register", inputs);
