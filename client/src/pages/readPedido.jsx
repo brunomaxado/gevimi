@@ -29,12 +29,39 @@ const ReadPedido = () => {
   const [statusFilter, setStatusFilter] = useState(""); // Estado para o filtro de status
   const [tipoFilter, setTipoFilter] = useState(""); // Estado para o filtro de tipo de entrega
 
+
   const navigate = useNavigate();
+  const now = new Date();
+
+  // Data de início do ano (00:00)
+  const dataRealizadoInicio = new Date(now.getFullYear(), 0, 1, 0, 0).toISOString().split("T")[0] + "T00:00";
+  
+  // Dia atual + 1 mês (23:59)
+  now.setMonth(now.getMonth() + 1);
+  const dataRealizadoFim = now.toISOString().split("T")[0] + "T23:59";
+  
+  // Data de entrega (hoje - 00:00 até 23:59)
+  const entregaInicio = new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] + "T00:00";
+  const entregaFim = new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] + "T23:59";
+  
+
+  const [filtros, setFiltros] = useState({
+    data_realizado_inicio: dataRealizadoInicio,
+    data_realizado_fim: dataRealizadoFim,
+    data_entrega_inicio: "",
+    data_entrega_fim: "",
+    tipo: "",
+    status: "",
+  });
+  useEffect(() => {
+
+    setFiltros(filtros);
+  }, []);  // Esse useEffect vai rodar apenas uma vez quando o componente for montado
 
   useEffect(() => {
     const fetchAllPedidos = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/pedido");
+        const res = await axios.get("http://localhost:8800/pedido",filtros);
         const sortedPedidos = res.data.sort((a, b) => new Date(b.data_realizado) - new Date(a.data_realizado));
 
         setPedidos(sortedPedidos);
@@ -43,7 +70,7 @@ const ReadPedido = () => {
         console.log(err);
       }
     };
-
+    fetchAllPedidos2();
     const fetchClientes = async () => {
       try {
         const response = await axios.get("http://localhost:8800/allcliente");
@@ -79,6 +106,7 @@ const ReadPedido = () => {
     fetchAllPedidos();
     fetchClientes();
     fetchProdutos();
+    fetchAllPedidos2();
     fetchUsuarios();
   }, []);
 
@@ -146,7 +174,7 @@ const ReadPedido = () => {
       case 1:
         return <span className="status status-finalizado">Finalizado</span>;
       case 2:
-        return <span className="status status-em-andamento">Andamento</span>;
+        return <span className="status status-em-andamento">Produção</span>;
       case 3:
         return <span className="status status-nao-finalizado">Pendente</span>;
       default:
@@ -155,50 +183,7 @@ const ReadPedido = () => {
   };
   // Função para gerar o PDF com cabeçalho e imagem
   // Função para gerar o PDF com espaço reservado para o cabeçalho e imagem
-  const generatePDF = () => {
-    const doc = new jsPDF();
-
-    // Reservando espaço para a imagem no cabeçalho
-    // Espaço vazio: doc.rect(x, y, width, height) cria um retângulo invisível onde a imagem deve estar
-    doc.rect(14, 10, 30, 10); // Defina x, y, largura, altura
-
-    // Adicionando o texto do cabeçalho
-    doc.setFontSize(18);
-    doc.text("Relatório de Pedidos", 50, 15);
-
-    // Adicionando a data de geração do relatório
-    doc.setFontSize(11);
-    const date = new Date().toLocaleString();
-    doc.text(`Data: ${date}`, 50, 23);
-
-    // Configurando as colunas e linhas da tabela
-    const tableColumn = ["Cliente", "Tipo", "Produto", "Data de Entrega", "Status", "Finalizado em", "Total"];
-    const tableRows = [];
-
-    // Mapeando dados da tabela para adicionar no PDF
-    pedidos.forEach((pedido) => {
-      const pedidoData = [
-        pedido.cliente,
-        pedido.tipo,
-        pedido.produto,
-        pedido.data_para_entregar || "Sem data",
-        pedido.status,
-        pedido.data_finalizado || "Não finalizado",
-
-      ];
-      tableRows.push(pedidoData);
-    });
-
-    // Adicionando a tabela no PDF com espaçamento do cabeçalho
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 30, // Define o ponto de partida da tabela
-    });
-
-    // Baixando o PDF
-    doc.save("pedidos.pdf");
-  };
+ 
 
 
   const getTipoEntrega = (tipoEntrega) => {
@@ -255,9 +240,6 @@ const ReadPedido = () => {
     }
   };
 
-
-
-
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8800/pedido/${selectedPedidoId}`);
@@ -276,12 +258,85 @@ const ReadPedido = () => {
     }
   };
 
+  const AplicarFiltroButtonClick = (e) => {
+    e.preventDefault();
+    const { data_realizado_inicio, data_realizado_fim, data_entrega_inicio, data_entrega_fim, tipo, status} = filtros;
+ // conjunto 1 inteiro preenchido, ou conjunto 2 inteiro preenchido
+    if ( !data_realizado_inicio && !data_realizado_fim && !data_entrega_inicio  && !data_entrega_fim  ) 
+   {
+    setError("Preencha a data realizado ou data entrega inicial e final.");
+      return;
+    }
+    if (  (data_realizado_inicio && !data_realizado_fim) || (!data_realizado_inicio && data_realizado_fim) ) {
+      setError("Preencha o período realizado inicial e final.");
+      return;
+    }
+    if ((data_entrega_inicio  && !data_entrega_fim) || (!data_entrega_inicio  && data_entrega_fim)) {
+      setError("Preencha o período entrega inicial e final.");
+      return;
+    }
+    setError("");
+    fetchAllPedidos2();
+    setSearchTerm("");
+ 
+  };
+  const fetchAllPedidos2 = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/pedido", {
+        params: {
+          data_realizado_inicio: filtros.data_realizado_inicio,
+          data_realizado_fim: filtros.data_realizado_fim,
+          data_entrega_inicio: filtros.data_entrega_inicio,
+          data_entrega_fim: filtros.data_entrega_fim,
+          tipo: filtros.tipo, // Enviando múltiplos tipos como uma string
+          status: filtros.status,
+        },
+      });
+      console.log("Resultado:", res.data);
+  
+      if (!res.data || res.data.length === 0) {
+        console.log("Nenhum pedido encontrado com os filtros aplicados.");
+        setPedidos([]); // Garante que a lista seja vazia na interface
+        setError("Nenhum pedido encontrado com os filtros aplicados.");
+        return; // Sai da função
+      }
+  
+      const sortedPedidos = res.data.sort(
+        (a, b) => new Date(b.data_realizado) - new Date(a.data_realizado)
+      );
+      setPedidos(sortedPedidos);
+      setError(null); // Limpa qualquer erro anterior
+    } catch (err) {
+      // Loga o erro detalhado
+      console.error("Erro ao buscar os pedidos:", err);
+  
+      // Loga a mensagem de erro enviada pelo backend, caso exista
+      if (err.response && err.response.data && err.response.data.message) {
+        console.error("Mensagem do servidor:", err.response.data.message);
+        setError(err.response.data.message); // Exibe a mensagem do backend na interface
+      } else {
+        // Mensagem padrão se o erro não tiver uma resposta clara do backend
+        setError("Erro ao buscar os pedidos. Tente novamente mais tarde.");
+      }
+    }
+  };
+  
+  
+  
 
   const handleCancel = () => {
     setShowModal(false);
     setShowModalFinalizar(false);
   };
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    console.log("filter change..");
+    setFiltros((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
   // Função para organizar os dados com base na coluna
   const sortData = (key) => {
     let sortedPedidos = [...pedidos];
@@ -294,7 +349,7 @@ const ReadPedido = () => {
     }
     setPedidos(sortedPedidos);
   };
-
+  console.log(filtros);
 
   // Função de mudança de página
   const paginate = (pageNumber) => {
@@ -329,9 +384,70 @@ const ReadPedido = () => {
 
       <div className="tabela">
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="filters-container">
+       
+        <div className="filter-box">
+        <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>
+        <input
+                type="datetime-local"
+                name="data_realizado_inicio"
+                value={filtros.data_realizado_inicio}
+                onChange={(e) =>  handleFilterChange(e)}
+                 className="datetime-input"
+              />
+        </div>
+        <div className="filter-box">
+        <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>    
+                 <input
+                type="datetime-local"
+                name="data_realizado_fim"
+                value={filtros.data_realizado_fim}
+                onChange={(e) =>  handleFilterChange(e)}
+                 className="datetime-input"
+              />
 
-        {/* Barra de Pesquisa */}
+</div>
+
+<div className="filter-box">
+        <label> Data Entrega Inicio: <span className="asterisco">*</span> </label>
+                 <input
+                type="datetime-local"
+                name="data_entrega_inicio"
+                value={filtros.data_entrega_inicio}
+                onChange={(e) =>  handleFilterChange(e)}
+                 className="datetime-input"
+              />
+        </div>
+        <div className="filter-box">
+        <label> Data Entrega Fim: <span className="asterisco">*</span> </label>
+                 <input
+                type="datetime-local"
+                name="data_entrega_fim"
+                value={filtros.data_entrega_fim}
+                onChange={(e) =>  handleFilterChange(e)}
+                 className="datetime-input"
+              />
+
+</div>
+<button
+  className="limpar-filtro"
+  onClick={() => {
+    setFiltros(prevFiltros => ({
+      ...prevFiltros,  // Mantém os valores anteriores dos filtros
+      data_entrega_inicio: entregaInicio,  // Atualiza com a data de início de hoje
+      data_entrega_fim: entregaFim,        // Atualiza com a data de fim de hoje
+    }));
+  }}
+>
+  Entrega Hoje
+</button>
+
+</div>
+
+
+
+
 
         <div className="filters-container">
           <div className="search-box">
@@ -351,13 +467,14 @@ const ReadPedido = () => {
           <div className="filter-box">
             <label>Status:</label>
             <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+               name="status"
+              value={filtros.status}
+              onChange={(e) =>  handleFilterChange(e)}
               className="status-filter"
             >
               <option value="">Todos os Status</option>
               <option value="1">Finalizado</option>
-              <option value="2">Em andamento</option>
+              <option value="2">Produção</option>
               <option value="3">Pendente</option>
             </select>
           </div>
@@ -365,8 +482,10 @@ const ReadPedido = () => {
           <div className="filter-box">
             <label>Tipo:</label>
             <select
-              value={tipoFilter}
-              onChange={(e) => setTipoFilter(e.target.value)}
+              name="tipo"
+              onChange={(e) =>  handleFilterChange(e)}
+              value={filtros.tipo}
+              
             >
               <option value="">Todos os tipos</option>
               <option value="1">Entrega</option>
@@ -380,15 +499,25 @@ const ReadPedido = () => {
             className="limpar-filtro"
             onClick={() => {
               setSearchTerm("");
-              setStatusFilter("");
-              setTipoFilter("");
+              setFiltros({
+                data_realizado_inicio: dataRealizadoInicio,
+                data_realizado_fim: dataRealizadoFim,
+                data_entrega_inicio: "",
+                data_entrega_fim: "",
+                tipo: "",
+                status: "",
+              });
             }}
           >
             Limpar Filtros
           </button>
+          <button          className="aplicar-filtro" onClick={AplicarFiltroButtonClick}>Aplicar Filtro</button>
+
+
           <button className="adicionar" onClick={() => navigate('/pedido')}>
             Novo Pedido
           </button>
+          
         </div>
 
         {/*}
@@ -471,14 +600,19 @@ const ReadPedido = () => {
                         <DeleteIcon />
                       </span>
                     )}
-                    <Link
-                      to={`/readPedido/${pedido.id_pedido}`}
-                      title="Visualizar"
-                      className="action-icon visualizar"
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <VisibilityIcon />
-                    </Link>
+                 <Link
+  to={`/readPedido/${pedido.id_pedido}`}
+  title="Visualizar"
+  className="action-icon visualizar"
+  style={{ textDecoration: 'none' }}
+  onClick={(e) => {
+    e.preventDefault();  // Impede o comportamento padrão do Link
+    window.open(`/readPedido/${pedido.id_pedido}`, "_blank");
+  }}
+>
+  <VisibilityIcon />
+</Link>
+
 
                     {/* Ícone de finalizar */}
                     {pedido.status !== 1 && (

@@ -84,20 +84,62 @@ import db from "../config/db.js";
       });
     });
   };
-
-
   export const getPedidos = (req, res) => {
-    const queryPedidos = `
+    const {
+      data_realizado_inicio,
+      data_realizado_fim,
+      data_entrega_inicio,
+      data_entrega_fim,
+      tipo,
+      status,
+    } = req.query;
+  
+    let queryPedidos = `
       SELECT * 
       FROM pedido
-     
+      WHERE 1=1
     `;
   
-    db.query(queryPedidos, (err, pedidosData) => {
-      if (err) return res.status(500).json({ message: "Erro ao buscar os pedidos", err });
+    const queryParams = [];
   
-      if (pedidosData.length === 0) {
-        return res.status(404).json({ message: "Nenhum pedido encontrado" });
+    if (data_realizado_inicio) {
+      queryPedidos += " AND data_realizado >= ?";
+      queryParams.push(data_realizado_inicio);
+    }
+  
+    if (data_realizado_fim) {
+      queryPedidos += " AND data_realizado <= ?";
+      queryParams.push(data_realizado_fim);
+    }
+  
+    if (data_entrega_inicio) {
+      queryPedidos += " AND data_para_entregar >= ?";
+      queryParams.push(data_entrega_inicio);
+    }
+  
+    if (data_entrega_fim) {
+      queryPedidos += " AND data_para_entregar <= ?";
+      queryParams.push(data_entrega_fim);
+    }
+  
+    if (tipo) {
+      queryPedidos += " AND tipo = ?";
+      queryParams.push(tipo);
+    }
+  
+    if (status) {
+      queryPedidos += " AND status = ?";
+      queryParams.push(status);
+    }
+  
+    db.query(queryPedidos, queryParams, (err, pedidosData) => {
+      if (err) {
+        console.error("Erro ao executar a consulta:", err);
+        return res.status(500).json({ message: "Erro ao buscar os pedidos", error: err.message });
+      }
+  
+      if (!pedidosData || pedidosData.length === 0) {
+        return res.status(404).json({ message: "Nenhum pedido encontrado com os filtros aplicados" });
       }
   
       const promises = pedidosData.map((pedido) => {
@@ -120,10 +162,12 @@ import db from "../config/db.js";
           return res.status(200).json(pedidosComItens);
         })
         .catch((err) => {
-          return res.status(500).json(err);
+          console.error("Erro ao buscar itens do pedido:", err);
+          return res.status(500).json({ message: "Erro ao buscar itens do pedido", error: err.message });
         });
     });
   };
+  
   export const updatePedido = (req, res) => {
 
 
