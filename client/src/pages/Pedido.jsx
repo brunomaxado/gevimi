@@ -23,7 +23,7 @@ const Pedido = () => {
     forma_pagamento: "",
     observacao: "",
     data_para_entregar: "",
-    frete: 0,
+    frete: "",
     fk_id_usuario: currentUser?.id_usuario,
     fk_id_cliente: null,
   });
@@ -122,7 +122,10 @@ const Pedido = () => {
       setError("Adicione pelo menos um item ao pedido.");
       return;
     }
-
+    if(fk_id_cliente == 1 && (tipo == 1 || tipo ==2)){
+      setError("Cliente 'A Loja' só pode ser utilizado para vendas comuns e Ifood. Entregas e Retiradas necessitam de cadastro");
+      return;
+    }
     setError(null);
 
     const dadosParaAtualizar = {
@@ -329,7 +332,7 @@ required
 
             <div className="form-group-pedido">
        
-              <label> Frete: <span className="asterisco">*</span>  <SearchIcon   onClick={() => setShowFreteModal(true)}  fontSize="small" className="search-icon" />  </label>   
+              <label> <SearchIcon   onClick={() => setShowFreteModal(true)}  fontSize="small" className="search-icon" />   Frete: <span className="asterisco">*</span>    </label>   
            
               <input
                 type="text"
@@ -455,14 +458,16 @@ required
 
     </form>
     <div class="pricing-container">
-      <div class="pricing-row">
-        <h5 class="price">Preço Frete:</h5>
-        <h5 class="price">R${pedido.frete}</h5>
-      </div>
+   
       <div class="pricing-row">
         <h5 class="price">Preço Item Pedido:</h5>
         <h5 class="price">R${precoTotal}</h5>
       </div>
+      {(pedido.tipo == 1 || pedido.tipo == 2) &&
+      <div class="pricing-row">
+        <h5 class="price">Preço Frete:</h5>
+        <h5 class="price">R${pedido.frete}</h5>
+      </div>}
       <div class="pricing-row total-pricing-row">
         <h5 class="label price-strong total-price">Preço Total:</h5>
         <h5 class="label price-strong total-price">R${precoTotalFrete}</h5>

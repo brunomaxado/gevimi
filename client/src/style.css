@@ -2278,7 +2278,9 @@ option:not(:first-of-type) {
   text-decoration: underline; /* Adiciona o sublinhado típico de links */
   cursor: pointer; /* Muda o cursor para o tipo mão, indicando que é clicável */
 }
-
+.search-icon {
+  cursor: pointer; /* Muda o cursor para a mãozinha */
+}
 .link-style:hover {
   color: darkblue; /* Alteração da cor do link quando o mouse passa por cima */
 }
