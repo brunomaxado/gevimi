@@ -1633,6 +1633,7 @@ p#erro {
   padding: 0 15px;
 }
 
+
 .form-container-pedido {
 
   transform: scale(0.9);
@@ -1652,6 +1653,12 @@ p#erro {
   flex: 0 0 45%;
   /* Define a largura da parte esquerda */
   margin-right: 20px;
+  /* Aumenta o espaçamento entre esquerda e direita */
+}
+.form-esquerda-pedido2 {
+  flex: 0 0 45%;
+  /* Define a largura da parte esquerda */
+  margin-right: 50px;
   /* Aumenta o espaçamento entre esquerda e direita */
 }
 

@@ -111,9 +111,9 @@ const Pedido = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente } = pedido;
+    const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente, frete } = pedido;
 
-    if (!tipo || !forma_pagamento || !fk_id_cliente || (tipo !== "4" && !data_para_entregar)) {
+    if (!tipo || !frete || !forma_pagamento || !fk_id_cliente || (tipo !== "4" && !data_para_entregar)) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
@@ -457,6 +457,7 @@ required
 
 
     </form>
+    
     <div class="pricing-container">
    
       <div class="pricing-row">

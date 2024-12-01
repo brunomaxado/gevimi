@@ -75,7 +75,7 @@ const ReadPedidoUnico = () => {
       return total + (item.preco_unitario_atual ? item.preco_unitario_atual * item.quantidade : 0);
     }, 0);
   };
-
+console.log(clientes);
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
       case 1:
@@ -90,7 +90,13 @@ const ReadPedidoUnico = () => {
         return "Desconhecido";
     }
   };
-
+  const getEnderecoCliente = (id) => {
+    const cliente = getClienteDetalhes(id);
+    if (cliente && cliente.id_cliente) {
+      return `${cliente.cidade || "N/A"}, ${cliente.cep || "N/A"}, ${cliente.bairro || "N/A"}, ${cliente.logradouro || "N/A"}, ${cliente.numero || "N/A"}`;
+    }
+    return "Endereço não encontrado";
+  };
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
       case 1:
@@ -120,8 +126,98 @@ const ReadPedidoUnico = () => {
   if (!pedido) return <p>Carregando...</p>;
 
   return (
-    <div className="body-Pedido">
+    <div>
       <h1>Detalhes do Pedido:</h1>
+      <form className="form-container-pedido">
+      <div className="form-esquerda-pedido2">
+        <div className="form-row-pedido">
+        < div className="form-group-pedido">
+        <label>Tipo:</label>
+        <input type="text" value={getTipoEntrega(pedido.pedido.tipo) || "N/A"} readOnly />
+        </div>
+        < div className="form-group-pedido">
+        <label>Status:</label>
+        <input type="text" value={getStatus(pedido.pedido.status) || "N/A"} readOnly />
+        </div>
+        < div className="form-group-pedido">
+        <label>Feito pelo Usuário:</label>
+        <input type="text" value={getUsuarioNome(pedido.pedido.fk_id_usuario)} readOnly />
+        </div>
+        < div className="form-group-pedido">
+        <label>Data Realizado:</label>
+        <input type="text" value={pedido.pedido.data_realizado && !isNaN(Date.parse(pedido.pedido.data_realizado))
+                  ? new Date(pedido.pedido.data_realizado).toLocaleString()
+                  : "Sem data"} readOnly />
+        </div>
+        </div>
+        <div className="form-row-pedido">
+        < div className="form-group-pedido">
+        <label>Cliente:</label>
+        <input type="text" value={getClienteDetalhes(pedido.pedido.fk_id_cliente).nome || "N/A"} readOnly />
+
+        </div>
+     
+          {(pedido.pedido.status==1 || pedido.pedido.status==2 || pedido.pedido.status==3) &&
+        < div className="form-group-pedido">
+        <label>Data entrega:</label>
+            <input
+              type="text"
+              value={
+                pedido.pedido.data_para_entregar && !isNaN(Date.parse(pedido.pedido.data_para_entregar))
+                  ? new Date(pedido.pedido.data_para_entregar).toLocaleString()
+                  : "Sem data"
+              }
+              readOnly
+            />
+        </div> }
+
+        </div>
+        <div className="form-row-pedido">
+        < div className="form-group-pedido">
+        
+        <label>Endereço:</label>
+        <input type="text" value={getEnderecoCliente(pedido.pedido.fk_id_cliente)} readOnly />
+        </div>
+        </div>
+        <div className="form-row-pedido">
+        < div className="form-group-pedido">
+        
+        <label>Observação:</label>
+          <input
+            type="text"
+            value={pedido.pedido.observacao || "Sem observação"}
+            readOnly
+          />
+        </div>
+        </div>
+        
+        </div>
+        <div className="form-direita-pedido">
+        <div className="form-row-pedido">
+        < div className="form-group-pedido">  
+        <label>Forma de Pagamento:</label>
+            <input type="text" value={getFormaPagamento(pedido.pedido.forma_pagamento) || "N/A"} readOnly />   
+        </div>
+        < div className="form-group-pedido">    
+        <label>Finalizado em:</label>
+            <input
+              type="text"
+              value={pedido.pedido.data_finalizado && !isNaN(Date.parse(pedido.pedido.data_finalizado))
+                ? new Date(pedido.pedido.data_finalizado).toLocaleString()
+                : "Sem data"
+              }
+              readOnly
+            /> 
+        </div>
+        </div>
+        </div>
+        </form>
+
+
+
+
+
+
       <form>
         <div className="infos">
           <div className="id-pedido">
