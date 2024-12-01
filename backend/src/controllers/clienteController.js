@@ -1,7 +1,16 @@
 import db from "../config/db.js";
 
 export const getClientes = (req, res) => {
-  const q = "SELECT * FROM cliente";
+  const q = `SELECT c.*, (
+        SELECT GROUP_CONCAT(frete ORDER BY data_realizado DESC)
+        FROM pedido p
+        WHERE c.id_cliente = p.fk_id_cliente
+           AND p.tipo NOT IN (3, 4) 
+              AND p.frete IS NOT NULL 
+              AND p.frete != 0
+        ORDER BY data_realizado DESC
+        LIMIT 3
+    ) AS ultimos_fretes FROM cliente c`;
 
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);

@@ -2273,6 +2273,15 @@ option:not(:first-of-type) {
   box-shadow: none;
   outline: none;
 }
+.link-style {
+  color: blue; /* Cor do texto como um link */
+  text-decoration: underline; /* Adiciona o sublinhado típico de links */
+  cursor: pointer; /* Muda o cursor para o tipo mão, indicando que é clicável */
+}
+
+.link-style:hover {
+  color: darkblue; /* Alteração da cor do link quando o mouse passa por cima */
+}
 
 .search-box input {
   height: 34px;

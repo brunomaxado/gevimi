@@ -5,7 +5,8 @@ import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import More from "@mui/icons-material/Add";
 import { useModified } from "../context/ModifiedContext";
-
+import SearchIcon from '@mui/icons-material/InfoOutlined'; // Importando o ícone de pesquisa
+import ReactTooltip, { Tooltip } from 'react-tooltip';
 const Pedido = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
@@ -15,6 +16,7 @@ const Pedido = () => {
   const [precoTotalFrete, setPrecoTotalFrete] = useState(0);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [clienteSelecionado, setClienteSelecionado] = useState({});
 
   const [pedido, setPedido] = useState({
     tipo: "",
@@ -47,6 +49,7 @@ const Pedido = () => {
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFreteModal, setShowFreteModal] = useState(false);
   const primeiroCampoRef = useRef(null);
 
   const calcularPrecoTotal = (itens) =>
@@ -170,7 +173,19 @@ const Pedido = () => {
       console.log("Nenhum produto encontrado para o ID:", novoItem.fk_id_produto);
     }
   };
-
+  const handleClienteChange = (e) => {
+    const { value } = e.target;
+    setPedido((prev) => ({ ...prev, fk_id_cliente: value }));
+    setIsModified(true); // Marca o formulário como modificado
+    // Buscar os dados do cliente pelo ID selecionado
+    const clienteEncontrado = cliente.find((c) => c.id_cliente === parseInt(value));
+    if (clienteEncontrado) {
+      setClienteSelecionado(clienteEncontrado);
+    } else {
+      setClienteSelecionado({});
+    }
+  };
+  console.log(clienteSelecionado);
   const handleRemoverItem = (index) => {
     setItensPedido((prev) => prev.filter((_, i) => i !== index));
   };
@@ -187,7 +202,22 @@ const Pedido = () => {
       console.log("Erro ao atualizar a lista de clientes:", err);
     }
   };
-
+  function formatarMoedas(str) {
+    // Divide a string em um array de números separados por vírgulas
+    const numeros = str.split(',');
+  
+    // Seleciona os 3 primeiros números e formata no padrão brasileiro
+    const formatados = numeros.slice(0, 3).map(numero => {
+      // Remove espaços extras e converte para float
+      const valor = parseFloat(numero.trim());
+  
+      // Formata no estilo de moeda brasileira
+      return `R$ ${valor.toFixed(2).replace('.', ',')}`;
+    });
+  
+    // Junta os valores formatados com o separador " | "
+    return formatados.join(' | ');
+  }
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
@@ -216,7 +246,24 @@ const Pedido = () => {
     }
   }, []);
 
+  const handleClose = () => {
+    setShowFreteModal(false);
+  };
+  const handleMap = () => {
+    // Endereço de origem padrão
+    const origemPadrao = "Ponta Grossa, Uvaranas, Rua Marquês de Sapucaí, 227";
   
+    // Endereço de destino, baseado no cliente selecionado
+    const enderecoDestino = `${clienteSelecionado.cidade}, ${clienteSelecionado.bairro}, ${clienteSelecionado.cep}, ${clienteSelecionado.logradouro}, ${clienteSelecionado.numero}`;
+  
+    // Cria a URL do Google Maps com origem e destino
+    const googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origemPadrao)}&destination=${encodeURIComponent(enderecoDestino)}&travelmode=driving`;
+  
+    // Abre a URL em uma nova guia
+    window.open(googleMapsURL, '_blank');
+  };
+  
+
 
 return (
   <div>
@@ -235,7 +282,7 @@ return (
 <select
 name="fk_id_cliente"
 value={pedido.fk_id_cliente || ""}
-onChange={handleChange}
+onChange={handleClienteChange}
 required
 >
 <option value="" disabled>Selecione o cliente</option>
@@ -281,7 +328,9 @@ required
             </div>
 
             <div className="form-group-pedido">
-              <label> Frete: <span className="asterisco">*</span> </label>
+       
+              <label> Frete: <span className="asterisco">*</span>  <SearchIcon   onClick={() => setShowFreteModal(true)}  fontSize="small" className="search-icon" />  </label>   
+           
               <input
                 type="text"
                 placeholder="Frete"
@@ -437,6 +486,33 @@ required
         </div>
       </div>
     )}
+{showFreteModal && (
+  <div className="modal">
+    <div className="modal-content">
+      {/* Botão para fechar o modal */}
+      <button className="close-modal" onClick={handleClose}>X</button>
+      
+      {/* Cabeçalho do modal */}
+      <h2>Endereço e Últimos Fretes</h2>
+      
+     
+        <p  onClick={handleMap} className="link-style">{`${clienteSelecionado.cidade}, ${clienteSelecionado.bairro}, ${clienteSelecionado.logradouro}, ${clienteSelecionado.numero}`}</p>
+        <p>
+        {clienteSelecionado.ultimos_fretes 
+          ? formatarMoedas(clienteSelecionado.ultimos_fretes) 
+          : "Sem últimos fretes"}
+      </p>
+       
+      {/* Div adicional para conteúdo futuro */}
+      <div className="modal-div">
+        {/* Conteúdo adicional pode ser inserido aqui */}
+      </div>
+    </div>
+  </div>
+)}
+
+
+
   </div>
 );
 
