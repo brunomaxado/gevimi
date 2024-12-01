@@ -226,25 +226,7 @@ return (
     <form className="form-container-pedido">
       <div className="form-esquerda-pedido">
         <div className="form-row-pedido">
-          <div className="form-group-pedido">
-            <label> Tipo: <span className="asterisco">*</span> </label>
-            <select
-              name="tipo"
-              required
-              value={pedido.tipo}
-              onChange={(e) => {
-                handleChange(e);
-              }}
-            >
-              <option value="" disabled selected>Selecione um tipo de entrega</option>
-              <option value="1">1. Entrega</option>
-              <option value="2">2. Entrega Ifood</option>
-              <option value="3">3. Retirada</option>
-              <option value="4">4. Comum</option>
-            </select>
-          </div>
-        </div>
-       < div className="form-group-pedido">
+        < div className="form-group-pedido">
 
 <label> Cliente: <span className="asterisco">*</span> </label>
 
@@ -265,6 +247,25 @@ required
 </select>
 
 </div>
+          <div className="form-group-pedido">
+            <label> Tipo: <span className="asterisco">*</span> </label>
+            <select
+              name="tipo"
+              required
+              value={pedido.tipo}
+              onChange={(e) => {
+                handleChange(e);
+              }}
+            >
+              <option value="" disabled selected>Selecione um tipo de entrega</option>
+              <option value="1">1. Entrega</option>
+              <option value="2">2. Entrega Ifood</option>
+              <option value="3">3. Retirada</option>
+              <option value="4">4. Comum</option>
+            </select>
+          </div>
+        </div>
+
 
         {(pedido.tipo === "1" || pedido.tipo === "2") && (
           <div className="form-row-pedido">

@@ -2274,7 +2274,7 @@ option:not(:first-of-type) {
   outline: none;
 }
 
-.search-box input, input[type="datetime-local"] {
+.search-box input {
   height: 34px;
   min-width: 250px;
   border-radius: 20px;
