@@ -17,7 +17,7 @@ import ModalHelpFormulario from '../components/modalHelpFormulario';
 import ModalHelpEditarProduto from '../components/modalHelpEditarProduto';
 import ModalHelpEditarCliente from '../components/modalHelpEditarCliente';
 import ModalHelpEditarUsuario from '../components/modalHelpEditarUsuario';
-
+import ModalHelpRelatorio from '../components/modalHelpRelatorioProduto';
 
 
 const Ajuda = () => {
@@ -39,7 +39,7 @@ const Ajuda = () => {
   const [isHelpEditarClienteOpen, setIsHelpEditarClienteOpen] = useState(false);
   const [isHelpEditarProdutoOpen, setIsHelpEditarProdutoOpen] = useState(false);
   const [isHelpEditarUsuarioOpen, setIsHelpEditarUsuarioOpen] = useState(false);
-
+  const [isHelpRelatorioOpen, setIsHelpRelatorioOpen] = useState(false);
   const location = useLocation();
 
   const tratarCliqueLink = (indice) => {
@@ -87,15 +87,18 @@ const Ajuda = () => {
       case '/relatorio/pedido':
         setIsHelpFormularioOpen(true);
         break;
-      case '/editarCliente/1':
+      case  window.location.pathname.startsWith('/editarCliente/'):
         setIsHelpEditarClienteOpen(true);
         break;
-      case '/gerenciarProduto/1':
+      case window.location.pathname.startsWith('/gerenciarProduto/'):
         setIsHelpEditarProdutoOpen(true);
         break;
-        case '/editarUsuario/1':
-          setIsHelpEditarUsuarioOpen(true);
-          break;
+      case '/relatorio/produto':
+        setIsHelpRelatorioOpen(true);
+        break;
+      case window.location.pathname.startsWith('/editarUsuario/'):
+        setIsHelpEditarUsuarioOpen(true);
+        break;
       default:
         break;
     }
@@ -117,9 +120,10 @@ const Ajuda = () => {
           || location.pathname === '/readUsuario'
           || location.pathname === '/register'
           || location.pathname === '/relatorio/pedido'
-          || location.pathname === '/gerenciarProduto/1'
-          || location.pathname === '/editarCliente/1'
-          || location.pathname === '/editarUsuario/1') && (
+          || location.pathname.startsWith('/gerenciarProduto/') 
+          || location.pathname.startsWith('/editarCliente/') 
+          || location.pathname.startsWith('/editarUsuario/')
+          || location.pathname === '/relatorio/produto') && (
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
                 <span className="icone"><ion-icon name="help-circle-outline" title="Ajuda"></ion-icon></span>
@@ -192,6 +196,10 @@ const Ajuda = () => {
       <ModalHelpEditarUsuario
         isOpen={isHelpEditarUsuarioOpen}
         onRequestClose={() => setIsHelpEditarUsuarioOpen(false)}
+      />
+      <ModalHelpRelatorio
+        isOpen={isHelpRelatorioOpen}
+        onRequestClose={() => setIsHelpRelatorioOpen(false)}
       />
     </div>
   );

@@ -27,9 +27,9 @@ const Pedido = () => {
     fk_id_usuario: currentUser?.id_usuario,
     fk_id_cliente: null,
   });
-  
+
   console.log("isModified:", isModified);
-    useEffect(() => {
+  useEffect(() => {
     // Reseta isModified ao desmontar o componente
     return () => {
       setIsModified(false);
@@ -54,22 +54,22 @@ const Pedido = () => {
 
   const calcularPrecoTotal = (itens) => {
     const total = itens.reduce((total, item) => total + item.preco_unitario * item.quantidade, 0);
-    
+
     // Formatar o total como moeda brasileira com 2 casas decimais
     return total.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
-  
+
   const calcularPrecoTotalComFrete = (itens, frete) => {
     const totalItens = calcularPrecoTotal(itens); // Este valor já estará formatado como moeda
     const freteNumerico = parseFloat(frete) || 0;
     const totalComFrete = parseFloat(totalItens.replace("R$", "").replace(",", ".")) + freteNumerico;  // Converte o valor formatado para número
-    
+
     // Formatar o total com frete como moeda brasileira
     return totalComFrete.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
-  
-  
-  
+
+
+
   useEffect(() => {
     if (pedido) setPrecoTotalFrete(calcularPrecoTotalComFrete(itensPedido, pedido.frete));
   }, [itensPedido, pedido]);
@@ -131,7 +131,7 @@ const Pedido = () => {
       setError("Adicione pelo menos um item ao pedido.");
       return;
     }
-    if(fk_id_cliente == 1 && (tipo == 1 || tipo ==2)){
+    if (fk_id_cliente == 1 && (tipo == 1 || tipo == 2)) {
       setError("Cliente 'A Loja' só pode ser utilizado para vendas comuns e Ifood. Entregas e Retiradas necessitam de cadastro");
       return;
     }
@@ -151,6 +151,11 @@ const Pedido = () => {
     }
   };
 
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
+  
   const handleAdicionarItem = async (e) => {
     e.preventDefault();
     const produtoSelecionado = produto.find(
@@ -217,16 +222,16 @@ const Pedido = () => {
   function formatarMoedas(str) {
     // Divide a string em um array de números separados por vírgulas
     const numeros = str.split(',');
-  
+
     // Seleciona os 3 primeiros números e formata no padrão brasileiro
     const formatados = numeros.slice(0, 3).map(numero => {
       // Remove espaços extras e converte para float
       const valor = parseFloat(numero.trim());
-  
+
       // Formata no estilo de moeda brasileira
       return `R$ ${valor.toFixed(2).replace('.', ',')}`;
     });
-  
+
     // Junta os valores formatados com o separador " | "
     return formatados.join(' | ');
   }
@@ -264,277 +269,272 @@ const Pedido = () => {
   const handleMap = () => {
     // Endereço de origem padrão
     const origemPadrao = "Ponta Grossa, Uvaranas, Rua Marquês de Sapucaí, 227";
-  
+
     // Endereço de destino, baseado no cliente selecionado
     const enderecoDestino = `${clienteSelecionado.cidade}, ${clienteSelecionado.bairro}, ${clienteSelecionado.cep}, ${clienteSelecionado.logradouro}, ${clienteSelecionado.numero}`;
-  
+
     // Cria a URL do Google Maps com origem e destino
     const googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origemPadrao)}&destination=${encodeURIComponent(enderecoDestino)}&travelmode=driving`;
-  
+
     // Abre a URL em uma nova guia
     window.open(googleMapsURL, '_blank');
   };
-  
+
 
   const formatarFrete = (frete) => {
     const freteNumerico = parseFloat(frete) || 0;  // Garantir que o valor seja numérico
     return freteNumerico.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
-  
-return (
-  <div>
 
-    <h1>Novo Pedido</h1>
+  return (
+    <div>
 
-    <form className="form-container-pedido">
-      <div className="form-esquerda-pedido">
-        <div className="form-row-pedido">
-        < div className="form-group-pedido">
+      <h1>Novo Pedido</h1>
 
-<label> Cliente: <span className="asterisco">*</span> </label>
-
-
-
-<select
-name="fk_id_cliente"
-value={pedido.fk_id_cliente || ""}
-onChange={handleClienteChange}
-required
->
-<option value="" disabled>Selecione o cliente</option>
-{cliente.map((cliente) => (
-  <option key={cliente.id_cliente} value={cliente.id_cliente}>
-    {cliente.nome}
-  </option>
-))}
-</select>
-
-</div>
-          <div className="form-group-pedido">
-            <label> Tipo: <span className="asterisco">*</span> </label>
-            <select
-              name="tipo"
-              required
-              value={pedido.tipo}
-              onChange={(e) => {
-                handleChange(e);
-              }}
-            >
-              <option value="" disabled selected>Selecione um tipo de entrega</option>
-              <option value="1">1. Entrega</option>
-              <option value="2">2. Entrega Ifood</option>
-              <option value="3">3. Retirada</option>
-              <option value="4">4. Comum</option>
-            </select>
-          </div>
-        </div>
-
-
-        {(pedido.tipo === "1" || pedido.tipo === "2") && (
+      <form className="form-container-pedido">
+        <div className="form-esquerda-pedido">
           <div className="form-row-pedido">
-            <div className="form-group-pedido">
-              <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
-              <input
-                type="datetime-local"
+            < div className="form-group-pedido">
 
-                name="data_para_entregar"
-                value={pedido.data_para_entregar}
-                onChange={handleChange}
-              />
+              <label> Cliente: <span className="asterisco">*</span> </label>
+
+
+
+              <select
+                name="fk_id_cliente"
+                value={pedido.fk_id_cliente || ""}
+                onChange={handleClienteChange}
+                required
+              >
+                <option value="" disabled>Selecione o cliente</option>
+                {cliente.map((cliente) => (
+                  <option key={cliente.id_cliente} value={cliente.id_cliente}>
+                    {cliente.nome}
+                  </option>
+                ))}
+              </select>
+
             </div>
-
             <div className="form-group-pedido">
-       
-              <label> <SearchIcon   onClick={() => setShowFreteModal(true)}  fontSize="small" className="search-icon" />   Frete: <span className="asterisco">*</span>    </label>   
-           
-              <input
-                type="text"
-                placeholder="Frete"
-                name="frete"
-                value={formatarPrecoVisual(pedido.frete)} // Exibe o valor formatado com "R$"
-                onChange={handleFreteChange}
-              />
+              <label> Tipo: <span className="asterisco">*</span> </label>
+              <select
+                name="tipo"
+                required
+                value={pedido.tipo}
+                onChange={(e) => {
+                  handleChange(e);
+                }}
+              >
+                <option value="" disabled selected>Selecione um tipo de entrega</option>
+                <option value="1">1. Entrega</option>
+                <option value="2">2. Entrega Ifood</option>
+                <option value="3">3. Retirada</option>
+                <option value="4">4. Comum</option>
+              </select>
             </div>
           </div>
-        )}
-        {(pedido.tipo === "3") && (
-          <div className="form-row-pedido">
-            <div className="form-group-pedido">
-              <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
-              <input
-                type="datetime-local"
-                name="data_para_entregar"
-                value={pedido.data_para_entregar}
-                onChange={handleChange}
-              />
+
+
+          {(pedido.tipo === "1" || pedido.tipo === "2") && (
+            <div className="form-row-pedido">
+              <div className="form-group-pedido">
+                <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
+                <input
+                  type="datetime-local"
+
+                  name="data_para_entregar"
+                  value={pedido.data_para_entregar}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group-pedido">
+
+                <label> <SearchIcon onClick={() => setShowFreteModal(true)} fontSize="small" className="search-icon" />   Frete: <span className="asterisco">*</span>    </label>
+
+                <input
+                  type="text"
+                  placeholder="Frete"
+                  name="frete"
+                  value={formatarPrecoVisual(pedido.frete)} // Exibe o valor formatado com "R$"
+                  onChange={handleFreteChange}
+                />
+              </div>
             </div>
-
-          </div>
-        )}
-        <div className="form-row-pedido">
-          
-
-          <div className="form-group-pedido">
-            <label> Forma Pagamento: <span className="asterisco">*</span> </label>
-            <select
-              name="forma_pagamento"
-              required
-              id="forma_pagamento"
-              value={pedido.forma_pagamento}
-              onChange={handleChange}
-            >
-              <option value="">Forma de pagamento</option>
-              <option value="1">Dinheiro</option>
-              <option value="2">Pix</option>
-              <option value="3">Débito</option>
-              <option value="4">Crédito</option>
-            </select>
-          </div>
-
-        </div>
-        <label> Observação: </label>
-        <input
-          type="text"
-          placeholder="Observação"
-          name="observacao"
-          value={pedido.observacao}
-          onChange={handleChange}
-        />
-         <p> <span className="asterisco">*</span> Os campos marcados com asterisco vermelho são obrigatórios. </p>
-      </div>
-      <div className="form-direita-pedido">
-        <div className="form-row-pedido">
-          <div className="form-group-pedido">
-            <label> Produto: <span className="asterisco">*</span> </label>
-            <select
-              name="fk_id_produto"
-              ref={primeiroCampoRef}
-              value={novoItem.fk_id_produto}
-              onChange={handleItemChange}
-              required
-            >
-              <option value="" disabled selected>Selecione um produto</option>
-              {produto.map((produto) => (
-                <option key={produto.id_produto} value={produto.id_produto}>
-                  {produto.nome}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
-            <More /> {/* Adicionando o ícone More */}
-          </button>
-        </div>
-
-        {/* Itens do Pedido com área de rolagem */}
-        <h2 className="order-items-header">Itens do Pedido</h2>
-        <div className="order-items-scrollable-container">
-          {itensPedido.length === 0 ? (
-            <p>Selecione um produto para inserir.</p>
-          ) : (
-            <ul className="order-items-list">
-              {itensPedido.map((item, index) => (
-                <li key={index} className="order-item">
-                  <span className="order-item-name">
-                    {item.nome} -{formatarFrete(item.preco_unitario * item.quantidade)}
-                  </span>
-                  <div className="order-item-controls">
-                    <input
-                      type="number"
-                      className="order-item-quantity"
-                      value={item.quantidade}
-                      min="1"
-                      onChange={(e) => {
-                        const updatedItens = [...itensPedido];
-                        updatedItens[index].quantidade = e.target.value;
-                        setItensPedido(updatedItens);
-                      }}
-                    />
-                    <p
-                      className="order-item-remove"
-                      onClick={() => handleRemoverItem(index)}
-                    >
-                      x
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
           )}
+          {(pedido.tipo === "3") && (
+            <div className="form-row-pedido">
+              <div className="form-group-pedido">
+                <label> Data Retirada/Entrega: <span className="asterisco">*</span> </label>
+                <input
+                  type="datetime-local"
+                  name="data_para_entregar"
+                  value={pedido.data_para_entregar}
+                  onChange={handleChange}
+                />
+              </div>
+
+            </div>
+          )}
+          <div className="form-row-pedido">
+
+
+            <div className="form-group-pedido">
+              <label> Forma Pagamento: <span className="asterisco">*</span> </label>
+              <select
+                name="forma_pagamento"
+                required
+                id="forma_pagamento"
+                value={pedido.forma_pagamento}
+                onChange={handleChange}
+              >
+                <option value="">Forma de pagamento</option>
+                <option value="1">Dinheiro</option>
+                <option value="2">Pix</option>
+                <option value="3">Débito</option>
+                <option value="4">Crédito</option>
+              </select>
+            </div>
+
+          </div>
+          <label> Observação: </label>
+          <input
+            type="text"
+            placeholder="Observação"
+            name="observacao"
+            value={pedido.observacao}
+            onChange={handleChange}
+          />
+          <p> <span className="asterisco">*</span> Os campos marcados com asterisco vermelho são obrigatórios. </p>
+        </div>
+        <div className="form-direita-pedido">
+          <div className="form-row-pedido">
+            <div className="form-group-pedido">
+              <label> Produto: <span className="asterisco">*</span> </label>
+              <select
+                name="fk_id_produto"
+                ref={primeiroCampoRef}
+                value={novoItem.fk_id_produto}
+                onChange={handleItemChange}
+                required
+              >
+                <option value="" disabled selected>Selecione um produto</option>
+                {produto.map((produto) => (
+                  <option key={produto.id_produto} value={produto.id_produto}>
+                    {produto.nome}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button className="adicionar-produto-pedido" onClick={handleAdicionarItem}>
+              <More /> {/* Adicionando o ícone More */}
+            </button>
+          </div>
+
+          {/* Itens do Pedido com área de rolagem */}
+          <h2 className="order-items-header">Itens do Pedido</h2>
+          <div className="order-items-scrollable-container">
+            {itensPedido.length === 0 ? (
+              <p>Selecione um produto para inserir.</p>
+            ) : (
+              <ul className="order-items-list">
+                {itensPedido.map((item, index) => (
+                  <li key={index} className="order-item">
+                    <span className="order-item-name">
+                      {item.nome} -{formatarFrete(item.preco_unitario * item.quantidade)}
+                    </span>
+                    <div className="order-item-controls">
+                      <input
+                        type="number"
+                        className="order-item-quantity"
+                        value={item.quantidade}
+                        min="1"
+                        onChange={(e) => {
+                          const updatedItens = [...itensPedido];
+                          updatedItens[index].quantidade = e.target.value;
+                          setItensPedido(updatedItens);
+                        }}
+                      />
+                      <p
+                        className="order-item-remove"
+                        onClick={() => handleRemoverItem(index)}
+                      >
+                        x
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+      </form>
+
+      <div class="pricing-container">
+
+        <div class="pricing-row">
+          <h5 class="price">Preço Item Pedido:</h5>
+          <h5 class="price">{precoTotal}</h5>
+        </div>
+        {(pedido.tipo == 1 || pedido.tipo == 2) &&
+          <div class="pricing-row">
+            <h5 class="price">Preço Frete:</h5>
+            <h5 class="price">{formatarFrete(pedido.frete)}</h5>
+
+          </div>}
+        <div class="pricing-row total-pricing-row">
+          <h5 class="label price-strong total-price">Preço Total:</h5>
+          <h5 class="label price-strong total-price">{precoTotalFrete}</h5>
         </div>
       </div>
 
-
-
-
-
-
-    </form>
-    
-    <div class="pricing-container">
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button className="voltar" onClick={handleBackClick}> Voltar</button>
+      <button class="enviar-pedido" onClick={handleClick}>Confirmar</button>
    
-      <div class="pricing-row">
-        <h5 class="price">Preço Item Pedido:</h5>
-        <h5 class="price">{precoTotal}</h5>
-      </div>
-      {(pedido.tipo == 1 || pedido.tipo == 2) &&
-      <div class="pricing-row">
-        <h5 class="price">Preço Frete:</h5>
-        <h5 class="price">{formatarFrete(pedido.frete)}</h5>
 
-      </div>}
-      <div class="pricing-row total-pricing-row">
-        <h5 class="label price-strong total-price">Preço Total:</h5>
-        <h5 class="label price-strong total-price">{precoTotalFrete}</h5>
-      </div>
-    </div>
-
-    {error && <p style={{ color: "red" }}>{error}</p>}
-
-    <button class="enviar-pedido" onClick={handleClick}>Confirmar</button>
-
-
-    <ModalCliente
-      isOpen={showModal}  // Controla se o modal deve ser exibido
-      onRequestClose={() => setShowModal(false)}  // Função para fechar o modal
-      adicionarCliente={adicionarCliente}  // Função para adicionar um cliente após cadastro
-    />
-    {showSuccessModal && (
-      <div className="success-modal">
-        <div className="success-modal-content">
-          <span>{successMessage}</span>
+      <ModalCliente
+        isOpen={showModal}  // Controla se o modal deve ser exibido
+        onRequestClose={() => setShowModal(false)}  // Função para fechar o modal
+        adicionarCliente={adicionarCliente}  // Função para adicionar um cliente após cadastro
+      />
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
         </div>
-      </div>
-    )}
-{showFreteModal && (
-  <div className="modal">
-    <div className="modal-content">
-      {/* Botão para fechar o modal */}
-      <button className="close-modal" onClick={handleClose}>X</button>
-      
-      {/* Cabeçalho do modal */}
-      <h2>Endereço e Últimos Fretes</h2>
-      
-     
-        <p  onClick={handleMap} className="link-style">{`${clienteSelecionado.cidade}, ${clienteSelecionado.bairro}, ${clienteSelecionado.logradouro}, ${clienteSelecionado.numero}`}</p>
-        <p>
-        {clienteSelecionado.ultimos_fretes 
-          ? formatarMoedas(clienteSelecionado.ultimos_fretes) 
-          : "Sem últimos fretes"}
-      </p>
-       
-      {/* Div adicional para conteúdo futuro */}
-      <div className="modal-div">
-        {/* Conteúdo adicional pode ser inserido aqui */}
-      </div>
+      )}
+      {showFreteModal && (
+        <div className="modal">
+          <div className="modal-content">
+            {/* Botão para fechar o modal */}
+            <button className="close-modal" onClick={handleClose}>X</button>
+
+            {/* Cabeçalho do modal */}
+            <h2>Endereço e Últimos Fretes</h2>
+
+
+            <p onClick={handleMap} className="link-style">{`${clienteSelecionado.cidade}, ${clienteSelecionado.bairro}, ${clienteSelecionado.logradouro}, ${clienteSelecionado.numero}`}</p>
+            <p>
+              {clienteSelecionado.ultimos_fretes
+                ? formatarMoedas(clienteSelecionado.ultimos_fretes)
+                : "Sem últimos fretes"}
+            </p>
+
+            {/* Div adicional para conteúdo futuro */}
+            <div className="modal-div">
+              {/* Conteúdo adicional pode ser inserido aqui */}
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
     </div>
-  </div>
-)}
-
-
-
-  </div>
-);
+  );
 
 
 };

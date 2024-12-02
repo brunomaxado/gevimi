@@ -1,11 +1,17 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useModified } from "../context/ModifiedContext";
+import { useNavigate } from "react-router-dom";
 
 const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, initialData }) => {
   const primeiroCampoRef = useRef(null);
   const [preco, setPreco] = useState(produto.preco_unitario || "");
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
+  const navigate = useNavigate();
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
   useEffect(() => {
     if (primeiroCampoRef.current) {
       primeiroCampoRef.current.focus();
@@ -128,10 +134,14 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
         <span className="asterisco">*</span>
         Os campos marcados com asterisco vermelho são obrigatórios.
       </p>
+      <button className="voltar" onClick={handleClick}>
+        Voltar
+      </button>
       <button type="submit">
         Confirmar
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
+     
     </form>
   );
 };

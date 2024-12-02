@@ -75,6 +75,11 @@ const AlterarSenha = () => {
     }
   };
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
+
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
@@ -119,6 +124,9 @@ const AlterarSenha = () => {
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="submit">Confirmar</button>
+        <button className="voltar" onClick={handleClick}>
+        Voltar
+      </button>
       </form>
 
       {showSuccessModal && (

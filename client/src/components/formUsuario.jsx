@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useModified } from "../context/ModifiedContext";
+import { useNavigate } from "react-router-dom";
 
 const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
+  const navigate = useNavigate();
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -129,9 +135,12 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
         <span className="asterisco">* </span>Os campos marcados com asterisco
         vermelho são obrigatórios.
       </p>
-
+      <button className="voltar" onClick={handleClick}>
+        Voltar
+      </button>
       <button type="submit">Confirmar</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      
     </form>
     
     </div>

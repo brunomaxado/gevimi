@@ -35,15 +35,15 @@ const ReadPedido = () => {
 
   // Data de início do ano (00:00)
   const dataRealizadoInicio = new Date(now.getFullYear(), 0, 1, 0, 0).toISOString().split("T")[0] + "T00:00";
-  
+
   // Dia atual + 1 mês (23:59)
   now.setMonth(now.getMonth() + 1);
   const dataRealizadoFim = now.toISOString().split("T")[0] + "T23:59";
-  
+
   // Data de entrega (hoje - 00:00 até 23:59)
   const entregaInicio = new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] + "T00:00";
   const entregaFim = new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] + "T23:59";
-  
+
 
   const [filtros, setFiltros] = useState({
     data_realizado_inicio: dataRealizadoInicio,
@@ -61,7 +61,7 @@ const ReadPedido = () => {
   useEffect(() => {
     const fetchAllPedidos = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/pedido",filtros);
+        const res = await axios.get("http://localhost:8800/pedido", filtros);
         const sortedPedidos = res.data.sort((a, b) => new Date(b.data_realizado) - new Date(a.data_realizado));
 
         setPedidos(sortedPedidos);
@@ -128,7 +128,6 @@ const ReadPedido = () => {
 
   };
 
-
   const getClienteNome = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
     return cliente ? cliente.nome : "N/A";
@@ -144,20 +143,18 @@ const ReadPedido = () => {
     return produto ? produto.nome : "N/A";
   };
 
- const calcularTotalItens = (itensPedido, frete = 0) => {
-  // Garantir que o valor do frete seja numérico
-  const valorFrete = isNaN(frete) ? 0 : parseFloat(frete);
+  const calcularTotalItens = (itensPedido, frete = 0) => {
+    // Garantir que o valor do frete seja numérico
+    const valorFrete = isNaN(frete) ? 0 : parseFloat(frete);
 
-  const totalItens = itensPedido.reduce((total, item) => {
-    return total + (item.preco_unitario_atual || 0) * (item.quantidade || 0);
-  }, 0);
+    const totalItens = itensPedido.reduce((total, item) => {
+      return total + (item.preco_unitario_atual || 0) * (item.quantidade || 0);
+    }, 0);
 
-  const totalComFrete = totalItens + valorFrete;
+    const totalComFrete = totalItens + valorFrete;
 
-  return !isNaN(totalComFrete) ? totalComFrete.toFixed(2) : '0.00';
-};
-
-
+    return !isNaN(totalComFrete) ? totalComFrete.toFixed(2) : '0.00';
+  };
 
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
@@ -183,8 +180,6 @@ const ReadPedido = () => {
   };
   // Função para gerar o PDF com cabeçalho e imagem
   // Função para gerar o PDF com espaço reservado para o cabeçalho e imagem
- 
-
 
   const getTipoEntrega = (tipoEntrega) => {
     switch (tipoEntrega) {
@@ -260,25 +255,24 @@ const ReadPedido = () => {
 
   const AplicarFiltroButtonClick = (e) => {
     e.preventDefault();
-    const { data_realizado_inicio, data_realizado_fim, data_entrega_inicio, data_entrega_fim, tipo, status} = filtros;
- // conjunto 1 inteiro preenchido, ou conjunto 2 inteiro preenchido
-    if ( !data_realizado_inicio && !data_realizado_fim && !data_entrega_inicio  && !data_entrega_fim  ) 
-   {
-    setError("Preencha a data realizado ou data entrega inicial e final.");
+    const { data_realizado_inicio, data_realizado_fim, data_entrega_inicio, data_entrega_fim, tipo, status } = filtros;
+    // conjunto 1 inteiro preenchido, ou conjunto 2 inteiro preenchido
+    if (!data_realizado_inicio && !data_realizado_fim && !data_entrega_inicio && !data_entrega_fim) {
+      setError("Preencha a data realizado ou data entrega inicial e final.");
       return;
     }
-    if (  (data_realizado_inicio && !data_realizado_fim) || (!data_realizado_inicio && data_realizado_fim) ) {
+    if ((data_realizado_inicio && !data_realizado_fim) || (!data_realizado_inicio && data_realizado_fim)) {
       setError("Preencha o período realizado inicial e final.");
       return;
     }
-    if ((data_entrega_inicio  && !data_entrega_fim) || (!data_entrega_inicio  && data_entrega_fim)) {
+    if ((data_entrega_inicio && !data_entrega_fim) || (!data_entrega_inicio && data_entrega_fim)) {
       setError("Preencha o período entrega inicial e final.");
       return;
     }
     setError("");
     fetchAllPedidos2();
     setSearchTerm("");
- 
+
   };
   const fetchAllPedidos2 = async () => {
     try {
@@ -293,14 +287,14 @@ const ReadPedido = () => {
         },
       });
       console.log("Resultado:", res.data);
-  
+
       if (!res.data || res.data.length === 0) {
         console.log("Nenhum pedido encontrado com os filtros aplicados.");
         setPedidos([]); // Garante que a lista seja vazia na interface
         setError("Nenhum pedido encontrado com os filtros aplicados.");
         return; // Sai da função
       }
-  
+
       const sortedPedidos = res.data.sort(
         (a, b) => new Date(b.data_realizado) - new Date(a.data_realizado)
       );
@@ -309,7 +303,7 @@ const ReadPedido = () => {
     } catch (err) {
       // Loga o erro detalhado
       console.error("Erro ao buscar os pedidos:", err);
-  
+
       // Loga a mensagem de erro enviada pelo backend, caso exista
       if (err.response && err.response.data && err.response.data.message) {
         console.error("Mensagem do servidor:", err.response.data.message);
@@ -320,9 +314,6 @@ const ReadPedido = () => {
       }
     }
   };
-  
-  
-  
 
   const handleCancel = () => {
     setShowModal(false);
@@ -384,71 +375,66 @@ const ReadPedido = () => {
 
       <div className="tabela">
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <div className="filters-container">
-       
-        <div className="filter-box">
-        <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>
-        <input
-                type="datetime-local"
-                name="data_realizado_inicio"
-                value={filtros.data_realizado_inicio}
-                onChange={(e) =>  handleFilterChange(e)}
-                 className="datetime-input"
-              />
+
+          <div className="filter-box">
+            <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>
+            <input
+              type="datetime-local"
+              name="data_realizado_inicio"
+              value={filtros.data_realizado_inicio}
+              onChange={(e) => handleFilterChange(e)}
+              className="datetime-input"
+            />
+          </div>
+          <div className="filter-box">
+            <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>
+            <input
+              type="datetime-local"
+              name="data_realizado_fim"
+              value={filtros.data_realizado_fim}
+              onChange={(e) => handleFilterChange(e)}
+              className="datetime-input"
+            />
+
+          </div>
+
+          <div className="filter-box">
+            <label> Data Entrega Inicio: <span className="asterisco">*</span> </label>
+            <input
+              type="datetime-local"
+              name="data_entrega_inicio"
+              value={filtros.data_entrega_inicio}
+              onChange={(e) => handleFilterChange(e)}
+              className="datetime-input"
+            />
+          </div>
+          <div className="filter-box">
+            <label> Data Entrega Fim: <span className="asterisco">*</span> </label>
+            <input
+              type="datetime-local"
+              name="data_entrega_fim"
+              value={filtros.data_entrega_fim}
+              onChange={(e) => handleFilterChange(e)}
+              className="datetime-input"
+            />
+
+          </div>
+          <button
+            className="limpar-filtro"
+            onClick={() => {
+              setFiltros(prevFiltros => ({
+                ...prevFiltros,  // Mantém os valores anteriores dos filtros
+                data_entrega_inicio: entregaInicio,  // Atualiza com a data de início de hoje
+                data_entrega_fim: entregaFim,        // Atualiza com a data de fim de hoje
+              }));
+            }}
+          >
+            Entrega Hoje
+          </button>
+
         </div>
-        <div className="filter-box">
-        <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>    
-                 <input
-                type="datetime-local"
-                name="data_realizado_fim"
-                value={filtros.data_realizado_fim}
-                onChange={(e) =>  handleFilterChange(e)}
-                 className="datetime-input"
-              />
-
-</div>
-
-<div className="filter-box">
-        <label> Data Entrega Inicio: <span className="asterisco">*</span> </label>
-                 <input
-                type="datetime-local"
-                name="data_entrega_inicio"
-                value={filtros.data_entrega_inicio}
-                onChange={(e) =>  handleFilterChange(e)}
-                 className="datetime-input"
-              />
-        </div>
-        <div className="filter-box">
-        <label> Data Entrega Fim: <span className="asterisco">*</span> </label>
-                 <input
-                type="datetime-local"
-                name="data_entrega_fim"
-                value={filtros.data_entrega_fim}
-                onChange={(e) =>  handleFilterChange(e)}
-                 className="datetime-input"
-              />
-
-</div>
-<button
-  className="limpar-filtro"
-  onClick={() => {
-    setFiltros(prevFiltros => ({
-      ...prevFiltros,  // Mantém os valores anteriores dos filtros
-      data_entrega_inicio: entregaInicio,  // Atualiza com a data de início de hoje
-      data_entrega_fim: entregaFim,        // Atualiza com a data de fim de hoje
-    }));
-  }}
->
-  Entrega Hoje
-</button>
-
-</div>
-
-
-
-
-
         <div className="filters-container">
           <div className="search-box">
             <label><SearchIcon className="search-icon" />  Pesquisar:</label>
@@ -467,9 +453,9 @@ const ReadPedido = () => {
           <div className="filter-box">
             <label>Status:</label>
             <select
-               name="status"
+              name="status"
               value={filtros.status}
-              onChange={(e) =>  handleFilterChange(e)}
+              onChange={(e) => handleFilterChange(e)}
               className="status-filter"
             >
               <option value="">Todos os Status</option>
@@ -483,9 +469,9 @@ const ReadPedido = () => {
             <label>Tipo:</label>
             <select
               name="tipo"
-              onChange={(e) =>  handleFilterChange(e)}
+              onChange={(e) => handleFilterChange(e)}
               value={filtros.tipo}
-              
+
             >
               <option value="">Todos os tipos</option>
               <option value="1">Entrega</option>
@@ -511,13 +497,13 @@ const ReadPedido = () => {
           >
             Limpar Filtros
           </button>
-          <button          className="aplicar-filtro" onClick={AplicarFiltroButtonClick}>Aplicar Filtro</button>
+          <button className="aplicar-filtro" onClick={AplicarFiltroButtonClick}>Aplicar Filtro</button>
 
 
           <button className="adicionar" onClick={() => navigate('/pedido')}>
             Novo Pedido
           </button>
-          
+
         </div>
 
         {/*}
@@ -563,7 +549,6 @@ const ReadPedido = () => {
                   )}
                 </td>
 
-
                 <td>
                   {pedido.data_para_entregar && !isNaN(Date.parse(pedido.data_para_entregar))
                     ? new Date(pedido.data_para_entregar).toLocaleString(undefined, {
@@ -576,7 +561,6 @@ const ReadPedido = () => {
                     })
                     : "Sem data"}
                 </td>
-
 
                 <td class="coluna-center">{getStatus(pedido.status)}</td>
 
@@ -600,20 +584,18 @@ const ReadPedido = () => {
                         <DeleteIcon />
                       </span>
                     )}
-                 <Link
-  to={`/readPedido/${pedido.id_pedido}`}
-  title="Visualizar"
-  className="action-icon visualizar"
-  style={{ textDecoration: 'none' }}
-  onClick={(e) => {
-    e.preventDefault();  // Impede o comportamento padrão do Link
-    window.open(`/readPedido/${pedido.id_pedido}`, "_blank");
-  }}
->
-  <VisibilityIcon />
-</Link>
-
-
+                    <Link
+                      to={`/readPedido/${pedido.id_pedido}`}
+                      title="Visualizar"
+                      className="action-icon visualizar"
+                      style={{ textDecoration: 'none' }}
+                      onClick={(e) => {
+                        e.preventDefault();  // Impede o comportamento padrão do Link
+                        window.open(`/readPedido/${pedido.id_pedido}`, "_blank");
+                      }}
+                    >
+                      <VisibilityIcon />
+                    </Link>
                     {/* Ícone de finalizar */}
                     {pedido.status !== 1 && (
                       <span

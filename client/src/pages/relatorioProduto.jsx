@@ -2,13 +2,19 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import jsPDF from "jspdf";
+import { useNavigate } from "react-router-dom";
 import "jspdf-autotable";
 import LOGO_BASE64 from "./logo";
 import { AuthContext } from "../context/authContext";
 
 const RelatorioProduto = () => {
     const { currentUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
+    const handleClick = (e) => {
+      e.preventDefault();
+      navigate(-1); // Navega para a página anterior
+    };
     const getFirstDayOfMonth = () => {
         const date = new Date();
         date.setDate(1);
@@ -132,9 +138,16 @@ const RelatorioProduto = () => {
                     />
                 </div>
             </div>
-            <button onClick={handleGenerateReport}>
+            <div className="actions" style={{ marginTop: "20px", gap: "30px"}}>
+            <button className="voltar" onClick={handleClick}>
+                Voltar
+            </button>
+            <button className="gerar-relatorio-produto" onClick={handleGenerateReport}>
                 Gerar Relatório
             </button>
+       
+            </div>
+            
         </div>
     );
 };

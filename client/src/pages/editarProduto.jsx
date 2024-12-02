@@ -147,6 +147,7 @@ const GerenciarProduto = () => {
           error={error} // Passa o estado de erro para o FormProduto
           initialData={produto} // Passa os dados iniciais para o FormProduto
         />
+  
       </div>
 
       {showSuccessModal && (
