@@ -47,11 +47,29 @@ const Ajuda = () => {
   };
 
   const abrirModal = () => {
-    switch (location.pathname) {
-      case '/categoria': // URL da página de categoria
+    const pathname = location.pathname;
+  
+    if (pathname.startsWith('/editarCliente/')) {
+      setIsHelpEditarClienteOpen(true);
+      return;
+    }
+  
+    if (pathname.startsWith('/gerenciarProduto/')) {
+      setIsHelpEditarProdutoOpen(true);
+      return;
+    }
+  
+    if (pathname.startsWith('/editarUsuario/')) {
+      setIsHelpEditarUsuarioOpen(true);
+      return;
+    }
+  
+    // Switch para as URLs estáticas
+    switch (pathname) {
+      case '/categoria':
         setIsHelpCategoriaOpen(true);
         break;
-      case '/produto': // URL da página de produto
+      case '/produto':
         setIsHelpProdutoOpen(true);
         break;
       case '/cliente':
@@ -87,22 +105,14 @@ const Ajuda = () => {
       case '/relatorio/pedido':
         setIsHelpFormularioOpen(true);
         break;
-      case  window.location.pathname.startsWith('/editarCliente/'):
-        setIsHelpEditarClienteOpen(true);
-        break;
-      case window.location.pathname.startsWith('/gerenciarProduto/'):
-        setIsHelpEditarProdutoOpen(true);
-        break;
       case '/relatorio/produto':
         setIsHelpRelatorioOpen(true);
-        break;
-      case window.location.pathname.startsWith('/editarUsuario/'):
-        setIsHelpEditarUsuarioOpen(true);
         break;
       default:
         break;
     }
   };
+  
 
   return (
     <div className="navegacao">
