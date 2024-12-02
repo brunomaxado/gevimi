@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import jsPDF from "jspdf";
@@ -14,8 +14,7 @@ const RelatorioProduto = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        if(isModified)
-        {
+        if (isModified) {
             setShowSairModal(true);
             return;
         }
@@ -35,30 +34,31 @@ const RelatorioProduto = () => {
         date.setHours(23, 59, 59, 999);
         return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     };
-    const [showSairModal, setShowSairModal] =   useState(null);
+    const [showSairModal, setShowSairModal] = useState(null);
     const handleConfirmExit = () => {
-      navigate(-1);
-      setShowSairModal(false); // Fecha o modal
+        navigate(-1);
+        setShowSairModal(false); // Fecha o modal
     };
-    
+
     const handleCancelExit = () => {
-      setShowSairModal(false); // Fecha o modal sem realizar a ação
+        setShowSairModal(false); // Fecha o modal sem realizar a ação
     };
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target; // Captura o nome e valor do campo
         setFilters((prevFilters) => ({
-          ...prevFilters,
-          [name]: value, // Atualiza o valor do campo com base no nome
+            ...prevFilters,
+            [name]: value, // Atualiza o valor do campo com base no nome
         }));
         setIsModified(true); // Marca o formulário como modificado
-      };
-      useEffect(() => {
+    };
+    
+    useEffect(() => {
         // Reseta isModified ao desmontar o componente
         return () => {
-          setIsModified(false);
+            setIsModified(false);
         };
-      }, [setIsModified]);
-    
+    }, [setIsModified]);
+
     const [filters, setFilters] = useState({
         inicioPeriodo: getFirstDayOfMonth(),
         fimPeriodo: getLastDayOfMonth(),
@@ -148,6 +148,7 @@ const RelatorioProduto = () => {
                     <TextField
                         variant="standard"
                         type="datetime-local"
+                        name="inicioPeriodo"
                         value={filters.inicioPeriodo}
                         onChange={handleChange} // Usando a função handleChange
                         sx={{ width: "200px" }} // Define largura padrão
@@ -161,37 +162,38 @@ const RelatorioProduto = () => {
                     <TextField
                         variant="standard"
                         type="datetime-local"
+                        name="fimPeriodo"
                         value={filters.fimPeriodo}
-                         onChange={handleChange} // Usando a função handleChange
+                        onChange={handleChange} // Usando a função handleChange
                         sx={{ width: "200px" }} // Define largura padrão
                     />
                 </div>
             </div>
-            <div className="actions" style={{ marginTop: "20px", gap: "30px"}}>
-            <button className="voltar" onClick={handleClick}>
-                Voltar
-            </button>
-            <button className="gerar-relatorio-produto" onClick={handleGenerateReport}>
-                Gerar Relatório
-            </button>
-       
+            <div className="actions" style={{ marginTop: "20px", gap: "30px" }}>
+                <button className="voltar" onClick={handleClick}>
+                    Voltar
+                </button>
+                <button className="gerar-relatorio-produto" onClick={handleGenerateReport}>
+                    Gerar Relatório
+                </button>
+
             </div>
             {showSairModal &&
-       
-       
-       <div className="modal">
-         <div className="modal-content">
-           <button className="close-modal" onClick={handleCancelExit}>X</button>
-           <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
-           <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
-           <div className="modal-div">
-             <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
-             <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
-           </div>
-         </div>
-       </div>
-       
-   }
+
+
+                <div className="modal">
+                    <div className="modal-content">
+                        <button className="close-modal" onClick={handleCancelExit}>X</button>
+                        <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+                        <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+                        <div className="modal-div">
+                            <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+                            <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+                        </div>
+                    </div>
+                </div>
+
+            }
         </div>
     );
 };
