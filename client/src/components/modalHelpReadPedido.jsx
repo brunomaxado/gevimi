@@ -25,13 +25,30 @@ const ModalHelpReadPedido = ({ isOpen, onRequestClose }) => {
           <div>
             <h5><b>Pesquisar:</b></h5>
             <dl>
+              <dt>Filtrar por datas:</dt>
+              <dt>Data Realizado início:</dt>
+              <dd>- Escolha a data inicial ao qual os pedidos serão visualizados, 
+                essa data refere-se ao dia ao qual o pedido foi realizado,
+                 ele não pegará pedidos de datas anteriores à essa.</dd>
+              <dt>Data Realizado fim:</dt>
+              <dd>-  Escolha a data final ao qual os pedidos serão visualizados, 
+                essa data refere-se ao dia ao qual o pedido foi realizado,
+                 ele não pegará pedidos de datas posteriores à essa.</dd>
+              <dt>Data Entrega início:</dt>
+              <dd>-  Escolha a data inicial ao qual os pedidos serão visualizados, 
+                essa data refere-se ao dia ao qual o pedido foi entregue,
+                 ele não pegará pedidos de datas anteriores à essa.</dd>
+              <dt>Data Entrega fim:</dt>
+              <dd>- Escolha a data final ao qual os pedidos serão visualizados, 
+                essa data refere-se ao dia ao qual o pedido foi entregue,
+                 ele não pegará pedidos de datas posteriores à essa.</dd>
               <dt>Barra de pesquisa:</dt>
               <dd>-  Na caixa de pesquisa, é possível pesquisar o nome do cliente.</dd>
               <dt>Status:</dt>
               <dd>- É possível filtrar os pedidos por estado: finalizado(quando o pedido foi entregue), 
                 em andamento(quando o pedido está sendo preparado ou em espera até o dia) ou
                 pendente(quando o pedido não foi entregue e está atrasado).</dd>
-            <dt>Tipo:</dt>
+              <dt>Tipo:</dt>
               <dd>- É possível filtrar os pedidos por tipo: Entrega(quando os funcionários fazem a entrega),
                 Entrega Ifood(quando a entrega é feita por terceiros pelo aplicativo do Ifood), 
                 Retirada(quando o cliente encomenda e retira na loja) e 

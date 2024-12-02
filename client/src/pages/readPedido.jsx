@@ -389,7 +389,7 @@ const ReadPedido = () => {
             />
           </div>
           <div className="filter-box">
-            <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>
+            <label> Data Realizado Fim: <span className="asterisco">*</span> </label>
             <input
               type="datetime-local"
               name="data_realizado_fim"
