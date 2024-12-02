@@ -8,6 +8,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { AuthContext } from "../context/authContext"; // Importando contexto de autenticação
 import { Link } from "react-router-dom";
+import { useModified } from "../context/ModifiedContext";
 
 export const RelatorioPedido = () => {
   const { currentUser } = useContext(AuthContext); // Capturando o usuário logado
@@ -20,12 +21,17 @@ export const RelatorioPedido = () => {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
   const navigate = useNavigate();
-
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const handleClick = (e) => {
     e.preventDefault();
     navigate(-1); // Navega para a página anterior
   };
-
+  useEffect(() => {
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     inicioPeriodo: "",
@@ -50,7 +56,14 @@ export const RelatorioPedido = () => {
     { id: 3, label: "Pendente" },
     { id: 2, label: "Produção" },
   ];
-
+  const handleChange = (e) => {
+    setIsModified(true); // Marca o formulário como modificado
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value, // Atualiza o valor do campo com base no nome
+    }));
+  };
   const tipoPedidoOptions = [
     { id: 1, label: "Entrega" },
     { id: 2, label: "Entrega Ifood" },
@@ -276,26 +289,26 @@ export const RelatorioPedido = () => {
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
         <label>Data de Realização inicial:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
-            onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })} /></label>
+             onChange={handleChange}  /></label>
 
         <label>Data de Realização final:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
-            onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })} /></label>
+             onChange={handleChange}  /></label>
 
         <label>Data Finalizado inicial:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataFinalizadoInicio" value={filters.dataFinalizadoInicio} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataFinalizadoInicio: e.target.value })} /></label>
+            onChange={handleChange}  /></label>
         <label>Data Finalizado final:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataFinalizadoFim" value={filters.dataFinalizadoFim} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataFinalizadoFim: e.target.value })} /></label>
+            onChange={handleChange}  /></label>
 
         <label>Data Entrega inicial: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataEntregueInicio" value={filters.dataEntregueInicio} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataEntregueInicio: e.target.value })} /></label>
+            onChange={handleChange}  /></label>
 
         <label>Data Entrega final: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
-            onChange={(e) => setFilters({ ...filters, dataEntregueFim: e.target.value })} /></label>
+            onChange={handleChange}  /></label>
       </div>
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
         <FormControl>
@@ -304,7 +317,7 @@ export const RelatorioPedido = () => {
             name="cliente"
             variant="outlined"
             value={filters.cliente || ""} // "" como valor padrão para vazio
-            onChange={(e) => setFilters({ ...filters, cliente: e.target.value })}
+            onChange={handleChange} 
             displayEmpty // Mostra o placeholder mesmo quando o valor está vazio
             sx={{
               backgroundColor: 'white', // Fundo branco
@@ -334,7 +347,7 @@ export const RelatorioPedido = () => {
             name="usuario"
             variant="outlined"
             value={filters.usuario || ""} // "" como valor padrão para vazio
-            onChange={(e) => setFilters({ ...filters, usuario: e.target.value })}
+            onChange={handleChange} 
             displayEmpty
             sx={{
               backgroundColor: 'white', // Fundo branco
@@ -356,7 +369,7 @@ export const RelatorioPedido = () => {
             name="produto"
             variant="outlined"
             value={filters.produto || ""}
-            onChange={(e) => setFilters({ ...filters, produto: e.target.value })}
+            onChange={handleChange} 
             displayEmpty
             sx={{
               backgroundColor: "white",
@@ -386,7 +399,7 @@ export const RelatorioPedido = () => {
             name="status"
             variant="outlined"
             value={filters.status || ""} // "" como valor padrão para vazio
-            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+            onChange={handleChange} 
             displayEmpty
             sx={{
               backgroundColor: 'white', // Fundo branco
@@ -409,7 +422,7 @@ export const RelatorioPedido = () => {
             name="tipoPedido"
             variant="outlined"
             value={filters.tipoPedido || ""}
-            onChange={(e) => setFilters({ ...filters, tipoPedido: e.target.value })}
+            onChange={handleChange} 
             displayEmpty
             sx={{
               backgroundColor: "white",

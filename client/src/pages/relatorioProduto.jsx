@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import "jspdf-autotable";
 import LOGO_BASE64 from "./logo";
+import { useModified } from "../context/ModifiedContext";
 import { AuthContext } from "../context/authContext";
 
 const RelatorioProduto = () => {
@@ -21,7 +22,7 @@ const RelatorioProduto = () => {
         date.setHours(0, 0, 0, 0);
         return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     };
-
+    const { isModified, setIsModified } = useModified(); // Acessando o contexto
     const getLastDayOfMonth = () => {
         const date = new Date();
         date.setMonth(date.getMonth() + 1);
@@ -29,7 +30,21 @@ const RelatorioProduto = () => {
         date.setHours(23, 59, 59, 999);
         return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     };
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: value, // Atualiza o valor do campo com base no nome
+        }));
+        setIsModified(true); // Marca o formulário como modificado
+      };
+      useEffect(() => {
+        // Reseta isModified ao desmontar o componente
+        return () => {
+          setIsModified(false);
+        };
+      }, [setIsModified]);
+    
     const [filters, setFilters] = useState({
         inicioPeriodo: getFirstDayOfMonth(),
         fimPeriodo: getLastDayOfMonth(),
@@ -37,7 +52,7 @@ const RelatorioProduto = () => {
 
     const [produtos, setProdutos] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-
+    console.log(isModified);
     const handleGenerateReport = async () => {
         if (!filters.inicioPeriodo || !filters.fimPeriodo) {
             setErrorMessage("Por favor, preencha ambas as datas.");
@@ -120,7 +135,7 @@ const RelatorioProduto = () => {
                         variant="standard"
                         type="datetime-local"
                         value={filters.inicioPeriodo}
-                        onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })}
+                        onChange={handleChange} // Usando a função handleChange
                         sx={{ width: "200px" }} // Define largura padrão
                     />
                 </div>
@@ -133,7 +148,7 @@ const RelatorioProduto = () => {
                         variant="standard"
                         type="datetime-local"
                         value={filters.fimPeriodo}
-                        onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })}
+                         onChange={handleChange} // Usando a função handleChange
                         sx={{ width: "200px" }} // Define largura padrão
                     />
                 </div>

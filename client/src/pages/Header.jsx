@@ -34,7 +34,8 @@ const Header = () => {
       '/produto',
       '/register',
       '/pedido',
-      '/relatorio/'
+      '/relatorio/',
+      '/readPedido'
     ];
   
     // Verifica se o caminho atual exige confirmação

@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search'; // Importando o ícone de pesquisa
 
+import { useModified } from "../context/ModifiedContext";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -28,7 +29,7 @@ const ReadPedido = () => {
   const [itemsPerPage] = useState(20); // Itens por página
   const [statusFilter, setStatusFilter] = useState(""); // Estado para o filtro de status
   const [tipoFilter, setTipoFilter] = useState(""); // Estado para o filtro de tipo de entrega
-
+  const { isModified, setIsModified } = useModified(); // Acessando o contexto
 
   const navigate = useNavigate();
   const now = new Date();
@@ -127,7 +128,12 @@ const ReadPedido = () => {
     setErrorMessage(" ");
 
   };
-
+  useEffect(() => {
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
   const getClienteNome = (id) => {
     const cliente = clientes.find((c) => c.id_cliente === id);
     return cliente ? cliente.nome : "N/A";
@@ -327,12 +333,17 @@ const ReadPedido = () => {
   };
 
   const handleFilterChange = (e) => {
+    setIsModified(true);
+    console.log("IS MODIFEIS READ PEDIDO:" + isModified);
     const { name, value } = e.target;
     console.log("filter change..");
+    setIsModified(true);
     setFiltros((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    setIsModified(true);
+    console.log("IS MODIFEIS READ PEDIDO:" + isModified);
   };
   // Função para organizar os dados com base na coluna
   const sortData = (key) => {
