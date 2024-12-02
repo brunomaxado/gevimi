@@ -7,10 +7,15 @@ export const getProdutosRelatorio = (req, res) => {
     return res.status(400).json({ message: "Os períodos de início e fim são obrigatórios." });
   }
 
-  // Consulta SQL para o relatório com ordenação corrigida
+  // Converte o formato de data e horário para 'YYYY-MM-DD HH:mm:ss'
+  const inicio = inicioPeriodo.replace("T", " ").split(".")[0];
+  const fim = fimPeriodo.replace("T", " ").split(".")[0];
+
+  // Consulta SQL com os filtros de data e horário ajustados
   const queryProdutos = `
     WITH vp AS (
       SELECT 
+        pe.data_realizado,
         p.id_produto, 
         p.nome, 
         ip.quantidade, 
@@ -18,12 +23,15 @@ export const getProdutosRelatorio = (req, res) => {
         COALESCE(ip.quantidade, 0) * COALESCE(ip.preco_unitario_atual, 0) AS total
       FROM item_pedido ip
       INNER JOIN produto p ON p.id_produto = ip.fk_id_produto
+      INNER JOIN pedido pe ON pe.id_pedido = ip.fk_id_pedido
+      WHERE pe.data_realizado BETWEEN ? AND ?
     ),
     total AS (
       SELECT 
         vp.id_produto, 
         SUM(vp.total) AS soma
       FROM vp
+      WHERE vp.data_realizado BETWEEN ? AND ?
       GROUP BY vp.id_produto
     )
     SELECT 
@@ -41,7 +49,7 @@ export const getProdutosRelatorio = (req, res) => {
     ORDER BY quantidade_vendida DESC, p.nome ASC
   `;
 
-  const params = [inicioPeriodo, fimPeriodo];
+  const params = [inicio, fim, inicio, fim, inicio, fim];
 
   // Executa a consulta no banco de dados
   db.query(queryProdutos, params, (err, produtosData) => {

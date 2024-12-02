@@ -135,7 +135,8 @@ const RelatorioProduto = () => {
 
         doc.save("relatorio_produtos.pdf");
     };
-
+console.log(filters.inicioPeriodo);
+console.log(filters.fimPeriodo);
     return (
         <div>
             <h1>Relatório de Produtos</h1>
