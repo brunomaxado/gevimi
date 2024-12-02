@@ -35,11 +35,22 @@ const ReadPedido = () => {
   const now = new Date();
 
   // Data de início do ano (00:00)
-  const dataRealizadoInicio = new Date(now.getFullYear(), 0, 1, 0, 0).toISOString().split("T")[0] + "T00:00";
-  
+  //const dataRealizadoInicio = new Date(now.getFullYear(), 0, 1, 0, 0).toISOString().split("T")[0] + "T00:00";
+  const dataRealizadoInicio = () => {
+    const date = new Date();
+    date.setDate(1);
+    date.setHours(0, 0, 0, 0);
+    return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  };
   // Dia atual às 23:59
-  const dataRealizadoFim = now.toISOString().split("T")[0] + "T23:59";
-  
+  // const dataRealizadoFim = now.toISOString().split("T")[0] + "T23:59";
+  const dataRealizadoFim = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(0);
+    date.setHours(23, 59, 59, 999);
+    return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  };
 
   // Data de entrega (hoje - 00:00 até 23:59)
   const entregaInicio = new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] + "T00:00";
@@ -47,8 +58,8 @@ const ReadPedido = () => {
 
 
   const [filtros, setFiltros] = useState({
-    data_realizado_inicio: dataRealizadoInicio,
-    data_realizado_fim: dataRealizadoFim,
+    data_realizado_inicio: dataRealizadoInicio(),
+    data_realizado_fim: dataRealizadoFim(),
     data_entrega_inicio: "",
     data_entrega_fim: "",
     tipo: "",
@@ -152,22 +163,22 @@ const ReadPedido = () => {
   const calcularTotalItens = (itensPedido, frete = 0) => {
     // Garantir que o valor do frete seja numérico
     const valorFrete = isNaN(frete) ? 0 : parseFloat(frete);
-  
+
     // Calcular o total dos itens
     const totalItens = itensPedido.reduce((total, item) => {
       return total + (item.preco_unitario_atual || 0) * (item.quantidade || 0);
     }, 0);
-  
+
     // Somar o frete ao total
     const totalComFrete = totalItens + valorFrete;
-  
+
     // Retornar o valor formatado em BRL
     return totalComFrete.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     });
   };
-  
+
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
       case 1: return "Dinheiro";
@@ -503,8 +514,8 @@ const ReadPedido = () => {
             onClick={() => {
               setSearchTerm("");
               setFiltros({
-                data_realizado_inicio: dataRealizadoInicio,
-                data_realizado_fim: dataRealizadoFim,
+                data_realizado_inicio: dataRealizadoInicio(),
+                data_realizado_fim: dataRealizadoFim(),
                 data_entrega_inicio: "",
                 data_entrega_fim: "",
                 tipo: "",

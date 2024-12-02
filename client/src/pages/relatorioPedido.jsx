@@ -26,6 +26,19 @@ export const RelatorioPedido = () => {
     e.preventDefault();
     navigate(-1); // Navega para a página anterior
   };
+  const getFirstDayOfMonth = () => {
+    const date = new Date();
+    date.setDate(1);
+    date.setHours(0, 0, 0, 0);
+    return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  };
+  const getLastDayOfMonth = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(0);
+    date.setHours(23, 59, 59, 999);
+    return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  };
   useEffect(() => {
     // Reseta isModified ao desmontar o componente
     return () => {
@@ -34,8 +47,8 @@ export const RelatorioPedido = () => {
   }, [setIsModified]);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
-    inicioPeriodo: "",
-    fimPeriodo: "",
+    inicioPeriodo:  getFirstDayOfMonth(),
+    fimPeriodo: getLastDayOfMonth(),
     dataFinalizadoInicio: "",
     dataFinalizadoFim: "",
     dataEntregueInicio: "",
@@ -113,8 +126,8 @@ export const RelatorioPedido = () => {
 
   const handleResetFilters = () => {
     setFilters({
-      inicioPeriodo: "",
-      fimPeriodo: "",
+      inicioPeriodo: getFirstDayOfMonth(),
+      fimPeriodo: getLastDayOfMonth(),
       dataFinalizadoInicio: "",
       dataFinalizadoFim: "",
       dataEntregueInicio: "",
@@ -289,26 +302,26 @@ export const RelatorioPedido = () => {
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
         <label>Data de Realização inicial:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
-             onChange={handleChange}  /></label>
+            onChange={handleChange} /></label>
 
         <label>Data de Realização final:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
-             onChange={handleChange}  /></label>
+            onChange={handleChange} /></label>
 
         <label>Data Finalizado inicial:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataFinalizadoInicio" value={filters.dataFinalizadoInicio} variant="standard"
-            onChange={handleChange}  /></label>
+            onChange={handleChange} /></label>
         <label>Data Finalizado final:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataFinalizadoFim" value={filters.dataFinalizadoFim} variant="standard"
-            onChange={handleChange}  /></label>
+            onChange={handleChange} /></label>
 
         <label>Data Entrega inicial: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataEntregueInicio" value={filters.dataEntregueInicio} variant="standard"
-            onChange={handleChange}  /></label>
+            onChange={handleChange} /></label>
 
         <label>Data Entrega final: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
-            onChange={handleChange}  /></label>
+            onChange={handleChange} /></label>
       </div>
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
         <FormControl>
@@ -317,10 +330,16 @@ export const RelatorioPedido = () => {
             name="cliente"
             variant="outlined"
             value={filters.cliente || ""} // "" como valor padrão para vazio
-            onChange={handleChange} 
+            onChange={handleChange}
             displayEmpty // Mostra o placeholder mesmo quando o valor está vazio
             sx={{
-              backgroundColor: 'white', // Fundo branco
+              backgroundColor: '#F0F8FF',
+              '&:hover': {                // Estilo ao passar o mouse
+                borderColor: 'blue',
+              },
+              '& .MuiOutlinedInput-notchedOutline': { // Garante que funcione com variant="outlined"
+                border: "0.5px solid black",
+              },
             }}
             multiple
             renderValue={(selected) => {
@@ -347,10 +366,16 @@ export const RelatorioPedido = () => {
             name="usuario"
             variant="outlined"
             value={filters.usuario || ""} // "" como valor padrão para vazio
-            onChange={handleChange} 
+            onChange={handleChange}
             displayEmpty
             sx={{
-              backgroundColor: 'white', // Fundo branco
+              backgroundColor: '#F0F8FF',
+              '&:hover': {                // Estilo ao passar o mouse
+                borderColor: 'blue',
+              },
+              '& .MuiOutlinedInput-notchedOutline': { // Garante que funcione com variant="outlined"
+                border: "0.5px solid black",
+              },
             }}
           >
             <MenuItem disabled value="">
@@ -364,15 +389,21 @@ export const RelatorioPedido = () => {
           </Select>
         </FormControl>
         <FormControl>
-        <label>Produto:</label>
+          <label>Produto:</label>
           <Select
             name="produto"
             variant="outlined"
             value={filters.produto || ""}
-            onChange={handleChange} 
+            onChange={handleChange}
             displayEmpty
             sx={{
-              backgroundColor: "white",
+              backgroundColor: "#F0F8FF",
+              '&:hover': {                // Estilo ao passar o mouse
+                borderColor: 'blue',
+              },
+              '& .MuiOutlinedInput-notchedOutline': { // Garante que funcione com variant="outlined"
+                border: "0.5px solid black",
+              },
             }}
             multiple
             renderValue={(selected) => {
@@ -399,10 +430,16 @@ export const RelatorioPedido = () => {
             name="status"
             variant="outlined"
             value={filters.status || ""} // "" como valor padrão para vazio
-            onChange={handleChange} 
+            onChange={handleChange}
             displayEmpty
             sx={{
-              backgroundColor: 'white', // Fundo branco
+              backgroundColor: '#F0F8FF',
+              '&:hover': {                // Estilo ao passar o mouse
+                borderColor: 'blue',
+              },
+              '& .MuiOutlinedInput-notchedOutline': { // Garante que funcione com variant="outlined"
+                border: "0.5px solid black",
+              },
             }}
           >
             <MenuItem disabled value="">
@@ -416,16 +453,22 @@ export const RelatorioPedido = () => {
           </Select>
         </FormControl>
         <FormControl>
-        <label>Tipo:</label>
+          <label>Tipo:</label>
 
           <Select
             name="tipoPedido"
             variant="outlined"
             value={filters.tipoPedido || ""}
-            onChange={handleChange} 
+            onChange={handleChange}
             displayEmpty
             sx={{
-              backgroundColor: "white",
+              backgroundColor: "#F0F8FF",
+              '&:hover': {                // Estilo ao passar o mouse
+                borderColor: 'blue',
+              },
+              '& .MuiOutlinedInput-notchedOutline': { // Garante que funcione com variant="outlined"
+                border: "0.5px solid black",
+              },
             }}
             multiple
             renderValue={(selected) => {
@@ -447,10 +490,10 @@ export const RelatorioPedido = () => {
         </FormControl>
       </div>
       <div className="actions" style={{ marginTop: "20px" }}>
-        <button className="gerar-relatorio" onClick={handleResetFilters}>
+        <button className="voltar" onClick={handleResetFilters}>
           Limpar Filtros
         </button>
-        <button className="gerar-relatorio" onClick={generateReportHandler}>
+        <button className="voltar" onClick={generateReportHandler}>
           Gerar Relatorio
         </button>
 
