@@ -226,7 +226,7 @@ export const RelatorioPedido = () => {
       doc.setFontSize(18);
       doc.text("Business VIMI", 50, 20);
       doc.setFontSize(11);
-      doc.text("Relatório de Pedidos", 50, 28);
+      doc.text("Relatório de Pedidos ordenado por data de realização", 50, 28);
 
       const date = new Intl.DateTimeFormat("pt-BR", {
         dateStyle: "short",

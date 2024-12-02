@@ -80,7 +80,7 @@ const RelatorioProduto = () => {
             generatePDF(response.data);
         } catch (error) {
             console.error("Erro ao gerar o relatório:", error);
-            setErrorMessage("Erro ao buscar dados do relatório.");
+            setErrorMessage("Não existem dados nesse intervalo de tempo.");
         }
     };
 
