@@ -88,7 +88,7 @@ export const getPedidosRelatorio = (req, res) => {
   }
 
   // Adiciona a ordenação por cliente
-  queryPedidos += ` ORDER BY (SELECT nome FROM cliente WHERE cliente.id_cliente = pedido.fk_id_cliente) ASC`;
+  queryPedidos += ` ORDER BY data_realizado ASC, (SELECT nome FROM cliente WHERE cliente.id_cliente = pedido.fk_id_cliente) ASC`;
 
   db.query(queryPedidos, params, (err, pedidosData) => {
     if (err) {
