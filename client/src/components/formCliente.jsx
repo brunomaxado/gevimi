@@ -32,10 +32,6 @@ const validateCelular = (celular) => {
   return celular.length === 11;
 };
 
-const validateCEP = (cep) => {
-  cep = cep.replace(/\D/g, '');
-  return cep.length === 8;
-};
 
 const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
   const [cliente, setCliente] = useState({
@@ -82,9 +78,26 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
 
   };
   const navigate = useNavigate();
-
+  const [showSairModal, setShowSairModal] =   useState(null);
+  const handleConfirmExit = () => {
+    navigate(-1);
+    setShowSairModal(false); // Fecha o modal
+  };
+  
+  const handleCancelExit = () => {
+    setShowSairModal(false); // Fecha o modal sem realizar a ação
+  };
+  const validateCEP = (cep) => {
+    cep = cep.replace(/\D/g, '');
+    return cep.length === 8;
+  };
   const handleClick = (e) => {
     e.preventDefault();
+    if(isModified)
+    {
+        setShowSairModal(true);
+        return;
+    }
     navigate(-1); // Navega para a página anterior
   };
   const buscarEnderecoPorCEP = async (cep) => {
@@ -196,6 +209,7 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
   };
 
   return (
+    <div> 
     <form onSubmit={handleSubmit} className="form-container">
       <div className="cliente">
 
@@ -341,7 +355,25 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
         {error && <p id="erro">{error}</p>}
        
       </div>
+     
     </form>
+    {showSairModal &&
+       
+       
+       <div className="modal">
+         <div className="modal-content">
+           <button className="close-modal" onClick={handleCancelExit}>X</button>
+           <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+           <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+           <div className="modal-div">
+             <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+             <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+           </div>
+         </div>
+       </div>
+       
+   }
+    </div>
   );
 };
 

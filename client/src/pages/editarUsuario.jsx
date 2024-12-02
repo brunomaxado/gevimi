@@ -19,6 +19,15 @@ const EditarUsuario = () => {
   const usuarioId = location.pathname.split("/")[2];
   const [showPassword, setShowPassword] = useState(false);
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
+  const [showSairModal, setShowSairModal] =   useState(null);
+  const handleConfirmExit = () => {
+    navigate(-1);
+    setShowSairModal(false); // Fecha o modal
+  };
+  
+  const handleCancelExit = () => {
+    setShowSairModal(false); // Fecha o modal sem realizar a ação
+  };
   const fetchUsuario = async () => {
     try {
       const response = await axios.get(`http://localhost:8800/usuario/${usuarioId}`);
@@ -44,9 +53,13 @@ const EditarUsuario = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
+    if(isModified)
+    {
+        setShowSairModal(true);
+        return;
+    }
     navigate(-1); // Navega para a página anterior
   };
-
   const handleChange = (e) => {
     setIsModified(true); // Marca o formulário como modificado
     const { name, value } = e.target;
@@ -94,13 +107,13 @@ const EditarUsuario = () => {
     }
 
     if (novaSenha.length < 8) {
-      setError("A senha deve ter no mínimo 8 caracteres.");
+      setError("A senha não está nos padrões.");
       console.log("Senha curta");
       return;
     }
 
     if (!/\d/.test(novaSenha)) {
-      setError("A senha deve conter pelo menos um número.");
+      setError("A senha não está nos padrões.");
       console.log("Senha sem número");
       return;
     }
@@ -160,7 +173,7 @@ const EditarUsuario = () => {
           </button>
 
           <div className="form-group">
-            <label>Nome:</label>
+            <label>Nome:     <span className="asterisco">*</span></label>
             <input
               type="text"
               name="nome"
@@ -171,7 +184,7 @@ const EditarUsuario = () => {
           </div>
 
           <div className="form-group">
-            <label>Login:</label>
+            <label>Login:     <span className="asterisco">*</span></label>
             <input
               type="text"
               name="login"
@@ -182,7 +195,7 @@ const EditarUsuario = () => {
           </div>
 
           <div className="form-group">
-            <label>Administrador:</label>
+            <label>Administrador:     <span className="asterisco">*</span></label>
             <div className="radio-group">
               <label className="radio-option">
                 <input
@@ -219,14 +232,29 @@ const EditarUsuario = () => {
       </div>
       {error && <p className="error-message">{error}</p>}
 
-
+      {showSairModal &&
+       
+       
+       <div className="modal">
+         <div className="modal-content">
+           <button className="close-modal" onClick={handleCancelExit}>X</button>
+           <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+           <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+           <div className="modal-div">
+             <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+             <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+           </div>
+         </div>
+       </div>
+       
+   }
       {showPasswordModal && (
         <div className="modal">
           <div className="modal-content4">
             <button className="close-modal" onClick={() => setShowPasswordModal(false)}>X</button>
 
             <h2>Atualizar Senha</h2>
-            <label>Senha: </label>
+            <label>Senha:      <span className="asterisco">*</span></label>
 
             <input
               required
@@ -238,6 +266,7 @@ const EditarUsuario = () => {
               className="senha-input"
               style={{ width: "100%", paddingRight: "50px" }} // Espaço extra para o botão
             />
+            <p> A senha deve ter no mínimo 8 dígitos e letras e números.</p>
             <button
               type="button"
               onClick={togglePasswordVisibility}
@@ -245,7 +274,7 @@ const EditarUsuario = () => {
                 position: "absolute",
                 top: "50%", // Centraliza verticalmente
                 right: "4%", // Cola o botão na borda direita
-                transform: "translateY(-150%)", // Alinha verticalmente ao centro do input
+                transform: "translateY(-190%)", // Alinha verticalmente ao centro do input
                 backgroundColor: "transparent",
                 border: "none",
                 cursor: "pointer",
@@ -266,7 +295,7 @@ const EditarUsuario = () => {
                   handlePasswordChange(); // Chama a função que verifica e atualiza a senha
                 }}
               >
-                Salvar
+                Confirmar
               </button>
               {error && <p style={{ color: "red" }}>{error}</p>}
             </div>

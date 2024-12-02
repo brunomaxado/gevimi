@@ -17,7 +17,7 @@ const Pedido = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [clienteSelecionado, setClienteSelecionado] = useState({});
-
+const [showSairModal, setShowSairModal] =   useState(null);
   const [pedido, setPedido] = useState({
     tipo: "",
     forma_pagamento: "",
@@ -38,6 +38,14 @@ const Pedido = () => {
 
 
 
+  const handleConfirmExit = () => {
+    navigate(-1);
+    setShowSairModal(false); // Fecha o modal
+  };
+  
+  const handleCancelExit = () => {
+    setShowSairModal(false); // Fecha o modal sem realizar a ação
+  };
   const [novoItem, setNovoItem] = useState({
     fk_id_produto: "",
     preco_unitario_atual: null,
@@ -139,12 +147,12 @@ console.log(pedido);
     }
     if ((tipo == 1 || tipo == 2) && (!data_para_entregar || !frete)) {
       console.log(tipo);
-      setError("Todos os campos obrigatórios devem ser preenchidos1.");
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
     
     if (tipo == 3 && !data_para_entregar) {
-      setError("Todos os campos obrigatórios devem ser preenchidos2.");
+      setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
     
@@ -174,7 +182,13 @@ console.log(pedido);
 
   const handleBackClick = (e) => {
     e.preventDefault();
-    navigate(-1); // Navega para a página anterior
+    if(isModified){
+      setShowSairModal(true);
+      return;
+    }
+    navigate(-1);
+
+   // Navega para a página anterior
   };
   
   const handleAdicionarItem = async (e) => {
@@ -515,7 +529,22 @@ console.log(pedido);
       <button className="voltar" onClick={handleBackClick}> Voltar</button>
       <button class="enviar-pedido" onClick={handleClick}>Confirmar</button>
    
-
+      {showSairModal &&
+       
+       
+          <div className="modal">
+            <div className="modal-content">
+              <button className="close-modal" onClick={handleCancelExit}>X</button>
+              <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+              <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+              <div className="modal-div">
+                <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+                <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+              </div>
+            </div>
+          </div>
+          
+      }
       <ModalCliente
         isOpen={showModal}  // Controla se o modal deve ser exibido
         onRequestClose={() => setShowModal(false)}  // Função para fechar o modal

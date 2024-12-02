@@ -3,6 +3,7 @@ import '../style.css';
 import { AuthContext } from "../context/authContext";
 import React, { useContext, useState } from "react";
 import ReactDOM from "react-dom";
+
 import { useModified } from "../context/ModifiedContext";
 
 const Header = () => {
@@ -71,8 +72,7 @@ const Header = () => {
 
   return (
     <div>
-       {isModified && <p>Existem alterações não salvas!</p>}
-      <header className="header">
+          <header className="header">
         <div className="nav">
           <ul className="nav-list">
             <li id="pedido" className="direita">

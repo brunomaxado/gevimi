@@ -22,14 +22,17 @@ const ReadUsuario = () => {
     const fetchAllUsuarios = async () => {
       try {
         const res = await axios.get("http://localhost:8800/usuario");
-        setUsuarios(res.data);
+        setUsuarios(
+          res.data.sort((a, b) => a.nome.localeCompare(b.nome))
+        );
       } catch (err) {
         console.log(err);
       }
     };
-
+  
     fetchAllUsuarios();
   }, []);
+  
 
   const handleDeleteClick = (id) => {
     setSelectedUsuarioId(id);

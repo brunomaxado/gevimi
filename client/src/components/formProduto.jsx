@@ -7,9 +7,22 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
   const [preco, setPreco] = useState(produto.preco_unitario || "");
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const navigate = useNavigate();
-
+  const [showSairModal, setShowSairModal] =   useState(null);
+  const handleConfirmExit = () => {
+    navigate(-1);
+    setShowSairModal(false); // Fecha o modal
+  };
+  
+  const handleCancelExit = () => {
+    setShowSairModal(false); // Fecha o modal sem realizar a ação
+  };
   const handleClick = (e) => {
     e.preventDefault();
+    if(isModified)
+    {
+        setShowSairModal(true);
+        return;
+    }
     navigate(-1); // Navega para a página anterior
   };
   useEffect(() => {
@@ -66,6 +79,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
   };
 
   return (
+    <div>
     <form onSubmit={handleSubmit} className="form-container">
       <div className="form-row">
         <div className="form-group">
@@ -143,6 +157,22 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
       {error && <p style={{ color: "red" }}>{error}</p>}
      
     </form>
+    {showSairModal &&
+       
+       
+      <div className="modal">
+        <div className="modal-content">
+          <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+          <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+          <div className="modal-div">
+            <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+            <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+          </div>
+        </div>
+      </div>
+      
+  }
+    </div>
   );
 };
 

@@ -47,8 +47,8 @@ export const RelatorioPedido = () => {
 
   const statusOptions = [
     { id: 1, label: "Finalizado" },
-    { id: 2, label: "Pendente" },
-    { id: 3, label: "Produção" },
+    { id: 3, label: "Pendente" },
+    { id: 2, label: "Produção" },
   ];
 
   const tipoPedidoOptions = [
@@ -438,7 +438,7 @@ export const RelatorioPedido = () => {
           Limpar Filtros
         </button>
         <button className="gerar-relatorio" onClick={generateReportHandler}>
-          Gerar Relatório
+          Gerar Relatorio
         </button>
 
         {error && <p style={{ color: "red" }}>{error}</p>}

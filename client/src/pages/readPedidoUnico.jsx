@@ -249,15 +249,14 @@ console.log(clientes);
   <div className="form-group-pedido">
     <label><b>Frete:</b></label>
     <input
-      type="text"
-      value={` ${
-        pedido.pedido.frete && !isNaN(parseFloat(pedido.pedido.frete))
-          ? parseFloat(pedido.pedido.frete)
-              .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-          : "R$ 0,00"
-      }`}
-      readOnly
-    />
+    type="text"
+    value={
+      !isNaN(parseFloat(pedido.pedido.frete)) && parseFloat(pedido.pedido.frete) !== 0
+        ? `R$ ${parseFloat(pedido.pedido.frete).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+        : "R$ 0,00"
+    }
+    readOnly
+  />
   </div>
 
   <div className="form-group-pedido">

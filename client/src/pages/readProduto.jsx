@@ -219,7 +219,11 @@ const ReadProduto = () => {
                   <td>{produto.nome}</td>
                   <td className="coluna-descricao">{produto.descricao}</td>
                   <td>{getCategoriaNome(produto.fk_id_categoria)}</td>
-                  <td className="coluna-preco">R${produto.preco_unitario}</td>
+                  
+<td className="coluna-preco">{produto.preco_unitario.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })}</td>
                   <td className="coluna-center">
                     <div className="action-icons">
                       <span

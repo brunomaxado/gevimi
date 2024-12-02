@@ -6,9 +6,22 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const navigate = useNavigate();
-
+  const [showSairModal, setShowSairModal] =   useState(null);
+  const handleConfirmExit = () => {
+    navigate(-1);
+    setShowSairModal(false); // Fecha o modal
+  };
+  
+  const handleCancelExit = () => {
+    setShowSairModal(false); // Fecha o modal sem realizar a ação
+  };
   const handleClick = (e) => {
     e.preventDefault();
+    if(isModified)
+    {
+        setShowSairModal(true);
+        return;
+    }
     navigate(-1); // Navega para a página anterior
   };
   const togglePasswordVisibility = () => {
@@ -82,6 +95,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
             className="senha-input"
             style={{ width: "100%", paddingRight: "50px" }} // Espaço extra para o botão
           />
+          A senha deve ter no mínimo 8 dígitos e letras e números.
           <button
             type="button"
             onClick={togglePasswordVisibility}
@@ -89,7 +103,7 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
               position: "absolute",
               top: "50%", // Centraliza verticalmente
               right: "-14%", // Cola o botão na borda direita
-              transform: "translateY(-50%)", // Alinha verticalmente ao centro do input
+              transform: "translateY(-90%)", // Alinha verticalmente ao centro do input
               backgroundColor: "transparent",
               border: "none",
               cursor: "pointer",
@@ -142,7 +156,22 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       
     </form>
-    
+    {showSairModal &&
+       
+       
+       <div className="modal">
+         <div className="modal-content">
+       
+           <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+           <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+           <div className="modal-div">
+             <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+             <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+           </div>
+         </div>
+       </div>
+       
+   }
     </div>
   );
 };

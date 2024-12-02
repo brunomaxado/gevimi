@@ -146,16 +146,22 @@ const ReadPedido = () => {
   const calcularTotalItens = (itensPedido, frete = 0) => {
     // Garantir que o valor do frete seja numérico
     const valorFrete = isNaN(frete) ? 0 : parseFloat(frete);
-
+  
+    // Calcular o total dos itens
     const totalItens = itensPedido.reduce((total, item) => {
       return total + (item.preco_unitario_atual || 0) * (item.quantidade || 0);
     }, 0);
-
+  
+    // Somar o frete ao total
     const totalComFrete = totalItens + valorFrete;
-
-    return !isNaN(totalComFrete) ? totalComFrete.toFixed(2) : '0.00';
+  
+    // Retornar o valor formatado em BRL
+    return totalComFrete.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
   };
-
+  
   const getFormaPagamento = (formaPagamento) => {
     switch (formaPagamento) {
       case 1: return "Dinheiro";
@@ -565,7 +571,7 @@ const ReadPedido = () => {
                 <td class="coluna-center">{getStatus(pedido.status)}</td>
 
                 <td class="coluna-center"> {pedido.data_finalizado ? new Date(pedido.data_finalizado).toLocaleDateString() : ""}</td>
-                <td className="coluna-preco">R${calcularTotalItens(pedido.itensPedido, parseFloat(pedido.frete) || 0)}</td>
+                <td className="coluna-preco">{calcularTotalItens(pedido.itensPedido, parseFloat(pedido.frete) || 0)}</td>
 
 
                 <td class="coluna-center">

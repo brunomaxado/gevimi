@@ -24,7 +24,8 @@ const GerenciarProduto = () => {
       const response = await axios.get(`http://localhost:8800/readProduto/${produtoId}`);
       const produtoData = response.data;
   
-      produtoData.preco_unitario = applyPriceMask(String(produtoData.preco_unitario)); // Formata o preço com máscara
+      // Converte o preço em string e aplica a máscara corretamente
+      produtoData.preco_unitario = applyPriceMask(produtoData.preco_unitario.toFixed(2)); 
   
       setProduto(produtoData);
     } catch (err) {
@@ -33,8 +34,18 @@ const GerenciarProduto = () => {
     }
   };
   
-  
   const applyPriceMask = (value) => {
+    if (!value) return "R$ 0,00"; // Valor padrão caso esteja vazio ou indefinido
+  
+    const numericValue = parseFloat(value).toFixed(2); // Garante duas casas decimais
+    return `R$ ${numericValue
+      .replace(".", ",") // Usa vírgula como separador decimal
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`; // Adiciona pontos para milhares
+  };
+  
+  
+  
+  const applyPriceMask2 = (value) => {
     let numericValue = value.replace(/\D/g, ""); // Remove caracteres não numéricos
   
     numericValue = (numericValue / 100).toFixed(2) // Converte para decimal
