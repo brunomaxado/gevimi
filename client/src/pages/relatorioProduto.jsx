@@ -13,8 +13,13 @@ const RelatorioProduto = () => {
     const navigate = useNavigate();
 
     const handleClick = (e) => {
-      e.preventDefault();
-      navigate(-1); // Navega para a página anterior
+        e.preventDefault();
+        if(isModified)
+        {
+            setShowSairModal(true);
+            return;
+        }
+        navigate(-1); // Navega para a página anterior
     };
     const getFirstDayOfMonth = () => {
         const date = new Date();
@@ -29,6 +34,15 @@ const RelatorioProduto = () => {
         date.setDate(0);
         date.setHours(23, 59, 59, 999);
         return new Date(date - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    };
+    const [showSairModal, setShowSairModal] =   useState(null);
+    const handleConfirmExit = () => {
+      navigate(-1);
+      setShowSairModal(false); // Fecha o modal
+    };
+    
+    const handleCancelExit = () => {
+      setShowSairModal(false); // Fecha o modal sem realizar a ação
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -162,7 +176,22 @@ const RelatorioProduto = () => {
             </button>
        
             </div>
-            
+            {showSairModal &&
+       
+       
+       <div className="modal">
+         <div className="modal-content">
+           <button className="close-modal" onClick={handleCancelExit}>X</button>
+           <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+           <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+           <div className="modal-div">
+             <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+             <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+           </div>
+         </div>
+       </div>
+       
+   }
         </div>
     );
 };

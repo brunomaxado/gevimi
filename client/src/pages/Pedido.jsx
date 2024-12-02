@@ -131,7 +131,18 @@ console.log(pedido);
     setPedido((prev) => ({ ...prev, [name]: value }));
     setIsModified(true); // Marca o formulário como modificado
   };
-
+  const handleTipoChange = (e) => {
+    const { name, value } = e.target;
+  
+    setPedido((prev) => ({
+      ...prev,
+      [name]: value,
+      frete: value === "3" || value === "4" ? "" : prev.frete, // Limpa frete para tipo 3 ou 4
+    }));
+  
+    setIsModified(true); // Marca o formulário como modificado
+  };
+  
   const handleItemChange = (e) => {
     setNovoItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setIsModified(true); // Marca o formulário como modificado
@@ -160,12 +171,12 @@ console.log(pedido);
       setError("Adicione pelo menos um item ao pedido.");
       return;
     }
-    if (fk_id_cliente == 1 && (tipo == 1 || tipo == 2)) {
-      setError("Cliente 'A Loja' só pode ser utilizado para vendas comuns e Ifood. Entregas e Retiradas necessitam de cadastro");
+    if (fk_id_cliente == 1 && (tipo == 1 || tipo == 3)) {
+      setError("Cliente 'A Loja' só pode ser vinculado com pedido comum ou entrega ifood.");
       return;
     }
     setError(null);
-
+   
     const dadosParaAtualizar = {
       pedido,
       itensPedido,
@@ -357,7 +368,7 @@ console.log(pedido);
                 required
                 value={pedido.tipo}
                 onChange={(e) => {
-                  handleChange(e);
+                  handleTipoChange(e);
                 }}
               >
                 <option value="" disabled selected>Selecione um tipo de entrega</option>

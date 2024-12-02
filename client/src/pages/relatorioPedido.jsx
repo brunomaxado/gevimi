@@ -23,7 +23,14 @@ export const RelatorioPedido = () => {
   const navigate = useNavigate();
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const handleClick = (e) => {
+
+
     e.preventDefault();
+    if(isModified)
+    {
+        setShowSairModal(true);
+        return;
+    }
     navigate(-1); // Navega para a página anterior
   };
   const getFirstDayOfMonth = () => {
@@ -63,7 +70,15 @@ export const RelatorioPedido = () => {
   const [clientes, setClientes] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [produtos, setProdutos] = useState([]);
-
+  const [showSairModal, setShowSairModal] =   useState(false);
+  const handleConfirmExit = () => {
+    navigate(-1);
+    setShowSairModal(false); // Fecha o modal
+  };
+  
+  const handleCancelExit = () => {
+    setShowSairModal(false); // Fecha o modal sem realizar a ação
+  };
   const statusOptions = [
     { id: 1, label: "Finalizado" },
     { id: 3, label: "Pendente" },
@@ -493,7 +508,7 @@ export const RelatorioPedido = () => {
         <button className="voltar" onClick={handleResetFilters}>
           Limpar Filtros
         </button>
-        <button className="voltar" onClick={generateReportHandler}>
+        <button className="voltar2" onClick={generateReportHandler}>
           Gerar Relatorio
         </button>
 
@@ -504,6 +519,22 @@ export const RelatorioPedido = () => {
         Voltar
       </button>
 
+      {showSairModal &&
+       
+       
+       <div className="modal">
+         <div className="modal-content">
+           <button className="close-modal" onClick={handleCancelExit}>X</button>
+           <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
+           <p style={{ textAlign: 'center' }}>Dados não salvos! Seus dados não serão salvos se não confirmar o envio.</p>
+           <div className="modal-div">
+             <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+             <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
+           </div>
+         </div>
+       </div>
+       
+   }
     </div>
   );
 };

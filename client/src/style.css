@@ -2565,9 +2565,21 @@ option:not(:first-of-type) {
   border-radius: 10px;
   margin-bottom: 2%;
 }
+.voltar2{
+  width: 10%;
+  height: 10%;
+  border: none;
+  padding: 12px;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-bottom: 2%;
+}
 
 .voltar{
-  width: 8%;
+  width: 10%;
   height: 10%;
   border: none;
   padding: 12px;
@@ -2586,6 +2598,7 @@ option:not(:first-of-type) {
 
 .gerar-relatorio-produto{
   height: 10%;
+  width: 10%;
   border: none;
   padding: 12px;
   background-color: var(--amarelologo);
