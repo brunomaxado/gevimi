@@ -19,19 +19,25 @@ const ModalHelpFormulario = ({ isOpen, onRequestClose }) => {
             <dl>
             <dd>- É necessário escolher ao menos uma data inicial e uma final para gerar um relatório de um determinado período.</dd>
               <dt>Data de Realização inicial:</dt>
-              <dd>- Escolha a data inicial ao qual o relatório retornará, ele não pegará pedidos de datas anteriores à essa.</dd>
+              <dd>- Escolha a data inicial ao qual o relatório retornará,
+                 essa data refere-se ao dia ao qual o pedido foi realizado,
+                 ele não pegará pedidos de datas anteriores à essa.</dd>
               <dt>Data de Realização final:</dt>
               <dd> - Escolha a data limite ao qual o relatório retornará, ele não pegará pedidos de datas posteriores a essa.</dd>
             </dl>
             <dl>
               <dt>Data de Finalizado inicial:</dt>
-              <dd>- Escolha a data inicial ao qual o relatório retornará, ele não pegará pedidos de datas anteriores à essa.</dd>
+              <dd>- Escolha a data inicial ao qual o relatório retornará, 
+                essa data refere-se ao dia ao qual o pedido foi finalizado,
+                 ele não pegará pedidos de datas anteriores à essa.</dd>
               <dt>Data de Finalizado final:</dt>
               <dd> - Escolha a data limite ao qual o relatório retornará, ele não pegará pedidos de datas posteriores a essa.</dd>
             </dl>
             <dl>
               <dt>Data de Entrega inicial:</dt>
-              <dd>- Escolha a data inicial ao qual o relatório retornará, ele não pegará pedidos de datas anteriores à essa.</dd>
+              <dd>- Escolha a data inicial ao qual o relatório retornará, 
+                essa data refere-se ao dia ao qual o pedido foi entregue,
+                 ele não pegará pedidos de datas anteriores à essa.</dd>
               <dt>Data de Entrega final:</dt>
               <dd> - Escolha a data limite ao qual o relatório retornará, ele não pegará pedidos de datas posteriores a essa.</dd>
             </dl>
@@ -44,13 +50,13 @@ const ModalHelpFormulario = ({ isOpen, onRequestClose }) => {
               <dd>- Se optar por filtrar por clientes, é possível escolher mais de um dentre os listados e também
                 digitar para encontrar mais facilmente.</dd>
               <dt>Usuário:</dt>
-              <dd>- Se optar por filtrar por usuário, é possível esccolher mais de um dentre os listados e também 
+              <dd>- Se optar por filtrar por usuário, é possível escolher apenas um dentre os listados e também 
                 digitar para encontrar mais facilmente.</dd>
               <dt>Produto:</dt>
-              <dd>- Se optar por filtrar por produto, é possível esccolher mais de um dentre os listados e também 
+              <dd>- Se optar por filtrar por produto, é possível escolher mais de um dentre os listados e também 
               digitar para encontrar mais facilmente..</dd>
               <dt>Status:</dt>
-              <dd>- Se optar por filtrar por status de pedido, seja ele finalizado, pendente ou em andamento,
+              <dd>- Se optar por filtrar por status de pedido, seja ele finalizado, pendente ou em produção,
                 pode escolher nesse filtro apenas uma opção.</dd>
               <dt>Tipo do pedido:</dt>
               <dd>- Se optar por escolher tipo em que o pedido foi feito, seja por entrega padrão, entrega

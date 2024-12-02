@@ -274,33 +274,41 @@ export const RelatorioPedido = () => {
       <h1>Relatório de Pedidos</h1>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
-        <label>Data de Realização inicial:
+        <label>Data de Realização inicial:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
             onChange={(e) => setFilters({ ...filters, inicioPeriodo: e.target.value })} /></label>
 
-        <label>Data de Realização final:
+        <label>Data de Realização final:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
             onChange={(e) => setFilters({ ...filters, fimPeriodo: e.target.value })} /></label>
 
-        <label>Data Finalizado inicial:
+        <label>Data Finalizado inicial:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataFinalizadoInicio" value={filters.dataFinalizadoInicio} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataFinalizadoInicio: e.target.value })} /></label>
-        <label>Data Finalizado final:
+        <label>Data Finalizado final:  <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataFinalizadoFim" value={filters.dataFinalizadoFim} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataFinalizadoFim: e.target.value })} /></label>
 
-        <label>Data Entrega inicial:
+        <label>Data Entrega inicial: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataEntregueInicio" value={filters.dataEntregueInicio} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataEntregueInicio: e.target.value })} /></label>
 
-        <label>Data Entrega final:
+        <label>Data Entrega final: <span className="asterisco">*</span>
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
             onChange={(e) => setFilters({ ...filters, dataEntregueFim: e.target.value })} /></label>
       </div>
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
         <FormControl>
           <label>Cliente</label>
-          <Select name="cliente" value={filters.cliente} onChange={(e) => setFilters({ ...filters, cliente: e.target.value })} multiple>
+          <Select 
+          name="cliente" 
+          variant="outlined" 
+          value={filters.cliente}
+          onChange={(e) => setFilters({ ...filters, cliente: e.target.value })} 
+          sx={{
+            backgroundColor: 'white', // Fundo branco
+          }} 
+          multiple>
             {clientes.map((cliente) => (
               <MenuItem key={cliente.id_cliente} value={cliente.id_cliente}>
                 {cliente.nome}
@@ -310,7 +318,15 @@ export const RelatorioPedido = () => {
         </FormControl>
         <FormControl>
           <label>Usuário</label>
-          <Select name="usuario" value={filters.usuario} onChange={(e) => setFilters({ ...filters, usuario: e.target.value })}>
+          <Select 
+          name="usuario" 
+          value={filters.usuario} 
+          onChange={(e) => setFilters({ ...filters, usuario: e.target.value })}
+          variant="outlined" 
+          sx={{
+            backgroundColor: 'white', // Fundo branco
+          }}  
+          >
             {usuarios.map((usuario) => (
               <MenuItem key={usuario.id_usuario} value={usuario.id_usuario}>
                 {usuario.nome}
@@ -320,7 +336,15 @@ export const RelatorioPedido = () => {
         </FormControl>
         <FormControl>
           <label>Produto</label>
-          <Select name="produto" value={filters.produto} onChange={(e) => setFilters({ ...filters, produto: e.target.value })} multiple>
+          <Select 
+          name="produto" 
+          value={filters.produto} 
+          onChange={(e) => setFilters({ ...filters, produto: e.target.value })}
+          variant="outlined" 
+          sx={{
+            backgroundColor: 'white', // Fundo branco
+          }}           
+          multiple>
             {produtos.map((produto) => (
               <MenuItem key={produto.id_produto} value={produto.id_produto}>
                 {produto.nome}
@@ -330,7 +354,14 @@ export const RelatorioPedido = () => {
         </FormControl>
         <FormControl>
           <label>Status:</label>
-          <Select name="status" value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+          <Select 
+          name="status" 
+          value={filters.status} 
+          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          variant="outlined" 
+          sx={{
+            backgroundColor: 'white', // Fundo branco
+          }} >
             {statusOptions.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.label}
@@ -340,7 +371,15 @@ export const RelatorioPedido = () => {
         </FormControl>
         <FormControl>
           <label>Tipo do Pedido:</label>
-          <Select name="tipoPedido" value={filters.tipoPedido} onChange={(e) => setFilters({ ...filters, tipoPedido: e.target.value })} multiple>
+          <Select 
+          name="tipoPedido" 
+          value={filters.tipoPedido} 
+          onChange={(e) => setFilters({ ...filters, tipoPedido: e.target.value })} 
+          variant="outlined" 
+          sx={{
+            backgroundColor: 'white', // Fundo branco
+          }}  
+          multiple>
             {tipoPedidoOptions.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.label}
@@ -359,11 +398,11 @@ export const RelatorioPedido = () => {
 
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
-     
+
       <button className="voltar" onClick={handleClick}>
         Voltar
       </button>
-     
+
     </div>
   );
 };
