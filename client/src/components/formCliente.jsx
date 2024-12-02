@@ -332,13 +332,14 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
           </div>
         </div>
         <p><span className="asterisco">*</span> Elementos com asterisco vermelho são obrigatórios</p>
+        <button className="voltar" onClick={handleClick}>
+          Voltar
+        </button>
         <button type="submit">
           Confirmar
         </button>
         {error && <p id="erro">{error}</p>}
-        <button className="voltar" onClick={handleClick}>
-          Voltar
-        </button>
+       
       </div>
     </form>
   );

@@ -21,7 +21,7 @@ const ReadClienteUnico = () => {
       setError("Cliente não encontrado.");
     }
   };
-
+  
   useEffect(() => {
     window.scrollTo(0, 0); // Move a página para o topo
     fetchCliente();
@@ -34,7 +34,7 @@ const ReadClienteUnico = () => {
       showSuccess("Cliente atualizado com sucesso!");
     } catch (err) {
       console.error("Erro ao atualizar o cliente:", err);
-  
+
       // Verifica se há uma resposta de erro do servidor
       if (err.response && err.response.data && err.response.data.message) {
         // Exibe a mensagem de erro retornada pelo backend
@@ -45,7 +45,7 @@ const ReadClienteUnico = () => {
       }
     }
   };
-  
+
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setShowSuccessModal(true);
@@ -75,8 +75,9 @@ const ReadClienteUnico = () => {
           <FormViewCliente onSubmit={handleSubmit} initialData={cliente} />
         ) : (
           <p>Carregando os dados do cliente...</p>
-        )}
+        )}     
       </div>
+
     </div>
   );
 };

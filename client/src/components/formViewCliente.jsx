@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Tooltip from './tooltip';
 import InputMask from 'react-input-mask';
+import { useNavigate } from "react-router-dom";
 
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
@@ -53,7 +54,12 @@ const FormViewCliente = ({ onSubmit, initialData = {} }) => {
   const [error, setError] = useState(null);
   const primeiroCampoRef = useRef(null);
   const [clientes, setClientes] = useState([]);
+  const navigate = useNavigate();
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
 
 
   const handleChange = (e) => {
@@ -183,6 +189,9 @@ const FormViewCliente = ({ onSubmit, initialData = {} }) => {
           </div>
         </div>
       </div>
+      <button className="voltar" onClick={handleClick}>
+        Voltar
+      </button>
     </form>
   );
 };

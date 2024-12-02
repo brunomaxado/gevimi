@@ -153,7 +153,7 @@ export const getPedidosRelatorio = (req, res) => {
             const statusMap = {
               1: "Finalizado",
               2: "Pendente",
-              3: "Andamento",
+              3: "Produção",
             };
             const statusLabel = statusMap[pedido.status] || "Desconhecido";
 

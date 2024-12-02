@@ -48,7 +48,7 @@ export const RelatorioPedido = () => {
   const statusOptions = [
     { id: 1, label: "Finalizado" },
     { id: 2, label: "Pendente" },
-    { id: 3, label: "Andamento" },
+    { id: 3, label: "Produção" },
   ];
 
   const tipoPedidoOptions = [

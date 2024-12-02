@@ -134,13 +134,14 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
         <span className="asterisco">*</span>
         Os campos marcados com asterisco vermelho são obrigatórios.
       </p>
+      <button className="voltar" onClick={handleClick}>
+        Voltar
+      </button>
       <button type="submit">
         Confirmar
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button className="voltar" onClick={handleClick}>
-        Voltar
-      </button>
+     
     </form>
   );
 };

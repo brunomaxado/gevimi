@@ -87,16 +87,16 @@ const Ajuda = () => {
       case '/relatorio/pedido':
         setIsHelpFormularioOpen(true);
         break;
-      case '/editarCliente/1':
+      case  window.location.pathname.startsWith('/editarCliente/'):
         setIsHelpEditarClienteOpen(true);
         break;
-      case '/gerenciarProduto/24':
+      case window.location.pathname.startsWith('/gerenciarProduto/'):
         setIsHelpEditarProdutoOpen(true);
         break;
       case '/relatorio/produto':
         setIsHelpRelatorioOpen(true);
         break;
-      case '/editarUsuario/44':
+      case window.location.pathname.startsWith('/editarUsuario/'):
         setIsHelpEditarUsuarioOpen(true);
         break;
       default:
@@ -120,9 +120,9 @@ const Ajuda = () => {
           || location.pathname === '/readUsuario'
           || location.pathname === '/register'
           || location.pathname === '/relatorio/pedido'
-          || location.pathname === '/gerenciarProduto/24'
-          || location.pathname === '/editarCliente/1'
-          || location.pathname === '/editarUsuario/44'
+          || location.pathname.startsWith('/gerenciarProduto/') 
+          || location.pathname.startsWith('/editarCliente/') 
+          || location.pathname.startsWith('/editarUsuario/')
           || location.pathname === '/relatorio/produto') && (
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
