@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Tooltip from './tooltip';
 import InputMask from 'react-input-mask';
+import { useNavigate } from "react-router-dom";
 import { useModified } from "../context/ModifiedContext";
 const validateCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
@@ -49,38 +50,43 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
     observacao: "",
     ...initialData
   });
- 
+
   const { isModified, setIsModified } = useModified(); // Acessando o contexto
   const [error, setError] = useState(null);
   const primeiroCampoRef = useRef(null);
   const [clientes, setClientes] = useState([]);
   console.log("isModified:", isModified);
   useEffect(() => {
-  // Reseta isModified ao desmontar o componente
-  return () => {
-    setIsModified(false);
-  };
-}, [setIsModified]);
+    // Reseta isModified ao desmontar o componente
+    return () => {
+      setIsModified(false);
+    };
+  }, [setIsModified]);
   const handleChange = (e) => {
-    
+
     setIsModified(true); // Marca o formulário como modificado
     const { name, value } = e.target;
     let cleanedValue = value;
     if (name === "cpf" || name === "celular" || name === "cep") {
       cleanedValue = value.replace(/\D/g, '');
     }
-    
+
     // Atualiza o estado do cliente
     setCliente((prev) => {
       const newCliente = { ...prev, [name]: cleanedValue };
-  
+
       // Verifica se houve modificação nos campos
-   
+
       return newCliente;
     });
-  
+
   };
-  
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
   const buscarEnderecoPorCEP = async (cep) => {
     if (validateCEP(cep)) {
       try {
@@ -192,7 +198,7 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="cliente">
-      
+
         <div className="form-row">
           <div className="form-group">
             <label> Nome:
@@ -327,9 +333,12 @@ const FormCliente = ({ onSubmit, initialData = {}, onModified }) => {
         </div>
         <p><span className="asterisco">*</span> Elementos com asterisco vermelho são obrigatórios</p>
         <button type="submit">
-          CONFIRMAR
+          Confirmar
         </button>
         {error && <p id="erro">{error}</p>}
+        <button className="voltar" onClick={handleClick}>
+          Voltar
+        </button>
       </div>
     </form>
   );

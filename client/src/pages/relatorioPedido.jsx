@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Select, MenuItem, FormControl, TextField } from "@mui/material";
 import '../style.css';
 import LOGO_BASE64 from "./logo";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { AuthContext } from "../context/authContext"; // Importando contexto de autenticação
+import { Link } from "react-router-dom";
 
 export const RelatorioPedido = () => {
   const { currentUser } = useContext(AuthContext); // Capturando o usuário logado
@@ -17,11 +19,17 @@ export const RelatorioPedido = () => {
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
 
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     inicioPeriodo: "",
-    fimPeriodo:"",
+    fimPeriodo: "",
     dataFinalizadoInicio: "",
     dataFinalizadoFim: "",
     dataEntregueInicio: "",
@@ -93,7 +101,7 @@ export const RelatorioPedido = () => {
   const handleResetFilters = () => {
     setFilters({
       inicioPeriodo: "",
-      fimPeriodo:"",
+      fimPeriodo: "",
       dataFinalizadoInicio: "",
       dataFinalizadoFim: "",
       dataEntregueInicio: "",
@@ -106,37 +114,49 @@ export const RelatorioPedido = () => {
     });
     setErrorMessage("");
   };
-  const handleClick = async (e) => {
+  const generateReportHandler = async (e) => {
     e.preventDefault();
-  
+
     const hasPeriodoPrincipal = filters.inicioPeriodo && filters.fimPeriodo;
     const hasPeriodoFinalizado = filters.dataFinalizadoInicio && filters.dataFinalizadoFim;
     const hasPeriodoEntregue = filters.dataEntregueInicio && filters.dataEntregueFim;
-  
+
     // Verifica se pelo menos um conjunto de datas está completo
     if (!hasPeriodoPrincipal && !hasPeriodoFinalizado && !hasPeriodoEntregue) {
       setError("Pelo menos um período deve ser preenchido (Período de Realização, Finalização ou Entrega).");
       return;
     }
-  
+
     // Validação para pares de datas dentro de cada grupo
-    if ((filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) || 
-        (!filters.dataFinalizadoInicio && filters.dataFinalizadoFim)) {
+    if (
+      (filters.dataFinalizadoInicio && !filters.dataFinalizadoFim) ||
+      (!filters.dataFinalizadoInicio && filters.dataFinalizadoFim)
+    ) {
       setError("Se uma Data Finalizada Inicial for preenchida, a Final deve ser preenchida também e vice-versa.");
       return;
     }
-  
-    if ((filters.dataEntregueInicio && !filters.dataEntregueFim) || 
-        (!filters.dataEntregueInicio && filters.dataEntregueFim)) {
+
+    if (
+      (filters.dataEntregueInicio && !filters.dataEntregueFim) ||
+      (!filters.dataEntregueInicio && filters.dataEntregueFim)
+    ) {
       setError("Se uma Data Entregue Inicial for preenchida, a Final deve ser preenchida também e vice-versa.");
       return;
     }
-  
+
     // Se todas as validações passarem
     setError(null);
-    await generatePDF(); // Continua para a geração do relatório
+
+    // Continua para a geração do relatório
+    try {
+      await generatePDF(); // Função para geração do PDF
+    } catch (error) {
+      setError("Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.");
+      console.error("Erro ao gerar o relatório:", error);
+    }
   };
-  
+
+
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value || 0);
   };
@@ -330,14 +350,20 @@ export const RelatorioPedido = () => {
         </FormControl>
       </div>
       <div className="actions" style={{ marginTop: "20px" }}>
-        <button onClick={handleResetFilters}>
+        <button className="gerar-relatorio" onClick={handleResetFilters}>
           Limpar Filtros
         </button>
-        <button onClick={handleClick}>
+        <button className="gerar-relatorio" onClick={generateReportHandler}>
           Gerar Relatório
         </button>
+
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
+     
+      <button className="voltar" onClick={handleClick}>
+        Voltar
+      </button>
+     
     </div>
   );
 };

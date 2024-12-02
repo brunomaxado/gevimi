@@ -2514,3 +2514,41 @@ option:not(:first-of-type) {
   display: block;
   color: var(--amarelotoque);
 }
+
+.gerar-relatorio{
+  width: 8%;
+  height: 10%;
+  border: none;
+  padding: 12px;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-bottom: 2%;
+}
+
+.voltar{
+  width: 8%;
+  height: 10%;
+  border: none;
+  padding: 12px;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-bottom: 2%;
+}
+
+.gerar-relatorio-produto{
+  height: 10%;
+  border: none;
+  padding: 12px;
+  background-color: var(--amarelologo);
+  color: var(--pretoletra);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-bottom: 2%;
+}
