@@ -22,7 +22,10 @@ const ReadCliente = () => {
     const fetchAllClientes = async () => {
       try {
         const res = await axios.get("http://localhost:8800/cliente");
-        setClientes(res.data);
+        const sortedClientes = res.data.sort((a, b) =>
+          a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' }) // Ordena alfabeticamente
+        );
+        setClientes(sortedClientes);
       } catch (err) {
         console.log(err);
       }
@@ -30,6 +33,7 @@ const ReadCliente = () => {
 
     fetchAllClientes();
   }, []);
+
 
   const formatCPF = (cpf) => {
     return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
@@ -95,6 +99,8 @@ const ReadCliente = () => {
     cliente.bairro.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.logradouro.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.numero.toString().includes(searchTerm)
+  ).sort((a, b) =>
+    a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' }) // Ordena alfabeticamente
   );
 
   // Paginação: calcula os clientes para a página atual
@@ -196,15 +202,15 @@ const ReadCliente = () => {
                         title="Editar"
                       >
                         <EditIcon />
-                        </span>   
-                        <Link
-                          to={`/readCliente/${cliente.id_cliente}`}
-                          title="Visualizar"
-                          className="action-icon visualizar"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <VisibilityIcon />
-                        </Link>
+                      </span>
+                      <Link
+                        to={`/readCliente/${cliente.id_cliente}`}
+                        title="Visualizar"
+                        className="action-icon visualizar"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <VisibilityIcon />
+                      </Link>
                     </div>
                   </td>
                 </tr>

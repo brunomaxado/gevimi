@@ -1,9 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from "../context/authContext";
 import React, { useContext, useEffect, useState } from "react";
 import '../style.css';
 import ReactDOM from "react-dom";
 import { useModified } from "../context/ModifiedContext";
+
 const Menu = () => {
     const { currentUser, logout } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,7 @@ const Menu = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [exitAction, setExitAction] = useState(""); // Define qual ação está sendo confirmada
     const navigate = useNavigate();
-
+    const location = useLocation();
     const toggleMenu = () => {
         setIsOpen(!isOpen);
         setShowDropdowns(!showDropdowns);
@@ -22,7 +23,10 @@ const Menu = () => {
         setIsOpen(false);
         setShowDropdowns(false); // Fecha todos os dropdowns
     };
-
+    const isActive = (...paths) => {
+        return paths.some(path => location.pathname === path); // Verifica se o pathname corresponde a qualquer path
+    };
+    
     useEffect(() => {
         const list = document.querySelectorAll('.list');
         function activeLink() {
@@ -132,14 +136,14 @@ const Menu = () => {
                 <ion-icon name="menu-outline" title="Menu"></ion-icon>
             </button>
             <ul>
-                <li className="list active">
+                <li className={`list ${isActive('/home') ? 'active' : ''}`}>
                     <Link to="#" onClick={(e) => e.preventDefault()}>
                         <span onClick={() => handleButtonClick("home")} className="icon"><ion-icon name="home-outline" title="Página inicial"></ion-icon></span>
                         <span onClick={() => handleButtonClick("home")} className="title">Início</span>
                     </Link>
                 </li>
 
-                <li className="list">
+                <li className={`list ${isActive('/categoria') ? 'active' : ''}`}>
                     <Link to="#" onClick={(e) => e.preventDefault()}>
                         <span onClick={() => handleButtonClick("categoria")} className="icon">
                             <ion-icon name="bookmarks-outline" title="Categorias"></ion-icon>
@@ -152,7 +156,7 @@ const Menu = () => {
                 </li>
 
                 {currentUser.administrador === 1 && (
-                    <li className="list" >
+                    <li className={`list ${isActive('/readUsuario', '/register', '/alterarsenha') ? 'active' : ''}`} >
                         <Link to="#" onClick={(e) => e.preventDefault()}>
                             <span onClick={() => handleButtonClick("usuario")} className="icon"><ion-icon name="person-outline" title="Usuários"></ion-icon></span>
                             <span onClick={() => handleButtonClick("usuario")} className="title">Usuários</span>
@@ -169,7 +173,7 @@ const Menu = () => {
                             </Link>
                         </div>
                     </li>)}
-                <li className="list">
+                <li className={`list ${isActive('/readCliente', '/cliente') ? 'active' : ''}`}>
                     <Link to="#" onClick={(e) => e.preventDefault()}>
                         <span onClick={() => handleButtonClick("cliente")} className="icon"><ion-icon name="people-outline" title="Clientes"></ion-icon></span>
                         <span onClick={() => handleButtonClick("cliente")} className="title">Clientes</span>
@@ -182,7 +186,7 @@ const Menu = () => {
 
                     </div>
                 </li>
-                <li className="list">
+                <li className={`list ${isActive('/viewProduto', '/produto') ? 'active' : ''}`}>
                     <Link to="#" onClick={(e) => e.preventDefault()}>
                         <span onClick={() => handleButtonClick("produto")} className="icon"><ion-icon name="pricetags-outline" title="Produtos"></ion-icon></span>
                         <span onClick={() => handleButtonClick("produto")} className="title">Produtos</span>
@@ -193,9 +197,11 @@ const Menu = () => {
                         </Link>
                     </div>
                 </li>
-                <li className="list">
+                <li className={`list ${isActive('/readPedido', '/pedido') ? 'active' : ''}`}>
                     <Link to="#" onClick={(e) => e.preventDefault()}>
-                        <span onClick={() => handleButtonClick("pedido")} className="icon"><ion-icon name="storefront-outline" title="Pedidos"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("pedido")} className="icon">
+                            <ion-icon name="storefront-outline" title="Pedidos"></ion-icon>
+                        </span>
                         <span onClick={() => handleButtonClick("pedido")} className="title">Pedidos</span>
                     </Link>
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
@@ -204,7 +210,8 @@ const Menu = () => {
                         </Link>
                     </div>
                 </li>
-                <li className="list">
+
+                <li className={`list ${isActive('/relatorio', '/relatorio/pedido', '/relatorio/produto') ? 'active' : ''}`}>
                     <Link to="#" onClick={(e) => e.preventDefault()}>
                         <span onClick={() => handleButtonClick("relatorio")} className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
                         <span onClick={() => handleButtonClick("relatorio")} className="title">Relatório</span></Link>
