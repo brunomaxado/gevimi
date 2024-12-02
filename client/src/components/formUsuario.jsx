@@ -25,9 +25,9 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
   };
 
   return (
+    <div>
     <form onSubmit={handleSubmit} className="form-container">
       {/* Exibe erro se houver */}
-      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div className="form-row">
         <div className="form-group">
@@ -82,13 +82,12 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
             style={{
               position: "absolute",
               top: "50%", // Centraliza verticalmente
-              right: "0", // Cola o botão na borda direita
+              right: "-14%", // Cola o botão na borda direita
               transform: "translateY(-50%)", // Alinha verticalmente ao centro do input
               backgroundColor: "transparent",
               border: "none",
               cursor: "pointer",
-              fontSize: "14px",
-              padding: "0 10px", // Dá um pouco de espaço interno para o botão
+              fontSize: "14px"
             }}
           >
             {showPassword ? "🙈" : "👁"}
@@ -127,12 +126,15 @@ const FormUsuario = ({ handleChange, handleSubmit, inputs, error }) => {
       </div>
 
       <p>
-        <span className="asterisco">*</span>Os campos marcados com asterisco
+        <span className="asterisco">* </span>Os campos marcados com asterisco
         vermelho são obrigatórios.
       </p>
 
       <button type="submit">Confirmar</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
+    
+    </div>
   );
 };
 

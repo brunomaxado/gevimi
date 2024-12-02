@@ -666,6 +666,24 @@ body.modal-open {
 }
 
 /* Modal Content */
+
+.modal-content4 {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  padding-top: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  height:300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+
+  flex-direction: column;
+  max-width: 90vw;
+  /* Limita a largura máxima */
+}
 .modal-content {
   position: relative;
   background-color: #fefefe;
