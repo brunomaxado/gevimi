@@ -300,15 +300,26 @@ export const RelatorioPedido = () => {
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
         <FormControl>
           <label>Cliente</label>
-          <Select 
-          name="cliente" 
-          variant="outlined" 
-          value={filters.cliente}
-          onChange={(e) => setFilters({ ...filters, cliente: e.target.value })} 
-          sx={{
-            backgroundColor: 'white', // Fundo branco
-          }} 
-          multiple>
+          <Select
+            name="cliente"
+            variant="outlined"
+            value={filters.cliente || ""} // "" como valor padrão para vazio
+            onChange={(e) => setFilters({ ...filters, cliente: e.target.value })}
+            displayEmpty // Mostra o placeholder mesmo quando o valor está vazio
+            sx={{
+              backgroundColor: 'white', // Fundo branco
+            }}
+            multiple
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <em>Todos</em>; // Mostra "Todos" como padrão
+              }
+              return clientes
+                .filter((cliente) => selected.includes(cliente.id_cliente))
+                .map((cliente) => cliente.nome)
+                .join(", "); // Mostra os valores selecionados
+            }}
+          >
             {clientes.map((cliente) => (
               <MenuItem key={cliente.id_cliente} value={cliente.id_cliente}>
                 {cliente.nome}
@@ -316,17 +327,22 @@ export const RelatorioPedido = () => {
             ))}
           </Select>
         </FormControl>
+
         <FormControl>
           <label>Usuário</label>
-          <Select 
-          name="usuario" 
-          value={filters.usuario} 
-          onChange={(e) => setFilters({ ...filters, usuario: e.target.value })}
-          variant="outlined" 
-          sx={{
-            backgroundColor: 'white', // Fundo branco
-          }}  
+          <Select
+            name="usuario"
+            variant="outlined"
+            value={filters.usuario || ""} // "" como valor padrão para vazio
+            onChange={(e) => setFilters({ ...filters, usuario: e.target.value })}
+            displayEmpty
+            sx={{
+              backgroundColor: 'white', // Fundo branco
+            }}
           >
+            <MenuItem disabled value="">
+              <em>Todos</em> {/* Texto padrão quando vazio */}
+            </MenuItem>
             {usuarios.map((usuario) => (
               <MenuItem key={usuario.id_usuario} value={usuario.id_usuario}>
                 {usuario.nome}
@@ -335,16 +351,27 @@ export const RelatorioPedido = () => {
           </Select>
         </FormControl>
         <FormControl>
-          <label>Produto</label>
-          <Select 
-          name="produto" 
-          value={filters.produto} 
-          onChange={(e) => setFilters({ ...filters, produto: e.target.value })}
-          variant="outlined" 
-          sx={{
-            backgroundColor: 'white', // Fundo branco
-          }}           
-          multiple>
+        <label>Produto:</label>
+          <Select
+            name="produto"
+            variant="outlined"
+            value={filters.produto || ""}
+            onChange={(e) => setFilters({ ...filters, produto: e.target.value })}
+            displayEmpty
+            sx={{
+              backgroundColor: "white",
+            }}
+            multiple
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <em>Todos</em>;
+              }
+              return produtos
+                .filter((produto) => selected.includes(produto.id_produto))
+                .map((produto) => produto.nome)
+                .join(", ");
+            }}
+          >
             {produtos.map((produto) => (
               <MenuItem key={produto.id_produto} value={produto.id_produto}>
                 {produto.nome}
@@ -352,16 +379,22 @@ export const RelatorioPedido = () => {
             ))}
           </Select>
         </FormControl>
+
         <FormControl>
           <label>Status:</label>
-          <Select 
-          name="status" 
-          value={filters.status} 
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          variant="outlined" 
-          sx={{
-            backgroundColor: 'white', // Fundo branco
-          }} >
+          <Select
+            name="status"
+            variant="outlined"
+            value={filters.status || ""} // "" como valor padrão para vazio
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+            displayEmpty
+            sx={{
+              backgroundColor: 'white', // Fundo branco
+            }}
+          >
+            <MenuItem disabled value="">
+              <em>Todos</em> {/* Texto padrão quando vazio */}
+            </MenuItem>
             {statusOptions.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.label}
@@ -370,16 +403,28 @@ export const RelatorioPedido = () => {
           </Select>
         </FormControl>
         <FormControl>
-          <label>Tipo do Pedido:</label>
-          <Select 
-          name="tipoPedido" 
-          value={filters.tipoPedido} 
-          onChange={(e) => setFilters({ ...filters, tipoPedido: e.target.value })} 
-          variant="outlined" 
-          sx={{
-            backgroundColor: 'white', // Fundo branco
-          }}  
-          multiple>
+        <label>Tipo:</label>
+
+          <Select
+            name="tipoPedido"
+            variant="outlined"
+            value={filters.tipoPedido || ""}
+            onChange={(e) => setFilters({ ...filters, tipoPedido: e.target.value })}
+            displayEmpty
+            sx={{
+              backgroundColor: "white",
+            }}
+            multiple
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <em>Todos</em>;
+              }
+              return tipoPedidoOptions
+                .filter((option) => selected.includes(option.id))
+                .map((option) => option.label)
+                .join(", ");
+            }}
+          >
             {tipoPedidoOptions.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.label}
