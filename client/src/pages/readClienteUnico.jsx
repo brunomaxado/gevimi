@@ -11,17 +11,51 @@ const ReadClienteUnico = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const clienteId = location.pathname.split("/")[2];
+  const [cep, setCep] = useState(null);
 
   const fetchCliente = async () => {
     try {
       const response = await axios.get(`http://localhost:8800/cliente/${clienteId}`);
-      setCliente(response.data);
+      const clienteData = response.data;
+  
+      if (clienteData.cep) {
+        // Busca o UF a partir do CEP e concatena com a cidade
+        const uf = await fetchUF(clienteData.cep);
+        setCliente({ ...clienteData, cidade: `${uf} - ${clienteData.cidade}` });
+      } else {
+        console.warn("CEP não disponível para o cliente.");
+        setCliente(clienteData);
+      }
     } catch (err) {
       console.error("Erro ao buscar o cliente:", err);
       setError("Cliente não encontrado.");
     }
   };
-
+  
+  const fetchUF = async (cep) => {
+    try {
+      const formattedCEP = cep.replace(/\D/g, ""); // Remove caracteres não numéricos
+      if (formattedCEP.length !== 8) {
+        console.error("CEP inválido.");
+        return "";
+      }
+  
+      const response = await axios.get(`https://viacep.com.br/ws/${formattedCEP}/json/`);
+      const { uf } = response.data;
+  
+      if (uf) {
+        return uf; // Retorna apenas o UF
+      } else {
+        console.error("UF não encontrada no retorno da API.");
+        return "";
+      }
+    } catch (error) {
+      console.error("Erro ao buscar a UF:", error.message);
+      return "";
+    }
+  };
+  
+  
   useEffect(() => {
     window.scrollTo(0, 0); // Move a página para o topo
     fetchCliente();

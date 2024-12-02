@@ -666,6 +666,12 @@ body.modal-open {
 }
 
 /* Modal Content */
+.centralizar-pedido {
+  display: flex;
+  justify-content: center;  /* Centraliza horizontalmente */
+  align-items: center;      /* Centraliza verticalmente */
+
+}
 
 .modal-content4 {
   position: relative;
@@ -1651,6 +1657,20 @@ p#erro {
   padding: 0 15px;
 }
 
+.form-container-pedido2 {
+
+  transform: scale(0.9);
+  /* Ajuste o valor conforme o necessário */
+  display: flex;
+  /* Usa flexbox para o contêiner do formulário */
+  justify-content: space-between;
+  /* Cria espaço entre os elementos filhos */
+  width: 80%;
+  /* Define a largura do contêiner */
+  margin-right: 11%;
+  /* Centraliza o contêiner no eixo horizontal */
+
+}
 
 .form-container-pedido {
 

@@ -120,7 +120,7 @@ const FormViewCliente = ({ onSubmit, initialData = {} }) => {
 
         <div className="form-row">
           <div className="form-group">
-            <label> Cidade: </label>
+            <label>UF - Cidade: </label>
             <input
               type="text"
               placeholder="Cidade"

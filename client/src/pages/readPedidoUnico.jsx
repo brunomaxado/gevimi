@@ -115,7 +115,7 @@ console.log(clientes);
       case 1:
         return "Finalizado";
       case 2:
-        return "Em andamento";
+        return "Produção";
       case 3:
         return "Não finalizado";
       default:
@@ -126,9 +126,10 @@ console.log(clientes);
   if (!pedido) return <p>Carregando...</p>;
 
   return (
-    <div>
-      <h1>Detalhes do Pedido:</h1>
-      <form className="form-container-pedido">
+    <div>  <h1>Detalhes do Pedido:</h1> 
+    <div className="centralizar-pedido">
+
+      <form className="form-container-pedido2">
       <div className="form-esquerda-pedido2">
         <div className="form-row-pedido">
         < div className="form-group-pedido">
@@ -278,7 +279,9 @@ console.log(clientes);
 
 
 
-      <Link to={`/readPedido`}>
+   
+    </div>
+    <Link to={`/readPedido`}>
         <button className="voltar">Voltar</button>
       </Link>
     </div>
