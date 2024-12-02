@@ -48,7 +48,7 @@ const Menu = () => {
             '/register',
             '/pedido',
             '/relatorio/',
-             '/readPedido'
+            '/readPedido'
 
         ];
 
@@ -190,7 +190,7 @@ const Menu = () => {
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
                         <Link to="#" onClick={(e) => e.preventDefault()}>
                             <span onClick={() => handleButtonClick("novoproduto")} className="title">Novo produto</span>
-                        </Link> 
+                        </Link>
                     </div>
                 </li>
                 <li className="list">
@@ -210,10 +210,10 @@ const Menu = () => {
                         <span onClick={() => handleButtonClick("relatorio")} className="title">Relatório</span></Link>
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
                         <Link to="#" onClick={(e) => e.preventDefault()}>
-                            <span onClick={() => handleButtonClick("relatorioproduto")} className="title">Relatorio produto</span>
+                            <span onClick={() => handleButtonClick("relatoriopedido")} className="title">Relatório pedido</span>
                         </Link>
                         <Link to="#" onClick={(e) => e.preventDefault()}>
-                            <span onClick={() => handleButtonClick("relatoriopedido")} className="title">Relatório pedido</span>
+                            <span onClick={() => handleButtonClick("relatorioproduto")} className="title">Relatorio produto</span>
                         </Link>
                     </div>
                 </li>
