@@ -18,7 +18,7 @@ import ModalHelpEditarProduto from '../components/modalHelpEditarProduto';
 import ModalHelpEditarCliente from '../components/modalHelpEditarCliente';
 import ModalHelpEditarUsuario from '../components/modalHelpEditarUsuario';
 import ModalHelpRelatorio from '../components/modalHelpRelatorioProduto';
-
+import ModalHelpReadRelatorio from '../components/modalHelpReadRelatorios';
 
 const Ajuda = () => {
   const [indiceAtivo, setIndiceAtivo] = useState(0); // Controla qual link está ativo
@@ -40,6 +40,7 @@ const Ajuda = () => {
   const [isHelpEditarProdutoOpen, setIsHelpEditarProdutoOpen] = useState(false);
   const [isHelpEditarUsuarioOpen, setIsHelpEditarUsuarioOpen] = useState(false);
   const [isHelpRelatorioOpen, setIsHelpRelatorioOpen] = useState(false);
+  const [isHelpReadRelatorioOpen, setIsHelpReadRelatorioOpen] = useState(false);
   const location = useLocation();
 
   const tratarCliqueLink = (indice) => {
@@ -108,6 +109,9 @@ const Ajuda = () => {
       case '/relatorio/produto':
         setIsHelpRelatorioOpen(true);
         break;
+      case '/relatorio':
+        setIsHelpReadRelatorioOpen(true);
+        break;
       default:
         break;
     }
@@ -133,7 +137,8 @@ const Ajuda = () => {
           || location.pathname.startsWith('/gerenciarProduto/') 
           || location.pathname.startsWith('/editarCliente/') 
           || location.pathname.startsWith('/editarUsuario/')
-          || location.pathname === '/relatorio/produto') && (
+          || location.pathname === '/relatorio/produto'
+          || location.pathname === '/relatorio') && (
             <li className={`list ${indiceAtivo === 0 ? 'ativa' : ''}`}>
               <Link to="#" onClick={abrirModal}>
                 <span className="icone"><ion-icon name="help-circle-outline" title="Ajuda"></ion-icon></span>
@@ -210,6 +215,10 @@ const Ajuda = () => {
       <ModalHelpRelatorio
         isOpen={isHelpRelatorioOpen}
         onRequestClose={() => setIsHelpRelatorioOpen(false)}
+      />
+      <ModalHelpReadRelatorio
+        isOpen={isHelpReadRelatorioOpen}
+        onRequestClose={() => setIsHelpReadRelatorioOpen(false)}
       />
     </div>
   );

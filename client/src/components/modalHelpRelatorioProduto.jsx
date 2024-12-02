@@ -1,7 +1,7 @@
 import React from 'react';
 import '../modal.css'; // Importa o arquivo de estilo
 
-const ModalHelpFormulario = ({ isOpen, onRequestClose }) => {
+const ModalHelpRelatorio = ({ isOpen, onRequestClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -45,4 +45,4 @@ const ModalHelpFormulario = ({ isOpen, onRequestClose }) => {
   );
 };
 
-export default ModalHelpFormulario;
+export default ModalHelpRelatorio;
