@@ -2579,6 +2579,11 @@ option:not(:first-of-type) {
   margin-bottom: 2%;
 }
 
+.voltar-usuario{
+  border: none;
+  padding: 12px;
+}
+
 .gerar-relatorio-produto{
   height: 10%;
   border: none;

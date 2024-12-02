@@ -30,7 +30,7 @@ const EditarUsuario = () => {
     }
   };
   console.log("isModified:", isModified);
-    useEffect(() => {
+  useEffect(() => {
     // Reseta isModified ao desmontar o componente
     return () => {
       setIsModified(false);
@@ -41,6 +41,11 @@ const EditarUsuario = () => {
   useEffect(() => {
     fetchUsuario();
   }, [usuarioId]);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(-1); // Navega para a página anterior
+  };
 
   const handleChange = (e) => {
     setIsModified(true); // Marca o formulário como modificado
@@ -66,15 +71,15 @@ const EditarUsuario = () => {
 
     const payload = { nome, login, administrador: parseInt(administrador) };
 
-  
+
     try {
       await axios.put(`http://localhost:8800/editarusuario/${usuarioId}`, payload);
       showSuccess("Usuário atualizado com sucesso!");
       console.log("Usuario atualizado com sucesso")
       setTimeout(() => {
         navigate("/readUsuario");
-      }, 1500);  
-     
+      }, 1500);
+
     } catch (err) {
       console.error("Erro ao atualizar o usuário:", err);
       setError("Erro ao atualizar o usuário.");
@@ -88,25 +93,25 @@ const EditarUsuario = () => {
       return;
     }
 
-  if (novaSenha.length < 8) {
-    setError("A senha deve ter no mínimo 8 caracteres.");
-    console.log("Senha curta");
-    return;
-  }
+    if (novaSenha.length < 8) {
+      setError("A senha deve ter no mínimo 8 caracteres.");
+      console.log("Senha curta");
+      return;
+    }
 
-  if (!/\d/.test(novaSenha)) {
-    setError("A senha deve conter pelo menos um número.");
-    console.log("Senha sem número");
-    return;
-  }
-  
+    if (!/\d/.test(novaSenha)) {
+      setError("A senha deve conter pelo menos um número.");
+      console.log("Senha sem número");
+      return;
+    }
+
     try {
       // Envia o id_usuario junto com a nova senha
       await axios.put(`http://localhost:8800/updatesenha`, {
         id_usuario: usuarioId, // Passando o id do usuário
         senhaNova: novaSenha, // Nova senha
       });
-      
+
       showSuccess("Senha atualizada com sucesso!");
       setShowPasswordModal(false);
       setNovaSenha("");
@@ -115,21 +120,21 @@ const EditarUsuario = () => {
       setError("Erro ao atualizar a senha.");
     }
   };
-  
 
- const showSuccess = (message) => {
-  console.log("Exibindo mensagem de sucesso:", message); // Verifica se a função está sendo chamada
-  setSuccessMessage(message);
-  setShowSuccessModal(true);
 
-  setTimeout(() => {
-    setShowSuccessModal(false);
-    setSuccessMessage(""); // Limpa a mensagem ao fechar o modal
-    console.log("Modal de sucesso fechado.");
- 
-    
-  }, 2500);
-};
+  const showSuccess = (message) => {
+    console.log("Exibindo mensagem de sucesso:", message); // Verifica se a função está sendo chamada
+    setSuccessMessage(message);
+    setShowSuccessModal(true);
+
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      setSuccessMessage(""); // Limpa a mensagem ao fechar o modal
+      console.log("Modal de sucesso fechado.");
+
+
+    }, 2500);
+  };
 
 
   const closeSuccessModal = () => {
@@ -142,17 +147,17 @@ const EditarUsuario = () => {
       <h1>EDITAR USUÁRIO</h1>
       <div className="form-container-usuario">
         <form onSubmit={handleSubmit}>
-         
-        <button
-  className="editar-senha"
-  type="button"
-  onClick={() => {
-    setError(""); // Limpa qualquer erro anterior ao abrir o modal
-    setShowPasswordModal(true);
-  }}
->
-  Nova Senha
-</button>
+
+          <button
+            className="editar-senha"
+            type="button"
+            onClick={() => {
+              setError(""); // Limpa qualquer erro anterior ao abrir o modal
+              setShowPasswordModal(true);
+            }}
+          >
+            Nova Senha
+          </button>
 
           <div className="form-group">
             <label>Nome:</label>
@@ -201,76 +206,80 @@ const EditarUsuario = () => {
               </label>
             </div>
           </div>
-        
-          <button className="editar-usuario">SALVAR</button>
+          <button className="voltar-usuario" onClick={handleClick}>
+            Voltar
+          </button>
+
+          <button className="editar-usuario">Confirmar</button>
          
+
         </form>
 
-       
+
       </div>
       {error && <p className="error-message">{error}</p>}
-    
-        
-        {showPasswordModal && (
+
+
+      {showPasswordModal && (
         <div className="modal">
           <div className="modal-content4">
             <button className="close-modal" onClick={() => setShowPasswordModal(false)}>X</button>
-      
+
             <h2>Atualizar Senha</h2>
             <label>Senha: </label>
 
             <input
-            required
-            type={showPassword ? "text" : "password"}
-            placeholder="senha"
-            name="senha"
-            value={novaSenha}
-            onChange={(e) => setNovaSenha(e.target.value)}
-            className="senha-input"
-            style={{ width: "100%", paddingRight: "50px" }} // Espaço extra para o botão
-          />
-          <button
-            type="button"
-            onClick={togglePasswordVisibility}
-            style={{
-              position: "absolute",
-              top: "50%", // Centraliza verticalmente
-              right: "4%", // Cola o botão na borda direita
-              transform: "translateY(-150%)", // Alinha verticalmente ao centro do input
-              backgroundColor: "transparent",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "14px"
-            }}
-          >
-            {showPassword ? "🙈" : "👁"}
-          </button>
+              required
+              type={showPassword ? "text" : "password"}
+              placeholder="senha"
+              name="senha"
+              value={novaSenha}
+              onChange={(e) => setNovaSenha(e.target.value)}
+              className="senha-input"
+              style={{ width: "100%", paddingRight: "50px" }} // Espaço extra para o botão
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              style={{
+                position: "absolute",
+                top: "50%", // Centraliza verticalmente
+                right: "4%", // Cola o botão na borda direita
+                transform: "translateY(-150%)", // Alinha verticalmente ao centro do input
+                backgroundColor: "transparent",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "14px"
+              }}
+            >
+              {showPassword ? "🙈" : "👁"}
+            </button>
 
 
-         
+
             <div className="modal-actions">
               <button className="modal-button" onClick={() => setShowPasswordModal(false)}>Cancelar</button>
               <button
-  className="modal-button"
-  onClick={() => {
-    setError(""); // Limpa qualquer erro anterior para exibir apenas o atual
-    handlePasswordChange(); // Chama a função que verifica e atualiza a senha
-  }}
->
-  Salvar
-</button>
-{error && <p style={{ color: "red" }}>{error}</p>}
-            </div>
-                     </div>
-        </div>
-      )}
-  {showSuccessModal && (
-          <div className="success-modal">
-            <div className="success-modal-content">
-              <span>{successMessage}</span>
+                className="modal-button"
+                onClick={() => {
+                  setError(""); // Limpa qualquer erro anterior para exibir apenas o atual
+                  handlePasswordChange(); // Chama a função que verifica e atualiza a senha
+                }}
+              >
+                Salvar
+              </button>
+              {error && <p style={{ color: "red" }}>{error}</p>}
             </div>
           </div>
-        )}
+        </div>
+      )}
+      {showSuccessModal && (
+        <div className="success-modal">
+          <div className="success-modal-content">
+            <span>{successMessage}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

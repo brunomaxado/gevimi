@@ -123,10 +123,11 @@ const AlterarSenha = () => {
           </div>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">Confirmar</button>
-        <button className="voltar" onClick={handleClick}>
+        <button className="voltar-usuario " onClick={handleClick}>
         Voltar
       </button>
+        <button type="submit" className="voltar-usuario">Confirmar</button>
+
       </form>
 
       {showSuccessModal && (
