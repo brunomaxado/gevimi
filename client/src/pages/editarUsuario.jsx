@@ -219,7 +219,7 @@ const EditarUsuario = () => {
               </label>
             </div>
           </div>
-          <button className="voltar-usuario" onClick={handleClick}>
+          <button className="editar-usuario" onClick={handleClick}>
             Voltar
           </button>
 

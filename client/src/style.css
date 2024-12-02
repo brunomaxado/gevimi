@@ -1613,6 +1613,20 @@ p#erro {
   padding-bottom: 300px;
 }
 
+.form-container4 {
+  margin-top: 50px;
+  transform: scale(0.9);
+  /* Ajuste o valor conforme o necessário */
+  transform-origin: center center;
+  /* Mantém a escala a partir do canto superior esquerdo */
+  position: relative;
+  max-width: 800px;
+  /* Define uma largura máxima */
+  margin: 0 auto;
+  /* Centraliza o formulário na página */
+  justify-content: flex-start;
+
+}
 .form-container-usuario {
   margin-top: 50px;
   transform: scale(0.9);

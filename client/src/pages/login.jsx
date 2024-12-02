@@ -46,10 +46,11 @@ const Login = () => {
 
   return (
     <div className="auth" id="login">
+
       <div id="imagem">
         <img src="../logo_login.png" alt="Logo" />
       </div>
-
+  
       <form className="container">
         <h1>Login</h1>
 
@@ -99,8 +100,10 @@ const Login = () => {
         <button className="btn" onClick={handleSubmit}>
           Entrar
         </button>
-        {err && <p style={{ color: 'red' }}>{err}</p>}
+       
       </form>
+      <div>   {err && <p style={{ color: 'red' }}>{err}</p>}</div>
+        
     </div>
   );
 };
