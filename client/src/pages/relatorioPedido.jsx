@@ -300,26 +300,26 @@ export const RelatorioPedido = () => {
       <h1>Relatório de Pedidos</h1>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="filter-container-pai" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
-        <label>Data de Realização inicial:  <span className="asterisco">*</span>
+        <label>Data de Realização inicial:  
           <TextField type="datetime-local" name="inicioPeriodo" value={filters.inicioPeriodo} variant="standard"
             onChange={handleChange} /></label>
 
-        <label>Data de Realização final:  <span className="asterisco">*</span>
+        <label>Data de Realização final:  
           <TextField type="datetime-local" name="fimPeriodo" value={filters.fimPeriodo} variant="standard"
             onChange={handleChange} /></label>
 
-        <label>Data Finalizado inicial:  <span className="asterisco">*</span>
+        <label>Data Finalizado inicial:  
           <TextField type="datetime-local" name="dataFinalizadoInicio" value={filters.dataFinalizadoInicio} variant="standard"
             onChange={handleChange} /></label>
-        <label>Data Finalizado final:  <span className="asterisco">*</span>
+        <label>Data Finalizado final:  
           <TextField type="datetime-local" name="dataFinalizadoFim" value={filters.dataFinalizadoFim} variant="standard"
             onChange={handleChange} /></label>
 
-        <label>Data Entrega inicial: <span className="asterisco">*</span>
+        <label>Data Entrega inicial: 
           <TextField type="datetime-local" name="dataEntregueInicio" value={filters.dataEntregueInicio} variant="standard"
             onChange={handleChange} /></label>
 
-        <label>Data Entrega final: <span className="asterisco">*</span>
+        <label>Data Entrega final: 
           <TextField type="datetime-local" name="dataEntregueFim" value={filters.dataEntregueFim} variant="standard"
             onChange={handleChange} /></label>
       </div>

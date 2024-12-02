@@ -407,7 +407,7 @@ const ReadPedido = () => {
         <div className="filters-container">
 
           <div className="filter-box">
-            <label> Data Realizado Inicio: <span className="asterisco">*</span> </label>
+            <label> Data Realizado Inicio: </label>
             <input
               type="datetime-local"
               name="data_realizado_inicio"
@@ -417,7 +417,7 @@ const ReadPedido = () => {
             />
           </div>
           <div className="filter-box">
-            <label> Data Realizado Fim: <span className="asterisco">*</span> </label>
+            <label> Data Realizado Fim: </label>
             <input
               type="datetime-local"
               name="data_realizado_fim"
@@ -429,7 +429,7 @@ const ReadPedido = () => {
           </div>
 
           <div className="filter-box">
-            <label> Data Entrega Inicio: <span className="asterisco">*</span> </label>
+            <label> Data Entrega Inicio: </label>
             <input
               type="datetime-local"
               name="data_entrega_inicio"
@@ -439,7 +439,7 @@ const ReadPedido = () => {
             />
           </div>
           <div className="filter-box">
-            <label> Data Entrega Fim: <span className="asterisco">*</span> </label>
+            <label> Data Entrega Fim: </label>
             <input
               type="datetime-local"
               name="data_entrega_fim"
