@@ -697,7 +697,7 @@ body.modal-open {
   padding: 20px;
   padding-top: 20px;
   border: 1px solid #888;
-  width: 30%;
+  width: 33%;
 
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   animation-name: animatetop;
@@ -720,7 +720,7 @@ body.modal-open {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   .modal-content {
     width: 90%;
     /* Ajusta ainda mais para telas muito pequenas */

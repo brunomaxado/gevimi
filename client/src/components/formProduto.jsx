@@ -98,7 +98,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
 
       <div className="form-row">
         <div className="form-group">
-          <label> Preço Unitário: <span className="asterisco">*</span> </label>
+          <label> Preço Unitário (R$): <span className="asterisco">*</span> </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type="text"
@@ -106,6 +106,7 @@ const FormProduto = ({ produto, categorias, handleChange, handleSubmit, error, i
               name="preco_unitario"
               value={produto.preco_unitario || ""} // Garantir que o valor esteja vazio se não houver
               onChange={handlePrecoChange}
+          
               required
             />
           </div>

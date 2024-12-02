@@ -231,8 +231,8 @@ const Menu = () => {
                             <h2 style={{ textAlign: 'center' }}>Dados não salvos!</h2>
                             <p style={{ textAlign: 'center' }}>Tem certeza que deseja sair da página? Seus dados não serão salvos se não confirmar o envio.</p>
                             <div className="modal-div">
-                                <button className="modal-button" onClick={handleConfirmExit}>Sim</button>
-                                <button className="modal-button" onClick={handleCancelExit}>Não</button>
+                                <button className="modal-button" onClick={handleConfirmExit}>Sair</button>
+                                <button className="modal-button" onClick={handleCancelExit}>Ficar</button>
                             </div>
                         </div>
                     </div>,
