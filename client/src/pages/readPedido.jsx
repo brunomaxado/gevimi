@@ -35,10 +35,10 @@ const ReadPedido = () => {
 
   // Data de início do ano (00:00)
   const dataRealizadoInicio = new Date(now.getFullYear(), 0, 1, 0, 0).toISOString().split("T")[0] + "T00:00";
-
-  // Dia atual + 1 mês (23:59)
-  now.setMonth(now.getMonth() + 1);
+  
+  // Dia atual às 23:59
   const dataRealizadoFim = now.toISOString().split("T")[0] + "T23:59";
+  
 
   // Data de entrega (hoje - 00:00 até 23:59)
   const entregaInicio = new Date(new Date().setHours(0, 0, 0, 0)).toISOString().split("T")[0] + "T00:00";

@@ -60,16 +60,27 @@ const Pedido = () => {
   };
 
   const calcularPrecoTotalComFrete = (itens, frete) => {
-    const totalItens = calcularPrecoTotal(itens); // Este valor já estará formatado como moeda
+    // Certifique-se de que 'calcularPrecoTotal' retorna um número, e não um valor formatado como moeda
+    const totalItens = calcularPrecoTotal2(itens); // Espera um valor numérico, não uma string formatada
+    
+    // Converter o frete para número (caso seja uma string com valor numérico)
     const freteNumerico = parseFloat(frete) || 0;
-    const totalComFrete = parseFloat(totalItens.replace("R$", "").replace(",", ".")) + freteNumerico;  // Converte o valor formatado para número
-
+  
+    // Calcular o total com o frete
+    const totalComFrete = totalItens + freteNumerico;
+  
     // Formatar o total com frete como moeda brasileira
     return totalComFrete.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
+  
+  // Função de cálculo do preço total (ajustando para garantir que o retorno seja numérico)
+  const calcularPrecoTotal2 = (itens) => {
+    return itens.reduce((acc, item) => acc + (item.preco_unitario_atual * item.quantidade), 0); 
+  };
+  
 
 
-
+console.log(pedido);
   useEffect(() => {
     if (pedido) setPrecoTotalFrete(calcularPrecoTotalComFrete(itensPedido, pedido.frete));
   }, [itensPedido, pedido]);
@@ -122,11 +133,21 @@ const Pedido = () => {
     e.preventDefault();
     const { tipo, forma_pagamento, data_para_entregar, fk_id_cliente, frete } = pedido;
 
-    if (!tipo || !frete || !forma_pagamento || !fk_id_cliente || (tipo !== "4" && !data_para_entregar)) {
+    if (!tipo || !forma_pagamento || !fk_id_cliente ) {
       setError("Todos os campos obrigatórios devem ser preenchidos.");
       return;
     }
-
+    if ((tipo == 1 || tipo == 2) && (!data_para_entregar || !frete)) {
+      console.log(tipo);
+      setError("Todos os campos obrigatórios devem ser preenchidos1.");
+      return;
+    }
+    
+    if (tipo == 3 && !data_para_entregar) {
+      setError("Todos os campos obrigatórios devem ser preenchidos2.");
+      return;
+    }
+    
     if (itensPedido.length === 0) {
       setError("Adicione pelo menos um item ao pedido.");
       return;
@@ -202,7 +223,7 @@ const Pedido = () => {
       setClienteSelecionado({});
     }
   };
-  console.log(clienteSelecionado);
+
   const handleRemoverItem = (index) => {
     setItensPedido((prev) => prev.filter((_, i) => i !== index));
   };
@@ -326,10 +347,11 @@ const Pedido = () => {
                 }}
               >
                 <option value="" disabled selected>Selecione um tipo de entrega</option>
-                <option value="1">1. Entrega</option>
-                <option value="2">2. Entrega Ifood</option>
-                <option value="3">3. Retirada</option>
-                <option value="4">4. Comum</option>
+                <option value="4">Comum</option>
+                <option value="1"> Entrega</option>
+                <option value="2"> Entrega Ifood</option>
+                <option value="3">Retirada</option>
+              
               </select>
             </div>
           </div>
@@ -389,10 +411,10 @@ const Pedido = () => {
                 onChange={handleChange}
               >
                 <option value="">Forma de pagamento</option>
+                <option value="4">Crédito</option>
+                <option value="3">Débito</option>
                 <option value="1">Dinheiro</option>
                 <option value="2">Pix</option>
-                <option value="3">Débito</option>
-                <option value="4">Crédito</option>
               </select>
             </div>
 

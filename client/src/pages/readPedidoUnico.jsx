@@ -90,6 +90,7 @@ console.log(clientes);
         return "Desconhecido";
     }
   };
+  console.log(pedido);
   const getEnderecoCliente = (id) => {
     const cliente = getClienteDetalhes(id);
     if (cliente && cliente.id_cliente) {
@@ -122,7 +123,11 @@ console.log(clientes);
         return "Desconhecido";
     }
   };
-
+  const getPedidoFrete = (pedidoId) => {
+    const pedidoItem = pedido.itensPedido.find((u) => u.id_pedido === pedidoId);
+    return pedidoItem ? pedidoItem.frete : "N/A";
+  };
+  
   if (!pedido) return <p>Carregando...</p>;
 
   return (
@@ -215,22 +220,24 @@ console.log(clientes);
 
         <div className="form-row-pedido">
         <div className="form-group-pedido">
-  <label>Pedidos:</label>
+  <label>Produtos:</label>
   <textarea
-    value={
-      pedido.itensPedido && pedido.itensPedido.length > 0
-        ? pedido.itensPedido
-            .map(
-              (item) =>
-                `${getProdutoNome(item.fk_id_produto)} x${item.quantidade} - Uni: R$ ${
-                  !isNaN(parseFloat(item.preco_unitario_atual))
-                    ? parseFloat(item.preco_unitario_atual).toFixed(2)
-                    : "N/A"
-                }`
-            )
-            .join("\n") // Adiciona quebra de linha entre os itens
-        : "Nenhum item"
-    }
+   value={
+    pedido.itensPedido && pedido.itensPedido.length > 0
+      ? pedido.itensPedido
+          .map(
+            (item) =>
+              `${getProdutoNome(item.fk_id_produto)} x${item.quantidade} - Uni: R$ ${
+                !isNaN(parseFloat(item.preco_unitario_atual))
+                  ? parseFloat(item.preco_unitario_atual)
+                      .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                  : "N/A"
+              }`
+          )
+          .join("\n") // Adiciona quebra de linha entre os itens
+      : "Nenhum item"
+  }
+  
     readOnly
     rows={pedido.itensPedido && pedido.itensPedido.length > 0 ? pedido.itensPedido.length : 1}
     className="form-control-pedido" // Use uma classe para estilizar o textarea
@@ -239,38 +246,52 @@ console.log(clientes);
 </div>
 
 <div className="form-row-pedido">
-<div className="form-group-pedido">
-
-<label><b>Frete:</b></label>
-<input
+  <div className="form-group-pedido">
+    <label><b>Frete:</b></label>
+    <input
       type="text"
-      value={`R$ ${
-        pedido.frete && !isNaN(parseFloat(pedido.frete))
-          ? parseFloat(pedido.frete).toFixed(2)
-          : "0.00"
+      value={` ${
+        pedido.pedido.frete && !isNaN(parseFloat(pedido.pedido.frete))
+          ? parseFloat(pedido.pedido.frete)
+              .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+          : "R$ 0,00"
       }`}
       readOnly
     />
-        </div>
+  </div>
 
-<div className="form-group-pedido">
-
-<label><b>Total:</b></label>
-          <input
-            type="text"
-            value={`R$ ${calcularTotalItens(pedido.itensPedido) ? calcularTotalItens(pedido.itensPedido).toFixed(2) : "0.00"}`}
-            readOnly
-          />
-        </div>
-
+  <div className="form-group-pedido">
+    <label><b>Total Produtos:</b></label>
+    <input
+      type="text"
+      value={`R$ ${
+        calcularTotalItens(pedido.itensPedido)
+          ? calcularTotalItens(pedido.itensPedido)
+              .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+          : "R$ 0,00"
+      }`}
+      readOnly
+    />
+  </div>
 </div>
 
-
-
-
-
-
-
+<div className="form-row-pedido">
+  <div className="form-group-pedido">
+    <label><b>Total Geral (Frete + Produtos):</b></label>
+    <input
+      type="text"
+      value={`R$ ${
+        (
+          (pedido.pedido.frete && !isNaN(parseFloat(pedido.pedido.frete))
+            ? parseFloat(pedido.pedido.frete)
+            : 0) + calcularTotalItens(pedido.itensPedido)
+        )
+          .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      }`}
+      readOnly
+    />
+  </div>
+</div>
 
 
 
