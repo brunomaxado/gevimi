@@ -84,7 +84,7 @@ const Menu = () => {
         } else if (action === "novoproduto") {
             navigate('/produto');
             handleLinkClick();
-        } else if(action === "relatorioproduto"){
+        } else if (action === "relatorioproduto") {
             navigate('/relatorio/produto');
             handleLinkClick();
         } else if (action === "pedido") {
@@ -93,14 +93,14 @@ const Menu = () => {
         } else if (action === "novopedido") {
             navigate('/pedido');
             handleLinkClick();
-        } else if(action === "relatoriopedido"){
+        } else if (action === "relatoriopedido") {
             navigate('/relatorio/pedido');
             handleLinkClick();
         } else if (action === "home") {
             navigate('/home');
             handleLinkClick();
         } else if (action === "relatorio") {
-            navigate('/relatorio/pedido');
+            navigate('/relatorio');
             handleLinkClick();
 
         } else if (action === "sair") {
@@ -116,15 +116,15 @@ const Menu = () => {
     const handleCancelExit = () => {
         setShowDeleteModal(false); // Fecha o modal sem realizar a ação
     };
-/*
-<li className="list">
-<Link to="#" onClick={(e) => e.preventDefault()}>
-    <span onClick={() => handleButtonClick("relatorio")} className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
-
-    <span onClick={() => handleButtonClick("relatorio")} className="title">Relatório</span>
-</Link>
-</li>
-*/
+    /*
+    <li className="list">
+    <Link to="#" onClick={(e) => e.preventDefault()}>
+        <span onClick={() => handleButtonClick("relatorio")} className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
+    
+        <span onClick={() => handleButtonClick("relatorio")} className="title">Relatório</span>
+    </Link>
+    </li>
+    */
     return (
         <div className={`navigation ${isOpen ? 'open' : ''}`}>
             <button onClick={toggleMenu} className="menu-button">
@@ -189,10 +189,7 @@ const Menu = () => {
                     <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
                         <Link to="#" onClick={(e) => e.preventDefault()}>
                             <span onClick={() => handleButtonClick("novoproduto")} className="title">Novo produto</span>
-                        </Link>
-                        <Link to="#" onClick={(e) => e.preventDefault()}>
-                            <span onClick={() => handleButtonClick("relatorioproduto")} className="title">Relatorio produto</span>
-                        </Link>
+                        </Link> 
                     </div>
                 </li>
                 <li className="list">
@@ -204,12 +201,21 @@ const Menu = () => {
                         <Link to="#" onClick={(e) => e.preventDefault()}>
                             <span onClick={() => handleButtonClick("novopedido")} className="title">Novo pedido</span>
                         </Link>
+                    </div>
+                </li>
+                <li className="list">
+                    <Link to="#" onClick={(e) => e.preventDefault()}>
+                        <span onClick={() => handleButtonClick("relatorio")} className="icon"><ion-icon name="document-text-outline" title="Relatório"></ion-icon></span>
+                        <span onClick={() => handleButtonClick("relatorio")} className="title">Relatório</span></Link>
+                    <div className={`dropdown-content ${showDropdowns ? 'show' : ''}`}>
+                        <Link to="#" onClick={(e) => e.preventDefault()}>
+                            <span onClick={() => handleButtonClick("relatorioproduto")} className="title">Relatorio produto</span>
+                        </Link>
                         <Link to="#" onClick={(e) => e.preventDefault()}>
                             <span onClick={() => handleButtonClick("relatoriopedido")} className="title">Relatório pedido</span>
                         </Link>
                     </div>
                 </li>
-
                 <li className="list">
                     <Link to="/" onClick={() => { logout(); handleLinkClick(); }}>
                         <span className="icon"><ion-icon name="log-out-outline" title="Sair da conta"></ion-icon></span>

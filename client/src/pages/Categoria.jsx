@@ -57,7 +57,7 @@ const Categoria = () => {
       }
     }
   };
-  
+
   const handleEdit = async () => {
     if (!editCategoriaName) {
       setErrorMessage("Campo nome deve estar preenchido");
@@ -81,8 +81,8 @@ const Categoria = () => {
       }
     }
   };
-  
-  
+
+
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8800/categoria/${categoriaIdToDelete}`);
@@ -99,7 +99,7 @@ const Categoria = () => {
       }
     }
   };
-  
+
 
   const [showModal, setShowModal] = useState(false);
   const [selectedPedidoId, setSelectedPedidoId] = useState(null);
@@ -160,8 +160,8 @@ const Categoria = () => {
               className="search-input"
             />
           </div>
-          <button 
-            className="limpar-filtro" 
+          <button
+            className="limpar-filtro"
             onClick={() => setSearchTerm("")}
           >
             Limpar Filtros
@@ -185,10 +185,10 @@ const Categoria = () => {
                   <td>{categoria.nome}</td>
                   <td className="coluna-center">
                     <div className="action-icons">
-                    <span
+                      <span
                         className="action-icon delete"
                         onClick={() => {
-                          
+
                           setCategoriaIdToDelete(categoria.id_categoria);
                           setShowDeleteModal(true);
                           setErrorMessage(" ");
@@ -232,20 +232,20 @@ const Categoria = () => {
         </div>
 
       </div>
-      
+
       {/* Modal de adicionar categoria */}
       {showAddModal && (
         <div className="modal">
           <div className="modal-content">
-          <button 
-  className="close-modal" 
-  onClick={() => {
-    setErrorMessage(''); // Reseta o erro
-    setShowAddModal(false); // Fecha o modal
-  }}
->
-  X
-</button>
+            <button
+              className="close-modal"
+              onClick={() => {
+                setErrorMessage(''); // Reseta o erro
+                setShowAddModal(false); // Fecha o modal
+              }}
+            >
+              X
+            </button>
 
             <h2>Nova Categoria</h2>
             <label>Nome: </label>
@@ -260,7 +260,7 @@ const Categoria = () => {
             {errorMessage && <div className="error-message show">{errorMessage}</div>}
             <div className="modal-actions">
               <button className="modal-button" onClick={() => setShowAddModal(false)}>Cancelar</button>
-              <button className="modal-button" onClick={handleAdd}>Salvar</button>
+              <button className="modal-button" onClick={handleAdd}>Confirmar</button>
             </div>
           </div>
         </div>
@@ -270,13 +270,13 @@ const Categoria = () => {
       {showEditModal && (
         <div className="modal">
           <div className="modal-content">
-          
+
             <button className="close-modal" onClick={() => {
-  setShowEditModal(false);
-  setErrorMessage(null); // Zera o erro diretamente ao fechar o modal
-}}>
-  X
-</button>
+              setShowEditModal(false);
+              setErrorMessage(null); // Zera o erro diretamente ao fechar o modal
+            }}>
+              X
+            </button>
 
             <h2>Editar Categoria</h2>
             <label>Nome: </label>
@@ -289,13 +289,13 @@ const Categoria = () => {
             {errorMessage && <div className="error-message show">{errorMessage}</div>}
             <div className="modal-actions">
               <button className="modal-button" onClick={() => setShowEditModal(false)}>Cancelar</button>
-              <button className="modal-button" onClick={handleEdit}>Salvar</button>
+              <button className="modal-button" onClick={handleEdit}>Confirmar</button>
             </div>
           </div>
         </div>
       )}
-  {/* Modal de confirmação de exclusão */}
-  {showDeleteModal && (
+      {/* Modal de confirmação de exclusão */}
+      {showDeleteModal && (
         <div className="modal">
           <div className="modal-content">
             <button className="close-modal" onClick={() => setShowDeleteModal(false)}>X</button>
@@ -318,7 +318,7 @@ const Categoria = () => {
         </div>
       )}
 
-      
+
     </div>
   );
 };
